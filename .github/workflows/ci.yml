@@ -1,0 +1,38 @@
+name: CI-CD-AWS-Beanstalk
+
+env:
+  AWS_EB_S3_BUCKET: "elasticbeanstalk-eu-west-1-853829558284"
+  EB_APPLICATION_NAME: "bsa-2021-slidez-core"
+  EB_ENVIRONMENT_NAME: "Bsa2021slidezcore-env"
+  DEPLOY_PACKAGE_NAME: "slidez-app-${{ github.sha }}-core.zip"
+  AWS_REGION_NAME: "eu-west-1"
+
+on:
+  push:
+    branches: [ develop ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build-core:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone code from repository
+        uses: actions/checkout@v2
+        
+      - name: Create ZIP deployment package
+        run : zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./slidez-core
+        
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+           aws-region: ${{ env.AWS_REGION_NAME }}
+       
+      - name: Copy package to S3
+        run : aws s3 cp ${{ env.DEPLOY_PACKAGE_NAME }} s3://${{ env.AWS_EB_S3_BUCKET }}
+      
+      - name: Successful build
+        run : echo "Build successful!"
