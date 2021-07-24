@@ -51,8 +51,8 @@ jobs:
       
       - name: Create ElasticBeanstalk app version
         run : | 
-          aws elasticbeanstalk create-applciation-version \
-          --aplication-name ${{ env.EB_APPLICATION_NAME }} \
+          aws elasticbeanstalk create-application-version \
+          --application-name ${{ env.EB_APPLICATION_NAME }} \
           --source-bundle ${{ env.AWS_EB_S3_BUCKET }},S3Key="${{env.DEPLOY_PACKAGE_NAME}}" \
           --version-label "v-${{ github.sha }}"
           --description "Automatic deplayment from github actions. SHA-${{ github.sha }}"
