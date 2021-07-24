@@ -24,7 +24,7 @@ jobs:
       - name: Create ZIP deployment package
         run : |
           cd slidez-core; \
-          zip -r ${{ env.DEPLOY_PACKAGE_NAME }} *; \
+          zip -r ../${{ env.DEPLOY_PACKAGE_NAME }} *; \
           cd ..;
         
       - name: Configure AWS Credentials
