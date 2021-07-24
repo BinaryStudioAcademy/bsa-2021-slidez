@@ -1,7 +1,7 @@
 name: CI-CD-AWS-Beanstalk
 
 env:
-  AWS_EB_S3_BUCKET: "elasticbeanstalk-eu-west-1-853829558284"
+  AWS_EB_S3_BUCKET: "bsa.slidez-core-builds"
   EB_APPLICATION_NAME: "bsa-2021-slidez-core"
   EB_ENVIRONMENT_NAME: "Bsa2021slidezcore-env"
   DEPLOY_PACKAGE_NAME: "slidez-app-${{ github.sha }}-core.zip"
@@ -36,3 +36,33 @@ jobs:
       
       - name: Successful build
         run : echo "Build successful!"
+    
+  deploy-core:
+    runs-on: ubuntu-latest
+    needs: [ build-core ]
+    
+    steps: 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+           aws-region: ${{ env.AWS_REGION_NAME }}
+      
+      - name: Create ElasticBeanstalk app version
+        run : | 
+          aws elastickbeanstalk create-applciation-version \
+          --aplication-name ${{ env.EB_APPLICATION_NAME }} \
+          --source-bundle ${{ env.AWS_EB_S3_BUCKET }},S3Key="${{env.DEPLOY_PACKAGE_NAME}}" \
+          --version-label "v-${{ github.sha }}"
+          --description "Automatic deplayment from github actions. SHA-${{ github.sha }}"
+        
+      - name: Update ElasticBeanstalk environment
+        run: |
+          aws elsticbeanstalk update-environment \
+          --environment-name ${{ env.EB_ENVIRONMENT_NAME }} \
+          --version-label "v-${{ github.sha }}"
+        
+      - name: Successful build
+        run : echo "Build successful!"
+      
