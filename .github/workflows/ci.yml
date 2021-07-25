@@ -73,13 +73,17 @@ jobs:
   deploy-frontend:
     runs-on: ubuntu-latest
     
-    steps: 
+    steps:
+      - name: Clone code from repository
+        uses: actions/checkout@v2
+        
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
            aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
            aws-region: ${{ env.AWS_REGION_NAME }}
+           
       - name: Build frontend
         run : |
           cd slidez-fe-core; \
@@ -87,4 +91,8 @@ jobs:
           aws s3 sync --cache-control 'max-age=604800' --exclude index.html build/ s3://${{ env.AWS_SPA_S3_BUCKET }}/; \
           aws s3 sync --cache-control 'no-cache' build/ s3://${{ env.AWS_SPA_S3_BUCKET }}/; \
           cd ..;
+          
+      
+      - name: Successful build
+        run : echo "Build successful!"
       
