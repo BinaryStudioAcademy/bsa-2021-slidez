@@ -87,7 +87,7 @@ jobs:
       - name: Build frontend
         run : |
           cd slidez-fe-core; \
-          npm ci && npm run build; \
+          yarn install --frozen-lockfile && yarn build \
           aws s3 sync --cache-control 'max-age=604800' --exclude index.html build/ s3://${{ env.AWS_SPA_S3_BUCKET }}/; \
           aws s3 sync --cache-control 'no-cache' build/ s3://${{ env.AWS_SPA_S3_BUCKET }}/; \
           cd ..;
