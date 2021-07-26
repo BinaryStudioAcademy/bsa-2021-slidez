@@ -4,7 +4,7 @@ env:
   AWS_EB_S3_BUCKET: "bsa.slidez-core-builds"
   EB_APPLICATION_NAME: "bsa-2021-slidez-core"
   EB_ENVIRONMENT_NAME: "Bsa2021slidezcore-env"
-  DEPLOY_PACKAGE_NAME: "slidez-app-${{ github.sha }}-core.zip"
+  DEPLOY_PACKAGE_NAME: "slidez-app-build.zip"
   AWS_REGION_NAME: "eu-west-1"
   AWS_SPA_S3_BUCKET: "bsa.slidez-fe-spa"
 
@@ -16,57 +16,29 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-core:
+
+  deploy-core:
     runs-on: ubuntu-latest
-    steps:
+    
+    steps: 
       - name: Clone code from repository
         uses: actions/checkout@v2
         
       - name: Create ZIP deployment package
-        run : |
-          cd slidez-core; \
-          zip -r ../${{ env.DEPLOY_PACKAGE_NAME }} *; \
-          cd ..;
-        
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        working-directory: slidez-core
+        run : zip -r ../${{ env.DEPLOY_PACKAGE_NAME }} *
+           
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v16
         with:
-           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-           aws-region: ${{ env.AWS_REGION_NAME }}
-       
-      - name: Copy package to S3
-        run : aws s3 cp ${{ env.DEPLOY_PACKAGE_NAME }} s3://${{ env.AWS_EB_S3_BUCKET }}
-      
-      - name: Successful build
-        run : echo "Build successful!"
-    
-  deploy-core:
-    runs-on: ubuntu-latest
-    needs: [ build-core ]
-    
-    steps: 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-           aws-region: ${{ env.AWS_REGION_NAME }}
-      
-      - name: Create ElasticBeanstalk app version
-        run : | 
-          aws elasticbeanstalk create-application-version \
-          --application-name ${{ env.EB_APPLICATION_NAME }} \
-          --source-bundle S3Bucket="${{ env.AWS_EB_S3_BUCKET }}",S3Key="${{env.DEPLOY_PACKAGE_NAME}}" \
-          --version-label "v-${{ github.sha }}" \
-          --description "Automatic deplayment from github actions. SHA-${{ github.sha }}"
-        
-      - name: Update ElasticBeanstalk environment
-        run: |
-          aws elasticbeanstalk update-environment \
-          --environment-name ${{ env.EB_ENVIRONMENT_NAME }} \
-          --version-label "v-${{ github.sha }}"
-        
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          region: ${{ env.AWS_REGION_NAME }}
+          application_name: ${{ env.EB_APPLICATION_NAME }}
+          environment_name: ${{ env.EB_ENVIRONMENT_NAME }}
+          version_label: "v-${{ github.sha }}"
+          deployment_package: "./${{ env.DEPLOY_PACKAGE_NAME }}"
+          
       - name: Successful build
         run : echo "Build successful!"
   
@@ -85,12 +57,11 @@ jobs:
            aws-region: ${{ env.AWS_REGION_NAME }}
            
       - name: Build frontend
+        working-directory: slidez-fe-core
         run : |
-          cd slidez-fe-core; \
           yarn install --frozen-lockfile && yarn build \
           aws s3 sync --cache-control 'max-age=604800' --exclude index.html build/ s3://${{ env.AWS_SPA_S3_BUCKET }}/; \
           aws s3 sync --cache-control 'no-cache' build/ s3://${{ env.AWS_SPA_S3_BUCKET }}/; \
-          cd ..;
           
       
       - name: Successful build
