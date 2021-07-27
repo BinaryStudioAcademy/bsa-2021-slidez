@@ -37,7 +37,7 @@ We practice peer-review approach: each PR is checked by a fellow student and a b
 
 ## Local development
 We don't use docker to run local environment for now, but we use docker containers to run infrastructure(such as database) locally. To run the project you should do the following:
-- Run the infrastructure `./scripts/run-infrastructure.sh`
+- (Optional) Run the infrastructure `./scripts/run-infrastructure.sh` or deploy Postgres locally
 - Run migrations(if necessary)
 - Run the backend via IDEA
 - Run the fronted `cd slidez-fe-core/ && yarn run start` 
