@@ -60,11 +60,11 @@ jobs:
       - name: Build frontend
         working-directory: slidez-fe-core
         run : |
-          yarn install --frozen-lockfile && yarn build \
+          yarn install --frozen-lockfile; \
+          yarn build; \
           aws s3 sync --cache-control 'max-age=604800' --exclude index.html build/ s3://${{ env.AWS_SPA_S3_BUCKET }}/; \
-          aws s3 sync --cache-control 'no-cache' build/ s3://${{ env.AWS_SPA_S3_BUCKET }}/; \
+          aws s3 sync --cache-control 'no-cache' build/ s3://${{ env.AWS_SPA_S3_BUCKET }}/;
           
-      
       - name: Successful build
         run : echo "Build successful!"
       
