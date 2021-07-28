@@ -4,8 +4,8 @@ div {
     --light-grey: #eeeeee;
     --white: white;
     --black: #222222;
-    --error-red-border: #f73b48;
-    --error-red-background: #ffb8bc;
+    --error: #f73b48;
+    --error-background: #ffb8bc;
 }
 
 .sign-form {
@@ -142,6 +142,17 @@ div {
 }
 
 .error-input {
-    border-color: var(--error-red-border);
-    background-color: var(--error-red-background);
+    border-color: var(--error);
+    background-color: var(--error-background);
+}
+
+.hidden{
+    display: none;
+}
+
+.error-text {
+    display: inline;
+    font-family: 'Rubik', serif;
+    color: var(--error);
+    font-size: 12px;
 }

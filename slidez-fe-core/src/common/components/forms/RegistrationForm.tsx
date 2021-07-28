@@ -18,6 +18,7 @@ const RegistrationForm = ({
     React.useState(false)
   const [email, setEmail] = React.useState('')
   const [isEmailValid, setIsEmailValid] = React.useState(true)
+  const [isEmailExists, setIsEmailExists] = React.useState(false)
   const [password, setPassword] = React.useState('')
   const [isPasswordValid, setIsPasswordValid] = React.useState(true)
   const [confirmedPassword, setConfirmedPassword] = React.useState('')
@@ -63,6 +64,9 @@ const RegistrationForm = ({
           onChange={(event) => setEmail(event.target.value)}
           onBlur={() => setIsEmailValid(validator.isEmail(email))}
         />
+        <p className={isEmailExists ? 'error-text' : 'hidden'}>
+          This email is taken!
+        </p>
       </div>
       <div className='form-row form-input-holder'>
         <label htmlFor='register-password-input' className='label'>
