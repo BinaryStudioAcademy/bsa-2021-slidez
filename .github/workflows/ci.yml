@@ -1,9 +1,8 @@
 name: CI-CD-AWS-Beanstalk
 
 env:
-  AWS_EB_S3_BUCKET: "bsa.slidez-core-builds"
   EB_APPLICATION_NAME: "bsa-2021-slidez-core"
-  EB_ENVIRONMENT_NAME: "Bsa2021slidezcore-env"
+  EB_ENVIRONMENT_NAME: "Bsa2021slidez-env"
   DEPLOY_PACKAGE_NAME: "slidez-app-build.zip"
   AWS_REGION_NAME: "eu-west-1"
   AWS_SPA_S3_BUCKET: "bsa.slidez-fe-spa"
@@ -19,14 +18,28 @@ jobs:
 
   deploy-core:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: slidez-core
     
     steps: 
       - name: Clone code from repository
         uses: actions/checkout@v2
-        
+      
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+  
+      - name: Run the Gradle package task
+        run: ./gradlew assemble
+      
       - name: Create ZIP deployment package
-        working-directory: slidez-core
-        run : zip -r ../${{ env.DEPLOY_PACKAGE_NAME }} *
+        run : zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./build/libs/slidez-0.0.1-SNAPSHOT.jar .elasticbeanstalk
            
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v16
