@@ -3,6 +3,9 @@ div {
     --mint: #4af092;
     --light-grey: #eeeeee;
     --white: white;
+    --black: #222222;
+    --error-red-border: #f73b48;
+    --error-red-background: #ffb8bc;
 }
 
 .sign-form {
@@ -31,12 +34,12 @@ div {
     text-decoration: none;
 }
 
-.form-input-holder{
+.form-input-holder {
     display: flex;
     flex-direction: column;
 }
 
-.form-input{
+.form-input {
     font-family: 'Rubik', serif;
     font-size: 16px;
     border-radius: 15px;
@@ -46,12 +49,13 @@ div {
     text-indent: 10px;
 }
 
-.form-input:focus{
+.form-input:focus {
     outline: none;
     border: 2px var(--mint) solid;
+    background-color: var(--light-grey);
 }
 
-.form-input::placeholder{
+.form-input::placeholder {
     color: var(--grey);
 }
 
@@ -60,7 +64,7 @@ div {
     margin-bottom: 5px;
 }
 
-.row-with-components-on-opposite-sides{
+.row-with-components-on-opposite-sides {
     display: flex;
     justify-content: space-between;
 }
@@ -75,22 +79,22 @@ div {
     border: 2px transparent solid;
 }
 
-.form-button:hover{
- cursor: pointer;
+.form-button:hover {
+    cursor: pointer;
 }
 
-.login-button{
+.login-button {
     background-color: var(--mint);
     color: var(--white);
 }
 
-.login-with-google-button{
+.login-with-google-button {
     border: 2px var(--mint) solid;
     color: var(--mint);
     background-color: var(--white);
 }
 
-.button-divider{
+.button-divider {
     display: flex;
     align-items: center;
     text-align: center;
@@ -113,17 +117,17 @@ div {
     margin-left: .25em;
 }
 
-.input-with-icon-holder{
+.input-with-icon-holder {
     position: relative;
     display: flex;
     flex-direction: column;
 }
 
-.input-with-icon{
+.input-with-icon {
     padding-right: 40px;
 }
 
-.input-icon{
+.input-icon {
     position: absolute;
     top: 8px;
     right: 8px;
@@ -132,7 +136,12 @@ div {
     color: var(--grey);
 }
 
-.input-icon:hover{
+.input-icon:hover {
     cursor: pointer;
-    color: black;
+    color: var(--black);
+}
+
+.error-input {
+    border-color: var(--error-red-border);
+    background-color: var(--error-red-background);
 }

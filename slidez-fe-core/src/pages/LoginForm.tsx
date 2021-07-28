@@ -3,7 +3,9 @@ import { NavLink } from 'react-router-dom'
 import './sign-form.css'
 import { AppRoute } from '../common/routes/app-route'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import validator from 'validator'
 import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faEye } from '@fortawesome/free-solid-svg-icons'
 
 type LoginProps = {
   onLogin: Function
@@ -11,6 +13,21 @@ type LoginProps = {
 }
 
 const LoginForm = ({ onLogin, onForgotPassword }: LoginProps) => {
+  const [isPasswordRevealed, setPasswordRevealed] = React.useState(false)
+  const [email, setEmail] = React.useState('')
+  const [isEmailValid, setIsEmailValid] = React.useState(true)
+  const [password, setPassword] = React.useState('')
+
+  const onRevealClick = () => {
+    const passwordInput = document.getElementById('sign-in-password-input')
+    if (passwordInput !== null) {
+      setPasswordRevealed(!isPasswordRevealed)
+      const type =
+        passwordInput.getAttribute('type') === 'password' ? 'text' : 'password'
+      passwordInput.setAttribute('type', type)
+    }
+  }
+
   return (
     <div className='sign-form'>
       <div className='form-row'>Log In</div>
@@ -26,8 +43,11 @@ const LoginForm = ({ onLogin, onForgotPassword }: LoginProps) => {
         </label>
         <input
           id='sign-in-email-input'
-          className='form-input'
+          className={`form-input ${isEmailValid ? '' : 'error-input'}`}
           placeholder='Enter your email'
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          onBlur={() => setIsEmailValid(validator.isEmail(email))}
         />
       </div>
       <div className='form-row form-input-holder'>
@@ -45,8 +65,22 @@ const LoginForm = ({ onLogin, onForgotPassword }: LoginProps) => {
             type='password'
             className='form-input input-with-icon'
             placeholder='Enter your password'
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
           />
-          <FontAwesomeIcon icon={faEyeSlash} className='input-icon' />
+          {isPasswordRevealed ? (
+            <FontAwesomeIcon
+              icon={faEye}
+              className='input-icon'
+              onClick={onRevealClick}
+            />
+          ) : (
+            <FontAwesomeIcon
+              icon={faEyeSlash}
+              className='input-icon'
+              onClick={onRevealClick}
+            />
+          )}
         </div>
       </div>
       <div className='form-row'>
