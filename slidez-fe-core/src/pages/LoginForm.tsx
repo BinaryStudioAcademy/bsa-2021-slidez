@@ -18,10 +18,41 @@ const LoginForm = ({ onLogin, onForgotPassword }: LoginProps) => {
           Sign Up
         </NavLink>
       </div>
-      <div className='form-row'>
-        <input className='form-input' placeholder='Enter your email' />
+      <div className='form-row form-input-holder'>
+        <label htmlFor='sign-in-email-input' className='label'>
+          Email
+        </label>
+        <input
+          id='sign-in-email-input'
+          className='form-input'
+          placeholder='Enter your email'
+        />
       </div>
-      <button>Login</button>
+      <div className='form-row form-input-holder'>
+        <div className='row-with-components-on-opposite-sides'>
+          <label htmlFor='sign-in-password-input' className='label'>
+            Password
+          </label>
+          <NavLink exact to={AppRoute.RESTORE_PASSWORD} className='link'>
+            Forgot password?
+          </NavLink>
+        </div>
+        <input
+          id='sign-in-password-input'
+          type='password'
+          className='form-input'
+          placeholder='Enter your password'
+        />
+      </div>
+      <div className='form-row'>
+        <button className='form-button login-button'>Log In</button>
+      </div>
+      <div className='form-row button-divider'>or</div>
+      <div className='form-row'>
+        <button className='form-button login-with-google-button'>
+          Log In with Google
+        </button>
+      </div>
     </div>
   )
 }

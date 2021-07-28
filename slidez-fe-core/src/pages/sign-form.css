@@ -1,7 +1,8 @@
 div {
     --grey-color: #999999;
-    --mint-color: #38f28f;
+    --mint-color: #4af092;
     --light-grey: #eeeeee;
+    --white: white;
 }
 
 .sign-form {
@@ -14,8 +15,8 @@ div {
 
 .form-row {
     display: flex;
-    margin-top: 7px;
-    margin-bottom: 7px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .no-account {
@@ -30,9 +31,14 @@ div {
     text-decoration: none;
 }
 
+.form-input-holder{
+    display: flex;
+    flex-direction: column;
+}
+
 .form-input{
     font-family: 'Rubik', serif;
-    font-size: 18px;
+    font-size: 16px;
     width: 100%;
     border-radius: 15px;
     border: 2px var(--light-grey) solid;
@@ -48,4 +54,62 @@ div {
 
 .form-input::placeholder{
     color: var(--grey-color);
+}
+
+.label {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.row-with-components-on-opposite-sides{
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-button {
+    width: 100%;
+    font-family: 'Rubik', serif;
+    font-size: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 30px;
+    border: 2px transparent solid;
+}
+
+.form-button:hover{
+ cursor: pointer;
+}
+
+.login-button{
+    background-color: var(--mint-color);
+    color: var(--white);
+}
+
+.login-with-google-button{
+    border: 2px var(--mint-color) solid;
+    color: var(--mint-color);
+    background-color: var(--white);
+}
+
+.button-divider{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-size: 18px;
+    color: var(--grey-color);
+}
+
+.button-divider::before,
+.button-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--grey-color);
+}
+
+.button-divider:not(:empty)::before {
+    margin-right: .25em;
+}
+
+.button-divider:not(:empty)::after {
+    margin-left: .25em;
 }
