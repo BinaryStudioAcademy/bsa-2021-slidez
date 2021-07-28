@@ -1,0 +1,51 @@
+div {
+    --grey-color: #999999;
+    --mint-color: #38f28f;
+    --light-grey: #eeeeee;
+}
+
+.sign-form {
+    font-family: 'Rubik', serif;
+    font-size: 28px;
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+.form-row {
+    display: flex;
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+
+.no-account {
+    color: var(--grey-color);
+    font-size: 18px;
+    margin-right: 5px;
+}
+
+.link {
+    color: var(--mint-color);
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.form-input{
+    font-family: 'Rubik', serif;
+    font-size: 18px;
+    width: 100%;
+    border-radius: 15px;
+    border: 2px var(--light-grey) solid;
+    background-color: var(--light-grey);
+    height: 30px;
+    text-indent: 10px;
+}
+
+.form-input:focus{
+    outline: none;
+    border: 2px var(--mint-color) solid;
+}
+
+.form-input::placeholder{
+    color: var(--grey-color);
+}
