@@ -33,9 +33,7 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
                 new UppercaseCharacterRule(uppercaseCount),
                 new DigitCharacterRule(digitsCount),
                 new SpecialCharacterRule(specialCharacter)));
-
         RuleResult result = validator.validate(new PasswordData(password));
-
         return result.isValid();
     }
 }

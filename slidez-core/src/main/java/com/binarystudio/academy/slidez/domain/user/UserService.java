@@ -3,6 +3,8 @@ package com.binarystudio.academy.slidez.domain.user;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -15,6 +17,10 @@ public class UserService {
 
     public boolean isEmailPresent(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    public Optional<User> findByNickname(String nickname) {
+        return userRepository.getByNickname(nickname);
     }
 
     public User create(UserDto userDto) {
