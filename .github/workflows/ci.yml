@@ -39,7 +39,7 @@ jobs:
         run: ./gradlew assemble
       
       - name: Create ZIP deployment package
-        run : zip -r ../${{ env.DEPLOY_PACKAGE_NAME }} ./build/libs/slidez-0.0.1-SNAPSHOT.jar .elasticbeanstalk
+        run : zip -j ../${{ env.DEPLOY_PACKAGE_NAME }} ./build/libs/slidez-0.0.1-SNAPSHOT.jar .elasticbeanstalk
            
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v16
