@@ -1,7 +1,7 @@
 name: CI-CD-AWS-Beanstalk
 
 env:
-  EB_APPLICATION_NAME: "bsa-2021-slidez-core"
+  EB_APPLICATION_NAME: "bsa-2021-slidez"
   EB_ENVIRONMENT_NAME: "Bsa2021slidez-env"
   DEPLOY_PACKAGE_NAME: "slidez-app-build.zip"
   AWS_REGION_NAME: "eu-west-1"
