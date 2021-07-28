@@ -5,7 +5,7 @@ import { Counter } from './containers/counter/Counter'
 import './App.css'
 import PublicRoute from './common/routes/public-route'
 import { AppRoute } from './common/routes/app-route'
-import SignPage from './pages/SignPage'
+import SignPage from './pages/sign/SignPage'
 
 const DefaultApp = () => {
   return (

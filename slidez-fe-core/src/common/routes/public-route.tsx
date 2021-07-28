@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { AppRoute } from './app-route'
-import { locationType } from '../location'
+import { locationType } from './location'
 import { useAppSelector } from '../../hooks'
 import { selectId } from '../../containers/user/store'
 

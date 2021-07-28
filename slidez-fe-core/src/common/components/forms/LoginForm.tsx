@@ -1,31 +1,38 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import './sign-form.css'
-import { AppRoute } from '../common/routes/app-route'
+import { AppRoute } from '../../routes/app-route'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import validator from 'validator'
 import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
+import { revealPassword } from './form-utils'
 
 type LoginProps = {
   onLogin: Function
-  onForgotPassword: Function
+  onLoginWithGoogle: Function
 }
 
-const LoginForm = ({ onLogin, onForgotPassword }: LoginProps) => {
-  const [isPasswordRevealed, setPasswordRevealed] = React.useState(false)
+const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
+  const [isPasswordRevealed, setIsPasswordRevealed] = React.useState(false)
   const [email, setEmail] = React.useState('')
   const [isEmailValid, setIsEmailValid] = React.useState(true)
   const [password, setPassword] = React.useState('')
 
   const onRevealClick = () => {
-    const passwordInput = document.getElementById('sign-in-password-input')
-    if (passwordInput !== null) {
-      setPasswordRevealed(!isPasswordRevealed)
-      const type =
-        passwordInput.getAttribute('type') === 'password' ? 'text' : 'password'
-      passwordInput.setAttribute('type', type)
+    setIsPasswordRevealed(!isPasswordRevealed)
+    revealPassword('sign-in-password-input')
+  }
+
+  const handleLogin = () => {
+    if (!isEmailValid) {
+      return
     }
+    onLogin(email, password)
+  }
+
+  const handleLoginWithGoogle = () => {
+    onLoginWithGoogle()
   }
 
   return (
@@ -83,12 +90,18 @@ const LoginForm = ({ onLogin, onForgotPassword }: LoginProps) => {
           )}
         </div>
       </div>
+      <div className='form-row' />
       <div className='form-row'>
-        <button className='form-button login-button'>Log In</button>
+        <button className='form-button login-button' onClick={handleLogin}>
+          Log In
+        </button>
       </div>
       <div className='form-row button-divider'>or</div>
       <div className='form-row'>
-        <button className='form-button login-with-google-button'>
+        <button
+          className='form-button login-with-google-button'
+          onClick={handleLoginWithGoogle}
+        >
           Log In with Google
         </button>
       </div>
