@@ -2,6 +2,8 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import './sign-form.css'
 import { AppRoute } from '../common/routes/app-route'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 type LoginProps = {
   onLogin: Function
@@ -37,12 +39,15 @@ const LoginForm = ({ onLogin, onForgotPassword }: LoginProps) => {
             Forgot password?
           </NavLink>
         </div>
-        <input
-          id='sign-in-password-input'
-          type='password'
-          className='form-input'
-          placeholder='Enter your password'
-        />
+        <div className='input-with-icon-holder'>
+          <input
+            id='sign-in-password-input'
+            type='password'
+            className='form-input input-with-icon'
+            placeholder='Enter your password'
+          />
+          <FontAwesomeIcon icon={faEyeSlash} className='input-icon' />
+        </div>
       </div>
       <div className='form-row'>
         <button className='form-button login-button'>Log In</button>
