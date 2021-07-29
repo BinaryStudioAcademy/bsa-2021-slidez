@@ -11,7 +11,7 @@ public class PasswordValidator {
     // (?=.*[!@#$&*]) Ensure string has one special case letter.
     // (?=.*[0-9])    Ensure string has 1 digits.
     // .{12,}         Ensure string is of length not less 12.
-    private static final String PASSWORD_PATTERN = "^(?=.*[A-Z].*)(?=.*[!@#$&*].*)(?=.*[0-9].*).{12,}$";
+    private static final String PASSWORD_PATTERN = "^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{12,}$";
     private static final Pattern PATTERN = Pattern.compile(PASSWORD_PATTERN);
 
     public boolean isValid(final String password) {
