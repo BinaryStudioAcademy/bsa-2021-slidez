@@ -4,6 +4,7 @@ plugins {
 	id 'java'
 	id "io.spring.javaformat" version "0.0.27"
 }
+
 apply plugin: 'io.spring.javaformat'
 apply plugin: 'checkstyle'
 
