@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Entity
@@ -32,5 +33,6 @@ public class User {
     private String lastName;
 
     @Column
+    @NotNull
     private String password;
 }
