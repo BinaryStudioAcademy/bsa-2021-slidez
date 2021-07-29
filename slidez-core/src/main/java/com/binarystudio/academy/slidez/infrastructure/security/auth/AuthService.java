@@ -1,8 +1,8 @@
 package com.binarystudio.academy.slidez.infrastructure.security.auth;
 
-import com.binarystudio.academy.slidez.domain.user.User;
-import com.binarystudio.academy.slidez.domain.user.UserDto;
+import com.binarystudio.academy.slidez.domain.user.model.User;
 import com.binarystudio.academy.slidez.domain.user.UserService;
+import com.binarystudio.academy.slidez.domain.user.dto.UserDto;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthResponse;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthorizationRequest;
 import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtProvider;
@@ -33,17 +33,20 @@ public class AuthService {
 	}
 
 	public AuthResponse performLogin(AuthorizationRequest authorizationRequest)  {
-		var user = userService.findByNickname(authorizationRequest.getUsername())
-												.orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+		var userOptional = userService.findByEmail(authorizationRequest.getEmail());
+		if (userOptional.isEmpty()) {
+			throw  new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+		}
 
-		if (!passwordsMatch(authorizationRequest.getPassword(), user.getPasswordHash())) {
+		User user = userOptional.get();
+		if (!passwordsMatch(authorizationRequest.getPassword(), user.getPassword())) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid password");
 		}
 		return AuthResponse.of(jwtProvider.generateAccessToken(user));
 	}
 
 	private boolean passwordsMatch(String rawPw, String encodedPw) {
-		return !passwordEncoder.matches(rawPw, encodedPw);
+		return passwordEncoder.matches(rawPw, encodedPw);
 	}
 
 	public AuthResponse register(UserDto userDto) {

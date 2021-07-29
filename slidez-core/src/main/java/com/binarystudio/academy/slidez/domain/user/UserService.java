@@ -1,14 +1,21 @@
 package com.binarystudio.academy.slidez.domain.user;
 
+import com.binarystudio.academy.slidez.domain.user.dto.UserDto;
+import com.binarystudio.academy.slidez.domain.user.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+
 @Service
 public class UserService {
 
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository) {
@@ -19,8 +26,8 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
-    public Optional<User> findByNickname(String nickname) {
-        return userRepository.getByNickname(nickname);
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     public User create(UserDto userDto) {
@@ -31,8 +38,9 @@ public class UserService {
     private User convertUser(UserDto userDto) {
         return User.builder()
                 .email(userDto.getEmail())
-                .passwordHash(passwordEncoder.encode(userDto.getPassword()))
-                .nickname(userDto.getNickname())
+                .password(passwordEncoder.encode(userDto.getPassword()))
+                .firstName(userDto.getFirstName())
+                .lastName(userDto.getLastName())
                 .build();
     }
 }

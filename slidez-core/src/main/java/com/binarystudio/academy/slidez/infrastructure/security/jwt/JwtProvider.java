@@ -1,6 +1,6 @@
 package com.binarystudio.academy.slidez.infrastructure.security.jwt;
 
-import com.binarystudio.academy.slidez.domain.user.User;
+import com.binarystudio.academy.slidez.domain.user.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtParser;
@@ -9,6 +9,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -18,7 +19,9 @@ import java.util.Date;
 
 @Component
 public class JwtProvider {
+	@Autowired
 	private JwtProperties jwtProperties;
+
 	private Key secretKey;
 	private JwtParser jwtParser;
 
@@ -40,7 +43,7 @@ public class JwtProvider {
 	public String generateAccessToken(User user) {
 		Date date = Date.from(LocalDateTime.now().plusSeconds(jwtProperties.getSecs_to_expire_access()).toInstant(ZoneOffset.UTC));
 		return Jwts.builder()
-				.setSubject(user.getNickname())
+				.setSubject(user.getEmail())
 				.setExpiration(date)
 				.signWith(key())
 				.compact();
