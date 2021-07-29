@@ -9,7 +9,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -18,10 +18,10 @@ import java.time.ZoneOffset;
 import java.util.Date;
 
 @Component
+@AllArgsConstructor
 public class JwtProvider {
-	@Autowired
-	private JwtProperties jwtProperties;
 
+	private final JwtProperties jwtProperties;
 	private Key secretKey;
 	private JwtParser jwtParser;
 

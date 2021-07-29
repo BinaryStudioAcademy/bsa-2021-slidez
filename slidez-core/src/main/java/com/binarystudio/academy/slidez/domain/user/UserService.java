@@ -2,7 +2,7 @@ package com.binarystudio.academy.slidez.domain.user;
 
 import com.binarystudio.academy.slidez.domain.user.dto.UserDto;
 import com.binarystudio.academy.slidez.domain.user.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,17 +10,12 @@ import java.util.Optional;
 
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final PasswordEncoder passwordEncoder;
 
     public boolean isEmailPresent(String email) {
         return userRepository.existsByEmail(email);

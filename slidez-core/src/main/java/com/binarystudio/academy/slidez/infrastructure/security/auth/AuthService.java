@@ -1,12 +1,12 @@
 package com.binarystudio.academy.slidez.infrastructure.security.auth;
 
-import com.binarystudio.academy.slidez.domain.user.model.User;
 import com.binarystudio.academy.slidez.domain.user.UserService;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDto;
+import com.binarystudio.academy.slidez.domain.user.model.User;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthResponse;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthorizationRequest;
 import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtProvider;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,15 +16,12 @@ import javax.persistence.EntityExistsException;
 
 
 @Service
+@AllArgsConstructor
 public class AuthService {
-	@Autowired
-	private UserService userService;
 
-	@Autowired
-	private JwtProvider jwtProvider;
-
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private final UserService userService;
+	private final JwtProvider jwtProvider;
+	private final PasswordEncoder passwordEncoder;
 
 	public AuthService(UserService userService, JwtProvider jwtProvider, PasswordEncoder passwordEncoder) {
 		this.userService = userService;
@@ -55,7 +52,7 @@ public class AuthService {
 		}
 
 		User user = userService.create(userDto);
-		return AuthResponse.of(jwtProvider.generateAccessToken(user));
+		return AuthResponse.of(jwtProvider.generateAccessToken(user), userDto);
 	}
 
 }
