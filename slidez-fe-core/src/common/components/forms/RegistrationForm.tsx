@@ -3,6 +3,9 @@ import { revealPassword } from './form-utils'
 import validator from 'validator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { useAppSelector } from '../../../hooks'
+import { selectSignStatus } from '../../../containers/user/store'
+import { SignStatus } from '../../../containers/user/enums/sign-status'
 
 type RegistrationProps = {
   onRegister: Function
@@ -18,7 +21,7 @@ const RegistrationForm = ({
     React.useState(false)
   const [email, setEmail] = React.useState('')
   const [isEmailValid, setIsEmailValid] = React.useState(true)
-  const [isEmailExists, setIsEmailExists] = React.useState(false)
+  const signStatus = useAppSelector(selectSignStatus)
   const [password, setPassword] = React.useState('')
   const [isPasswordValid, setIsPasswordValid] = React.useState(true)
   const [confirmedPassword, setConfirmedPassword] = React.useState('')
@@ -70,7 +73,11 @@ const RegistrationForm = ({
           onChange={(event) => setEmail(event.target.value)}
           onBlur={() => setIsEmailValid(validator.isEmail(email))}
         />
-        <p className={isEmailExists ? 'error-text' : 'hidden'}>
+        <p
+          className={
+            signStatus === SignStatus.EMAIL_IS_TAKEN ? 'error-text' : 'hidden'
+          }
+        >
           This email is taken!
         </p>
       </div>

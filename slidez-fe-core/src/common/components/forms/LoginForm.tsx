@@ -7,6 +7,9 @@ import validator from 'validator'
 import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { revealPassword } from './form-utils'
+import { useAppSelector } from '../../../hooks'
+import { selectSignStatus } from '../../../containers/user/store'
+import { SignStatus } from '../../../containers/user/enums/sign-status'
 
 type LoginProps = {
   onLogin: Function
@@ -18,6 +21,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
   const [email, setEmail] = React.useState('')
   const [isEmailValid, setIsEmailValid] = React.useState(true)
   const [password, setPassword] = React.useState('')
+  const signStatus = useAppSelector(selectSignStatus)
 
   const onRevealClick = () => {
     setIsPasswordRevealed(!isPasswordRevealed)
@@ -44,6 +48,15 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
         </NavLink>
       </div>
       <div className='form-row form-input-holder'>
+        <p
+          className={
+            signStatus === SignStatus.INVALID_CREDENTIALS
+              ? 'error-text'
+              : 'hidden'
+          }
+        >
+          {`Can't log in: email or password is invalid`}
+        </p>
         <label htmlFor='sign-in-email-input' className='label'>
           Email
         </label>
