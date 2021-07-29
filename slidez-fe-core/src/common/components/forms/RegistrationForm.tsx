@@ -98,6 +98,9 @@ const RegistrationForm = ({
             />
           )}
         </div>
+        <p className={isPasswordValid ? 'hidden' : 'error-text'}>
+          Password must contain 1 uppercase, 1 digit and 1 special character
+        </p>
       </div>
       <div className='form-row form-input-holder'>
         <label htmlFor='register-password-confirm-input' className='label'>
