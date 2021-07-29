@@ -25,10 +25,9 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
   }
 
   const handleLogin = () => {
-    if (!isEmailValid) {
-      return
+    if (isEmailValid) {
+      onLogin(email, password)
     }
-    onLogin(email, password)
   }
 
   const handleLoginWithGoogle = () => {

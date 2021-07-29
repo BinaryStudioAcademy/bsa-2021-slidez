@@ -1,5 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
+import { LogInDto } from './dto/LogInDto'
+import { RegisterDto } from './dto/RegisterDto'
+import { performLogIn, performRegister } from '../../services/auth/auth-service'
 
 export interface UserState {
   id: string
@@ -15,16 +18,29 @@ const initialState: UserState = {
   lastName: '',
 }
 
+export const logIn = createAsyncThunk('user/logIn', async (dto: LogInDto) => {
+  const obj: object = await performLogIn(dto)
+  console.log(obj)
+})
+
+export const register = createAsyncThunk(
+  'user/register',
+  async (dto: RegisterDto) => {
+    const obj: object = await performRegister(dto)
+    console.log(obj)
+  }
+)
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    login: (state, user: PayloadAction<UserState>) => {
-      state.id = user.payload.id
-      state.email = user.payload.email
-      state.firstName = user.payload.firstName
-      state.lastName = user.payload.lastName
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(logIn.pending, (state) => {})
+      .addCase(logIn.fulfilled, (state, action) => {})
+      .addCase(register.pending, (state) => {})
+      .addCase(register.fulfilled, (state, action) => {})
   },
 })
 

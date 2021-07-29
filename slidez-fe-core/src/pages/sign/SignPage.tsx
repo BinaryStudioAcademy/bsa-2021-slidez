@@ -4,15 +4,37 @@ import { useLocation } from 'react-router-dom'
 import LoginForm from '../../common/components/forms/LoginForm'
 import RegistrationForm from '../../common/components/forms/RegistrationForm'
 import './sign-page.css'
+import { useAppDispatch } from '../../hooks'
+import { LogInDto } from '../../containers/user/dto/LogInDto'
+import { RegisterDto } from '../../containers/user/dto/RegisterDto'
+import { logIn, register } from '../../containers/user/store'
 
 const SignPage = () => {
   const { pathname } = useLocation()
+  const dispatch = useAppDispatch()
 
-  const handleLogin = () => {}
+  const handleLogin = (email: string, password: string) => {
+    const dto: LogInDto = {
+      email: email,
+      password: password,
+    }
+    dispatch(logIn(dto))
+  }
 
   const handleLoginWithGoogle = () => {}
 
-  const handleRegister = () => {}
+  const handleRegister = (
+    email: string,
+    password: string,
+    confirmedPassword: string
+  ) => {
+    const dto: RegisterDto = {
+      email: email,
+      password: password,
+      confirmedPassword: confirmedPassword,
+    }
+    dispatch(register(dto))
+  }
 
   const handleRegisterWithGoogle = () => {}
 
