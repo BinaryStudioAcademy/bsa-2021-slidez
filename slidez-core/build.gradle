@@ -9,7 +9,6 @@ apply plugin: 'checkstyle'
 
 checkstyle {
 	toolVersion = "8.29"
-	configFile = rootProject.file('src/main/java/com/binarystudio/academy/slidez/infrastructure/checkstyle/checkstyle.xml')
 }
 
 group = 'com.binarystudio.academy'
