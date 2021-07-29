@@ -3,12 +3,13 @@ import { LogInDto } from '../../containers/user/dto/LogInDto'
 import { RegisterDto } from '../../containers/user/dto/RegisterDto'
 
 const sendAuthRequest = async (endpoint: string, data: object = {}) => {
-  const url: string = `auth/${endpoint}`
+  const url: string = `http://localhost:8000/auth/${endpoint}`
   return fetch(url, {
     method: HttpMethod.POST,
     mode: 'cors',
     headers: {
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
     },
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
