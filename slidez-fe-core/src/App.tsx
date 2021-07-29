@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { HashRouter, Route, Switch } from 'react-router-dom'
 import logo from './logo.svg'
 import { Counter } from './containers/counter/Counter'
 import './App.css'
@@ -21,7 +21,7 @@ const DefaultApp = () => {
 function App() {
   return (
     <div>
-      <BrowserRouter>
+      <HashRouter>
         <Switch>
           <PublicRoute
             exact
@@ -30,7 +30,7 @@ function App() {
           />
           <Route path={AppRoute.ANY} exact component={DefaultApp} />
         </Switch>
-      </BrowserRouter>
+      </HashRouter>
     </div>
   )
 }
