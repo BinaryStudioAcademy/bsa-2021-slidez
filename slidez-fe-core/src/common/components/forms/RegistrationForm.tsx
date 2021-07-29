@@ -40,7 +40,13 @@ const RegistrationForm = ({
   }
 
   const handleRegister = () => {
-    if (isEmailValid && isPasswordValid && passwordsMatch) {
+    if (
+      isEmailValid &&
+      email !== '' &&
+      isPasswordValid &&
+      password !== '' &&
+      passwordsMatch
+    ) {
       onRegister(email, password, confirmedPassword)
     }
   }
