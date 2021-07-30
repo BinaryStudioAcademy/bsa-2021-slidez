@@ -19,11 +19,15 @@ import java.util.Date;
 
 @Component
 public class JwtProvider {
-	@Autowired
-	private JwtProperties jwtProperties;
 
+	private final JwtProperties jwtProperties;
 	private Key secretKey;
 	private JwtParser jwtParser;
+
+	@Autowired
+	public JwtProvider(JwtProperties jwtProperties) {
+		this.jwtProperties = jwtProperties;
+	}
 
 	private Key key() {
 		if (secretKey == null) {
