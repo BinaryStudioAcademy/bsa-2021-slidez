@@ -87,19 +87,11 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
-          {isPasswordRevealed ? (
-            <FontAwesomeIcon
-              icon={faEye}
-              className='input-icon'
-              onClick={onRevealClick}
-            />
-          ) : (
-            <FontAwesomeIcon
-              icon={faEyeSlash}
-              className='input-icon'
-              onClick={onRevealClick}
-            />
-          )}
+          <FontAwesomeIcon
+            icon={isPasswordRevealed ? faEye : faEyeSlash}
+            className='input-icon'
+            onClick={onRevealClick}
+          />
         </div>
       </div>
       <div className='form-row' />

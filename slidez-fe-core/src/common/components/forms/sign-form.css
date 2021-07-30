@@ -1,13 +1,3 @@
-div {
-    --grey: #999999;
-    --mint: #4af092;
-    --light-grey: #eeeeee;
-    --white: white;
-    --black: #222222;
-    --error: #f73b48;
-    --error-background: #ffb8bc;
-}
-
 .sign-form {
     font-family: 'Rubik', serif;
     font-size: 28px;

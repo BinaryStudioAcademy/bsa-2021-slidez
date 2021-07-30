@@ -97,19 +97,11 @@ const RegistrationForm = ({
             onChange={(event) => setPassword(event.target.value)}
             onBlur={() => validatePassword()}
           />
-          {isPasswordRevealed ? (
-            <FontAwesomeIcon
-              icon={faEye}
-              className='input-icon'
-              onClick={onRevealPasswordClick}
-            />
-          ) : (
-            <FontAwesomeIcon
-              icon={faEyeSlash}
-              className='input-icon'
-              onClick={onRevealPasswordClick}
-            />
-          )}
+          <FontAwesomeIcon
+            icon={isPasswordRevealed ? faEye : faEyeSlash}
+            className='input-icon'
+            onClick={onRevealPasswordClick}
+          />
         </div>
         <p className={isPasswordValid ? 'hidden' : 'error-text'}>
           Password must contain 1 uppercase, 1 digit and 1 special character
@@ -131,19 +123,11 @@ const RegistrationForm = ({
             onChange={(event) => setConfirmedPassword(event.target.value)}
             onBlur={() => setPasswordsMatch(password === confirmedPassword)}
           />
-          {isConfirmPasswordRevealed ? (
-            <FontAwesomeIcon
-              icon={faEye}
-              className='input-icon'
-              onClick={onRevealConfirmedPasswordClick}
-            />
-          ) : (
-            <FontAwesomeIcon
-              icon={faEyeSlash}
-              className='input-icon'
-              onClick={onRevealConfirmedPasswordClick}
-            />
-          )}
+          <FontAwesomeIcon
+            icon={isPasswordRevealed ? faEye : faEyeSlash}
+            className='input-icon'
+            onClick={onRevealConfirmedPasswordClick}
+          />
         </div>
       </div>
       <div className='form-row' />
