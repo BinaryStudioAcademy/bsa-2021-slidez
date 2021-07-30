@@ -54,7 +54,12 @@ public class JwtProvider {
 	}
 
 	public String getLoginFromToken(String token) {
-		Claims claims = parseToken(token);
+        Claims claims;
+        try {
+            claims = parseToken(token);
+        } catch (Exception ex) {
+            return null;
+        }
 		return claims.getSubject();
 	}
 
