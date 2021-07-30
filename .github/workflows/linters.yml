@@ -1,0 +1,53 @@
+name: FE and BE linters on [develop] PR
+
+on:
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  linter_frontend:
+    runs_on: ubuntu-latest
+    name: Frontend linter
+
+    defaults:
+      run:
+        working-directory: slidez-fe-core
+
+    steps:
+    - name: Clone code from repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '16.x'
+
+    - name: Install dependencies
+      run: yarn --frozen-lockfile
+    
+    - name: Lint with Yarn
+      run: yarn lint-nofix
+
+  linter_backend:
+    runs_on: ubuntu-latest
+    name: Backend linter
+
+    defaults:
+      run:
+        working-directory: slidez-core
+
+    steps:
+    - name: Clone code from repository
+      uses: actions/checkout@v2
+
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+
+    - name: Validate Gradle wrapper
+      uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+
+    - name: Lint with Gradle
+      run: ./gradlew check
