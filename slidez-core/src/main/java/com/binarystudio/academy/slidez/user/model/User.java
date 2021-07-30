@@ -1,10 +1,11 @@
 package com.binarystudio.academy.slidez.user.model;
 
-import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
+import java.util.UUID;
 
 import javax.persistence.*;
-import java.util.UUID;
+
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Data
