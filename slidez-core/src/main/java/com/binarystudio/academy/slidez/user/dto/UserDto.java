@@ -10,9 +10,15 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
-    private UUID id;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String password;
+
+	private UUID id;
+
+	private String email;
+
+	private String firstName;
+
+	private String lastName;
+
+	private String password;
+
 }
