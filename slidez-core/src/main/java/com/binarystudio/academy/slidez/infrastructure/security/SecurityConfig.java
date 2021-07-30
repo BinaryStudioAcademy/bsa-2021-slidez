@@ -15,6 +15,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // PUBLIC
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/ws/**", "/hello").permitAll()
                 .antMatchers(HttpMethod.GET, "/*").permitAll();
     }
 
@@ -32,5 +33,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         applyRouteRestrictions(http);
     }
-
 }
