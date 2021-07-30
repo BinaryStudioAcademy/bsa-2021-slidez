@@ -4,13 +4,11 @@ import PropTypes from 'prop-types'
 import { AppRoute } from './app-route'
 import { locationType } from './location'
 import { useAppSelector } from '../../hooks'
-import { selectId } from '../../containers/user/store'
+import { selectIsLoggedIn } from '../../containers/user/store'
 
 // @ts-ignore
 const PublicRoute = ({ component: Component, ...rest }) => {
-  const id = useAppSelector(selectId)
-
-  const hasUser = Boolean(id)
+  const hasUser = useAppSelector(selectIsLoggedIn)
 
   return (
     <Route

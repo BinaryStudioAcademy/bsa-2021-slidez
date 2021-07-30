@@ -1,8 +1,11 @@
 import { HttpMethod } from '../http-method'
 import { LogInDto } from '../../containers/user/dto/LogInDto'
 import { RegisterDto } from '../../containers/user/dto/RegisterDto'
-import { LogInResponseDto } from '../../containers/user/dto/LogInResponseDto'
+import { LogInResult } from '../../containers/user/dto/LogInResult'
 import { SignStatus } from '../../containers/user/enums/sign-status'
+import { LogInResponseDto } from '../../containers/user/dto/LogInResponseDto'
+
+const JWT = 'jwt'
 
 const sendAuthRequest = async (endpoint: string, data: object = {}) => {
   const url: string = `http://localhost:8000/auth/${endpoint}`
@@ -28,19 +31,19 @@ const performSign = async (
   const status: number = response.status
   if (status === 200) {
     const payload: LogInResponseDto = await response.json()
-    const out: LogInResponseDto = {
+    const out: LogInResult = {
       status: SignStatus.OK,
       userDetailsDto: payload.userDetailsDto,
     }
+    window.localStorage.setItem(JWT, payload.accessToken)
     return out
-  } else if (status === 403) {
-    const out: LogInResponseDto = {
+  } else {
+    const out: LogInResult = {
       status: errorStatus,
       userDetailsDto: undefined,
     }
     return out
   }
-  throw new Error(response.statusText)
 }
 
 export const performLogIn = async (dto: LogInDto) => {
@@ -49,4 +52,12 @@ export const performLogIn = async (dto: LogInDto) => {
 
 export const performRegister = async (dto: RegisterDto) => {
   return performSign('register', dto, SignStatus.EMAIL_IS_TAKEN)
+}
+
+export const isLoggedIn = () => {
+  return Boolean(window.localStorage.getItem(JWT))
+}
+
+export const logout = () => {
+  window.localStorage.removeItem(JWT)
 }
