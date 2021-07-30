@@ -1,0 +1,19 @@
+# idea
+.idea
+
+# npm
+node_modules
+
+# clasp files
+.clasp.json
+creds.json
+
+# certs
+*.pem
+certs/
+
+# build
+dist/
+
+# mac
+.DS_Store
