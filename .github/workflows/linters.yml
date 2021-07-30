@@ -3,6 +3,8 @@ name: FE and BE linters on [develop] PR
 on:
   pull_request:
     branches: [ develop ]
+  push:
+    branches: [ feature/18-github-actions-linters ]
 
 jobs:
   linter_frontend:
