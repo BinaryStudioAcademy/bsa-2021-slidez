@@ -8,7 +8,7 @@ on:
 
 jobs:
   linter_frontend:
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
     name: Frontend linter
 
     defaults:
@@ -31,7 +31,7 @@ jobs:
       run: yarn lint-nofix
 
   linter_backend:
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
     name: Backend linter
 
     defaults:
