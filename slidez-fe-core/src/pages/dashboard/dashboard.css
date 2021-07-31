@@ -158,8 +158,49 @@
  
   }
   
-  .grid .toggler-view{
+  .presentations-section .above-section{
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: space-between;
+  }
+
+  .presentations-section .list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 5px;
+  }
+  
+  .presentations-section .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+  .column {
+    float: left;
+    padding: 10px;
+    background-color:#aaa;
+    flex: 1;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+  }
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  @media screen and (max-width: 600px) {
+    .column {
+      width: 100%;
+      display: block;
+      margin-bottom: 20px;
+    }
+  }
+
+  .table-grid-toggler .grid-view-btn-active{
+    color: tan;
+  }
+  .table-grid-toggler .table-view-btn-active {
+    color: tan;
   }
