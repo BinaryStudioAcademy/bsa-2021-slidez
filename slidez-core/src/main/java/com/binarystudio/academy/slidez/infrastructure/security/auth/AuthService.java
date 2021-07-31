@@ -1,14 +1,12 @@
 package com.binarystudio.academy.slidez.infrastructure.security.auth;
 
 import com.binarystudio.academy.slidez.domain.user.UserService;
-import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDto;
 import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthResponse;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthorizationRequest;
 import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtProvider;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,7 +25,6 @@ public class AuthService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-
 	public Optional<AuthResponse> performLogin(AuthorizationRequest authorizationRequest)  {
 		var userOptional = userService.findByEmail(authorizationRequest.getEmail());
 		if(userOptional.isEmpty()) {
@@ -39,7 +36,7 @@ public class AuthService {
 		if (!passwordsMatch(authorizationRequest.getPassword(), user.getPassword())) {
 			return Optional.empty();
 		}
-		return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user), mapUserUserDetailsDto(user)));
+		return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user), UserMapper.INSTANCE.mapUserToUserDetailsDto(user)));
 	}
 
 	private boolean passwordsMatch(String rawPw, String encodedPw) {
@@ -53,13 +50,9 @@ public class AuthService {
 
 		User user = userService.create(userDto);
 
-		return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user), mapUserUserDetailsDto(user)));
+		return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user),
+                               UserMapper.INSTANCE.mapUserToUserDetailsDto(user)));
 	}
 
-	public UserDetailsDto mapUserUserDetailsDto(User user) {
-		UserMapper mapper = Mappers.getMapper(UserMapper.class);
-		UserDetailsDto userDetailsDto = mapper.mapUserToUserDetailsDto(user);
-		return userDetailsDto;
-	}
 
 }

@@ -6,12 +6,12 @@ import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.AuthService;
 import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtProvider;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -39,15 +39,17 @@ public class UserService {
         }
         Optional<User> userOptional = findByEmail(email);
         User user = userOptional.get();
-        UserMapper mapper = Mappers.getMapper(UserMapper.class);
-        UserDetailsDto userDetailsDto = mapper.mapUserToUserDetailsDto(user);
+        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
         return Optional.of(userDetailsDto);
     }
 
     public User create(UserDto userDto) {
-        User user = Mappers.getMapper(UserMapper.class).userDtoToUser(userDto);
+        User user =  UserMapper.INSTANCE.userDtoToUser(userDto);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         return userRepository.saveAndFlush(user);
     }
 
+    public Optional<User> getById(UUID id) {
+        return userRepository.findById(id);
+    }
 }
