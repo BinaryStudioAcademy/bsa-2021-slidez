@@ -1,6 +1,5 @@
 package com.binarystudio.academy.slidez.domain.user;
 
-import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDto;
 import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
 import com.binarystudio.academy.slidez.domain.user.model.User;
@@ -32,15 +31,12 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public Optional<UserDetailsDto> findByToken(String token) {
+    public Optional<User> findByToken(String token) {
         String email = jwtProvider.getLoginFromToken(token);
         if(email == null) {
             return Optional.empty();
         }
-        Optional<User> userOptional = findByEmail(email);
-        User user = userOptional.get();
-        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-        return Optional.of(userDetailsDto);
+        return userRepository.findByEmail(email);
     }
 
     public User create(UserDto userDto) {

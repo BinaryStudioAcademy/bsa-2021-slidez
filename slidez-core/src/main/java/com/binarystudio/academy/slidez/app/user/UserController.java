@@ -32,12 +32,12 @@ public class UserController {
             return new ResponseEntity<>("Invalid token", HttpStatus.BAD_REQUEST);
         }
 
-        Optional<UserDetailsDto> userDetailsDto = userService.findByToken(token);
-        if(userDetailsDto.isEmpty()) {
-            return new ResponseEntity("Bad token.", HttpStatus.BAD_REQUEST);
+        Optional<User> user = userService.findByToken(token);
+        if(user.isEmpty()) {
+            return new ResponseEntity("Bad token.", HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity(userDetailsDto.get(), HttpStatus.OK);
+        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user.get());
+        return new ResponseEntity(userDetailsDto, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -45,14 +45,11 @@ public class UserController {
         if(id == null) {
             return new ResponseEntity<>("Invalid ID", HttpStatus.BAD_REQUEST);
         }
-        Optional<User> userOptional = userService.getById(id);
-        if(userOptional.isEmpty()) {
+        Optional<User> user = userService.getById(id);
+        if(user.isEmpty()) {
             return new ResponseEntity("User not found.", HttpStatus.NOT_FOUND);
         }
-
-        User user = userOptional.get();
-        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-
+        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user.get());
         return new ResponseEntity(userDetailsDto, HttpStatus.OK);
     }
 
