@@ -1,28 +1,67 @@
 name: CI-CD-AWS-Beanstalk
 
 env:
-  AWS_EB_S3_BUCKET: "elasticbeanstalk-eu-west-1-853829558284"
-  EB_APPLICATION_NAME: "bsa-2021-slidez-core"
-  EB_ENVIRONMENT_NAME: "Bsa2021slidezcore-env"
-  DEPLOY_PACKAGE_NAME: "slidez-app-${{ github.sha }}-core.zip"
+  EB_APPLICATION_NAME: "bsa-2021-slidez"
+  EB_ENVIRONMENT_NAME: "Bsa2021slidez-env"
+  DEPLOY_PACKAGE_NAME: "slidez-app-build.zip"
   AWS_REGION_NAME: "eu-west-1"
+  AWS_SPA_S3_BUCKET: "bsa.slidez-fe-spa"
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
-  build-core:
+
+  deploy-core:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: slidez-core
+    
+    steps: 
+      - name: Clone code from repository
+        uses: actions/checkout@v2
+      
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+  
+      - name: Run the Gradle package task
+        run: ./gradlew assemble
+      
+      - name: Create ZIP deployment package
+        run : zip -j ../${{ env.DEPLOY_PACKAGE_NAME }} ./build/libs/slidez-0.0.1-SNAPSHOT.jar .elasticbeanstalk
+           
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v16
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          region: ${{ env.AWS_REGION_NAME }}
+          application_name: ${{ env.EB_APPLICATION_NAME }}
+          environment_name: ${{ env.EB_ENVIRONMENT_NAME }}
+          version_label: "v-${{ github.sha }}"
+          deployment_package: "./${{ env.DEPLOY_PACKAGE_NAME }}"
+          use_existing_version_if_available: true
+          
+      - name: Successful build
+        run : echo "Build successful!"
+  
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    
     steps:
       - name: Clone code from repository
         uses: actions/checkout@v2
-        
-      - name: Create ZIP deployment package
-        run : zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./slidez-core
         
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -30,9 +69,15 @@ jobs:
            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
            aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
            aws-region: ${{ env.AWS_REGION_NAME }}
-       
-      - name: Copy package to S3
-        run : aws s3 cp ${{ env.DEPLOY_PACKAGE_NAME }} s3://${{ env.AWS_EB_S3_BUCKET }}
-      
+           
+      - name: Build frontend
+        working-directory: slidez-fe-core
+        run : |
+          yarn install --frozen-lockfile; \
+          yarn build; \
+          aws s3 sync --cache-control 'max-age=604800' --exclude index.html build/ s3://${{ env.AWS_SPA_S3_BUCKET }}/; \
+          aws s3 sync --cache-control 'no-cache' build/ s3://${{ env.AWS_SPA_S3_BUCKET }}/;
+          
       - name: Successful build
         run : echo "Build successful!"
+      
