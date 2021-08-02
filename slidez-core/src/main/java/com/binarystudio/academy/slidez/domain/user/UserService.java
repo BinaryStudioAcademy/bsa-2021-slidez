@@ -4,7 +4,6 @@ import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDto;
 import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
 import com.binarystudio.academy.slidez.domain.user.model.User;
-import com.binarystudio.academy.slidez.infrastructure.security.auth.AuthService;
 import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,8 +18,6 @@ public class UserService {
     protected PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private  AuthService authService;
     @Autowired
     private JwtProvider jwtProvider;
 
