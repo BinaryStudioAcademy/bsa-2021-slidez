@@ -1,6 +1,6 @@
+import React from 'react'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
 
 const SideBar = () => {
   return (
@@ -11,7 +11,9 @@ const SideBar = () => {
       <div className='navigation'>
         <span>
           <a href='#'>
-            <FontAwesomeIcon className='icon-add' icon={faPlus} />
+            <div className='icon-add'>
+              <FontAwesomeIcon icon={faPlus} />
+            </div>
           </a>
         </span>
         <span>

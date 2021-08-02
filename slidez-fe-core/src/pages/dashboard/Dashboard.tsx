@@ -10,6 +10,7 @@ import {
   faUser,
   faCog,
   faSignOutAlt,
+  faEllipsisH,
 } from '@fortawesome/free-solid-svg-icons'
 import SideBar from '../../common/SideBar'
 import './dashboard.css'
@@ -32,6 +33,52 @@ const Dashboard = () => {
 
   const handleDropDown = () => {
     setIsActive(!isActive)
+  }
+
+  const tableHeader = [
+    {
+      id: 1,
+      header: 'Name',
+    },
+    {
+      id: 2,
+      header: 'Event code',
+    },
+    {
+      id: 3,
+      header: 'Date created',
+    },
+    {
+      id: 4,
+      header: 'Date last updated',
+    },
+    {
+      id: 5,
+      header: 'Options',
+    },
+  ]
+
+  const renderTableHeader = () => {
+    return tableHeader.map((value) => {
+      return <th key={value.id}>{value.header}</th>
+    })
+  }
+
+  const renderTableData = () => {
+    return MOCK_DATA.map((presentation) => {
+      const { id, name, pictureUrl } = presentation //destructuring
+      return (
+        <tr key={id}>
+          <td className='table-presentation-name'>{name}</td>
+          <td>{id}</td>
+          <td>24.07.21</td>
+          <td>02.08.21</td>
+          <td>
+            <FontAwesomeIcon className='icon-options' icon={faEllipsisH} />
+          </td>
+        </tr>
+      )
+    })
   }
 
   return (
@@ -61,8 +108,8 @@ const Dashboard = () => {
                 <div className='user-info'>
                   <div className='avatar'>WH</div>
                   <div>
-                    <div className='user-name'>name</div>
-                    <div className='user-email'>email</div>
+                    <div className='user-name'>Wilson Herwitz</div>
+                    <div className='user-email'>herwitz@example.com</div>
                   </div>
                 </div>
                 <hr></hr>
@@ -84,7 +131,7 @@ const Dashboard = () => {
         </div>
         <div className='presentations-section'>
           <div className='above-section'>
-            <p>Your presentations</p>
+            <p>Your presentation</p>
             <div className='table-grid-toggler'>
               <div>
                 <label>
@@ -119,26 +166,42 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          <div className={currentView === 'grid' ? 'table' : 'grid'}>
-            {MOCK_DATA.map((md) => (
-              <div className='card' key={md.id}>
-                <img className='card-img' src={md.pictureUrl}></img>
-                <div className='card-name'>{md.name}</div>
-                <div className='card-info'>
-                  <span className='card-icons'>
-                    <FontAwesomeIcon
-                      className='icon-presentation'
-                      icon={faChalkboard}
-                    />
-                    <FontAwesomeIcon className='icon-users' icon={faUsers} />
-                    <span className='card-date'>12.07.21</span>
-                  </span>
-                  <span className='icon-details'>
-                    <FontAwesomeIcon icon={faEllipsisV} />
-                  </span>
-                </div>
+          <div>
+            {currentView === 'grid' ? (
+              <div className='table'>
+                <table id='table-presentation'>
+                  <tbody>
+                    <tr>{renderTableHeader()}</tr>
+                    {renderTableData()}
+                  </tbody>
+                </table>
               </div>
-            ))}
+            ) : (
+              <div className='grid'>
+                {MOCK_DATA.map((md) => (
+                  <div className='card' key={md.id}>
+                    <img className='card-img' src={md.pictureUrl}></img>
+                    <div className='card-name'>{md.name}</div>
+                    <div className='card-info'>
+                      <span className='card-icons'>
+                        <FontAwesomeIcon
+                          className='icon-presentation'
+                          icon={faChalkboard}
+                        />
+                        <FontAwesomeIcon
+                          className='icon-users'
+                          icon={faUsers}
+                        />
+                        <span className='card-date'>12.07.21</span>
+                      </span>
+                      <span className='icon-details'>
+                        <FontAwesomeIcon icon={faEllipsisV} />
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -23,6 +23,7 @@
    
   * {
     box-sizing: border-box;
+    font-family: 'Rubik';
   }
 
   html, body {
@@ -74,10 +75,14 @@
   display: inline-block;
 }
 
-.navigation span a .icon-add {
-  width: 30px;
+.navigation a .icon-add {
+  width: 58px;
+  height: 58px;
   display: inline-block;
-  color: var(--page-profile-color);
+  color: var(--page-default-color);
+  background-color: var(--page-active-button-color);
+  padding: 15px;
+  border-radius: 50%;
 }
 
 .navigation span a .icon-active{
@@ -149,7 +154,8 @@
     height: 43px;
     top: calc(50% - 45px/2 - 554px);
     border-radius: 50%;
-    font-size: 10px;
+    font-family: 'Work Sans';
+    font-size: 14px;
     color: var(--page-default-color);
     background: var(--page-profile-color);
   }
@@ -186,8 +192,6 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    font-style: normal;
-    font-weight: normal;
     font-size: 14px;
   }
 
@@ -205,23 +209,24 @@
     justify-content: flex-start;
     margin-top: 18px;
     margin-left: 18px;
+    margin-right: 18px;
+    text-align: left;
   }
 
   .user-info .avatar{
     margin-right: 9px;
+    width: 32px !important;
+    height: 32px !important;
+    font-family: 'Work Sans';
   }
 
   .user-info .user-name{
-    font-family: Rubik;
-    font-style: normal;
     font-weight: 500;
     font-size: 14px;
-    line-height: 135%;
   }
 
   .user-info .user-email{
-    font-family: Rubik;
-    font-style: normal;
+    padding: 5px 0;
     font-weight: 500;
     font-size: 12px;
     line-height: 14px;
@@ -250,6 +255,16 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+  }
+
+  .presentations-section .above-section p {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+    
   }
 
   .table-grid-toggler .verticalLine {
@@ -267,7 +282,6 @@
     }
 
   .presentations-section .table {
-    border: 1px solid #ccc;
   border-collapse: collapse;
   margin: 0;
   padding: 0;
@@ -292,17 +306,23 @@
     border-radius: 7px;
   }
 
+  .card:hover {
+    cursor: pointer;
+  }
+
   .card .card-img {
     width: 234px;
     height: 144px;
     border-radius: 7px 7px 0px 0px;
   }
   .card .card-name{
-    font-style: normal;
+    font-family: 'Work Sans';
     font-weight: 500;
     font-size: 14px;
     line-height: 16px;
     color: #000000;
+    text-align: left;
+    margin-left: 13px;
   }
 
   .card .card-info {
@@ -317,7 +337,11 @@
 
     .card-icons .icon-presentation{
      margin-left: 13px;
-     color: var(--page-active-button-color);
+    }
+
+    .card-icons .icon-users:hover,  .icon-presentation:hover, .icon-details:hover{
+      color: var(--page-active-button-color);
+      cursor: pointer;
     }
 
     .card-icons .icon-users{
@@ -326,6 +350,9 @@
 
     .card-icons .card-date{
       margin-left: 15px;
+      font-family: Work Sans;
+      font-size: 12px;
+      line-height: 14px;
     }
 
     .icon-details{
@@ -347,7 +374,59 @@
     margin: 5px;
   }
 
+  .view-btn:hover {
+    cursor: pointer;
+  }
+
   .table-grid-toggler .view-btn-active{
     color:  var(--page-active-button-color);
     margin: 5px;
+  }
+  
+  #table-presentation {
+    text-align: center;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #table-presentation td {
+    padding: 11px  19px;
+
+  }
+
+  #table-presentation td {
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  #table-presentation .table-presentation-name {
+    text-align: left;
+  }
+
+  #table-presentation td .icon-options {
+    color: rgba(29, 29, 29, 0.5);
+  }
+
+  #table-presentation tr{
+    border-bottom: 1px solid #EBEBEB;
+  }
+  
+  
+  #table-presentation tr:hover {
+    background-color: #CDF1E4;
+    cursor: pointer;
+  }
+  
+  #table-presentation th {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    white-space: nowrap;
+    text-align: left;
+    padding-left: 20px;
+    color: rgba(0, 0, 0, 0.5);
+    border-top: 1px solid #EBEBEB;
+    border-bottom: 1px solid #EBEBEB;
+    background-color: var(--page-default-color);
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 15px;
   }
