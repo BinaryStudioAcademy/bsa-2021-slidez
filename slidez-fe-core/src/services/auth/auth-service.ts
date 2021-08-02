@@ -8,56 +8,56 @@ import { LogInResponseDto } from '../../containers/user/dto/LogInResponseDto'
 const JWT = 'jwt'
 
 const sendAuthRequest = async (endpoint: string, data: object = {}) => {
-  const url: string = `http://localhost:8000/auth/${endpoint}`
-  return fetch(url, {
-    method: HttpMethod.POST,
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify(data),
-  })
+    const url: string = `http://localhost:5000/auth/${endpoint}`
+    return fetch(url, {
+        method: HttpMethod.POST,
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify(data),
+    })
 }
 
 const performSign = async (
-  endpoint: string,
-  dto: LogInDto | RegisterDto,
-  errorStatus: string
+    endpoint: string,
+    dto: LogInDto | RegisterDto,
+    errorStatus: string
 ) => {
-  const response: Response = await sendAuthRequest(endpoint, dto)
-  const status: number = response.status
-  if (status === 200) {
-    const payload: LogInResponseDto = await response.json()
-    const out: LogInResult = {
-      status: SignStatus.OK,
-      userDetailsDto: payload.userDetailsDto,
+    const response: Response = await sendAuthRequest(endpoint, dto)
+    const status: number = response.status
+    if (status === 200) {
+        const payload: LogInResponseDto = await response.json()
+        const out: LogInResult = {
+            status: SignStatus.OK,
+            userDetailsDto: payload.userDetailsDto,
+        }
+        window.localStorage.setItem(JWT, payload.accessToken)
+        return out
+    } else {
+        const out: LogInResult = {
+            status: errorStatus,
+            userDetailsDto: undefined,
+        }
+        return out
     }
-    window.localStorage.setItem(JWT, payload.accessToken)
-    return out
-  } else {
-    const out: LogInResult = {
-      status: errorStatus,
-      userDetailsDto: undefined,
-    }
-    return out
-  }
 }
 
 export const performLogIn = async (dto: LogInDto) => {
-  return performSign('login', dto, SignStatus.INVALID_CREDENTIALS)
+    return performSign('login', dto, SignStatus.INVALID_CREDENTIALS)
 }
 
 export const performRegister = async (dto: RegisterDto) => {
-  return performSign('register', dto, SignStatus.EMAIL_IS_TAKEN)
+    return performSign('register', dto, SignStatus.EMAIL_IS_TAKEN)
 }
 
 export const isLoggedIn = () => {
-  return Boolean(window.localStorage.getItem(JWT))
+    return Boolean(window.localStorage.getItem(JWT))
 }
 
 export const logout = () => {
-  window.localStorage.removeItem(JWT)
+    window.localStorage.removeItem(JWT)
 }

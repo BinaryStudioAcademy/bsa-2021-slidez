@@ -19,6 +19,7 @@
   },
   "scripts": {
     "lint": "eslint --fix --ext .ts,.tsx,.js,.jsx src/",
+    "lint-nofix": "eslint --ext .ts,.tsx,.js,.jsx src/",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
