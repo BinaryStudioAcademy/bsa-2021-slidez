@@ -12,8 +12,8 @@ import {
   faSignOutAlt,
   faEllipsisH,
 } from '@fortawesome/free-solid-svg-icons'
-import SideBar from '../../common/SideBar'
-import './dashboard.css'
+import SideBar from './SideBar'
+import './dashboard.scss'
 import { MOCK_DATA } from './mock-data'
 import { useDetectOutsideClick } from './useDetectOutsideClick'
 
@@ -46,15 +46,15 @@ const Dashboard = () => {
     },
     {
       id: 3,
-      header: 'Date created',
+      header: 'Created',
     },
     {
       id: 4,
-      header: 'Date last updated',
+      header: 'Updated',
     },
     {
       id: 5,
-      header: 'Options',
+      header: '',
     },
   ]
 
@@ -68,8 +68,8 @@ const Dashboard = () => {
     return MOCK_DATA.map((presentation) => {
       return (
         <tr key={presentation.id}>
-          <td className='table-presentation-name'>{presentation.name}</td>
-          <td>{presentation.id}</td>
+          <td>{presentation.name}</td>
+          <td>32343</td>
           <td>24.07.21</td>
           <td>02.08.21</td>
           <td>
@@ -112,15 +112,15 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <hr></hr>
-                <a href='#'>
+                <a href=''>
                   <FontAwesomeIcon className='user-icon' icon={faUser} />
                   Edit profile
                 </a>
-                <a href='#'>
+                <a href=''>
                   <FontAwesomeIcon className='user-icon' icon={faCog} />
                   Setting
                 </a>
-                <a href='#'>
+                <a href=''>
                   <FontAwesomeIcon className='user-icon' icon={faSignOutAlt} />
                   Log out
                 </a>

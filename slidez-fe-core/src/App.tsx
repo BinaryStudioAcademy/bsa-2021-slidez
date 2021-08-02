@@ -1,15 +1,16 @@
 import React from 'react'
-import logo from './logo.svg'
-import { Counter } from './containers/counter/Counter'
-import './App.css'
+import { HashRouter, Route, Switch } from 'react-router-dom'
+import Dashboard from './pages/dashboard/Dashboard'
+import PrivateRoute from './common/routes/PrivateRoute'
 
 function App() {
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <Counter />
-      </header>
+    <div>
+      <HashRouter>
+        <Switch>
+          <PrivateRoute exact path='/dashboard' component={Dashboard} />
+        </Switch>
+      </HashRouter>
     </div>
   )
 }

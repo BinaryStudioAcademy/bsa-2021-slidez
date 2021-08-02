@@ -6,26 +6,26 @@ import {
   faSortAmountUpAlt,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import SlidezLogo from '../../src/logo_Slidez_1.svg'
+import SlidezLogo from '../../../src/logo_Slidez_1.svg'
 
 const SideBar = () => {
   return (
     <div className='sidebar'>
       <div className='logo'>
-        <a href='#'>
+        <a href=''>
           <img src={SlidezLogo} alt='Slidez Logo'></img>
         </a>
       </div>
       <div className='navigation'>
         <span>
-          <a href='#'>
+          <a href=''>
             <div className='icon-add'>
               <FontAwesomeIcon icon={faPlus} />
             </div>
           </a>
         </span>
         <span>
-          <a href='#'>
+          <a href=''>
             <div className='icon-book'>
               <FontAwesomeIcon icon={faBook} />
             </div>
