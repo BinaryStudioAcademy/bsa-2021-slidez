@@ -41,25 +41,25 @@ public class AuthService {
 
         var mapper = UserMapper.INSTANCE;
         UserDetailsDto userDetailsDto = mapper.mapUserToUserDetailsDto(user);
-        return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user), userDetailsDto));
+        return Optional.of(AuthResponse.of(this.jwtProvider.generateAccessToken(user), userDetailsDto));
     }
 
     private boolean passwordsMatch(String rawPw, String encodedPw) {
-        return passwordEncoder.matches(rawPw, encodedPw);
+        return this.passwordEncoder.matches(rawPw, encodedPw);
     }
 
     public Optional<AuthResponse> register(UserDto userDto) {
-        if (userService.isEmailPresent(userDto.getEmail())) {
+        if (this.userService.isEmailPresent(userDto.getEmail())) {
             throw new EntityExistsException(String.format("User with email: '%s' already exists.", userDto.getEmail()));
         }
 
-        User user = userService.create(userDto);
+        User user = this.userService.create(userDto);
 
         UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-		return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user), userDetailsDto));
+		return Optional.of(AuthResponse.of(this.jwtProvider.generateAccessToken(user), userDetailsDto));
 	}
 
     public String getLoginFromToken(String token) {
-        return jwtProvider.getLoginFromToken(token);
+        return this.jwtProvider.getLoginFromToken(token);
     }
 }

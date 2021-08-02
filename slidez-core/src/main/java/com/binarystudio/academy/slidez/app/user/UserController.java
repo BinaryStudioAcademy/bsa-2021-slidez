@@ -29,7 +29,7 @@ public class UserController {
             return new ResponseEntity<>("Invalid token", HttpStatus.BAD_REQUEST);
         }
 
-        Optional<UserDetailsDto> userDetailsDto = userService.findByToken(token);
+        Optional<UserDetailsDto> userDetailsDto = this.userService.findByToken(token);
         if (userDetailsDto.isEmpty()) {
             return new ResponseEntity<>("Bad token.", HttpStatus.BAD_REQUEST);
         }
@@ -42,7 +42,7 @@ public class UserController {
         if (id == null) {
             return new ResponseEntity<>("Invalid ID", HttpStatus.BAD_REQUEST);
         }
-        Optional<User> userOptional = userService.getById(id);
+        Optional<User> userOptional = this.userService.getById(id);
         if (userOptional.isEmpty()) {
             return new ResponseEntity<>("User not found.", HttpStatus.NOT_FOUND);
         }

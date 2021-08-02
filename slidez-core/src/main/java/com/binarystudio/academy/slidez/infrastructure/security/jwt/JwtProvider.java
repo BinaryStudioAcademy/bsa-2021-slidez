@@ -30,22 +30,22 @@ public class JwtProvider {
 	}
 
 	private Key key() {
-		if (secretKey == null) {
-			byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecret());
-			secretKey = Keys.hmacShaKeyFor(keyBytes);
+		if (this.secretKey == null) {
+			byte[] keyBytes = Decoders.BASE64.decode(this.jwtProperties.getSecret());
+			this.secretKey = Keys.hmacShaKeyFor(keyBytes);
 		}
-		return secretKey;
+		return this.secretKey;
 	}
 
 	private JwtParser jwtParser() {
-		if (jwtParser == null) {
-			jwtParser = Jwts.parserBuilder().setSigningKey(key()).build();
+		if (this.jwtParser == null) {
+			this.jwtParser = Jwts.parserBuilder().setSigningKey(key()).build();
 		}
-		return jwtParser;
+		return this.jwtParser;
 	}
 
 	public String generateAccessToken(User user) {
-		Date date = Date.from(LocalDateTime.now().plusSeconds(jwtProperties.getSecondsToExpireAccess()).toInstant(ZoneOffset.UTC));
+		Date date = Date.from(LocalDateTime.now().plusSeconds(this.jwtProperties.getSecondsToExpireAccess()).toInstant(ZoneOffset.UTC));
 		return Jwts.builder()
 				.setSubject(user.getEmail())
 				.setExpiration(date)
