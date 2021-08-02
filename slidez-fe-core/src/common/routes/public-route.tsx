@@ -8,31 +8,34 @@ import { selectIsLoggedIn } from '../../containers/user/store'
 
 // @ts-ignore
 const PublicRoute = ({ component: Component, ...rest }) => {
-  const hasUser = useAppSelector(selectIsLoggedIn)
+    const hasUser = useAppSelector(selectIsLoggedIn)
 
-  return (
-    <Route
-      {...rest}
-      render={(props) =>
-        hasUser ? (
-          <Redirect
-            to={{ pathname: AppRoute.ROOT, state: { from: props.location } }}
-          />
-        ) : (
-          <Component {...props} />
-        )
-      }
-    />
-  )
+    return (
+        <Route
+            {...rest}
+            render={(props) =>
+                hasUser ? (
+                    <Redirect
+                        to={{
+                            pathname: AppRoute.ROOT,
+                            state: { from: props.location },
+                        }}
+                    />
+                ) : (
+                    <Component {...props} />
+                )
+            }
+        />
+    )
 }
 
 PublicRoute.propTypes = {
-  component: PropTypes.elementType.isRequired,
-  location: locationType,
+    component: PropTypes.elementType.isRequired,
+    location: locationType,
 }
 
 PublicRoute.defaultProps = {
-  location: undefined,
+    location: undefined,
 }
 
 export default PublicRoute
