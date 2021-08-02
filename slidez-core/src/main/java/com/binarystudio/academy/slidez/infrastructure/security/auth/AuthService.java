@@ -1,7 +1,8 @@
 package com.binarystudio.academy.slidez.infrastructure.security.auth;
 
-import javax.persistence.EntityExistsException;
 import java.util.Optional;
+
+import javax.persistence.EntityExistsException;
 
 import com.binarystudio.academy.slidez.domain.user.UserService;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
@@ -43,7 +44,6 @@ public class AuthService {
         return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user), userDetailsDto));
     }
 
-    @SuppressWarnings("checkstyle:RequireThis")
     private boolean passwordsMatch(String rawPw, String encodedPw) {
         return passwordEncoder.matches(rawPw, encodedPw);
     }

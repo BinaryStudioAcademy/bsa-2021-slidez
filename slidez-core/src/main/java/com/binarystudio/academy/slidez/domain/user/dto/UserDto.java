@@ -1,19 +1,20 @@
 package com.binarystudio.academy.slidez.domain.user.dto;
 
-import lombok.Data;
+import java.util.UUID;
 
 import javax.validation.constraints.NotNull;
-import java.util.UUID;
+
+import lombok.Data;
 
 @Data
 public class UserDto {
-        private UUID id;
+    private UUID id;
 
-        @NotNull
-        private String email;
-        private String firstName;
-        private String lastName;
+    @NotNull
+    private String email;
+    private String firstName;
+    private String lastName;
 
-        @NotNull
-        private String password;
+    @NotNull
+    private String password;
 }

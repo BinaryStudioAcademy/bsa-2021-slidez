@@ -1,5 +1,8 @@
 package com.binarystudio.academy.slidez.domain.user;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDto;
 import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
@@ -9,9 +12,6 @@ import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -34,7 +34,7 @@ public class UserService {
 
     public Optional<UserDetailsDto> findByToken(String token) {
         String email = authService.getLoginFromToken(token);
-        if(email==null || email.isEmpty()) {
+        if (email == null || email.isEmpty()) {
             return Optional.empty();
         }
         Optional<User> user = findByEmail(email);
