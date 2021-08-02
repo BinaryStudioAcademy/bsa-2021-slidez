@@ -17,50 +17,53 @@ import java.io.IOException;
 
 @Service
 public class SendGridEmailSender implements EmailSender {
-    @Value("${sendgrid.api-key}")
-    private String apiKey;
-    @Value("${sendgrid.from-email}")
-    private String fromEmail;
 
-    @Override
-    public boolean sendEmail(EmailMessageDto emailMessageDto) throws IOException {
-        Mail mail = getMailFromDto(emailMessageDto);
-        setSandboxMode(mail);
-        Request request = getSendMailRequest(mail);
-        Response response = sendMailRequest(request);
+	@Value("${sendgrid.api-key}")
+	private String apiKey;
 
-        // Logger in future
-        System.out.println(response.getStatusCode());
-        System.out.println(response.getBody());
+	@Value("${sendgrid.from-email}")
+	private String fromEmail;
 
-        return true;
-    }
+	@Override
+	public boolean sendEmail(EmailMessageDto emailMessageDto) throws IOException {
+		Mail mail = getMailFromDto(emailMessageDto);
+		setSandboxMode(mail);
+		Request request = getSendMailRequest(mail);
+		Response response = sendMailRequest(request);
 
-    private Mail getMailFromDto(EmailMessageDto emailMessageDto) {
-        Email from = new Email(fromEmail);
-        Email to = new Email(emailMessageDto.getEmail());
-        Content content = new Content("text/plain", emailMessageDto.getContent());
-        return new Mail(from, emailMessageDto.getSubject(), to, content);
-    }
+		// Logger in future
+		System.out.println(response.getStatusCode());
+		System.out.println(response.getBody());
 
-    private static void setSandboxMode(Mail mail) {
-        Setting enableSetting = new Setting();
-        enableSetting.setEnable(true);
-        MailSettings mailSettings = new MailSettings();
-        mailSettings.setSandboxMode(enableSetting);
-        mail.setMailSettings(mailSettings);
-    }
+		return true;
+	}
 
-    private static Request getSendMailRequest(Mail mail) throws IOException {
-        Request request = new Request();
-        request.setMethod(Method.POST);
-        request.setEndpoint("mail/send");
-        request.setBody(mail.build());
-        return request;
-    }
+	private Mail getMailFromDto(EmailMessageDto emailMessageDto) {
+		Email from = new Email(fromEmail);
+		Email to = new Email(emailMessageDto.getEmail());
+		Content content = new Content("text/plain", emailMessageDto.getContent());
+		return new Mail(from, emailMessageDto.getSubject(), to, content);
+	}
 
-    private Response sendMailRequest(Request request) throws IOException {
-        SendGrid sg = new SendGrid(apiKey);
-        return sg.api(request);
-    }
+	private static void setSandboxMode(Mail mail) {
+		Setting enableSetting = new Setting();
+		enableSetting.setEnable(true);
+		MailSettings mailSettings = new MailSettings();
+		mailSettings.setSandboxMode(enableSetting);
+		mail.setMailSettings(mailSettings);
+	}
+
+	private static Request getSendMailRequest(Mail mail) throws IOException {
+		Request request = new Request();
+		request.setMethod(Method.POST);
+		request.setEndpoint("mail/send");
+		request.setBody(mail.build());
+		return request;
+	}
+
+	private Response sendMailRequest(Request request) throws IOException {
+		SendGrid sg = new SendGrid(apiKey);
+		return sg.api(request);
+	}
+
 }

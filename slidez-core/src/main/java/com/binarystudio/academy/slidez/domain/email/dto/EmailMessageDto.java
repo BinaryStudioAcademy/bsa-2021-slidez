@@ -6,7 +6,11 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class EmailMessageDto {
-    private final String subject;
-    private final String email;
-    private final String content;
+
+	private final String subject;
+
+	private final String email;
+
+	private final String content;
+
 }

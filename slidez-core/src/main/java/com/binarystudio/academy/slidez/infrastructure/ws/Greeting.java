@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Greeting {
 
-    private String content;
+	private String content;
 
 }
