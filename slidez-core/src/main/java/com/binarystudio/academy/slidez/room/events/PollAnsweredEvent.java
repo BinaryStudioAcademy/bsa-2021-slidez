@@ -8,12 +8,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PollAnsweredEvent extends DomainEvent {
 
-    private final UUID pollId;
-    private final int pollOption;
+	private final UUID pollId;
 
-    @Override
-    public void applyEvent(State state) {
-        state.addAnswerToThePoll(pollId, pollOption);
-    }
+	private final int pollOption;
+
+	@Override
+	public void applyEvent(State state) {
+		state.addAnswerToThePoll(pollId, pollOption);
+	}
 
 }

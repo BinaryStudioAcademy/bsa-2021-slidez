@@ -9,22 +9,20 @@ import java.util.UUID;
 
 public class State {
 
-    private final List<Poll> polls = new ArrayList<>();
+	private final List<Poll> polls = new ArrayList<>();
 
-    public List<Poll> getPolls() {
-        return Collections.unmodifiableList(polls);
-    }
+	public List<Poll> getPolls() {
+		return Collections.unmodifiableList(polls);
+	}
 
-    public void addPoll(Poll poll) {
-        polls.add(poll);
-    }
+	public void addPoll(Poll poll) {
+		polls.add(poll);
+	}
 
-    public void addAnswerToThePoll(UUID pollId, int answerId) {
-        polls.stream()
-            .filter(poll -> poll.getId().equals(pollId))
-            .findFirst()
-            .orElseThrow(() -> new PollNotFoundException(String.format("Poll with id %s not found", pollId)))
-            .addAnswer(answerId);
-    }
+	public void addAnswerToThePoll(UUID pollId, int answerId) {
+		polls.stream().filter(poll -> poll.getId().equals(pollId)).findFirst()
+				.orElseThrow(() -> new PollNotFoundException(String.format("Poll with id %s not found", pollId)))
+				.addAnswer(answerId);
+	}
 
 }

@@ -9,9 +9,10 @@ import java.util.UUID;
 @Getter
 public abstract class DomainEvent {
 
-    private final UUID id = UUID.randomUUID();
-    private final Date eventDate = new Date();
+	private final UUID id = UUID.randomUUID();
 
-    public abstract void applyEvent(State state);
+	private final Date eventDate = new Date();
+
+	public abstract void applyEvent(State state);
 
 }

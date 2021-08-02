@@ -14,30 +14,29 @@ import java.util.List;
 @Component
 public class PresentationEventStore {
 
-    private final List<DomainEvent> events = new ArrayList<>();
-    private final State state = new State();
+	private final List<DomainEvent> events = new ArrayList<>();
 
-    public List<DomainEvent> getEvents() {
-        return Collections.unmodifiableList(events);
-    }
+	private final State state = new State();
 
-    public PresentationEventStore applyEvent(DomainEvent event) {
-        event.applyEvent(state);
-        events.add(event);
-        return this;
-    }
+	public List<DomainEvent> getEvents() {
+		return Collections.unmodifiableList(events);
+	}
 
-    public Snapshot snapshot() {
-        return Snapshot.getSimpleSnapshotFromState(state);
-    }
+	public PresentationEventStore applyEvent(DomainEvent event) {
+		event.applyEvent(state);
+		events.add(event);
+		return this;
+	}
 
-    public Snapshot snapshot(Date date) {
-        val stateForSpecificTime = new State();
-        events.stream()
-            .filter(e -> e.getEventDate().before(date))
-            .forEach(e -> e.applyEvent(stateForSpecificTime));
+	public Snapshot snapshot() {
+		return Snapshot.getSimpleSnapshotFromState(state);
+	}
 
-        return Snapshot.getSimpleSnapshotFromState(stateForSpecificTime);
-    }
+	public Snapshot snapshot(Date date) {
+		val stateForSpecificTime = new State();
+		events.stream().filter(e -> e.getEventDate().before(date)).forEach(e -> e.applyEvent(stateForSpecificTime));
+
+		return Snapshot.getSimpleSnapshotFromState(stateForSpecificTime);
+	}
 
 }
