@@ -1,6 +1,6 @@
 import { UserDetailsDto } from './UserDetailsDto'
 
-export interface LogInResponseDto {
-    accessToken: string
+export interface LogInResult {
+    status: string
     userDetailsDto?: UserDetailsDto
 }

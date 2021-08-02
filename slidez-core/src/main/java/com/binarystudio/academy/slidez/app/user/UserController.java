@@ -1,5 +1,8 @@
 package com.binarystudio.academy.slidez.app.user;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import com.binarystudio.academy.slidez.domain.user.UserService;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
 import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
@@ -14,47 +17,49 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
-import java.util.UUID;
-
 @RestController
 @RequestMapping("${v1API}/users")
 public class UserController {
-    @Autowired
-    private AuthService authService;
 
-    @Autowired
-    private UserService userService;
+	@Autowired
+	private AuthService authService;
 
-    @GetMapping("userInfo")
-    public ResponseEntity getByToken(@RequestParam("token") String token) {
-        if(token == null || token.isEmpty()) {
-            return new ResponseEntity<>("Invalid token", HttpStatus.BAD_REQUEST);
-        }
+	@Autowired
+	private UserService userService;
 
-        Optional<UserDetailsDto> userDetailsDto = userService.findByToken(token);
-        if(userDetailsDto.isEmpty()) {
-            return new ResponseEntity("Bad token.", HttpStatus.BAD_REQUEST);
-        }
+	@GetMapping("userInfo")
+	public ResponseEntity getByToken(@RequestParam("token") String token) {
+		if (token == null || token.isEmpty()) {
+			return new ResponseEntity<>("Invalid token", HttpStatus.BAD_REQUEST);
+		}
 
-        return new ResponseEntity(userDetailsDto.get(), HttpStatus.OK);
-    }
+		Optional<UserDetailsDto> userDetailsDto = this.userService.findByToken(token);
+		if (userDetailsDto.isEmpty()) {
+			return new ResponseEntity("Bad token.", HttpStatus.BAD_REQUEST);
+		}
 
-    @GetMapping("/{id}")
-    public ResponseEntity one(@PathVariable("id") UUID id) {
-        if(id == null) {
-            return new ResponseEntity<>("Invalid ID", HttpStatus.BAD_REQUEST);
-        }
-        Optional<User> userOptional = userService.getById(id);
-        if(userOptional.isEmpty()) {
-            return new ResponseEntity("User not found.", HttpStatus.NOT_FOUND);
-        }
+		return new ResponseEntity(userDetailsDto.get(), HttpStatus.OK);
+	}
 
-        User user = userOptional.get();
-        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
+	@GetMapping("/{id}")
+	public ResponseEntity one(@PathVariable("id") UUID id) {
+		if (id == null) {
+			return new ResponseEntity<>("Invalid ID", HttpStatus.BAD_REQUEST);
+		}
+		Optional<User> userOptional = this.userService.getById(id);
+		if (userOptional.isEmpty()) {
+			return new ResponseEntity("User not found.", HttpStatus.NOT_FOUND);
+		}
 
-        return new ResponseEntity(userDetailsDto, HttpStatus.OK);
-    }
+		User user = userOptional.get();
+		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
 
+		return new ResponseEntity(userDetailsDto, HttpStatus.OK);
+	}
+
+	@GetMapping
+	public String hello() {
+		return "Users hello";
+	}
 
 }

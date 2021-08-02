@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SecretController {
 
-    @GetMapping("/secret")
-    public String hidden(){
-        return "Secret!!!";
-    }
+	@GetMapping("/secret")
+	public String hidden() {
+		return "Secret!!!";
+	}
 
 }

@@ -7,10 +7,13 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AuthResponse {
+
 	private String accessToken;
+
 	private UserDetailsDto userDetailsDto;
 
 	public static AuthResponse of(String accessToken, UserDetailsDto userDetailsDto) {
 		return new AuthResponse(accessToken, userDetailsDto);
 	}
+
 }

@@ -1,5 +1,9 @@
 package com.binarystudio.academy.slidez.infrastructure.security.auth;
 
+import java.util.Optional;
+
+import javax.persistence.EntityExistsException;
+
 import com.binarystudio.academy.slidez.domain.user.UserService;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDto;
 import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
@@ -11,11 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityExistsException;
-import java.util.Optional;
-
 @Service
 public class AuthService {
+
 	@Autowired
 	private UserService userService;
 
@@ -25,9 +27,9 @@ public class AuthService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public Optional<AuthResponse> performLogin(AuthorizationRequest authorizationRequest)  {
-		var userOptional = userService.findByEmail(authorizationRequest.getEmail());
-		if(userOptional.isEmpty()) {
+	public Optional<AuthResponse> performLogin(AuthorizationRequest authorizationRequest) {
+		var userOptional = this.userService.findByEmail(authorizationRequest.getEmail());
+		if (userOptional.isEmpty()) {
 			return Optional.empty();
 		}
 
@@ -36,23 +38,23 @@ public class AuthService {
 		if (!passwordsMatch(authorizationRequest.getPassword(), user.getPassword())) {
 			return Optional.empty();
 		}
-		return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user), UserMapper.INSTANCE.mapUserToUserDetailsDto(user)));
+		return Optional.of(AuthResponse.of(this.jwtProvider.generateAccessToken(user),
+				UserMapper.INSTANCE.mapUserToUserDetailsDto(user)));
 	}
 
 	private boolean passwordsMatch(String rawPw, String encodedPw) {
-		return passwordEncoder.matches(rawPw, encodedPw);
+		return this.passwordEncoder.matches(rawPw, encodedPw);
 	}
 
 	public Optional<AuthResponse> register(UserDto userDto) {
-		if(userService.isEmailPresent(userDto.getEmail())) {
+		if (this.userService.isEmailPresent(userDto.getEmail())) {
 			throw new EntityExistsException(String.format("User with email: '%s' already exists.", userDto.getEmail()));
 		}
 
-		User user = userService.create(userDto);
+		User user = this.userService.create(userDto);
 
-		return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user),
-                               UserMapper.INSTANCE.mapUserToUserDetailsDto(user)));
+		return Optional.of(AuthResponse.of(this.jwtProvider.generateAccessToken(user),
+				UserMapper.INSTANCE.mapUserToUserDetailsDto(user)));
 	}
-
 
 }
