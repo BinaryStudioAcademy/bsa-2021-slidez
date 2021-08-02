@@ -11,14 +11,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-   private void applyRouteRestrictions(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                // PUBLIC
-                .antMatchers("/auth/**").permitAll()
-                .antMatchers("/ws/**", "/hello").permitAll()
-                .antMatchers(HttpMethod.GET, "/*").permitAll();
-    }
+	private void applyRouteRestrictions(HttpSecurity http) throws Exception {
+		http.authorizeRequests()
+				// PUBLIC
+				.antMatchers("/auth/**").permitAll().antMatchers("/ws/**", "/hello").permitAll()
+				.antMatchers(HttpMethod.GET, "/*").permitAll();
+	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -28,4 +26,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		applyRouteRestrictions(http);
 	}
+
 }
