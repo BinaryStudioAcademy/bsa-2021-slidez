@@ -27,30 +27,32 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("userInfo")
-    public ResponseEntity getByToken(@RequestParam("token") String token) {
+    public ResponseEntity<Object> getByToken(@RequestParam("token") String token) {
         if(token == null || token.isEmpty()) {
             return new ResponseEntity<>("Invalid token", HttpStatus.BAD_REQUEST);
         }
 
-        Optional<User> user = userService.findByToken(token);
-        if(user.isEmpty()) {
-            return new ResponseEntity("Bad token.", HttpStatus.NOT_FOUND);
+        Optional<UserDetailsDto> userDetailsDto = userService.findByToken(token);
+        if(userDetailsDto.isEmpty()) {
+            return new ResponseEntity("Bad token.", HttpStatus.BAD_REQUEST);
         }
-        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user.get());
-        return new ResponseEntity(userDetailsDto, HttpStatus.OK);
+
+        return new ResponseEntity(userDetailsDto.get(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity one(@PathVariable("id") UUID id) {
+    @GetMapping("{id}")
+    public ResponseEntity<Object> one(@PathVariable("id") UUID id) {
         if(id == null) {
             return new ResponseEntity<>("Invalid ID", HttpStatus.BAD_REQUEST);
         }
-        Optional<User> user = userService.getById(id);
-        if(user.isEmpty()) {
-            return new ResponseEntity("User not found.", HttpStatus.NOT_FOUND);
+        Optional<User> userOptional = userService.getById(id);
+        if(userOptional.isEmpty()) {
+            return new ResponseEntity<>("User not found.", HttpStatus.NOT_FOUND);
         }
-        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user.get());
-        return new ResponseEntity(userDetailsDto, HttpStatus.OK);
+
+        User user = userOptional.get();
+        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
+        return new ResponseEntity<>(userDetailsDto, HttpStatus.OK);
     }
 
 

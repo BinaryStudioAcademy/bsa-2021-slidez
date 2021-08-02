@@ -1,6 +1,7 @@
 package com.binarystudio.academy.slidez.infrastructure.security.auth;
 
 import com.binarystudio.academy.slidez.domain.user.UserService;
+import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDto;
 import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
 import com.binarystudio.academy.slidez.domain.user.model.User;
@@ -36,7 +37,10 @@ public class AuthService {
 		if (!passwordsMatch(authorizationRequest.getPassword(), user.getPassword())) {
 			return Optional.empty();
 		}
-		return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user), UserMapper.INSTANCE.mapUserToUserDetailsDto(user)));
+
+		var mapper = UserMapper.INSTANCE;
+        UserDetailsDto userDetailsDto = mapper.mapUserToUserDetailsDto(user);
+        return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user), userDetailsDto));
 	}
 
 	private boolean passwordsMatch(String rawPw, String encodedPw) {
@@ -50,9 +54,11 @@ public class AuthService {
 
 		User user = userService.create(userDto);
 
-		return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user),
-                               UserMapper.INSTANCE.mapUserToUserDetailsDto(user)));
+        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
+		return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user), userDetailsDto));
 	}
 
-
+    public String getLoginFromToken(String token) {
+        return jwtProvider.getLoginFromToken(token);
+    }
 }

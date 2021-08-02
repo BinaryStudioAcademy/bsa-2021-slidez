@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class RootController {
 
-    @GetMapping
-    public String helloSlidez() {
-        return "BSA-2021-slidez v0.0.1";
-    }
+	@GetMapping
+	public String helloSlidez() {
+		return "BSA-2021-slidez v0.0.1";
+	}
+
 }

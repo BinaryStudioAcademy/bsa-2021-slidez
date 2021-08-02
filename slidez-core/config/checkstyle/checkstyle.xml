@@ -8,9 +8,10 @@
     <module name="com.puppycrawl.tools.checkstyle.checks.NewlineAtEndOfFileCheck">
         <property name="lineSeparator" value="lf"/>
     </module>
-
+    <module name="SuppressWarningsFilter" />
     <!-- TreeWalker Checks -->
     <module name="com.puppycrawl.tools.checkstyle.TreeWalker">
+        <module name="SuppressWarningsHolder" />
         <!-- Annotations -->
         <module name="com.puppycrawl.tools.checkstyle.checks.annotation.AnnotationUseStyleCheck">
             <property name="elementStyle" value="compact"/>
@@ -18,8 +19,10 @@
         <module name="com.puppycrawl.tools.checkstyle.checks.annotation.MissingOverrideCheck"/>
         <module name="com.puppycrawl.tools.checkstyle.checks.annotation.PackageAnnotationCheck"/>
         <module name="com.puppycrawl.tools.checkstyle.checks.annotation.AnnotationLocationCheck">
+            <property name="allowSamelineMultipleAnnotations" value="true"/>
             <property name="allowSamelineSingleParameterlessAnnotation"
                       value="false"/>
+            <property name="allowSamelineParameterizedAnnotation" value="false"/>
         </module>
 
         <!-- Block Checks -->
@@ -50,6 +53,7 @@
         <module name="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanExpressionCheck"/>
         <module name="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanReturnCheck"/>
         <module name="com.puppycrawl.tools.checkstyle.checks.coding.StringLiteralEqualityCheck"/>
+        <module name="MagicNumber"/>
         <module name="com.puppycrawl.tools.checkstyle.checks.coding.NestedForDepthCheck">
             <property name="max" value="3"/>
         </module>
@@ -112,12 +116,6 @@
         <module name="TypeNameCheck"/>
 
         <!-- Regexp -->
-        <module name="com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineJavaCheck">
-            <property name="format" value="^\t* +\t*\S"/>
-            <property name="message"
-                      value="Line has leading space characters; indentation should be performed with tabs only."/>
-            <property name="ignoreComments" value="true"/>
-        </module>
         <module name="com.puppycrawl.tools.checkstyle.checks.regexp.RegexpSinglelineJavaCheck">
             <property name="maximum" value="0"/>
             <property name="format" value="org\.mockito\.Mockito\.(when|doThrow|doAnswer)"/>
