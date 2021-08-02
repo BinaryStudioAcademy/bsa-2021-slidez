@@ -5,6 +5,14 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { store } from './store'
 import { Provider } from 'react-redux'
+import * as Sentry from '@sentry/react'
+import { Integrations } from '@sentry/tracing'
+
+Sentry.init({
+    dsn: 'https://b579813c296046399a14368064320494@o938867.ingest.sentry.io/5888744',
+    integrations: [new Integrations.BrowserTracing()],
+    tracesSampleRate: 1.0,
+})
 
 ReactDOM.render(
     <React.StrictMode>
