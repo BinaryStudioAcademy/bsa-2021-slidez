@@ -25,12 +25,12 @@ public class UserController {
 
     @GetMapping("userInfo")
     public ResponseEntity<Object> getByToken(@RequestParam("token") String token) {
-        if(token == null || token.isEmpty()) {
+        if (token == null || token.isEmpty()) {
             return new ResponseEntity<>("Invalid token", HttpStatus.BAD_REQUEST);
         }
 
         Optional<UserDetailsDto> userDetailsDto = userService.findByToken(token);
-        if(userDetailsDto.isEmpty()) {
+        if (userDetailsDto.isEmpty()) {
             return new ResponseEntity<>("Bad token.", HttpStatus.BAD_REQUEST);
         }
 
@@ -39,11 +39,11 @@ public class UserController {
 
     @GetMapping("{id}")
     public ResponseEntity<Object> one(@PathVariable("id") UUID id) {
-        if(id == null) {
+        if (id == null) {
             return new ResponseEntity<>("Invalid ID", HttpStatus.BAD_REQUEST);
         }
         Optional<User> userOptional = userService.getById(id);
-        if(userOptional.isEmpty()) {
+        if (userOptional.isEmpty()) {
             return new ResponseEntity<>("User not found.", HttpStatus.NOT_FOUND);
         }
 

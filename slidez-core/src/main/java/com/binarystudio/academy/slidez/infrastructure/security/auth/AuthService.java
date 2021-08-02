@@ -27,8 +27,8 @@ public class AuthService {
 	private PasswordEncoder passwordEncoder;
 
 	public Optional<AuthResponse> performLogin(AuthorizationRequest authorizationRequest)  {
-		var userOptional = userService.findByEmail(authorizationRequest.getEmail());
-		if(userOptional.isEmpty()) {
+		var userOptional = this.userService.findByEmail(authorizationRequest.getEmail());
+		if (userOptional.isEmpty()) {
 			return Optional.empty();
 		}
 
@@ -48,7 +48,7 @@ public class AuthService {
 	}
 
 	public Optional<AuthResponse> register(UserDto userDto) {
-		if(userService.isEmailPresent(userDto.getEmail())) {
+		if (userService.isEmailPresent(userDto.getEmail())) {
 			throw new EntityExistsException(String.format("User with email: '%s' already exists.", userDto.getEmail()));
 		}
 

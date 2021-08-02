@@ -45,7 +45,7 @@ public class JwtProvider {
 	}
 
 	public String generateAccessToken(User user) {
-		Date date = Date.from(LocalDateTime.now().plusSeconds(jwtProperties.getSecs_to_expire_access()).toInstant(ZoneOffset.UTC));
+		Date date = Date.from(LocalDateTime.now().plusSeconds(jwtProperties.getSecondsToExpireAccess()).toInstant(ZoneOffset.UTC));
 		return Jwts.builder()
 				.setSubject(user.getEmail())
 				.setExpiration(date)
@@ -57,22 +57,27 @@ public class JwtProvider {
         Claims claims;
         try {
             claims = parseToken(token);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             return null;
         }
-		return claims.getSubject();
+        return claims.getSubject();
 	}
 
 	private Claims parseToken(String token) {
 		try {
 			return jwtParser().parseClaimsJws(token).getBody();
-		} catch (ExpiredJwtException expEx) {
+		}
+		catch (ExpiredJwtException expEx) {
 			throw new JwtException("Token expired", "jwt-expired");
-		} catch (UnsupportedJwtException unsEx) {
+		}
+		catch (UnsupportedJwtException unsEx) {
 			throw new JwtException("Unsupported jwt", "jwt-unsupported");
-		} catch (MalformedJwtException mjEx) {
+		}
+		catch (MalformedJwtException mjEx) {
 			throw new JwtException("Malformed jwt", "jwt-malformed");
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new JwtException("Invalid token", "jwt-invalid");
 		}
 	}
