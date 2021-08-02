@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Object> one(@PathVariable("id") UUID id) {
+    public ResponseEntity<Object> getById(@PathVariable("id") UUID id) {
         if (id == null) {
             return new ResponseEntity<>("Invalid ID", HttpStatus.BAD_REQUEST);
         }
