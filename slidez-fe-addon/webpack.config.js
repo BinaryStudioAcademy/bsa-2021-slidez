@@ -44,9 +44,9 @@ const devDialogEntry = './dev/index.js';
 const clientEntrypoints = [
   {
     name: 'CLIENT - Dialog Demo Sidebar',
-    entry: './src/client/sidebar-demo/index.tsx',
-    filename: 'sidebar-demo', // we'll add the .html suffix to these
-    template: './src/client/sidebar-demo/index.html',
+    entry: './src/client/sidebar-add-on/index.tsx',
+    filename: 'sidebar-add-on', // we'll add the .html suffix to these
+    template: './src/client/sidebar-add-on/index.html',
   },
 ];
 
