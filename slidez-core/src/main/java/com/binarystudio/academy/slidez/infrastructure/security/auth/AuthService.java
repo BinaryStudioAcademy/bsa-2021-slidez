@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
+
 	@Autowired
 	private UserService userService;
 
@@ -27,7 +28,7 @@ public class AuthService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public Optional<AuthResponse> performLogin(AuthorizationRequest authorizationRequest)  {
+	public Optional<AuthResponse> performLogin(AuthorizationRequest authorizationRequest) {
 		var userOptional = this.userService.findByEmail(authorizationRequest.getEmail());
 		if (userOptional.isEmpty()) {
 			return Optional.empty();
@@ -35,31 +36,32 @@ public class AuthService {
 
 		User user = userOptional.get();
 
-        if (!passwordsMatch(authorizationRequest.getPassword(), user.getPassword())) {
-            return Optional.empty();
-        }
+		if (!passwordsMatch(authorizationRequest.getPassword(), user.getPassword())) {
+			return Optional.empty();
+		}
 
-        var mapper = UserMapper.INSTANCE;
-        UserDetailsDto userDetailsDto = mapper.mapUserToUserDetailsDto(user);
-        return Optional.of(AuthResponse.of(this.jwtProvider.generateAccessToken(user), userDetailsDto));
-    }
-
-    private boolean passwordsMatch(String rawPw, String encodedPw) {
-        return this.passwordEncoder.matches(rawPw, encodedPw);
-    }
-
-    public Optional<AuthResponse> register(UserDto userDto) {
-        if (this.userService.isEmailPresent(userDto.getEmail())) {
-            throw new EntityExistsException(String.format("User with email: '%s' already exists.", userDto.getEmail()));
-        }
-
-        User user = this.userService.create(userDto);
-
-        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
+		var mapper = UserMapper.INSTANCE;
+		UserDetailsDto userDetailsDto = mapper.mapUserToUserDetailsDto(user);
 		return Optional.of(AuthResponse.of(this.jwtProvider.generateAccessToken(user), userDetailsDto));
 	}
 
-    public String getLoginFromToken(String token) {
-        return this.jwtProvider.getLoginFromToken(token);
-    }
+	private boolean passwordsMatch(String rawPw, String encodedPw) {
+		return this.passwordEncoder.matches(rawPw, encodedPw);
+	}
+
+	public Optional<AuthResponse> register(UserDto userDto) {
+		if (this.userService.isEmailPresent(userDto.getEmail())) {
+			throw new EntityExistsException(String.format("User with email: '%s' already exists.", userDto.getEmail()));
+		}
+
+		User user = this.userService.create(userDto);
+
+		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
+		return Optional.of(AuthResponse.of(this.jwtProvider.generateAccessToken(user), userDetailsDto));
+	}
+
+	public String getLoginFromToken(String token) {
+		return this.jwtProvider.getLoginFromToken(token);
+	}
+
 }

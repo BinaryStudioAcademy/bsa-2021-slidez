@@ -17,15 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("auth")
 public class AuthController {
+
 	@Autowired
 	private AuthService authService;
 
-    @Autowired
-    private UserValidator userValidator;
+	@Autowired
+	private UserValidator userValidator;
 
 	@PostMapping("login")
 	public ResponseEntity<Object> login(@RequestBody AuthorizationRequest authorizationRequest) {
-		String validationResult = this.userValidator.isEmailAndPasswordValid(authorizationRequest.getEmail(), authorizationRequest.getPassword());
+		String validationResult = this.userValidator.isEmailAndPasswordValid(authorizationRequest.getEmail(),
+				authorizationRequest.getPassword());
 		if (validationResult != null) {
 			return new ResponseEntity<>(validationResult, HttpStatus.BAD_REQUEST);
 		}
@@ -51,4 +53,5 @@ public class AuthController {
 		}
 		return new ResponseEntity<>(authResponse.get(), HttpStatus.OK);
 	}
+
 }

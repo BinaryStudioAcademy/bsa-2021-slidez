@@ -20,35 +20,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("${v1API}/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+	@Autowired
+	private UserService userService;
 
-    @GetMapping("userInfo")
-    public ResponseEntity<Object> userInfo(@RequestParam("token") String token) {
-        if (token == null || token.isEmpty()) {
-            return new ResponseEntity<>("Invalid token", HttpStatus.BAD_REQUEST);
-        }
+	@GetMapping("userInfo")
+	public ResponseEntity<Object> userInfo(@RequestParam("token") String token) {
+		if (token == null || token.isEmpty()) {
+			return new ResponseEntity<>("Invalid token", HttpStatus.BAD_REQUEST);
+		}
 
-        Optional<UserDetailsDto> userDetailsDto = this.userService.findByToken(token);
-        if (userDetailsDto.isEmpty()) {
-            return new ResponseEntity<>("Bad token.", HttpStatus.BAD_REQUEST);
-        }
+		Optional<UserDetailsDto> userDetailsDto = this.userService.findByToken(token);
+		if (userDetailsDto.isEmpty()) {
+			return new ResponseEntity<>("Bad token.", HttpStatus.BAD_REQUEST);
+		}
 
-        return new ResponseEntity<>(userDetailsDto.get(), HttpStatus.OK);
-    }
+		return new ResponseEntity<>(userDetailsDto.get(), HttpStatus.OK);
+	}
 
-    @GetMapping("{id}")
-    public ResponseEntity<Object> getById(@PathVariable("id") UUID id) {
-        if (id == null) {
-            return new ResponseEntity<>("Invalid ID", HttpStatus.BAD_REQUEST);
-        }
-        Optional<User> userOptional = this.userService.getById(id);
-        if (userOptional.isEmpty()) {
-            return new ResponseEntity<>("User not found.", HttpStatus.NOT_FOUND);
-        }
+	@GetMapping("{id}")
+	public ResponseEntity<Object> getById(@PathVariable("id") UUID id) {
+		if (id == null) {
+			return new ResponseEntity<>("Invalid ID", HttpStatus.BAD_REQUEST);
+		}
+		Optional<User> userOptional = this.userService.getById(id);
+		if (userOptional.isEmpty()) {
+			return new ResponseEntity<>("User not found.", HttpStatus.NOT_FOUND);
+		}
 
-        User user = userOptional.get();
-        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-        return new ResponseEntity<>(userDetailsDto, HttpStatus.OK);
-    }
+		User user = userOptional.get();
+		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
+		return new ResponseEntity<>(userDetailsDto, HttpStatus.OK);
+	}
+
 }
