@@ -51,6 +51,4 @@ public class UserController {
         UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
         return new ResponseEntity<>(userDetailsDto, HttpStatus.OK);
     }
-
-
 }
