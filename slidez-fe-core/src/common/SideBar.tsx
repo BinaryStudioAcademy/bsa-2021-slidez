@@ -1,12 +1,20 @@
 import React from 'react'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import {
+  faBook,
+  faPlus,
+  faShapes,
+  faSortAmountUpAlt,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import SlidezLogo from '../../src/logo_Slidez_1.svg'
 
 const SideBar = () => {
   return (
     <div className='sidebar'>
       <div className='logo'>
-        <a href='#'>Slidez</a>
+        <a href='#'>
+          <img src={SlidezLogo} alt='Slidez Logo'></img>
+        </a>
       </div>
       <div className='navigation'>
         <span>
@@ -18,19 +26,19 @@ const SideBar = () => {
         </span>
         <span>
           <a href='#'>
-            <div className='icon-active'>
-              <FontAwesomeIcon className='icon-book' icon={faPlus} />
+            <div className='icon-book'>
+              <FontAwesomeIcon icon={faBook} />
             </div>
           </a>
         </span>
         <span>
           <a href='#'>
-            <FontAwesomeIcon className='icon' icon={faPlus} />
+            <FontAwesomeIcon className='icon' icon={faSortAmountUpAlt} />
           </a>
         </span>
         <span>
           <a href='#'>
-            <FontAwesomeIcon className='icon' icon={faPlus} />
+            <FontAwesomeIcon className='icon' icon={faShapes} />
           </a>
         </span>
       </div>

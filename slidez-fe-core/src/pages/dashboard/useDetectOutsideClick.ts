@@ -8,7 +8,6 @@ export const useDetectOutsideClick = (
 
   useEffect(() => {
     const onClick = (e: Event) => {
-      // If the active element exists and is clicked outside of
       if (
         e.target instanceof HTMLElement &&
         el.current !== null &&
@@ -18,7 +17,6 @@ export const useDetectOutsideClick = (
       }
     }
 
-    // If the item is active (ie open) then listen for clicks outside
     if (isActive) {
       window.addEventListener('click', onClick)
     }

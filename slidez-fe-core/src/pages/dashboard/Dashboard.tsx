@@ -66,11 +66,10 @@ const Dashboard = () => {
 
   const renderTableData = () => {
     return MOCK_DATA.map((presentation) => {
-      const { id, name, pictureUrl } = presentation //destructuring
       return (
-        <tr key={id}>
-          <td className='table-presentation-name'>{name}</td>
-          <td>{id}</td>
+        <tr key={presentation.id}>
+          <td className='table-presentation-name'>{presentation.name}</td>
+          <td>{presentation.id}</td>
           <td>24.07.21</td>
           <td>02.08.21</td>
           <td>
