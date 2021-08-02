@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+@SuppressWarnings({"FinalClassCheck", "HideUtilityClassConstructor"})
 public class SlidezApplication {
 
-	public static void main(String[] args) throws Throwable {
-	    SpringApplication.run(SlidezApplication.class, args);
+	public static void main(String[] args) {
+		SpringApplication.run(SlidezApplication.class, args);
 	}
-
 }

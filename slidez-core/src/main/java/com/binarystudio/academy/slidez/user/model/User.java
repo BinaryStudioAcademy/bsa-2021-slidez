@@ -1,10 +1,11 @@
 package com.binarystudio.academy.slidez.user.model;
 
-import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
+import java.util.UUID;
 
 import javax.persistence.*;
-import java.util.UUID;
+
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Data
@@ -13,24 +14,23 @@ import java.util.UUID;
 @Builder
 @Table(name = "users")
 public class User {
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
 
-    @Column(name = "email", unique = true)
-    private String email;
+	@Id
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(name = "id", updatable = false, nullable = false)
+	private UUID id;
 
-    @Column
-    private String firstName;
+	@Column(name = "email", unique = true)
+	private String email;
 
-    @Column
-    private String lastName;
+	@Column
+	private String firstName;
 
-    @Column
-    private String password;
+	@Column
+	private String lastName;
+
+	@Column
+	private String password;
+
 }
