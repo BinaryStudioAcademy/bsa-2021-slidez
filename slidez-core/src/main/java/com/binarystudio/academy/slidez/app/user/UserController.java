@@ -24,7 +24,7 @@ public class UserController {
 	private UserService userService;
 
 	@GetMapping("userInfo")
-	public ResponseEntity<Object> userInfo(@RequestParam("token") String token) {
+	public ResponseEntity<Object> getUserInfo(@RequestParam("token") String token) {
 		if (token == null || token.isEmpty()) {
 			return new ResponseEntity<>("Invalid token", HttpStatus.BAD_REQUEST);
 		}
