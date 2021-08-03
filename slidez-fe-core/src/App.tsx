@@ -7,20 +7,24 @@ import { AppRoute } from './common/routes/app-route'
 import SignPage from './pages/sign/SignPage'
 
 function App() {
-  return (
-    <div>
-      <HashRouter>
-        <Switch>
-          <PublicRoute
-             exact
-             path={[AppRoute.LOGIN, AppRoute.REGISTRATION]}
-             component={SignPage}
-           />
-          <PrivateRoute exact path='/dashboard' component={Dashboard} />
-        </Switch>
-      </HashRouter>
-    </div>
-  )
+    return (
+        <div>
+            <HashRouter>
+                <Switch>
+                    <PublicRoute
+                        exact
+                        path={[AppRoute.LOGIN, AppRoute.REGISTRATION]}
+                        component={SignPage}
+                    />
+                    <PrivateRoute
+                        exact
+                        path='/dashboard'
+                        component={Dashboard}
+                    />
+                </Switch>
+            </HashRouter>
+        </div>
+    )
 }
 
 export default App
