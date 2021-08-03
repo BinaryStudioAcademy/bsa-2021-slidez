@@ -12,26 +12,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/link")
 public class LinkController {
-    @Autowired
-    private LinkGenerationService linkService;
 
-    @GetMapping("/generate-extra-links")
-    public void generateExtraLinks() {
-        this.linkService.generateExtraLinks();
-    }
+	@Autowired
+	private LinkGenerationService linkService;
 
-    @GetMapping("/all")
-    public List<LinkDto> getLinks() {
-        return this.linkService.getLinks();
-    }
+	@GetMapping("/generate-extra-links")
+	public void generateExtraLinks() {
+		this.linkService.generateExtraLinks();
+	}
 
-    @GetMapping("/lease/{duration}")
-    public String leaseALink(@PathVariable int duration) throws Exception {
-        return this.linkService.leaseALink(duration);
-    }
+	@GetMapping("/all")
+	public List<LinkDto> getLinks() {
+		return this.linkService.getLinks();
+	}
 
-    @GetMapping("/clean-expired-leases")
-    public void cleanExpiredLeases() {
-        this.linkService.cleanExpiredLeases();
-    }
+	@GetMapping("/lease/{duration}")
+	public String leaseALink(@PathVariable int duration) throws Exception {
+		return this.linkService.leaseALink(duration);
+	}
+
+	@GetMapping("/clean-expired-leases")
+	public void cleanExpiredLeases() {
+		this.linkService.cleanExpiredLeases();
+	}
+
 }

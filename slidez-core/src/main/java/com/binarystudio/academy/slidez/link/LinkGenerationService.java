@@ -15,121 +15,117 @@ import org.springframework.stereotype.Service;
 @Service
 public class LinkGenerationService {
 
-    private static final int MAX_COUNT_AVAILABLE_LINKS = 100;
-    private static final int MIN_LEASE_DURATION = 1;
-    private static final int MAX_LEASE_DURATION = 180;
+	private static final int MAX_COUNT_AVAILABLE_LINKS = 100;
 
-    @Autowired
-    private LinkRepository linkRepository;
+	private static final int MIN_LEASE_DURATION = 1;
 
-    /**
-     * [On startup, on corn job] Generate extra links, if there are less than 100 available
-     */
-    public void generateExtraLinks() {
+	private static final int MAX_LEASE_DURATION = 180;
 
-        int countAvailableLinks = this.linkRepository.getCountAvailableLinks();
-        if (countAvailableLinks < this.MAX_COUNT_AVAILABLE_LINKS) {
-            int countLinkForGenerate = this.MAX_COUNT_AVAILABLE_LINKS - countAvailableLinks;
-            String lastLink = getLastLink();
-            for (int i = 0; i < countLinkForGenerate; i++) {
-                String newLink = generateLink(lastLink);
-                this.linkRepository.save(new Link(UUID.randomUUID(), null, newLink, null));
-                lastLink = newLink;
-            }
-        }
-    }
+	@Autowired
+	private LinkRepository linkRepository;
 
-    /**
-     * Generate link in order. Example:
-     * previewLink    - AAAAA1;
-     * generated link - AAAAA2.
-     *
-     * @param link - last link in table "Link" database
-     * @return new link in order
-     */
-    private String generateLink(String link) {
-        char[] previewLink = link.toCharArray();
-        char[] newLink = new char[previewLink.length];
-        char lastNumeric = '9';
-        char lastAlphabet = 'z';
-        boolean isChange = true;
+	/**
+	 * [On startup, on corn job] Generate extra links, if there are less than 100
+	 * available
+	 */
+	public void generateExtraLinks() {
 
-        for (int i = newLink.length - 1; i >= 0; i--) {
-            if (isChange) {
+		int countAvailableLinks = this.linkRepository.getCountAvailableLinks();
+		if (countAvailableLinks < this.MAX_COUNT_AVAILABLE_LINKS) {
+			int countLinkForGenerate = this.MAX_COUNT_AVAILABLE_LINKS - countAvailableLinks;
+			String lastLink = getLastLink();
+			for (int i = 0; i < countLinkForGenerate; i++) {
+				String newLink = generateLink(lastLink);
+				this.linkRepository.save(new Link(UUID.randomUUID(), null, newLink, null));
+				lastLink = newLink;
+			}
+		}
+	}
 
-                if (previewLink[i] == lastNumeric) {
-                    newLink[i] = '0';
-                    isChange = true;
-                    continue;
-                }
-                if (previewLink[i] == lastAlphabet) {
-                    newLink[i] = 'a';
-                    isChange = true;
-                    continue;
-                }
+	/**
+	 * Generate link in order. Example: previewLink - AAAAA1; generated link - AAAAA2.
+	 * @param link - last link in table "Link" database
+	 * @return new link in order
+	 */
+	private String generateLink(String link) {
+		char[] previewLink = link.toCharArray();
+		char[] newLink = new char[previewLink.length];
+		char lastNumeric = '9';
+		char lastAlphabet = 'z';
+		boolean isChange = true;
 
-                newLink[i] = (char) (previewLink[i] + 1);
-                isChange = false;
-            }
-            else {
-                newLink[i] = previewLink[i];
-            }
-        }
+		for (int i = newLink.length - 1; i >= 0; i--) {
+			if (isChange) {
 
-        return String.valueOf(newLink);
-    }
+				if (previewLink[i] == lastNumeric) {
+					newLink[i] = '0';
+					isChange = true;
+					continue;
+				}
+				if (previewLink[i] == lastAlphabet) {
+					newLink[i] = 'a';
+					isChange = true;
+					continue;
+				}
 
-    /**
-     * Lease a link. In this case, the caller provides info on how long it would like to lease a link.
-     * The maximum lease duration is 180 days.
-     *
-     * @param leaseDuration - how long it would like to lease a link;
-     * @return lease link with expirationDate
-     * @throws IncorrectLeaseDurationException - when lease duration out of bound duration lease
-     */
-    public String leaseALink(int leaseDuration) throws IncorrectLeaseDurationException {
-        checkLeaseDuration(leaseDuration);
+				newLink[i] = (char) (previewLink[i] + 1);
+				isChange = false;
+			}
+			else {
+				newLink[i] = previewLink[i];
+			}
+		}
 
-        Link availableLink = this.linkRepository
-            .getAvailableLink()
-            .orElse(this.linkRepository
-                .save(new Link(UUID.randomUUID(), null, generateLink(getLastLink()), null)));
-        LocalDateTime expirationDate = LocalDateTime.now().plus(Period.ofDays(leaseDuration));
-        availableLink.setExpirationDate(expirationDate);
-        this.linkRepository.update(availableLink, availableLink.getLinkId());
+		return String.valueOf(newLink);
+	}
 
-        return availableLink.getLink();
-    }
+	/**
+	 * Lease a link. In this case, the caller provides info on how long it would like to
+	 * lease a link. The maximum lease duration is 180 days.
+	 * @param leaseDuration - how long it would like to lease a link;
+	 * @return lease link with expirationDate
+	 * @throws IncorrectLeaseDurationException - when lease duration out of bound duration
+	 * lease
+	 */
+	public String leaseALink(int leaseDuration) throws IncorrectLeaseDurationException {
+		checkLeaseDuration(leaseDuration);
 
-    private String getLastLink() {
-        return this.linkRepository.getLastLink().orElse("AAAAA0");
-    }
+		Link availableLink = this.linkRepository.getAvailableLink()
+				.orElse(this.linkRepository.save(new Link(UUID.randomUUID(), null, generateLink(getLastLink()), null)));
+		LocalDateTime expirationDate = LocalDateTime.now().plus(Period.ofDays(leaseDuration));
+		availableLink.setExpirationDate(expirationDate);
+		this.linkRepository.update(availableLink, availableLink.getLinkId());
 
-    private void checkLeaseDuration(int leaseDuration) throws IncorrectLeaseDurationException {
-        if (leaseDuration > this.MAX_LEASE_DURATION || leaseDuration < this.MIN_LEASE_DURATION) {
-            throw new IncorrectLeaseDurationException("Duration of the lease is outside the interval. Expected: A number between 1 and 180, inclusive. Found: " + leaseDuration);
-        }
-    }
+		return availableLink.getLink();
+	}
 
-    /**
-     * [On cron job] Clean up expired leases, freeing the links to be used again.
-     */
-    public void cleanExpiredLeases() {
-        List<Link> expiredLinks = this.linkRepository.getLinksWithExpiredLeases();
-        expiredLinks
-            .forEach(freeingALink -> {
-                freeingALink.setSessionId(null);
-                freeingALink.setExpirationDate(null);
-                this.linkRepository.update(freeingALink, freeingALink.getLinkId());
-            });
-    }
+	private String getLastLink() {
+		return this.linkRepository.getLastLink().orElse("AAAAA0");
+	}
 
-    public List<LinkDto> getLinks() {
-        return this.linkRepository
-            .findAll()
-            .stream()
-            .map(LinkDto::fromEntity)
-            .collect(Collectors.toList());
+	private void checkLeaseDuration(int leaseDuration) throws IncorrectLeaseDurationException {
+		if (leaseDuration > this.MAX_LEASE_DURATION || leaseDuration < this.MIN_LEASE_DURATION) {
+			throw new IncorrectLeaseDurationException(
+					"Duration of the lease is outside the interval. Expected: A number between 1 and 180, inclusive. Found: "
+							+ leaseDuration);
+		}
+	}
 
-    }
+	/**
+	 * [On cron job] Clean up expired leases, freeing the links to be used again.
+	 */
+	public void cleanExpiredLeases() {
+		List<Link> expiredLinks = this.linkRepository.getLinksWithExpiredLeases();
+		expiredLinks.forEach(freeingALink -> {
+			freeingALink.setSessionId(null);
+			freeingALink.setExpirationDate(null);
+			this.linkRepository.update(freeingALink, freeingALink.getLinkId());
+		});
+	}
+
+	public List<LinkDto> getLinks() {
+		return this.linkRepository.findAll().stream().map(LinkDto::fromEntity).collect(Collectors.toList());
+
+	}
+
 }
