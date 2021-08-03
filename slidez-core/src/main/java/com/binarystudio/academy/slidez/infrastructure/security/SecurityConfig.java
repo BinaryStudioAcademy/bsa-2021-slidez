@@ -10,27 +10,21 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private void applyRouteRestrictions(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                // PUBLIC
-                .antMatchers("/auth/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/*").permitAll();
-    }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .cors().and()
-                .csrf().disable()
-                .httpBasic().disable()
-                .formLogin().disable()
+	private void applyRouteRestrictions(HttpSecurity http) throws Exception {
+		http.authorizeRequests()
+				// PUBLIC
+				.antMatchers("/auth/**").permitAll().antMatchers("/ws/**", "/hello").permitAll()
+				.antMatchers(HttpMethod.GET, "/*").permitAll();
+	}
 
-                // Set session management to stateless
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.cors().and().csrf().disable().httpBasic().disable().formLogin().disable()
+				// Set session management to stateless
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        applyRouteRestrictions(http);
-    }
+		applyRouteRestrictions(http);
+	}
 
 }

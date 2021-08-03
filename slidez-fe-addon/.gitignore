@@ -1,0 +1,20 @@
+# idea
+.idea
+
+# npm
+node_modules
+.package-lock.json
+
+# clasp files
+.clasp.json
+creds.json
+
+# certs
+*.pem
+certs/
+
+# build
+dist/
+
+# mac
+.DS_Store
