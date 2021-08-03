@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private void applyRouteRestrictions(HttpSecurity http) throws Exception {
 		http.antMatcher("/**").authorizeRequests()
 				// PUBLIC
-				.antMatchers("/auth/**").permitAll().antMatchers(HttpMethod.GET, "/").permitAll().anyRequest()
+				.antMatchers("/auth/**").permitAll().antMatchers(HttpMethod.GET, "/*").permitAll().anyRequest()
 				.authenticated();
 	}
 
