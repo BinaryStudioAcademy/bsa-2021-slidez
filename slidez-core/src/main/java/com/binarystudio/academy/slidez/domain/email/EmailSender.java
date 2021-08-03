@@ -6,6 +6,6 @@ import java.io.IOException;
 
 public interface EmailSender {
 
-    boolean sendEmail(EmailMessageDto emailMessageDto) throws IOException;
+	boolean sendEmail(EmailMessageDto emailMessageDto) throws IOException;
 
 }

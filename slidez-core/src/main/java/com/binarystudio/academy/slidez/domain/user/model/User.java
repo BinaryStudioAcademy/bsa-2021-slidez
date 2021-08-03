@@ -38,4 +38,5 @@ public class User {
 
 	@Column
 	private String password;
+
 }

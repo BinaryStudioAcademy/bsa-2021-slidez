@@ -9,13 +9,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PollCreatedEvent extends DomainEvent {
 
-    private final String pollName;
+	private final String pollName;
 
-    private final List<String> pollOptions;
+	private final List<String> pollOptions;
 
-    @Override
-    public void applyEvent(State state) {
-        state.addPoll(new Poll(pollName, pollOptions));
-    }
+	@Override
+	public void applyEvent(State state) {
+		state.addPoll(new Poll(pollName, pollOptions));
+	}
 
 }

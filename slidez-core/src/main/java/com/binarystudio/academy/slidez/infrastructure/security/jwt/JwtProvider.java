@@ -21,7 +21,9 @@ import org.springframework.stereotype.Component;
 public class JwtProvider {
 
 	private final JwtProperties jwtProperties;
+
 	private Key secretKey;
+
 	private JwtParser jwtParser;
 
 	@Autowired
@@ -78,4 +80,5 @@ public class JwtProvider {
 			throw new JwtException("Invalid token", "jwt-invalid");
 		}
 	}
+
 }

@@ -15,40 +15,45 @@ import java.util.UUID;
 
 @Service
 public class UserService {
-    @Autowired
-    protected PasswordEncoder passwordEncoder;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private  AuthService authService;
-    @Autowired
-    private JwtProvider jwtProvider;
 
-    public boolean isEmailPresent(String email) {
-        return userRepository.existsByEmail(email);
-    }
+	@Autowired
+	protected PasswordEncoder passwordEncoder;
 
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
+	@Autowired
+	private UserRepository userRepository;
 
-    public Optional<UserDetailsDto> findByToken(String token) {
-        String email = authService.getLoginFromToken(token);
-        if (email == null || email.isEmpty()) {
-            return Optional.empty();
-        }
-        Optional<User> user = findByEmail(email);
-        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user.get());
-        return Optional.of(userDetailsDto);
-    }
+	@Autowired
+	private AuthService authService;
 
-    public User create(UserDto userDto) {
-        User user =  UserMapper.INSTANCE.userDtoToUser(userDto);
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        return userRepository.saveAndFlush(user);
-    }
+	@Autowired
+	private JwtProvider jwtProvider;
 
-    public Optional<User> getById(UUID id) {
-        return userRepository.findById(id);
-    }
+	public boolean isEmailPresent(String email) {
+		return userRepository.existsByEmail(email);
+	}
+
+	public Optional<User> findByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
+
+	public Optional<UserDetailsDto> findByToken(String token) {
+		String email = authService.getLoginFromToken(token);
+		if (email == null || email.isEmpty()) {
+			return Optional.empty();
+		}
+		Optional<User> user = findByEmail(email);
+		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user.get());
+		return Optional.of(userDetailsDto);
+	}
+
+	public User create(UserDto userDto) {
+		User user = UserMapper.INSTANCE.userDtoToUser(userDto);
+		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		return userRepository.saveAndFlush(user);
+	}
+
+	public Optional<User> getById(UUID id) {
+		return userRepository.findById(id);
+	}
+
 }

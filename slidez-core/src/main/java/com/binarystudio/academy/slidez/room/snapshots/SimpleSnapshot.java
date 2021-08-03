@@ -8,11 +8,11 @@ import java.util.List;
 
 public class SimpleSnapshot implements Snapshot {
 
-    @Getter
-    private final List<Poll> polls;
+	@Getter
+	private final List<Poll> polls;
 
-    public SimpleSnapshot(List<Poll> polls) {
-        this.polls = new ArrayList<>(polls);
-    }
+	public SimpleSnapshot(List<Poll> polls) {
+		this.polls = new ArrayList<>(polls);
+	}
 
 }

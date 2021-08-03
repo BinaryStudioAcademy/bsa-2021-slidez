@@ -17,6 +17,7 @@ import java.util.Optional;
 
 @Service
 public class AuthService {
+
 	@Autowired
 	private UserService userService;
 
@@ -26,7 +27,7 @@ public class AuthService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public Optional<AuthResponse> performLogin(AuthorizationRequest authorizationRequest)  {
+	public Optional<AuthResponse> performLogin(AuthorizationRequest authorizationRequest) {
 		var userOptional = userService.findByEmail(authorizationRequest.getEmail());
 		if (userOptional.isEmpty()) {
 			return Optional.empty();
@@ -39,8 +40,8 @@ public class AuthService {
 		}
 
 		var mapper = UserMapper.INSTANCE;
-        UserDetailsDto userDetailsDto = mapper.mapUserToUserDetailsDto(user);
-        return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user), userDetailsDto));
+		UserDetailsDto userDetailsDto = mapper.mapUserToUserDetailsDto(user);
+		return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user), userDetailsDto));
 	}
 
 	private boolean passwordsMatch(String rawPw, String encodedPw) {
@@ -54,11 +55,12 @@ public class AuthService {
 
 		User user = userService.create(userDto);
 
-        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
+		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
 		return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user), userDetailsDto));
 	}
 
-    public String getLoginFromToken(String token) {
-        return jwtProvider.getLoginFromToken(token);
-    }
+	public String getLoginFromToken(String token) {
+		return jwtProvider.getLoginFromToken(token);
+	}
+
 }

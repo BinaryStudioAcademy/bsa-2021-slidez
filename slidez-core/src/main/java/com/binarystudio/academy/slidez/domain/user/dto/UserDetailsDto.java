@@ -14,8 +14,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 public class UserDetailsDto {
+
 	private UUID id;
+
 	private String email;
+
 	private String firstName;
+
 	private String lastName;
+
 }

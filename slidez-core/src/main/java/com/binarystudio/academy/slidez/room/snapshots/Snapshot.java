@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface Snapshot {
 
-    List<Poll> getPolls();
+	List<Poll> getPolls();
 
-    static SimpleSnapshot getSimpleSnapshotFromState(State state) {
-        return new SimpleSnapshot(state.getPolls());
-    }
+	static SimpleSnapshot getSimpleSnapshotFromState(State state) {
+		return new SimpleSnapshot(state.getPolls());
+	}
 
 }
