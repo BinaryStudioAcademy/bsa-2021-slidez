@@ -56,7 +56,8 @@ public class JwtProvider {
 		Claims claims;
 		try {
 			claims = parseToken(token);
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			return null;
 		}
 		return claims.getSubject();
