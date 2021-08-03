@@ -28,15 +28,25 @@ repositories {
 }
 
 dependencies {
+	def jjwt = '0.11.2'
+
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-  implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.5.9'
 	implementation 'org.springdoc:springdoc-openapi-data-rest:1.5.9'
 	implementation 'org.springdoc:springdoc-openapi-security:1.5.9'
 	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+	implementation 'org.projectlombok:lombok-mapstruct-binding:0.1.0'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+	compileOnly "io.jsonwebtoken:jjwt-api:${jjwt}"
+	implementation "io.jsonwebtoken:jjwt-impl:${jjwt}",
+			"io.jsonwebtoken:jjwt-jackson:${jjwt}"
+
+	implementation 'com.sendgrid:sendgrid-java:4.7.2'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -52,5 +62,3 @@ flyway {
 	user = 'postgres'
 	password = 'admin'
 }
-
-
