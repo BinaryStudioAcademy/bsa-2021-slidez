@@ -1,5 +1,16 @@
 package com.binarystudio.academy.slidez.domain.user.model;
 
+<<<<<<<<< Temporary merge branch 1:slidez-core/src/main/java/com/binarystudio/academy/slidez/domain/user/model/User.java
+=========
+import java.util.UUID;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+>>>>>>>>> Temporary merge branch 2:slidez-core/src/main/java/com/binarystudio/academy/slidez/user/model/User.java
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

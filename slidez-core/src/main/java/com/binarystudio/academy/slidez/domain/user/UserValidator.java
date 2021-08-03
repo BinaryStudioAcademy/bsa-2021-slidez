@@ -41,4 +41,5 @@ public class UserValidator {
 		return matcher.matches();
 	}
 
+>>>>>>>>> Temporary merge branch 2
 }

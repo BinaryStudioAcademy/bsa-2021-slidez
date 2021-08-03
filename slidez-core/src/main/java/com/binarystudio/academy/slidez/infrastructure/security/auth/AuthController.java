@@ -42,12 +42,12 @@ public class AuthController {
 
 	@PostMapping("register")
 	public ResponseEntity<Object> register(@RequestBody UserDto userDto) {
-		String validationResult = userValidator.isEmailAndPasswordValid(userDto.getEmail(), userDto.getPassword());
+		String validationResult = this.userValidator.isEmailAndPasswordValid(userDto.getEmail(), userDto.getPassword());
 		if (validationResult != null) {
 			return new ResponseEntity<>(validationResult, HttpStatus.BAD_REQUEST);
 		}
 
-		Optional<AuthResponse> authResponse = authService.register(userDto);
+		Optional<AuthResponse> authResponse = this.authService.register(userDto);
 		if (authResponse.isEmpty()) {
 			return new ResponseEntity<>("Incorrect password or user email.", HttpStatus.UNAUTHORIZED);
 		}

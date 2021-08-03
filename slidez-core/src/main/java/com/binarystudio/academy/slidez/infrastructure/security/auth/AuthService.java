@@ -63,4 +63,19 @@ public class AuthService {
 		return jwtProvider.getLoginFromToken(token);
 	}
 
+	public Optional<AuthResponse> register(UserDto userDto) {
+		if (this.userService.isEmailPresent(userDto.getEmail())) {
+			throw new EntityExistsException(String.format("User with email: '%s' already exists.", userDto.getEmail()));
+		}
+
+		User user = this.userService.create(userDto);
+
+		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
+		return Optional.of(AuthResponse.of(this.jwtProvider.generateAccessToken(user), userDetailsDto));
+	}
+
+	public String getLoginFromToken(String token) {
+		return this.jwtProvider.getLoginFromToken(token);
+	}
+
 }
