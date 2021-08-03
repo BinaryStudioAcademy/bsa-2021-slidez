@@ -18,10 +18,10 @@ public class UserValidator {
     private static final Pattern EMAIL_COMPILED_PATTERN = Pattern.compile(EMAIL_PATTERN);
 
     public String isEmailAndPasswordValid(String email, String password) {
-        if(!isPasswordValid(password)) {
+        if (!isPasswordValid(password)) {
             return "Incorrect password";
         }
-        if(!isEmailValid(email)) {
+        if (!isEmailValid(email)) {
             return "Incorrect email";
         }
         return null;

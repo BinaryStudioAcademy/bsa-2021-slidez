@@ -2,6 +2,7 @@ package com.binarystudio.academy.slidez.infrastructure.security.jwt;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,7 +11,13 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 public class JwtProperties {
+
 	private String secret;
-	private Long secs_to_expire_access;
-	private Long secs_to_expire_refresh;
+
+	@Value("secs_to_expire_access")
+	private Long secondsToExpireAccess;
+
+	@Value("secs_to_expire_refresh")
+	private Long secondsToExpireRefresh;
+
 }

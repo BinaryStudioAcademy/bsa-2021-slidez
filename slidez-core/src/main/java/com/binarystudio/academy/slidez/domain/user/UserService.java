@@ -34,7 +34,7 @@ public class UserService {
 
     public Optional<UserDetailsDto> findByToken(String token) {
         String email = authService.getLoginFromToken(token);
-        if(email==null || email.isEmpty()) {
+        if (email == null || email.isEmpty()) {
             return Optional.empty();
         }
         Optional<User> user = findByEmail(email);
