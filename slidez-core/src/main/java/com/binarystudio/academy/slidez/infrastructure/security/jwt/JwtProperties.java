@@ -14,9 +14,9 @@ public class JwtProperties {
 	private String secret;
 
 	@SuppressWarnings("checkstyle:MemberName")
-    private Long secs_to_expire_access;
+	private Long secs_to_expire_access;
 
 	@SuppressWarnings("checkstyle:MemberName")
-    private Long secs_to_expire_refresh;
+	private Long secs_to_expire_refresh;
 
 }

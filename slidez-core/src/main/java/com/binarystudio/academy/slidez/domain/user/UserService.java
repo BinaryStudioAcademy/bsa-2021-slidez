@@ -38,7 +38,7 @@ public class UserService {
 			return Optional.empty();
 		}
 		Optional<User> userOptional = findByEmail(email);
-		User user = userOptional.get();
+		User user = userOptional.orElseThrow();
 		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
 		return Optional.of(userDetailsDto);
 	}
@@ -51,6 +51,13 @@ public class UserService {
 
 	public Optional<User> getById(UUID id) {
 		return this.userRepository.findById(id);
+	}
+
+	public User createByEmail(String email) {
+		User user = new User();
+		user.setEmail(email);
+		user.setPassword(this.passwordEncoder.encode(""));
+		return this.userRepository.save(user);
 	}
 
 }
