@@ -1,7 +1,6 @@
 package com.binarystudio.academy.slidez.infrastructure.security.oauth2;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.ServletException;
@@ -41,8 +40,7 @@ public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
 			return;
 		}
         DefaultOAuth2User oidcUser = (DefaultOAuth2User) authentication.getPrincipal();
-		Map<String, Object> attributes = oidcUser.getAttributes();
-		String email = (String) attributes.get("email");
+		String email = oidcUser.getAttribute("email");
 		Optional<User> userOptional = this.userService.findByEmail(email);
 		User user = userOptional.orElseThrow();
 		String token = this.jwtProvider.generateAccessToken(user);
@@ -51,6 +49,6 @@ public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
             .queryParam("auth_token", token)
             .build()
             .toUriString();
-		getRedirectStrategy().sendRedirect(request, response, redirectionUrl);
+        getRedirectStrategy().sendRedirect(request, response, redirectionUrl);
 	}
 }
