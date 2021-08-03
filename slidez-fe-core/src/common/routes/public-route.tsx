@@ -1,13 +1,13 @@
 import * as React from 'react'
-import {Route, Redirect} from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {AppRoute} from './app-route'
-import {locationType} from './location'
-import {useAppSelector} from '../../hooks'
-import {selectIsLoggedIn} from '../../containers/user/store'
+import { AppRoute } from './app-route'
+import { locationType } from './location'
+import { useAppSelector } from '../../hooks'
+import { selectIsLoggedIn } from '../../containers/user/store'
 
 // @ts-ignore
-const PublicRoute = ({component: Component, ...rest}) => {
+const PublicRoute = ({ component: Component, ...rest }) => {
     const hasUser = useAppSelector(selectIsLoggedIn)
 
     return (
@@ -18,7 +18,7 @@ const PublicRoute = ({component: Component, ...rest}) => {
                     <Redirect
                         to={{
                             pathname: AppRoute.ROOT,
-                            state: {from: props.location},
+                            state: { from: props.location },
                         }}
                     />
                 ) : (

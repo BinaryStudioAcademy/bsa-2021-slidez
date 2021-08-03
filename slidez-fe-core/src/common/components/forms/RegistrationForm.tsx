@@ -1,11 +1,11 @@
 import React from 'react'
-import {revealPassword} from './form-utils'
+import { revealPassword } from './form-utils'
 import validator from 'validator'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faEye, faEyeSlash} from '@fortawesome/free-solid-svg-icons'
-import {useAppSelector} from '../../../hooks'
-import {selectSignStatus} from '../../../containers/user/store'
-import {SignStatus} from '../../../containers/user/enums/sign-status'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { useAppSelector } from '../../../hooks'
+import { selectSignStatus } from '../../../containers/user/store'
+import { SignStatus } from '../../../containers/user/enums/sign-status'
 
 type RegistrationProps = {
     onRegister: Function
@@ -13,9 +13,9 @@ type RegistrationProps = {
 }
 
 const RegistrationForm = ({
-                              onRegister,
-                              onRegisterWithGoogle,
-                          }: RegistrationProps) => {
+    onRegister,
+    onRegisterWithGoogle,
+}: RegistrationProps) => {
     const [isPasswordRevealed, setIsPasswordRevealed] = React.useState(false)
     const [isConfirmPasswordRevealed, setIsConfirmPasswordRevealed] =
         React.useState(false)
@@ -142,7 +142,7 @@ const RegistrationForm = ({
                     />
                 </div>
             </div>
-            <div className='form-row'/>
+            <div className='form-row' />
             <div className='form-row'>
                 <button
                     className='form-button login-button'

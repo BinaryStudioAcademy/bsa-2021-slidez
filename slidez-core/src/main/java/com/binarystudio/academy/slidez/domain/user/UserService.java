@@ -14,38 +14,42 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    @Autowired
-    protected PasswordEncoder passwordEncoder;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private  AuthService authService;
 
-    public boolean isEmailPresent(String email) {
-        return this.userRepository.existsByEmail(email);
-    }
+	@Autowired
+	protected PasswordEncoder passwordEncoder;
 
-    public Optional<User> findByEmail(String email) {
-        return this.userRepository.findByEmail(email);
-    }
+	@Autowired
+	private UserRepository userRepository;
 
-    public Optional<UserDetailsDto> findByToken(String token) {
-        String email = this.authService.getLoginFromToken(token);
-        if (email == null || email.isEmpty()) {
-            return Optional.empty();
-        }
-        Optional<User> user = findByEmail(email);
-        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user.get());
-        return Optional.of(userDetailsDto);
-    }
+	@Autowired
+	private AuthService authService;
 
-    public User create(UserDto userDto) {
-        User user =  UserMapper.INSTANCE.userDtoToUser(userDto);
-        user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
-        return this.userRepository.saveAndFlush(user);
-    }
+	public boolean isEmailPresent(String email) {
+		return this.userRepository.existsByEmail(email);
+	}
 
-    public Optional<User> getById(UUID id) {
-        return this.userRepository.findById(id);
-    }
+	public Optional<User> findByEmail(String email) {
+		return this.userRepository.findByEmail(email);
+	}
+
+	public Optional<UserDetailsDto> findByToken(String token) {
+		String email = this.authService.getLoginFromToken(token);
+		if (email == null || email.isEmpty()) {
+			return Optional.empty();
+		}
+		Optional<User> user = findByEmail(email);
+		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user.get());
+		return Optional.of(userDetailsDto);
+	}
+
+	public User create(UserDto userDto) {
+		User user = UserMapper.INSTANCE.userDtoToUser(userDto);
+		user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
+		return this.userRepository.saveAndFlush(user);
+	}
+
+	public Optional<User> getById(UUID id) {
+		return this.userRepository.findById(id);
+	}
+
 }

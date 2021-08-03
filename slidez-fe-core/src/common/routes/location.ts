@@ -7,4 +7,4 @@ const locationType = PropTypes.shape({
     search: PropTypes.string.isRequired,
 })
 
-export {locationType}
+export { locationType }

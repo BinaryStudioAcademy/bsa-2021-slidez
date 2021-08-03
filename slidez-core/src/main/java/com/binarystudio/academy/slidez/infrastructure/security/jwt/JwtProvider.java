@@ -21,7 +21,9 @@ import org.springframework.stereotype.Component;
 public class JwtProvider {
 
 	private final JwtProperties jwtProperties;
+
 	private Key secretKey;
+
 	private JwtParser jwtParser;
 
 	@Autowired
@@ -45,23 +47,20 @@ public class JwtProvider {
 	}
 
 	public String generateAccessToken(User user) {
-		Date date = Date.from(LocalDateTime.now().plusSeconds(this.jwtProperties.getSecondsToExpireAccess()).toInstant(ZoneOffset.UTC));
-		return Jwts.builder()
-				.setSubject(user.getEmail())
-				.setExpiration(date)
-				.signWith(key())
-				.compact();
+		Date date = Date.from(LocalDateTime.now().plusSeconds(this.jwtProperties.getSecondsToExpireAccess())
+				.toInstant(ZoneOffset.UTC));
+		return Jwts.builder().setSubject(user.getEmail()).setExpiration(date).signWith(key()).compact();
 	}
 
 	public String getLoginFromToken(String token) {
-        Claims claims;
-        try {
-            claims = parseToken(token);
-        }
-        catch (Exception ex) {
-            return null;
-        }
-        return claims.getSubject();
+		Claims claims;
+		try {
+			claims = parseToken(token);
+		}
+		catch (Exception ex) {
+			return null;
+		}
+		return claims.getSubject();
 	}
 
 	private Claims parseToken(String token) {
@@ -81,4 +80,5 @@ public class JwtProvider {
 			throw new JwtException("Invalid token", "jwt-invalid");
 		}
 	}
+
 }

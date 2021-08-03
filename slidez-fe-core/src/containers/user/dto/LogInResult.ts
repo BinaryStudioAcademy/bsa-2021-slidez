@@ -1,4 +1,4 @@
-import {UserDetailsDto} from './UserDetailsDto'
+import { UserDetailsDto } from './UserDetailsDto'
 
 export interface LogInResult {
     status: string

@@ -7,4 +7,4 @@ const AppRoute = {
     RESTORE_PASSWORD: '/restore-password',
 }
 
-export {AppRoute}
+export { AppRoute }

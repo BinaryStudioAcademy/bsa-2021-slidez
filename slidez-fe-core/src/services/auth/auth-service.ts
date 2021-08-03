@@ -1,9 +1,9 @@
-import {HttpMethod} from '../http-method'
-import {LogInDto} from '../../containers/user/dto/LogInDto'
-import {RegisterDto} from '../../containers/user/dto/RegisterDto'
-import {LogInResult} from '../../containers/user/dto/LogInResult'
-import {SignStatus} from '../../containers/user/enums/sign-status'
-import {LogInResponseDto} from '../../containers/user/dto/LogInResponseDto'
+import { HttpMethod } from '../http-method'
+import { LogInDto } from '../../containers/user/dto/LogInDto'
+import { RegisterDto } from '../../containers/user/dto/RegisterDto'
+import { LogInResult } from '../../containers/user/dto/LogInResult'
+import { SignStatus } from '../../containers/user/enums/sign-status'
+import { LogInResponseDto } from '../../containers/user/dto/LogInResponseDto'
 
 const JWT = 'jwt'
 

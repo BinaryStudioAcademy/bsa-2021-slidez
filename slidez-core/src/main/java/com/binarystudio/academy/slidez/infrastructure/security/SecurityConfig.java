@@ -13,9 +13,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private void applyRouteRestrictions(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-                // PUBLIC
-                .antMatchers("/auth/**").permitAll().antMatchers("/ws/**", "/hello").permitAll()
-                .antMatchers(HttpMethod.GET, "/*").permitAll();
+				// PUBLIC
+				.antMatchers("/auth/**").permitAll().antMatchers("/ws/**", "/hello").permitAll()
+				.antMatchers(HttpMethod.GET, "/*").permitAll();
 	}
 
 	@Override

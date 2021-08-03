@@ -6,4 +6,4 @@ const HttpMethod = {
     PATCH: 'PATCH',
 }
 
-export {HttpMethod}
+export { HttpMethod }
