@@ -1,5 +1,7 @@
 package com.binarystudio.academy.slidez.infrastructure.security.auth;
 
+import java.util.Optional;
+
 import com.binarystudio.academy.slidez.domain.user.UserValidator;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDto;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthResponse;
@@ -12,26 +14,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("auth")
 public class AuthController {
+
 	@Autowired
 	private AuthService authService;
 
-    @Autowired
-    private UserValidator userValidator;
+	@Autowired
+	private UserValidator userValidator;
 
 	@PostMapping("login")
 	public ResponseEntity<Object> login(@RequestBody AuthorizationRequest authorizationRequest) {
-		String validationResult = userValidator.isEmailAndPasswordValid(authorizationRequest.getEmail(), authorizationRequest.getPassword());
-		if(validationResult != null ) {
+		String validationResult = this.userValidator.isEmailAndPasswordValid(authorizationRequest.getEmail(),
+				authorizationRequest.getPassword());
+		if (validationResult != null) {
 			return new ResponseEntity<>(validationResult, HttpStatus.BAD_REQUEST);
 		}
 
-		Optional<AuthResponse> authResponse = authService.performLogin(authorizationRequest);
-		if(authResponse.isEmpty()) {
+		Optional<AuthResponse> authResponse = this.authService.performLogin(authorizationRequest);
+		if (authResponse.isEmpty()) {
 			return new ResponseEntity<>("Incorrect password or email.", HttpStatus.UNAUTHORIZED);
 		}
 
