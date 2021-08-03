@@ -27,11 +27,12 @@ public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
 	private final OAuth2Properties oAuth2Properties;
 
 	@Autowired
-	public OAuthAuthenticationSuccessHandler(UserService userService, JwtProvider jwtProvider, OAuth2Properties oAuth2Properties) {
+	public OAuthAuthenticationSuccessHandler(UserService userService, JwtProvider jwtProvider,
+			OAuth2Properties oAuth2Properties) {
 		this.userService = userService;
 		this.jwtProvider = jwtProvider;
-        this.oAuth2Properties = oAuth2Properties;
-    }
+		this.oAuth2Properties = oAuth2Properties;
+	}
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -39,16 +40,14 @@ public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
 		if (response.isCommitted()) {
 			return;
 		}
-        DefaultOAuth2User oidcUser = (DefaultOAuth2User) authentication.getPrincipal();
+		DefaultOAuth2User oidcUser = (DefaultOAuth2User) authentication.getPrincipal();
 		String email = oidcUser.getAttribute("email");
 		Optional<User> userOptional = this.userService.findByEmail(email);
 		User user = userOptional.orElseThrow();
 		String token = this.jwtProvider.generateAccessToken(user);
-		String redirectionUrl = UriComponentsBuilder
-            .fromUriString(this.oAuth2Properties.getRedirectUri())
-            .queryParam("auth_token", token)
-            .build()
-            .toUriString();
-        getRedirectStrategy().sendRedirect(request, response, redirectionUrl);
+		String redirectionUrl = UriComponentsBuilder.fromUriString(this.oAuth2Properties.getRedirectUri())
+				.queryParam("auth_token", token).build().toUriString();
+		getRedirectStrategy().sendRedirect(request, response, redirectionUrl);
 	}
+
 }

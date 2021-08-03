@@ -10,5 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 public class OAuth2Properties {
-    private String redirectUri;
+
+	private String redirectUri;
+
 }

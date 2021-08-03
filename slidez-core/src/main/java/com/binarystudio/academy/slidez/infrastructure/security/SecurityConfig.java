@@ -14,39 +14,38 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final OAuth2UserService oAuth2UserService;
-    private final SimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler;
+	private final OAuth2UserService oAuth2UserService;
 
-    @Autowired
-    public SecurityConfig(OAuth2UserService oAuth2UserService, SimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler) {
-        this.oAuth2UserService = oAuth2UserService;
-        this.authenticationSuccessHandler = authenticationSuccessHandler;
-    }
+	private final SimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler;
 
-    private void applyRouteRestrictions(HttpSecurity http) throws Exception {
-        http.antMatcher("/**").authorizeRequests()
-            // PUBLIC
-            .antMatchers("/auth/**").permitAll().antMatchers(HttpMethod.GET, "/").permitAll().anyRequest()
-            .authenticated();
-    }
+	@Autowired
+	public SecurityConfig(OAuth2UserService oAuth2UserService,
+			SimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler) {
+		this.oAuth2UserService = oAuth2UserService;
+		this.authenticationSuccessHandler = authenticationSuccessHandler;
+	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().httpBasic().disable().formLogin().disable()
+	private void applyRouteRestrictions(HttpSecurity http) throws Exception {
+		http.antMatcher("/**").authorizeRequests()
+				// PUBLIC
+				.antMatchers("/auth/**").permitAll().antMatchers(HttpMethod.GET, "/").permitAll().anyRequest()
+				.authenticated();
+	}
 
-            // Set session management to stateless
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().disable().httpBasic().disable().formLogin().disable()
 
-        applyRouteRestrictions(http);
-        applyOAuth2Config(http);
-    }
+				// Set session management to stateless
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-    private void applyOAuth2Config(HttpSecurity http) throws Exception {
-        http
-            .oauth2Login()
-            .userInfoEndpoint()
-            .oidcUserService(this.oAuth2UserService)
-            .and()
-            .successHandler(this.authenticationSuccessHandler);
-    }
+		applyRouteRestrictions(http);
+		applyOAuth2Config(http);
+	}
+
+	private void applyOAuth2Config(HttpSecurity http) throws Exception {
+		http.oauth2Login().userInfoEndpoint().oidcUserService(this.oAuth2UserService).and()
+				.successHandler(this.authenticationSuccessHandler);
+	}
+
 }
