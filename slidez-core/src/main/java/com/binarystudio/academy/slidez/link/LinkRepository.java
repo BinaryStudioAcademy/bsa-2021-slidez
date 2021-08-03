@@ -1,5 +1,9 @@
 package com.binarystudio.academy.slidez.link;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import com.binarystudio.academy.slidez.link.model.Link;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -7,19 +11,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 @Repository
 public interface LinkRepository extends JpaRepository<Link, UUID> {
 
     @Query("select count(l) from Link l where l.expirationDate is null")
     int getCountAvailableLinks();
 
-
     @Query(value = "SELECT link FROM Link ORDER BY link DESC LIMIT 1", nativeQuery = true)
-    Optional <String> getLastLink();
+    Optional<String> getLastLink();
 
     @Transactional
     @Modifying
@@ -31,5 +30,4 @@ public interface LinkRepository extends JpaRepository<Link, UUID> {
 
     @Query(value = "select * from Link where expiration_date <= cast((now()) as date)", nativeQuery = true)
     List<Link> getLinksWithExpiredLeases();
-
 }

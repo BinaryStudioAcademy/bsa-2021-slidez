@@ -1,19 +1,23 @@
 package com.binarystudio.academy.slidez.link;
 
-import com.binarystudio.academy.slidez.link.dto.LinkDto;
-import com.binarystudio.academy.slidez.link.exceptions.IncorrectLeaseDurationException;
-import com.binarystudio.academy.slidez.link.model.Link;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.binarystudio.academy.slidez.link.dto.LinkDto;
+import com.binarystudio.academy.slidez.link.exceptions.IncorrectLeaseDurationException;
+import com.binarystudio.academy.slidez.link.model.Link;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 @Service
 public class LinkGenerationService {
+
+    private static final int MAX_COUNT_AVAILABLE_LINKS = 100;
+    private static final int MIN_LEASE_DURATION = 1;
+    private static final int MAX_LEASE_DURATION = 180;
 
     @Autowired
     private LinkRepository linkRepository;
@@ -23,14 +27,13 @@ public class LinkGenerationService {
      */
     public void generateExtraLinks() {
 
-        int maxCountAvailableLinks = 100;
-        int countAvailableLinks = linkRepository.getCountAvailableLinks();
-        if (countAvailableLinks < maxCountAvailableLinks) {
-            int countLinkForGenerate = maxCountAvailableLinks - countAvailableLinks;
+        int countAvailableLinks = this.linkRepository.getCountAvailableLinks();
+        if (countAvailableLinks < this.MAX_COUNT_AVAILABLE_LINKS) {
+            int countLinkForGenerate = this.MAX_COUNT_AVAILABLE_LINKS - countAvailableLinks;
             String lastLink = getLastLink();
             for (int i = 0; i < countLinkForGenerate; i++) {
                 String newLink = generateLink(lastLink);
-                linkRepository.save(new Link(UUID.randomUUID(), null, newLink, null));
+                this.linkRepository.save(new Link(UUID.randomUUID(), null, newLink, null));
                 lastLink = newLink;
             }
         }
@@ -86,23 +89,23 @@ public class LinkGenerationService {
     public String leaseALink(int leaseDuration) throws IncorrectLeaseDurationException {
         checkLeaseDuration(leaseDuration);
 
-        Link availableLink = linkRepository
-                .getAvailableLink()
-                .orElse(linkRepository
-                        .save(new Link(UUID.randomUUID(), null, generateLink(getLastLink()), null)));
+        Link availableLink = this.linkRepository
+            .getAvailableLink()
+            .orElse(this.linkRepository
+                .save(new Link(UUID.randomUUID(), null, generateLink(getLastLink()), null)));
         LocalDateTime expirationDate = LocalDateTime.now().plus(Period.ofDays(leaseDuration));
         availableLink.setExpirationDate(expirationDate);
-        linkRepository.update(availableLink, availableLink.getLinkId());
+        this.linkRepository.update(availableLink, availableLink.getLinkId());
 
         return availableLink.getLink();
     }
 
     private String getLastLink() {
-        return linkRepository.getLastLink().orElse("AAAAA0");
+        return this.linkRepository.getLastLink().orElse("AAAAA0");
     }
 
     private void checkLeaseDuration(int leaseDuration) throws IncorrectLeaseDurationException {
-        if (leaseDuration > 180 || leaseDuration < 1) {
+        if (leaseDuration > this.MAX_LEASE_DURATION || leaseDuration < this.MIN_LEASE_DURATION) {
             throw new IncorrectLeaseDurationException("Duration of the lease is outside the interval. Expected: A number between 1 and 180, inclusive. Found: " + leaseDuration);
         }
     }
@@ -111,20 +114,21 @@ public class LinkGenerationService {
      * [On cron job] Clean up expired leases, freeing the links to be used again.
      */
     public void cleanExpiredLeases() {
-        List<Link> expiredLinks = linkRepository.getLinksWithExpiredLeases();
+        List<Link> expiredLinks = this.linkRepository.getLinksWithExpiredLeases();
         expiredLinks
-                .forEach(freeingALink -> {
-                    freeingALink.setSessionId(null);
-                    freeingALink.setExpirationDate(null);
-                            linkRepository.update(freeingALink, freeingALink.getLinkId());
-                });
+            .forEach(freeingALink -> {
+                freeingALink.setSessionId(null);
+                freeingALink.setExpirationDate(null);
+                this.linkRepository.update(freeingALink, freeingALink.getLinkId());
+            });
     }
+
     public List<LinkDto> getLinks() {
-        return linkRepository
-                .findAll()
-                .stream()
-                .map(LinkDto::fromEntity)
-                .collect(Collectors.toList());
+        return this.linkRepository
+            .findAll()
+            .stream()
+            .map(LinkDto::fromEntity)
+            .collect(Collectors.toList());
 
     }
 }

@@ -25,11 +25,11 @@ public class LinkDto {
 
     public static LinkDto fromEntity(Link link) {
         return LinkDto
-                .builder()
-                .linkId(link.getLinkId())
-                .sessionId(link.getSessionId())
-                .link(link.getLink())
-                .expirationDate(link.getExpirationDate())
-                .build();
+            .builder()
+            .linkId(link.getLinkId())
+            .sessionId(link.getSessionId())
+            .link(link.getLink())
+            .expirationDate(link.getExpirationDate())
+            .build();
     }
 }
