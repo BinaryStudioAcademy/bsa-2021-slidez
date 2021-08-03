@@ -1,7 +1,7 @@
 import React from 'react'
-import {HashRouter, Switch} from 'react-router-dom'
+import { HashRouter, Switch } from 'react-router-dom'
 import PublicRoute from './common/routes/public-route'
-import {AppRoute} from './common/routes/app-route'
+import { AppRoute } from './common/routes/app-route'
 import SignPage from './pages/sign/SignPage'
 
 function App() {
@@ -13,6 +13,11 @@ function App() {
                         exact
                         path={[AppRoute.LOGIN, AppRoute.REGISTRATION]}
                         component={SignPage}
+                    />
+                    <PrivateRoute
+                        exact
+                        path='/dashboard'
+                        component={Dashboard}
                     />
                 </Switch>
             </HashRouter>
