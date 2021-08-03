@@ -19,4 +19,5 @@ public class JwtProperties {
 
 	@Value("secs_to_expire_refresh")
 	private Long secondsToExpireRefresh;
+
 }

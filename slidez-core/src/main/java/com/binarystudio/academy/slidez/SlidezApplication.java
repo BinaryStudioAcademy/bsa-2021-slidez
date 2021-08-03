@@ -10,4 +10,5 @@ class SlidezApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SlidezApplication.class, args);
 	}
+
 }
