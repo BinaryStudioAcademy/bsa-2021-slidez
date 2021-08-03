@@ -70,7 +70,8 @@ public class LinkGenerationService {
 
                 newLink[i] = (char) (previewLink[i] + 1);
                 isChange = false;
-            } else {
+            }
+            else {
                 newLink[i] = previewLink[i];
             }
         }

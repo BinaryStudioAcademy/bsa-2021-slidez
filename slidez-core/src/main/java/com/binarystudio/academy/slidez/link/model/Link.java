@@ -1,8 +1,9 @@
 package com.binarystudio.academy.slidez.link.model;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
