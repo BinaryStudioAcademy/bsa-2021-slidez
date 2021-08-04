@@ -20,5 +20,4 @@ public class UserDto {
 	@NotNull
 	private String password;
 
->>>>>>>>> Temporary merge branch 2
 }
