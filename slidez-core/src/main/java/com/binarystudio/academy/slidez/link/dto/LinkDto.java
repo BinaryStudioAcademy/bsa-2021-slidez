@@ -24,13 +24,8 @@ public class LinkDto {
 	private LocalDateTime expirationDate;
 
 	public static LinkDto fromEntity(Link link) {
-		return LinkDto
-            .builder()
-            .linkId(link.getLinkId())
-            .sessionId(link.getSessionId())
-            .link(link.getLink())
-            .expirationDate(link.getExpirationDate())
-            .build();
+		return LinkDto.builder().linkId(link.getLinkId()).sessionId(link.getSessionId()).link(link.getLink())
+				.expirationDate(link.getExpirationDate()).build();
 	}
 
 }
