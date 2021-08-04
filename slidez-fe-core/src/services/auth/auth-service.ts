@@ -12,19 +12,6 @@ const getAuthUrl = (endpoint: string) => {
 }
 const OAuthWithGoogleUrl: string = 'http://localhost:5000/auth/login/google'
 
-const sendInitOAuthRequest = async (url: string) => {
-    return fetch(url, {
-        method: HttpMethod.GET,
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-    })
-}
-
 const sendAuthRequest = async (url: string, data: object = {}) => {
     return fetch(url, {
         method: HttpMethod.POST,
