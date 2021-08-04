@@ -10,6 +10,13 @@ import { revealPassword } from './form-utils'
 import { useAppSelector } from '../../../hooks'
 import { selectSignStatus } from '../../../containers/user/store'
 import { SignStatus } from '../../../containers/user/enums/sign-status'
+import GoogleLogin from 'react-google-login'
+
+//TODO: MOVE THIS TO .ENV
+const CLIENT_ID: string =
+    '873588565253-jiec1ha3ghuf593g2kipg7aqjoaes2ci.apps.googleusercontent.com'
+const REDIRECT_URI = 'http://localhost:3000/'
+const COOKIE_POLICY = 'single_host_origin'
 
 type LoginProps = {
     onLogin: Function
@@ -34,8 +41,8 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
         }
     }
 
-    const handleLoginWithGoogle = () => {
-        onLoginWithGoogle()
+    const handleLoginWithGoogle = async (googleData: any) => {
+        onLoginWithGoogle(googleData)
     }
 
     return (
@@ -110,13 +117,17 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                 </button>
             </div>
             <div className='form-row button-divider'>or</div>
+            {
+                //TODO: Fix Google button style
+            }
             <div className='form-row'>
-                <button
+                <GoogleLogin
                     className='form-button login-with-google-button'
-                    onClick={handleLoginWithGoogle}
-                >
-                    Log In with Google
-                </button>
+                    clientId={CLIENT_ID}
+                    onSuccess={handleLoginWithGoogle}
+                    redirectUri={REDIRECT_URI}
+                    cookiePolicy={COOKIE_POLICY}
+                />
             </div>
         </div>
     )

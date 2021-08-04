@@ -4,7 +4,6 @@ const AppRoute = {
     LOGIN: '/login',
     LOGOUT: '/logout',
     REGISTRATION: '/registration',
-    OAUTH_GOOGLE_SUCCESS: '/oauth/google/success',
     RESTORE_PASSWORD: '/restore-password',
 }
 

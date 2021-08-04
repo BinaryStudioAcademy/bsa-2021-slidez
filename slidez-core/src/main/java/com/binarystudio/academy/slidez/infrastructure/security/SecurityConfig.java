@@ -28,19 +28,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private void applyRouteRestrictions(HttpSecurity http) throws Exception {
 		http.antMatcher("/**").authorizeRequests()
 				// PUBLIC
-				.antMatchers("/auth/**").permitAll().antMatchers(HttpMethod.GET, "/*").permitAll().anyRequest()
+				.antMatchers("/auth/**").permitAll().antMatchers(HttpMethod.GET, "/").permitAll().anyRequest()
 				.authenticated();
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().httpBasic().disable().formLogin().disable()
+		http.cors().and().csrf().disable().httpBasic().disable().formLogin().disable()
 
 				// Set session management to stateless
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		applyRouteRestrictions(http);
-		applyOAuth2Config(http);
+//		applyOAuth2Config(http);
 	}
 
 	private void applyOAuth2Config(HttpSecurity http) throws Exception {

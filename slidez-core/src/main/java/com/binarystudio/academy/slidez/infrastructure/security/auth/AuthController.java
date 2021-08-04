@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.binarystudio.academy.slidez.domain.user.dto.UserDto;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthResponse;
+import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthorizationByTokenRequest;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthorizationRequest;
 import com.binarystudio.academy.slidez.infrastructure.validation.EmailValidator;
 import com.binarystudio.academy.slidez.infrastructure.validation.PasswordValidator;
@@ -19,16 +20,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("auth")
 public class AuthController {
 
-	@Autowired
-	private AuthService authService;
+	private final AuthService authService;
+	private final PasswordValidator passwordValidator;
+	private final EmailValidator emailValidator;
 
 	@Autowired
-	private PasswordValidator passwordValidator;
+    public AuthController(AuthService authService, PasswordValidator passwordValidator, EmailValidator emailValidator) {
+        this.authService = authService;
+        this.passwordValidator = passwordValidator;
+        this.emailValidator = emailValidator;
+    }
 
-	@Autowired
-	private EmailValidator emailValidator;
-
-	@PostMapping("login")
+    @PostMapping("login")
 	public ResponseEntity login(@RequestBody AuthorizationRequest authorizationRequest) {
 		String validationResult = validateEmailAndPassword(authorizationRequest.getEmail(),
 				authorizationRequest.getPassword());
@@ -70,4 +73,12 @@ public class AuthController {
 		return null;
 	}
 
+	@PostMapping("login-by-token")
+	public ResponseEntity<AuthResponse> loginByToken(
+	    @RequestBody AuthorizationByTokenRequest authorizationByTokenRequest){
+        Optional<AuthResponse> authResponseOptional = this.authService.performLoginByToken(authorizationByTokenRequest);
+        return authResponseOptional
+            .map(authResponse -> new ResponseEntity<>(authResponse, HttpStatus.OK))
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
+    }
 }
