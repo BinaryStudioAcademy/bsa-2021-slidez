@@ -15,17 +15,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LinkDto {
 
-	private UUID linkId;
+	private Long linkId;
 
-	private Long sessionId;
+	private UUID sessionId;
 
 	private String link;
 
 	private LocalDateTime expirationDate;
 
 	public static LinkDto fromEntity(Link link) {
-		return LinkDto.builder().linkId(link.getLinkId()).sessionId(link.getSessionId()).link(link.getLink())
-				.expirationDate(link.getExpirationDate()).build();
+		return LinkDto
+            .builder()
+            .linkId(link.getLinkId())
+            .sessionId(link.getSessionId())
+            .link(link.getLink())
+            .expirationDate(link.getExpirationDate())
+            .build();
 	}
 
 }
