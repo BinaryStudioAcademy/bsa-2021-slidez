@@ -1,16 +1,16 @@
 import React from 'react'
-import {AppRoute} from '../../common/routes/app-route'
-import {useLocation} from 'react-router-dom'
+import { AppRoute } from '../../common/routes/app-route'
+import { useLocation } from 'react-router-dom'
 import LoginForm from '../../common/components/forms/LoginForm'
 import RegistrationForm from '../../common/components/forms/RegistrationForm'
 import './sign-page.scss'
-import {useAppDispatch} from '../../hooks'
-import {LogInDto} from '../../containers/user/dto/LogInDto'
-import {RegisterDto} from '../../containers/user/dto/RegisterDto'
-import {logIn, register} from '../../containers/user/store'
+import { useAppDispatch } from '../../hooks'
+import { LogInDto } from '../../containers/user/dto/LogInDto'
+import { RegisterDto } from '../../containers/user/dto/RegisterDto'
+import { logIn, register } from '../../containers/user/store'
 
 const SignPage = () => {
-    const {pathname} = useLocation()
+    const { pathname } = useLocation()
     const dispatch = useAppDispatch()
 
     const handleLogin = (email: string, password: string) => {
@@ -21,8 +21,7 @@ const SignPage = () => {
         dispatch(logIn(dto))
     }
 
-    const handleLoginWithGoogle = () => {
-    }
+    const handleLoginWithGoogle = () => {}
 
     const handleRegister = (
         email: string,
@@ -37,8 +36,7 @@ const SignPage = () => {
         dispatch(register(dto))
     }
 
-    const handleRegisterWithGoogle = () => {
-    }
+    const handleRegisterWithGoogle = () => {}
 
     const getForm = (path: string) => {
         switch (path) {

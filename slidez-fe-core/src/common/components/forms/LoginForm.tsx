@@ -1,22 +1,22 @@
 import React from 'react'
-import {NavLink} from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import './sign-form.scss'
-import {AppRoute} from '../../routes/app-route'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { AppRoute } from '../../routes/app-route'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import validator from 'validator'
-import {faEyeSlash} from '@fortawesome/free-solid-svg-icons'
-import {faEye} from '@fortawesome/free-solid-svg-icons'
-import {revealPassword} from './form-utils'
-import {useAppSelector} from '../../../hooks'
-import {selectSignStatus} from '../../../containers/user/store'
-import {SignStatus} from '../../../containers/user/enums/sign-status'
+import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faEye } from '@fortawesome/free-solid-svg-icons'
+import { revealPassword } from './form-utils'
+import { useAppSelector } from '../../../hooks'
+import { selectSignStatus } from '../../../containers/user/store'
+import { SignStatus } from '../../../containers/user/enums/sign-status'
 
 type LoginProps = {
     onLogin: Function
     onLoginWithGoogle: Function
 }
 
-const LoginForm = ({onLogin, onLoginWithGoogle}: LoginProps) => {
+const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
     const [isPasswordRevealed, setIsPasswordRevealed] = React.useState(false)
     const [email, setEmail] = React.useState('')
     const [isEmailValid, setIsEmailValid] = React.useState(true)
@@ -100,7 +100,7 @@ const LoginForm = ({onLogin, onLoginWithGoogle}: LoginProps) => {
                     />
                 </div>
             </div>
-            <div className='form-row'/>
+            <div className='form-row' />
             <div className='form-row'>
                 <button
                     className='form-button login-button'

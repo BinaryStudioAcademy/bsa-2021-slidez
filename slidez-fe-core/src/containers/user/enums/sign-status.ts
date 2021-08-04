@@ -4,4 +4,4 @@ const SignStatus = {
     EMAIL_IS_TAKEN: 'EMAIL_IS_TAKEN',
 }
 
-export {SignStatus}
+export { SignStatus }

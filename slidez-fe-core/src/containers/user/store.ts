@@ -1,14 +1,14 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {RootState} from '../../store'
-import {LogInDto} from './dto/LogInDto'
-import {RegisterDto} from './dto/RegisterDto'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { RootState } from '../../store'
+import { LogInDto } from './dto/LogInDto'
+import { RegisterDto } from './dto/RegisterDto'
 import {
     isLoggedIn,
     performLogIn,
     performRegister,
 } from '../../services/auth/auth-service'
-import {SignStatus} from './enums/sign-status'
-import {UserDetailsDto} from './dto/UserDetailsDto'
+import { SignStatus } from './enums/sign-status'
+import { UserDetailsDto } from './dto/UserDetailsDto'
 
 export interface UserState {
     signStatus: string
