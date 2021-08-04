@@ -3,11 +3,12 @@ import { RootState } from '../../store'
 import { LogInDto } from './dto/LogInDto'
 import { RegisterDto } from './dto/RegisterDto'
 import {
-    performOAuthWithGoogle,
+    performLoginOAuthWithGoogle,
     isLoggedIn,
     performLogIn,
     performLoginByToken,
     performRegister,
+    performRegisterOAuthWithGoogle,
 } from '../../services/auth/auth-service'
 import { SignStatus } from './enums/sign-status'
 import { UserDetailsDto } from './dto/UserDetailsDto'
@@ -46,7 +47,14 @@ export const loginByToken = createAsyncThunk(
 export const loginWithOAuthGoogle = createAsyncThunk(
     'user/login-with-oauth-google',
     async (dto: TokenDto) => {
-        return performOAuthWithGoogle(dto)
+        return performLoginOAuthWithGoogle(dto)
+    }
+)
+
+export const registerWithOAuthGoogle = createAsyncThunk(
+    'user/register-with-oauth-google',
+    async (dto: TokenDto) => {
+        return performRegisterOAuthWithGoogle(dto)
     }
 )
 
@@ -81,6 +89,14 @@ export const userSlice = createSlice({
                 }
             })
             .addCase(loginWithOAuthGoogle.fulfilled, (state, action) => {
+                const status: string = action.payload.status
+                state.signStatus = status
+                if (status === SignStatus.OK) {
+                    state.user = action.payload.userDetailsDto
+                    state.isLoggedIn = isLoggedIn()
+                }
+            })
+            .addCase(registerWithOAuthGoogle.fulfilled, (state, action) => {
                 const status: string = action.payload.status
                 state.signStatus = status
                 if (status === SignStatus.OK) {

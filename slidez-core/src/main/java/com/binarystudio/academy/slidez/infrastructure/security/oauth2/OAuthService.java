@@ -12,7 +12,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@SuppressWarnings("checkstyle:Regexp")
 @Service
 public class OAuthService {
 
@@ -30,20 +29,44 @@ public class OAuthService {
 	}
 
 	public Optional<AuthResponse> loginWithGoogle(String idToken) {
-		Optional<User> userByEmail = Optional.empty();
-		try {
-			GoogleIdToken.Payload verify = this.googleTokenVerifier.verify(idToken);
-			String email = verify.getEmail();
-			userByEmail = this.userService.findByEmail(email);
+		Optional<String> emailForGoogle = getEmailForGoogle(idToken);
+		if (emailForGoogle.isEmpty()) {
+			return Optional.empty();
 		}
-		catch (Throwable e) {
-			e.printStackTrace();
-		}
-		return userByEmail.map(user -> {
+		String email = emailForGoogle.get();
+		Optional<User> byEmail = userService.findByEmail(email);
+		return byEmail.map(user -> {
 			String token = this.jwtProvider.generateAccessToken(user);
 			UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
 			return AuthResponse.of(token, userDetailsDto);
 		});
+	}
+
+	public Optional<AuthResponse> registerWithGoogle(String idToken) {
+		Optional<String> emailForGoogle = getEmailForGoogle(idToken);
+		if (emailForGoogle.isEmpty()) {
+			return Optional.empty();
+		}
+		String email = emailForGoogle.get();
+		if (!userService.isEmailPresent(email)) {
+			User byEmail = userService.createByEmail(email);
+			String token = this.jwtProvider.generateAccessToken(byEmail);
+			UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(byEmail);
+			return Optional.of(AuthResponse.of(token, userDetailsDto));
+		}
+		return Optional.empty();
+	}
+
+	private Optional<String> getEmailForGoogle(String idToken) {
+		Optional<String> emailHolder = Optional.empty();
+		try {
+			GoogleIdToken.Payload verify = this.googleTokenVerifier.verify(idToken);
+			emailHolder = Optional.of(verify.getEmail());
+		}
+		catch (Throwable e) {
+			e.printStackTrace();
+		}
+		return emailHolder;
 	}
 
 }

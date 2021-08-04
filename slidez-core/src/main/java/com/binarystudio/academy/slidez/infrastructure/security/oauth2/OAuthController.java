@@ -24,9 +24,17 @@ public class OAuthController {
 	}
 
 	@PostMapping("/login/google")
-	public ResponseEntity<AuthResponse> loginGoogle(
+	public ResponseEntity<AuthResponse> loginWithGoogle(
 			@RequestBody AuthorizationByTokenRequest authorizationByTokenRequest) {
 		Optional<AuthResponse> authResponse = this.oAuthService.loginWithGoogle(authorizationByTokenRequest.getToken());
+		return authResponse.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
+				.orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
+	}
+
+	@PostMapping("/register/google")
+	public ResponseEntity<AuthResponse> registerWithGoogle(
+			@RequestBody AuthorizationByTokenRequest authorizationByTokenRequest) {
+		Optional<AuthResponse> authResponse = this.oAuthService.registerWithGoogle(authorizationByTokenRequest.getToken());
 		return authResponse.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
 	}

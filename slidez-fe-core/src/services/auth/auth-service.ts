@@ -10,7 +10,10 @@ const JWT = 'jwt'
 const getAuthUrl = (endpoint: string) => {
     return `http://localhost:5000/auth/${endpoint}`
 }
-const OAuthWithGoogleUrl: string = 'http://localhost:5000/auth/login/google'
+const loginWithOAuthGoogleUrl: string =
+    'http://localhost:5000/auth/login/google'
+const registerWithOAuthGoogleUrl: string =
+    'http://localhost:5000/auth/register/google'
 
 const sendAuthRequest = async (url: string, data: object = {}) => {
     return fetch(url, {
@@ -66,8 +69,16 @@ export const performLoginByToken = async (dto: TokenDto) => {
     )
 }
 
-export const performOAuthWithGoogle = async (dto: TokenDto) => {
-    return performSign(OAuthWithGoogleUrl, dto, SignStatus.INVALID_TOKEN)
+export const performLoginOAuthWithGoogle = async (dto: TokenDto) => {
+    return performSign(loginWithOAuthGoogleUrl, dto, SignStatus.INVALID_TOKEN)
+}
+
+export const performRegisterOAuthWithGoogle = async (dto: TokenDto) => {
+    return performSign(
+        registerWithOAuthGoogleUrl,
+        dto,
+        SignStatus.INVALID_TOKEN
+    )
 }
 
 export const isLoggedIn = () => {
