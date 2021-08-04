@@ -15,30 +15,35 @@ import org.springframework.stereotype.Service;
 @SuppressWarnings("checkstyle:Regexp")
 @Service
 public class OAuthService {
-    private final GoogleTokenVerifier googleTokenVerifier;
-    private final UserService userService;
-    private final JwtProvider jwtProvider;
-    @Autowired
-    public OAuthService(GoogleTokenVerifier googleTokenVerifier, UserService userService, JwtProvider jwtProvider) {
-        this.googleTokenVerifier = googleTokenVerifier;
-        this.userService = userService;
-        this.jwtProvider = jwtProvider;
-    }
 
-    public Optional<AuthResponse> loginWithGoogle(String idToken) {
-        Optional<User> userByEmail = Optional.empty();
-        try {
-            GoogleIdToken.Payload verify = this.googleTokenVerifier.verify(idToken);
-            String email = verify.getEmail();
-            userByEmail = this.userService.findByEmail(email);
-        }
-        catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return userByEmail.map(user -> {
-            String token = this.jwtProvider.generateAccessToken(user);
-            UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-            return AuthResponse.of(token, userDetailsDto);
-        });
-    }
+	private final GoogleTokenVerifier googleTokenVerifier;
+
+	private final UserService userService;
+
+	private final JwtProvider jwtProvider;
+
+	@Autowired
+	public OAuthService(GoogleTokenVerifier googleTokenVerifier, UserService userService, JwtProvider jwtProvider) {
+		this.googleTokenVerifier = googleTokenVerifier;
+		this.userService = userService;
+		this.jwtProvider = jwtProvider;
+	}
+
+	public Optional<AuthResponse> loginWithGoogle(String idToken) {
+		Optional<User> userByEmail = Optional.empty();
+		try {
+			GoogleIdToken.Payload verify = this.googleTokenVerifier.verify(idToken);
+			String email = verify.getEmail();
+			userByEmail = this.userService.findByEmail(email);
+		}
+		catch (Throwable e) {
+			e.printStackTrace();
+		}
+		return userByEmail.map(user -> {
+			String token = this.jwtProvider.generateAccessToken(user);
+			UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
+			return AuthResponse.of(token, userDetailsDto);
+		});
+	}
+
 }

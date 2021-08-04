@@ -18,38 +18,39 @@ import org.springframework.stereotype.Component;
 @Component
 public class GoogleTokenVerifier {
 
-    private static final HttpTransport TRANSPORT = new NetHttpTransport();
-    private static final JsonFactory JSON_FACTORY = new GsonFactory();
-    private final OAuth2Properties oAuth2Properties;
+	private static final HttpTransport TRANSPORT = new NetHttpTransport();
 
-    @Autowired
-    public GoogleTokenVerifier(OAuth2Properties oAuth2Properties) {
-        this.oAuth2Properties = oAuth2Properties;
-    }
+	private static final JsonFactory JSON_FACTORY = new GsonFactory();
 
-    public GoogleIdToken.Payload verify(String idTokenString)
-        throws GeneralSecurityException, IOException, GoogleTokenIdException {
-        return verifyToken(idTokenString);
-    }
+	private final OAuth2Properties oAuth2Properties;
 
-    private GoogleIdToken.Payload verifyToken(String idTokenString)
-        throws GeneralSecurityException, IOException, GoogleTokenIdException {
-        final GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.
-            Builder(TRANSPORT, JSON_FACTORY)
-            .setIssuers(Arrays.asList("https://accounts.google.com", "accounts.google.com"))
-            .setAudience(Collections.singletonList(this.oAuth2Properties.getClientId()))
-            .build();
+	@Autowired
+	public GoogleTokenVerifier(OAuth2Properties oAuth2Properties) {
+		this.oAuth2Properties = oAuth2Properties;
+	}
 
-        GoogleIdToken idToken;
-        try {
-            idToken = verifier.verify(idTokenString);
-        }
-        catch (IllegalArgumentException e) {
-            throw new GoogleTokenIdException(e);
-        }
-        if (idToken == null) {
-            throw new GoogleTokenIdException("idToken is invalid");
-        }
-        return idToken.getPayload();
-    }
+	public GoogleIdToken.Payload verify(String idTokenString)
+			throws GeneralSecurityException, IOException, GoogleTokenIdException {
+		return verifyToken(idTokenString);
+	}
+
+	private GoogleIdToken.Payload verifyToken(String idTokenString)
+			throws GeneralSecurityException, IOException, GoogleTokenIdException {
+		final GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(TRANSPORT, JSON_FACTORY)
+				.setIssuers(Arrays.asList("https://accounts.google.com", "accounts.google.com"))
+				.setAudience(Collections.singletonList(this.oAuth2Properties.getClientId())).build();
+
+		GoogleIdToken idToken;
+		try {
+			idToken = verifier.verify(idTokenString);
+		}
+		catch (IllegalArgumentException e) {
+			throw new GoogleTokenIdException(e);
+		}
+		if (idToken == null) {
+			throw new GoogleTokenIdException("idToken is invalid");
+		}
+		return idToken.getPayload();
+	}
+
 }

@@ -15,18 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 public class OAuthController {
-    private final OAuthService oAuthService;
-    @Autowired
-    public OAuthController(OAuthService oAuthService) {
-        this.oAuthService = oAuthService;
-    }
 
-    @PostMapping("/login/google")
-	public ResponseEntity<AuthResponse> loginGoogle(@RequestBody AuthorizationByTokenRequest authorizationByTokenRequest) {
-        Optional<AuthResponse> authResponse = this.oAuthService
-            .loginWithGoogle(authorizationByTokenRequest.getToken());
-        return authResponse.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
-    }
+	private final OAuthService oAuthService;
+
+	@Autowired
+	public OAuthController(OAuthService oAuthService) {
+		this.oAuthService = oAuthService;
+	}
+
+	@PostMapping("/login/google")
+	public ResponseEntity<AuthResponse> loginGoogle(
+			@RequestBody AuthorizationByTokenRequest authorizationByTokenRequest) {
+		Optional<AuthResponse> authResponse = this.oAuthService.loginWithGoogle(authorizationByTokenRequest.getToken());
+		return authResponse.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
+				.orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
+	}
 
 }

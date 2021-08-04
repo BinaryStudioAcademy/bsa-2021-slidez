@@ -21,17 +21,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
 	private final AuthService authService;
+
 	private final PasswordValidator passwordValidator;
+
 	private final EmailValidator emailValidator;
 
 	@Autowired
-    public AuthController(AuthService authService, PasswordValidator passwordValidator, EmailValidator emailValidator) {
-        this.authService = authService;
-        this.passwordValidator = passwordValidator;
-        this.emailValidator = emailValidator;
-    }
+	public AuthController(AuthService authService, PasswordValidator passwordValidator, EmailValidator emailValidator) {
+		this.authService = authService;
+		this.passwordValidator = passwordValidator;
+		this.emailValidator = emailValidator;
+	}
 
-    @PostMapping("login")
+	@PostMapping("login")
 	public ResponseEntity login(@RequestBody AuthorizationRequest authorizationRequest) {
 		String validationResult = validateEmailAndPassword(authorizationRequest.getEmail(),
 				authorizationRequest.getPassword());
@@ -75,10 +77,10 @@ public class AuthController {
 
 	@PostMapping("login-by-token")
 	public ResponseEntity<AuthResponse> loginByToken(
-	    @RequestBody AuthorizationByTokenRequest authorizationByTokenRequest){
-        Optional<AuthResponse> authResponseOptional = this.authService.performLoginByToken(authorizationByTokenRequest);
-        return authResponseOptional
-            .map(authResponse -> new ResponseEntity<>(authResponse, HttpStatus.OK))
-            .orElseGet(() -> new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
-    }
+			@RequestBody AuthorizationByTokenRequest authorizationByTokenRequest) {
+		Optional<AuthResponse> authResponseOptional = this.authService.performLoginByToken(authorizationByTokenRequest);
+		return authResponseOptional.map(authResponse -> new ResponseEntity<>(authResponse, HttpStatus.OK))
+				.orElseGet(() -> new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
+	}
+
 }

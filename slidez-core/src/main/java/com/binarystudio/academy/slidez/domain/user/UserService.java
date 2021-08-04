@@ -33,12 +33,12 @@ public class UserService {
 	}
 
 	public Optional<User> findByToken(String token) {
-        String email = this.jwtProvider.getLoginFromToken(token);
-        if (email == null) {
-            return Optional.empty();
-        }
-        return findByEmail(email);
-    }
+		String email = this.jwtProvider.getLoginFromToken(token);
+		if (email == null) {
+			return Optional.empty();
+		}
+		return findByEmail(email);
+	}
 
 	public Optional<UserDetailsDto> getDetailsByToken(String token) {
 		String email = this.jwtProvider.getLoginFromToken(token);

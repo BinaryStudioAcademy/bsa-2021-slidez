@@ -30,13 +30,13 @@ public class AuthService {
 	private PasswordEncoder passwordEncoder;
 
 	public Optional<AuthResponse> performLoginByToken(AuthorizationByTokenRequest authorizationByTokenRequest) {
-        Optional<User> userByToken = this.userService.findByToken(authorizationByTokenRequest.getToken());
-        return userByToken.map(user -> {
-            String newToken = this.jwtProvider.generateAccessToken(user);
-            UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-            return AuthResponse.of(newToken, userDetailsDto);
-        });
-    }
+		Optional<User> userByToken = this.userService.findByToken(authorizationByTokenRequest.getToken());
+		return userByToken.map(user -> {
+			String newToken = this.jwtProvider.generateAccessToken(user);
+			UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
+			return AuthResponse.of(newToken, userDetailsDto);
+		});
+	}
 
 	public Optional<AuthResponse> performLogin(AuthorizationRequest authorizationRequest) {
 		var userOptional = this.userService.findByEmail(authorizationRequest.getEmail());
