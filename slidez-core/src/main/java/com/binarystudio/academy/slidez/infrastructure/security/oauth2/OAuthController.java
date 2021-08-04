@@ -34,7 +34,8 @@ public class OAuthController {
 	@PostMapping("/register/google")
 	public ResponseEntity<AuthResponse> registerWithGoogle(
 			@RequestBody AuthorizationByTokenRequest authorizationByTokenRequest) {
-		Optional<AuthResponse> authResponse = this.oAuthService.registerWithGoogle(authorizationByTokenRequest.getToken());
+		Optional<AuthResponse> authResponse = this.oAuthService
+				.registerWithGoogle(authorizationByTokenRequest.getToken());
 		return authResponse.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
 	}
