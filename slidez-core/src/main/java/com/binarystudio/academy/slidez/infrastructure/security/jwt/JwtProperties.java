@@ -14,10 +14,10 @@ public class JwtProperties {
 
 	private String secret;
 
-	@Value("secs_to_expire_access")
+	@Value("#{new Long('${jwt.secs_to_expire_access}')}")
 	private Long secondsToExpireAccess;
 
-	@Value("secs_to_expire_refresh")
+	@Value("#{new Long('${jwt.secs_to_expire_refresh}')}")
 	private Long secondsToExpireRefresh;
 
 }
