@@ -17,7 +17,8 @@ public class JwtProperties {
 	@Value("#{new Long('${jwt.secs_to_expire_access}')}")
 	private Long secondsToExpireAccess;
 
-	@Value("#{new Long('${jwt.secs_to_expire_access}')}")
+
+	@Value("#{new Long('${jwt.secs_to_expire_refresh}')}")
 	private Long secondsToExpireRefresh;
 
 }
