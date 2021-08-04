@@ -19,19 +19,26 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "link")
 public class Link {
 
-	@Id
-	@GeneratedValue(generator = "UUID")
-	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-	@Column(name = "link_id", updatable = false, nullable = false)
-	private UUID linkId;
+    @Id
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
+    private Long linkId;
 
-	@Column(name = "session_id")
-	private Long sessionId;
+    @Column(name = "session_id")
+    private UUID sessionId;
 
-	@Column(name = "link")
-	private String link;
+    @Column(name = "link")
+    private String link;
 
-	@Column(name = "expiration_date")
-	private LocalDateTime expirationDate;
+    @Column(name = "expiration_date")
+    private LocalDateTime expirationDate;
+
+    public static Link createLink(UUID sessionId, String link, LocalDateTime expirationDate) {
+        return Link.builder()
+            .sessionId(sessionId)
+            .link(link)
+            .expirationDate(expirationDate)
+            .build();
+    }
 
 }
