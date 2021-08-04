@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "jwt.secs_to_expire_access",
+      "type": "java.lang.String",
+      "description": "Description for jwt.secs_to_expire_access."
+  }
+] }
