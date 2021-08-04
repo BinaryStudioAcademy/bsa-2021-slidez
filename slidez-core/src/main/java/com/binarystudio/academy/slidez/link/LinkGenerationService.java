@@ -31,14 +31,15 @@ public class LinkGenerationService {
 	public void generateExtraLinks() {
 
 		int countAvailableLinks = this.linkRepository.getCountAvailableLinks();
-		if (countAvailableLinks < this.MAX_COUNT_AVAILABLE_LINKS) {
-			int countLinkForGenerate = this.MAX_COUNT_AVAILABLE_LINKS - countAvailableLinks;
-			String lastLink = getLastLink();
-			for (int i = 0; i < countLinkForGenerate; i++) {
-				String newLink = generateLink(lastLink);
-				this.linkRepository.save(new Link(UUID.randomUUID(), null, newLink, null));
-				lastLink = newLink;
-			}
+		if (countAvailableLinks >= this.MAX_COUNT_AVAILABLE_LINKS) {
+			return;
+		}
+		int countLinkForGenerate = this.MAX_COUNT_AVAILABLE_LINKS - countAvailableLinks;
+		String lastLink = getLastLink();
+		for (int i = 0; i < countLinkForGenerate; i++) {
+			String newLink = generateLink(lastLink);
+			this.linkRepository.save(new Link(UUID.randomUUID(), null, newLink, null));
+			lastLink = newLink;
 		}
 	}
 
@@ -59,12 +60,10 @@ public class LinkGenerationService {
 
 				if (previewLink[i] == lastNumeric) {
 					newLink[i] = '0';
-					isChange = true;
 					continue;
 				}
 				if (previewLink[i] == lastAlphabet) {
 					newLink[i] = 'a';
-					isChange = true;
 					continue;
 				}
 
