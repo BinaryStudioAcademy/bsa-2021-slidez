@@ -2,10 +2,12 @@ package com.binarystudio.academy.slidez.domain.poll.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.*;
 
+import com.binarystudio.academy.slidez.domain.poll.option.model.PollOption;
 import com.binarystudio.academy.slidez.user.model.User;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -33,8 +35,11 @@ public class Poll {
     @Column
     private Date updatedAt;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    private List<PollOption> options = new ArrayList<>();
 
 }

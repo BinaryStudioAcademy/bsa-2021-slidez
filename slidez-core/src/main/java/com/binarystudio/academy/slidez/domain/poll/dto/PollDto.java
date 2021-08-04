@@ -3,6 +3,7 @@ package com.binarystudio.academy.slidez.domain.poll.dto;
 import java.util.Date;
 import java.util.UUID;
 
+import com.binarystudio.academy.slidez.user.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,4 +21,5 @@ public class PollDto {
 
     private Date updatedAt;
 
+    private UserDto user;
 }
