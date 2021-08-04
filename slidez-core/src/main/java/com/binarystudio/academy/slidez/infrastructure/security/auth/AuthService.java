@@ -49,8 +49,9 @@ public class AuthService {
 		if (!passwordsMatch(authorizationRequest.getPassword(), user.getPassword())) {
 			return Optional.empty();
 		}
-		return Optional.of(AuthResponse.of(this.jwtProvider.generateAccessToken(user),
-				UserMapper.INSTANCE.mapUserToUserDetailsDto(user)));
+		var mapper = UserMapper.INSTANCE;
+		UserDetailsDto userDetailsDto = mapper.mapUserToUserDetailsDto(user);
+		return Optional.of(AuthResponse.of(this.jwtProvider.generateAccessToken(user), userDetailsDto));
 	}
 
 	private boolean passwordsMatch(String rawPw, String encodedPw) {
@@ -63,9 +64,12 @@ public class AuthService {
 		}
 
 		User user = this.userService.create(userDto);
+		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
+		return Optional.of(AuthResponse.of(this.jwtProvider.generateAccessToken(user), userDetailsDto));
+	}
 
-		return Optional.of(AuthResponse.of(this.jwtProvider.generateAccessToken(user),
-				UserMapper.INSTANCE.mapUserToUserDetailsDto(user)));
+	public String getLoginFromToken(String token) {
+		return this.jwtProvider.getLoginFromToken(token);
 	}
 
 }

@@ -7,7 +7,7 @@ import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDto;
 import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
 import com.binarystudio.academy.slidez.domain.user.model.User;
-import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtProvider;
+import com.binarystudio.academy.slidez.infrastructure.security.auth.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class UserService {
 	private UserRepository userRepository;
 
 	@Autowired
-	private JwtProvider jwtProvider;
+	private AuthService authService;
 
 	public boolean isEmailPresent(String email) {
 		return this.userRepository.existsByEmail(email);
@@ -33,7 +33,7 @@ public class UserService {
 	}
 
 	public Optional<User> findByToken(String token) {
-		String email = this.jwtProvider.getLoginFromToken(token);
+		String email = this.authService.getLoginFromToken(token);
 		if (email == null) {
 			return Optional.empty();
 		}
@@ -41,7 +41,7 @@ public class UserService {
 	}
 
 	public Optional<UserDetailsDto> getDetailsByToken(String token) {
-		String email = this.jwtProvider.getLoginFromToken(token);
+		String email = this.authService.getLoginFromToken(token);
 		if (email == null) {
 			return Optional.empty();
 		}
