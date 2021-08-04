@@ -1,16 +1,19 @@
 package com.binarystudio.academy.slidez.domain.poll.model;
 
+import com.binarystudio.academy.slidez.domain.poll.dto.CreatePollDto;
+import com.binarystudio.academy.slidez.domain.poll.option.model.PollOption;
+import com.binarystudio.academy.slidez.user.model.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
-import javax.persistence.*;
-
-import com.binarystudio.academy.slidez.domain.poll.option.model.PollOption;
-import com.binarystudio.academy.slidez.user.model.User;
-import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Data
@@ -39,7 +42,15 @@ public class Poll {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PollOption> options = new ArrayList<>();
 
+    public static Poll fromDto(CreatePollDto poll, User user) {
+        return Poll.builder()
+            .name(poll.getName())
+            .createdAt(poll.getCreateAt())
+            .updatedAt(poll.getUpdatedAt())
+            .user(user)
+            .build();
+    }
 }
