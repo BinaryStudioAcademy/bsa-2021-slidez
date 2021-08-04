@@ -1,24 +1,24 @@
-package com.binarystudio.academy.slidez.user.dto;
+package com.binarystudio.academy.slidez.domain.user.dto;
 
 import java.util.UUID;
 
-import lombok.AllArgsConstructor;
+import javax.validation.constraints.NotNull;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class UserDto {
 
 	private UUID id;
 
+	@NotNull
 	private String email;
 
 	private String firstName;
 
 	private String lastName;
 
+	@NotNull
 	private String password;
 
 }

@@ -8,7 +8,7 @@ import { LogInResponseDto } from '../../containers/user/dto/LogInResponseDto'
 const JWT = 'jwt'
 
 const sendAuthRequest = async (endpoint: string, data: object = {}) => {
-    const url: string = `http://localhost:5000/auth/${endpoint}`
+    const url: string = `${process.env.REACT_APP_API_GATEWAY}/auth/${endpoint}`
     return fetch(url, {
         method: HttpMethod.POST,
         mode: 'cors',
