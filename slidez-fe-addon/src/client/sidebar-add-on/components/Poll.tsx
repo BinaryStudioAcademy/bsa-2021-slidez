@@ -1,8 +1,9 @@
-import { number } from 'prop-types';
-import React, { FC, useState } from 'react';
-import { Formik, Form, Field, FieldArray } from 'formik';
+import React, { FC } from 'react';
+import { Formik, Field, FieldArray } from 'formik';
 
 import server from '../../utils/server';
+import { Form } from 'react-bootstrap';
+import './styles.css';
 
 const { serverFunctions } = server;
 
@@ -24,12 +25,17 @@ const Poll: FC = () => {
                                     {values.options &&
                                     values.options.length > 0 ? (
                                         values.options.map((option, index) => (
-                                            <div key={index}>
+                                            <div
+                                                key={index}
+                                                className='options'
+                                            >
                                                 <Field
                                                     name={`options.${index}`}
+                                                    className='input-options'
                                                 />
                                                 <button
                                                     type='button'
+                                                    className='options-btn'
                                                     onClick={() =>
                                                         arrayHelpers.remove(
                                                             index
@@ -40,6 +46,7 @@ const Poll: FC = () => {
                                                 </button>
                                                 <button
                                                     type='button'
+                                                    className='options-btn'
                                                     onClick={() =>
                                                         arrayHelpers.insert(
                                                             index,
@@ -72,6 +79,7 @@ const Poll: FC = () => {
 
     return (
         <div className='app'>
+            <h2>Poll</h2>
             <Formik
                 initialValues={{ name: '' }}
                 onSubmit={async values => {
@@ -80,38 +88,28 @@ const Poll: FC = () => {
                 }}
             >
                 {props => {
-                    const {
-                        values,
-                        touched,
-                        errors,
-                        dirty,
-                        isSubmitting,
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        handleReset,
-                    } = props;
+                    const { values, handleChange, handleSubmit } = props;
                     return (
                         <form onSubmit={handleSubmit}>
-                            <div className='custom-question'>
+                            <Form className='mx-auto'>
                                 <div className='field-wrapper'>
-                                    <div className='form-group'>
-                                        <input
+                                    <Form.Group className='form-group'>
+                                        <Form.Label>Poll name:</Form.Label>
+                                        <Field
                                             id='name'
-                                            placeholder='Enter name'
                                             type='text'
                                             value={values.name}
                                             onChange={handleChange}
-                                            onBlur={handleBlur}
                                             className='text-input'
                                         />
-                                    </div>
+                                    </Form.Group>
                                 </div>
-                            </div>
-                            <OptionsArray />
-                            <button type='submit' disabled={isSubmitting}>
-                                Submit
-                            </button>
+                                <Form.Group>
+                                    <Form.Label>Options:</Form.Label>
+                                    <OptionsArray />
+                                </Form.Group>
+                                <button type='submit'>Submit</button>
+                            </Form>
                         </form>
                     );
                 }}
