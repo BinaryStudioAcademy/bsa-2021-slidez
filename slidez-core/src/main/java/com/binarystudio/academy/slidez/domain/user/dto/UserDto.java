@@ -1,9 +1,10 @@
 package com.binarystudio.academy.slidez.domain.user.dto;
 
-import lombok.Data;
+import java.util.UUID;
 
 import javax.validation.constraints.NotNull;
-import java.util.UUID;
+
+import lombok.Data;
 
 @Data
 public class UserDto {

@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
-    "types": [
-      "gas-types-detailed"
-    ],
+    "types": ["gas-types-detailed"],
     "lib": [
       "dom",
       "dom.iterable",
