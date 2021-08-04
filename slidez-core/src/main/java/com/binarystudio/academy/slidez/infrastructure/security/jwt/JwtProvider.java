@@ -48,7 +48,7 @@ public class JwtProvider {
 	}
 
 	public String generateAccessToken(User user) {
-		Date date = Date.from(LocalDateTime.now().plusSeconds(this.jwtProperties.getSecs_to_expire_access())
+		Date date = Date.from(LocalDateTime.now().plusSeconds(this.jwtProperties.getSecondsToExpireAccess())
 				.toInstant(ZoneOffset.UTC));
 		return Jwts.builder().setSubject(user.getEmail()).setExpiration(date).signWith(key()).compact();
 	}
