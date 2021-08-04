@@ -13,4 +13,6 @@ public class OAuth2Properties {
 
 	private String redirectUri;
 
+	private String clientId;
+
 }
