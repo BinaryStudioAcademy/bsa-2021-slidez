@@ -5,7 +5,7 @@ import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Collections;
 
-import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtException;
+import com.binarystudio.academy.slidez.infrastructure.security.exception.GoogleTokenIdException;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.HttpTransport;
@@ -28,12 +28,12 @@ public class GoogleTokenVerifier {
     }
 
     public GoogleIdToken.Payload verify(String idTokenString)
-        throws GeneralSecurityException, IOException, JwtException {
+        throws GeneralSecurityException, IOException, GoogleTokenIdException {
         return verifyToken(idTokenString);
     }
 
     private GoogleIdToken.Payload verifyToken(String idTokenString)
-        throws GeneralSecurityException, IOException, JwtException {
+        throws GeneralSecurityException, IOException, GoogleTokenIdException {
         final GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.
             Builder(TRANSPORT, JSON_FACTORY)
             .setIssuers(Arrays.asList("https://accounts.google.com", "accounts.google.com"))
@@ -45,11 +45,10 @@ public class GoogleTokenVerifier {
             idToken = verifier.verify(idTokenString);
         }
         catch (IllegalArgumentException e) {
-            // means token was not valid and idToken will be null
-            throw new JwtException(e);
+            throw new GoogleTokenIdException(e);
         }
         if (idToken == null) {
-            throw new JwtException("idToken is invalid");
+            throw new GoogleTokenIdException("idToken is invalid");
         }
         return idToken.getPayload();
     }

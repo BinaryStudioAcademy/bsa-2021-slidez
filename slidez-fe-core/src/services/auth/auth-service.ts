@@ -79,18 +79,8 @@ export const performLoginByToken = async (dto: TokenDto) => {
     )
 }
 
-export const initGoogleOAuth = async (dto: TokenDto) => {
-    const res = await fetch(OAuthWithGoogleUrl, {
-        method: HttpMethod.POST,
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dto),
-    })
-    // const data = await res.json()
-    // store returned user somehow
-    console.log('Sent request')
-    // return data
+export const performOAuthWithGoogle = async (dto: TokenDto) => {
+    return performSign(OAuthWithGoogleUrl, dto, SignStatus.INVALID_TOKEN)
 }
 
 export const isLoggedIn = () => {
