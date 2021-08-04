@@ -22,6 +22,7 @@ module.exports = {
         jsxSingleQuote: true,
         singleQuote: true,
         useTabs: false,
+        endOfLine: 'auto',
       },
     ],
     'arrow-body-style': 'off',
