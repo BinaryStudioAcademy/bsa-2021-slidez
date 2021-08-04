@@ -1,8 +1,11 @@
 create table polls
 (
     id  uuid not null,
+    user_id uuid not null,
     name varchar(255),
-    createdAt timestamp without time zone,
-    updatedAt timestamp without time zone,
-    primary key (id)
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    primary key (id),
+    foreign key (user_id) references users(id)
 );
+
