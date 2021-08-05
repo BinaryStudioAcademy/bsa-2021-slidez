@@ -5,25 +5,26 @@ import Dashboard from './pages/dashboard/Dashboard'
 import PrivateRoute from './common/routes/PrivateRoute'
 import { AppRoute } from './common/routes/app-route'
 import SignPage from './pages/sign/SignPage'
+import PollInput from './components/poll/PollInput'
+import { poll } from './components/poll/dto/pollDtoMock'
 
 function App() {
     return (
-        <div>
-            <HashRouter>
-                <Switch>
-                    <PublicRoute
-                        exact
-                        path={[AppRoute.LOGIN, AppRoute.REGISTRATION]}
-                        component={SignPage}
-                    />
-                    <PrivateRoute
-                        exact
-                        path='/dashboard'
-                        component={Dashboard}
-                    />
-                </Switch>
-            </HashRouter>
-        </div>
+        <HashRouter>
+            <Switch>
+                <PublicRoute
+                    exact
+                    path={[AppRoute.LOGIN, AppRoute.REGISTRATION]}
+                    component={SignPage}
+                />
+                <PrivateRoute exact path='/dashboard' component={Dashboard} />
+                <PublicRoute
+                    exact
+                    path={'/poll'}
+                    component={() => <PollInput poll={poll} />}
+                />
+            </Switch>
+        </HashRouter>
     )
 }
 
