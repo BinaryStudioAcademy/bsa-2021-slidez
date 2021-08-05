@@ -1,6 +1,7 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { AppRoute } from './app-route'
 
 const PrivateRoute = ({
     component: Component,
@@ -14,7 +15,10 @@ const PrivateRoute = ({
                 <Component {...props} />
             ) : (
                 <Redirect
-                    to={{ pathname: '/login', state: { from: props.location } }}
+                    to={{
+                        pathname: `${AppRoute.LOGIN}`,
+                        state: { from: props.location },
+                    }}
                 />
             )
         }
