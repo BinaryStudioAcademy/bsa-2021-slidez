@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table(name = "presentation")
+@Table(name = "presentations")
 public class Presentation {
 
 	@Id
@@ -24,6 +24,9 @@ public class Presentation {
 
 	@Column
 	private String name;
+
+	@Column
+	private String link;
 
 	@Column(name = "created_at", columnDefinition = "TIMESTAMP")
 	private LocalDateTime createdAt;

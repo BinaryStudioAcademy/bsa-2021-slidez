@@ -18,7 +18,7 @@ public class PresentationService {
 	}
 
 	public Presentation add(String name) {
-		Presentation presentation = new Presentation(null, name, LocalDateTime.now(), null);
+		Presentation presentation = new Presentation(null, name, "", LocalDateTime.now(), null);
 		return presentationRepository.save(presentation);
 	}
 
