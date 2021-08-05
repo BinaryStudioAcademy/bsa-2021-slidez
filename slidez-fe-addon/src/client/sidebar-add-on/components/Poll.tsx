@@ -3,7 +3,7 @@ import { Formik, Field, FieldArray } from 'formik';
 
 import server from '../../utils/server';
 import { Form } from 'react-bootstrap';
-import './styles.css';
+import './styles.scss';
 
 const { serverFunctions } = server;
 
