@@ -28,6 +28,9 @@ function App() {
                         path={[AppRoute.LOGIN, AppRoute.REGISTRATION]}
                         component={SignPage}
                     />
+                    <Route exact strict path={AppRoute.ANY}>
+                        <Redirect to={AppRoute.LOGIN} />
+                    </Route>
                 </Switch>
             </BrowserRouter>
         </div>
