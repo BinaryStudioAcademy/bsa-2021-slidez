@@ -7,6 +7,7 @@ import com.binarystudio.academy.slidez.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,6 +32,12 @@ public class PollService {
             var result = pollRepository.save(poll);
             return result.getId();
         });
+    }
+
+    public void updatePoll(UUID id, String name, Date updatedAt) throws Exception {
+        PollDto poll = getPollById(id)
+            .orElseThrow(() -> new Exception("There is no poll with this id: " + id));
+        pollRepository.update(poll.getId(), name, updatedAt);
     }
 
     public List<PollDto> getPolls() {
