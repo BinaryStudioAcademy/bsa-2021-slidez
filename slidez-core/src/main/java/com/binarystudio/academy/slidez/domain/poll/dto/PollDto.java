@@ -26,6 +26,8 @@ public class PollDto {
 
     private UserDto user;
 
+    //TODO: add PollOption data
+
     public static PollDto fromEntity(Poll poll) {
         return PollDto
             .builder()

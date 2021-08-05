@@ -23,6 +23,9 @@ public class PollService {
     private UserRepository userRepository;
 
     //TODO: Create a check for userId
+    //TODO: Write an utility to auto update PollOption
+
+    //TODO: It make a snapshot of the Poll with options and then compare with new data o create or update
 
     public Optional<UUID> createPoll(CreatePollDto pollDto) {
         var user = userRepository.findById(pollDto.getUserId());
