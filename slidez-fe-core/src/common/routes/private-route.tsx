@@ -1,41 +1,27 @@
-import * as React from 'react'
+import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import PropTypes from 'prop-types'
 import { AppRoute } from './app-route'
-import { locationType } from './location'
 import { useAppSelector } from '../../hooks'
 import { selectIsLoggedIn } from '../../containers/user/store'
 
-// @ts-ignore
-const PublicRoute = ({ component: Component, ...rest }) => {
+const PrivateRoute = ({ component: Component, ...rest }: any) => {
     const hasUser = useAppSelector(selectIsLoggedIn)
-
     return (
         <Route
             {...rest}
             render={(props) =>
                 hasUser ? (
+                    <Component {...props} />
+                ) : (
                     <Redirect
                         to={{
-                            pathname: AppRoute.DASHBOARD,
+                            pathname: `${AppRoute.LOGIN}`,
                             state: { from: props.location },
                         }}
                     />
-                ) : (
-                    <Component {...props} />
                 )
             }
         />
     )
 }
-
-PublicRoute.propTypes = {
-    component: PropTypes.elementType.isRequired,
-    location: locationType,
-}
-
-PublicRoute.defaultProps = {
-    location: undefined,
-}
-
-export default PublicRoute
+export default PrivateRoute

@@ -2,7 +2,7 @@ import React from 'react'
 import { HashRouter, Switch } from 'react-router-dom'
 import PublicRoute from './common/routes/public-route'
 import Dashboard from './pages/dashboard/Dashboard'
-import PrivateRoute from './common/routes/PrivateRoute'
+import PrivateRoute from './common/routes/private-route'
 import { AppRoute } from './common/routes/app-route'
 import SignPage from './pages/sign/SignPage'
 
@@ -18,7 +18,7 @@ function App() {
                     />
                     <PrivateRoute
                         exact
-                        path='/dashboard'
+                        path={AppRoute.DASHBOARD}
                         component={Dashboard}
                     />
                 </Switch>
