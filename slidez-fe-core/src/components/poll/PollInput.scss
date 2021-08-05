@@ -1,0 +1,42 @@
+.poll {
+    height: 100%;
+    border-radius: 10px;
+}
+
+.poll-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 15px;
+    border-bottom: 2px solid silver;
+}
+
+.poll-name {
+    font-weight: bold;
+}
+
+.poll-options {
+    padding: 25px;
+}
+
+.poll-option-votes {
+    display: flex;
+    margin: 5px 0 25px 0;
+}
+
+.poll-option-bar {
+    min-width: 30px;
+    background-color: silver;
+    border-radius: 10px;
+}
+
+.poll-option-percent {
+    margin-left: 10px;
+}
+
+.poll-option-winner .poll-option-bar {
+    background-color: #1589FF;
+}
+
+.poll-option-winner .poll-option-percent {
+    color: #1589FF;
+}
