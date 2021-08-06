@@ -15,7 +15,7 @@ function App() {
                 <Switch>
                     <PrivateRoute
                         exact
-                        path= {AppRoute.DASHBOARD}
+                        path={AppRoute.DASHBOARD}
                         component={Dashboard}
                     />
                     <PublicRoute

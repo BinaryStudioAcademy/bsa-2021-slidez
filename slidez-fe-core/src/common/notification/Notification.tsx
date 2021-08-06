@@ -7,22 +7,19 @@ export const handleNotification = (
     message: string,
     type: string
 ) => {
-    let toastrOptions = {}
+    let toastrOptions = {
+        timeOut: 0,
+        showCloseButton: true,
+        progressBar: false,
+        closeOnToastrClick: false,
+    }
     switch (type) {
         case NotificationTypes.WARNING: {
-            toastrOptions = {
-                icon: type,
-                status: type,
-                timeOut: 0,
-                showCloseButton: true,
-                progressBar: false,
-                closeOnToastrClick: false,
-            }
             toastr.warning(title, message, toastrOptions)
             break
         }
         case NotificationTypes.ERROR: {
-            toastr.error(title, message)
+            toastr.error(title, message, toastrOptions)
             break
         }
         case NotificationTypes.SUCCESS: {
