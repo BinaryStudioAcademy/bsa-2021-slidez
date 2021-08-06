@@ -5,8 +5,9 @@ import Dashboard from './pages/dashboard/Dashboard'
 import PrivateRoute from './common/routes/PrivateRoute'
 import { AppRoute } from './common/routes/app-route'
 import SignPage from './pages/sign/SignPage'
-import PollInput from './components/poll/PollInput'
+import Poll from './components/poll/Poll'
 import { poll } from './components/poll/dto/pollDtoMock'
+import PollInput from './components/poll/PollInput'
 
 function App() {
     return (
@@ -21,6 +22,11 @@ function App() {
                 <PublicRoute
                     exact
                     path={'/poll'}
+                    component={() => <Poll poll={poll} />}
+                />
+                <PublicRoute
+                    exact
+                    path={'/poll-input'}
                     component={() => <PollInput poll={poll} />}
                 />
             </Switch>

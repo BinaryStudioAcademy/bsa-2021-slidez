@@ -1,51 +1,124 @@
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useState } from 'react'
 import { PollDto } from './dto/PollDto'
+import Poll from './Poll'
 import './PollInput.scss'
+import { faCircle, faDotCircle } from '@fortawesome/free-regular-svg-icons'
 
 type PollInputProps = {
     poll: PollDto
 }
 
 function PollInput({ poll }: PollInputProps) {
+    const [voteSubmitted, setVoteSubmitted] = useState(false)
+    const [editMode, setEditMode] = useState(false)
+    const [chosenOption, setChosenOption] = useState(-1)
+
     const { name, options, answers } = poll
 
-    let [prevCount, currCount, totalVotes, winnerIndex] = [0, 0, 0, -1]
+    let totalVotes = 0
     for (let k in answers) {
-        currCount = answers[k].length
-        totalVotes += currCount
-        winnerIndex = currCount > prevCount ? Number(k) : winnerIndex
-        prevCount = currCount
+        totalVotes += answers[k].length
     }
 
     const mappedOptions = options.map((option, index) => {
-        const currVotes = answers[index].length
-        const percentage = totalVotes === 0 ? 0 : (currVotes / totalVotes) * 100
-        const percentageFormat = String(Math.round(percentage * 10) / 10) + '%'
-        const winnerClass = index === winnerIndex ? 'poll-option-winner' : ''
+        const chosenClass =
+            index === chosenOption ? 'poll-input-option-chosen' : ''
+        const circle =
+            index === chosenOption ? (
+                <FontAwesomeIcon icon={faDotCircle} />
+            ) : (
+                <FontAwesomeIcon icon={faCircle} />
+            )
 
         return (
-            <div key={index} className={'poll-option ' + winnerClass}>
-                <div className='poll-option-title'>{option.title}</div>
-                <div className='poll-option-votes'>
-                    <div
-                        className='poll-option-bar'
-                        style={{ width: percentageFormat }}
-                    ></div>
-                    <div className='poll-option-percent'>
-                        {percentageFormat}
-                    </div>
-                </div>
+            <div
+                key={index}
+                className={'poll-input-option ' + chosenClass}
+                onClick={() => setChosenOption(index)}
+            >
+                <div className='poll-input-option-circle'>{circle}</div>
+                <div className='poll-input-option-title'>{option.title}</div>
             </div>
         )
     })
 
+    const onSendClick = () => {
+        if (chosenOption === -1) {
+            return
+        }
+        if (!voteSubmitted) {
+            // post to db
+            setVoteSubmitted(true)
+        } else {
+            // update existing in db
+            setEditMode(false)
+        }
+    }
+
+    const onEditClick = () => {
+        setEditMode(true)
+    }
+
+    const onCancelClick = () => {
+        setEditMode(false)
+    }
+
+    if (!voteSubmitted) {
+        return (
+            <div className='poll'>
+                <div className='poll-header'>
+                    <div className='poll-name'>{name}</div>
+                    <div className='poll-votes'>{totalVotes} votes</div>
+                </div>
+                <div className='poll-input-options'>{mappedOptions}</div>
+                <div className='poll-input-send'>
+                    <button
+                        className='poll-input-button poll-input-send-button'
+                        onClick={onSendClick}
+                    >
+                        Send
+                    </button>
+                </div>
+            </div>
+        )
+    }
+    if (!editMode) {
+        return (
+            <Poll poll={poll}>
+                <div className='poll-input-edit'>
+                    <button
+                        className='poll-input-button poll-input-edit-button'
+                        onClick={onEditClick}
+                    >
+                        Edit response
+                    </button>
+                </div>
+            </Poll>
+        )
+    }
     return (
         <div className='poll'>
             <div className='poll-header'>
                 <div className='poll-name'>{name}</div>
                 <div className='poll-votes'>{totalVotes} votes</div>
             </div>
-            <div className='poll-options'>{mappedOptions}</div>
+            <div className='poll-input-options'>{mappedOptions}</div>
+            <div className='poll-input-edit'>
+                <button
+                    className='poll-input-button poll-input-cancel-button'
+                    onClick={onCancelClick}
+                >
+                    Cancel
+                </button>
+                <button
+                    className='poll-input-button poll-input-send-button'
+                    onClick={onSendClick}
+                >
+                    Send
+                </button>
+            </div>
         </div>
     )
 }

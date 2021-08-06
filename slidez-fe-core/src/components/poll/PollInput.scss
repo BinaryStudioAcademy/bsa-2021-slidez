@@ -1,42 +1,44 @@
-.poll {
-    height: 100%;
-    border-radius: 10px;
-}
+@import "src/global/global";
+@import "./Poll.scss";
 
-.poll-header {
+.poll-input-send {
     display: flex;
-    justify-content: space-between;
-    padding: 20px 15px;
-    border-bottom: 2px solid silver;
+    justify-content: center;
+    padding-bottom: 25px;
 }
 
-.poll-name {
-    font-weight: bold;
+.poll-input-edit {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 25px;
 }
 
-.poll-options {
+.poll-input-button {
+    padding: 5px 15px;
+    border-radius: 15px;
+}
+
+.poll-input-options {
     padding: 25px;
 }
 
-.poll-option-votes {
+.poll-input-option {
     display: flex;
-    margin: 5px 0 25px 0;
-}
-
-.poll-option-bar {
-    min-width: 30px;
-    background-color: silver;
+    background-color: $light-grey;
+    cursor: pointer;
+    padding: 12px;
+    margin-bottom: 25px;
     border-radius: 10px;
 }
 
-.poll-option-percent {
+.poll-input-option-chosen {
+    background-color: rgba(89, 208, 165, 0.4);
+}
+
+.poll-input-option-chosen .poll-input-option-circle {
+    color: $light-green;
+}
+
+.poll-input-option-title {
     margin-left: 10px;
-}
-
-.poll-option-winner .poll-option-bar {
-    background-color: #1589FF;
-}
-
-.poll-option-winner .poll-option-percent {
-    color: #1589FF;
 }
