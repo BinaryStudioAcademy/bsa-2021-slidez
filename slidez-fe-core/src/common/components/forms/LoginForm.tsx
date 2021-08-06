@@ -11,7 +11,7 @@ import { useAppSelector } from '../../../hooks'
 import { selectSignStatus } from '../../../containers/user/store'
 import { SignStatus } from '../../../containers/user/enums/sign-status'
 import GoogleLogin from 'react-google-login'
-import { GoogleOAuth } from '../../../services/auth/google-oauth.enum'
+import { GoogleOAuth } from '../../../services/auth/google-oauth'
 
 type LoginProps = {
     onLogin: Function

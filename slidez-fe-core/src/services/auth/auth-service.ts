@@ -5,15 +5,12 @@ import { LogInResult } from '../../containers/user/dto/LogInResult'
 import { SignStatus } from '../../containers/user/enums/sign-status'
 import { LogInResponseDto } from '../../containers/user/dto/LogInResponseDto'
 import { TokenDto } from '../../containers/user/dto/TokenDto'
+import { ApiGateway } from '../api-gateway'
 
 const JWT = 'jwt'
-const getAuthUrl = (endpoint: string) => {
-    return `http://localhost:5000/auth/${endpoint}`
+const constructUrl = (endpoint: string) => {
+    return `${ApiGateway.REACT_APP_API_GATEWAY}/auth/${endpoint}`
 }
-const loginWithOAuthGoogleUrl: string =
-    'http://localhost:5000/auth/login/google'
-const registerWithOAuthGoogleUrl: string =
-    'http://localhost:5000/auth/register/google'
 
 const sendAuthRequest = async (url: string, data: object = {}) => {
     return fetch(url, {
@@ -54,28 +51,36 @@ const performSign = async (
 }
 
 export const performLogIn = async (dto: LogInDto) => {
-    return performSign(getAuthUrl('login'), dto, SignStatus.INVALID_CREDENTIALS)
+    return performSign(
+        constructUrl('login'),
+        dto,
+        SignStatus.INVALID_CREDENTIALS
+    )
 }
 
 export const performRegister = async (dto: RegisterDto) => {
-    return performSign(getAuthUrl('register'), dto, SignStatus.EMAIL_IS_TAKEN)
+    return performSign(constructUrl('register'), dto, SignStatus.EMAIL_IS_TAKEN)
 }
 
 export const performLoginByToken = async (dto: TokenDto) => {
     return performSign(
-        getAuthUrl('login-by-token'),
+        constructUrl('login-by-token'),
         dto,
         SignStatus.INVALID_TOKEN
     )
 }
 
 export const performLoginOAuthWithGoogle = async (dto: TokenDto) => {
-    return performSign(loginWithOAuthGoogleUrl, dto, SignStatus.INVALID_TOKEN)
+    return performSign(
+        constructUrl('login/google'),
+        dto,
+        SignStatus.INVALID_TOKEN
+    )
 }
 
 export const performRegisterOAuthWithGoogle = async (dto: TokenDto) => {
     return performSign(
-        registerWithOAuthGoogleUrl,
+        constructUrl('register/google'),
         dto,
         SignStatus.INVALID_TOKEN
     )

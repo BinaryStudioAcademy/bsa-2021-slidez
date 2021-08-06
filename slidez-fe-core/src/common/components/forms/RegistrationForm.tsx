@@ -6,7 +6,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { useAppSelector } from '../../../hooks'
 import { selectSignStatus } from '../../../containers/user/store'
 import { SignStatus } from '../../../containers/user/enums/sign-status'
-import { GoogleOAuth } from '../../../services/auth/google-oauth.enum'
+import { GoogleOAuth } from '../../../services/auth/google-oauth'
 import GoogleLogin from 'react-google-login'
 
 type RegistrationProps = {
