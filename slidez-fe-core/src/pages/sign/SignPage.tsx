@@ -6,10 +6,16 @@ import RegistrationForm from '../../common/components/forms/RegistrationForm'
 import styles from './styles.module.scss'
 import { useAppDispatch } from '../../hooks'
 import { LogInDto } from '../../containers/user/dto/LogInDto'
+import { TokenDto } from '../../containers/user/dto/TokenDto'
 import { RegisterDto } from '../../containers/user/dto/RegisterDto'
-import { logIn, register } from '../../containers/user/store'
 import Logo from '../../common/components/logo/Logo'
 import loginPage from '../../assets/images/LogInPageBackground.jpg'
+import {
+    logIn,
+    loginWithOAuthGoogle,
+    register,
+    registerWithOAuthGoogle,
+} from '../../containers/user/store'
 
 const SignPage = () => {
     const { pathname } = useLocation()
@@ -23,7 +29,12 @@ const SignPage = () => {
         dispatch(logIn(dto))
     }
 
-    const handleLoginWithGoogle = () => {}
+    const handleLoginWithGoogle = async (googleData: any) => {
+        const dto: TokenDto = {
+            token: googleData.tokenId,
+        }
+        dispatch(loginWithOAuthGoogle(dto))
+    }
 
     const handleRegister = (
         email: string,
@@ -38,7 +49,12 @@ const SignPage = () => {
         dispatch(register(dto))
     }
 
-    const handleRegisterWithGoogle = () => {}
+    const handleRegisterWithGoogle = async (googleData: any) => {
+        const dto: TokenDto = {
+            token: googleData.tokenId,
+        }
+        dispatch(registerWithOAuthGoogle(dto))
+    }
 
     const getForm = (path: string) => {
         switch (path) {

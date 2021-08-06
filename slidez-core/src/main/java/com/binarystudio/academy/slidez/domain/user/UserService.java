@@ -32,13 +32,22 @@ public class UserService {
 		return this.userRepository.findByEmail(email);
 	}
 
-	public Optional<UserDetailsDto> findByToken(String token) {
+	public Optional<User> findByToken(String token) {
 		String email = this.authService.getLoginFromToken(token);
-		if (email == null || email.isEmpty()) {
+		if (email == null) {
 			return Optional.empty();
 		}
-		Optional<User> user = findByEmail(email);
-		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user.get());
+		return findByEmail(email);
+	}
+
+	public Optional<UserDetailsDto> getDetailsByToken(String token) {
+		String email = this.authService.getLoginFromToken(token);
+		if (email == null) {
+			return Optional.empty();
+		}
+		Optional<User> userOptional = findByEmail(email);
+		User user = userOptional.orElseThrow();
+		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
 		return Optional.of(userDetailsDto);
 	}
 
@@ -50,6 +59,13 @@ public class UserService {
 
 	public Optional<User> getById(UUID id) {
 		return this.userRepository.findById(id);
+	}
+
+	public User createByEmail(String email) {
+		User user = new User();
+		user.setEmail(email);
+		user.setPassword(this.passwordEncoder.encode(""));
+		return this.userRepository.save(user);
 	}
 
 }
