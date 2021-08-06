@@ -2,11 +2,8 @@ package com.binarystudio.academy.slidez.infrastructure.security.auth;
 
 import java.util.Optional;
 
-import javax.persistence.EntityExistsException;
-
 import com.binarystudio.academy.slidez.domain.user.UserService;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
-import com.binarystudio.academy.slidez.domain.user.dto.UserDto;
 import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthResponse;
@@ -20,17 +17,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
 
-	@Autowired
-	private UserService userService;
+	private final UserService userService;
+
+	private final JwtProvider jwtProvider;
+
+	private final PasswordEncoder passwordEncoder;
 
 	@Autowired
-	private JwtProvider jwtProvider;
-
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	public AuthService(UserService userService, JwtProvider jwtProvider, PasswordEncoder passwordEncoder) {
+		this.userService = userService;
+		this.jwtProvider = jwtProvider;
+		this.passwordEncoder = passwordEncoder;
+	}
 
 	public Optional<AuthResponse> performLoginByToken(AuthorizationByTokenRequest authorizationByTokenRequest) {
-		Optional<User> userByToken = this.userService.findByToken(authorizationByTokenRequest.getToken());
+		Optional<User> userByToken = this.userService.getByToken(authorizationByTokenRequest.getToken());
 		return userByToken.map(user -> {
 			String newToken = this.jwtProvider.generateAccessToken(user);
 			UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
@@ -39,7 +40,7 @@ public class AuthService {
 	}
 
 	public Optional<AuthResponse> performLogin(AuthorizationRequest authorizationRequest) {
-		var userOptional = this.userService.findByEmail(authorizationRequest.getEmail());
+		Optional<User> userOptional = userService.getByEmail(authorizationRequest.getEmail());
 		if (userOptional.isEmpty()) {
 			return Optional.empty();
 		}
@@ -49,27 +50,23 @@ public class AuthService {
 		if (!passwordsMatch(authorizationRequest.getPassword(), user.getPassword())) {
 			return Optional.empty();
 		}
-		var mapper = UserMapper.INSTANCE;
-		UserDetailsDto userDetailsDto = mapper.mapUserToUserDetailsDto(user);
-		return Optional.of(AuthResponse.of(this.jwtProvider.generateAccessToken(user), userDetailsDto));
+		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
+		return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user), userDetailsDto));
 	}
 
 	private boolean passwordsMatch(String rawPw, String encodedPw) {
 		return this.passwordEncoder.matches(rawPw, encodedPw);
 	}
 
-	public Optional<AuthResponse> register(UserDto userDto) {
-		if (this.userService.isEmailPresent(userDto.getEmail())) {
-			throw new EntityExistsException(String.format("User with email: '%s' already exists.", userDto.getEmail()));
+	public Optional<AuthResponse> register(AuthorizationRequest registrationRequest) {
+		Optional<AuthResponse> out = Optional.empty();
+		if (this.userService.isEmailPresent(registrationRequest.getEmail())) {
+			return out;
 		}
-
-		User user = this.userService.create(userDto);
+		User user = this.userService.create(registrationRequest.getEmail(), registrationRequest.getPassword());
 		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-		return Optional.of(AuthResponse.of(this.jwtProvider.generateAccessToken(user), userDetailsDto));
-	}
-
-	public String getLoginFromToken(String token) {
-		return this.jwtProvider.getLoginFromToken(token);
+		String token = this.jwtProvider.generateAccessToken(user);
+		return Optional.of(AuthResponse.of(token, userDetailsDto));
 	}
 
 }

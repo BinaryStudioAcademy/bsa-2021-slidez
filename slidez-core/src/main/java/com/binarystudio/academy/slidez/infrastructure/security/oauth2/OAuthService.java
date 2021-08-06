@@ -34,7 +34,7 @@ public class OAuthService {
 			return Optional.empty();
 		}
 		String email = emailForGoogle.get();
-		Optional<User> byEmail = userService.findByEmail(email);
+		Optional<User> byEmail = userService.getByEmail(email);
 		return byEmail.map(user -> {
 			String token = this.jwtProvider.generateAccessToken(user);
 			UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
