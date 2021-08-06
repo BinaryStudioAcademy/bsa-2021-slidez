@@ -34,7 +34,7 @@ public class AuthController {
 
 	@PostMapping("login")
 	public ResponseEntity<AuthResponse> login(@RequestBody AuthorizationRequest authorizationRequest) {
-		Optional<AuthResponse> authResponse = this.authService.performLogin(authorizationRequest);
+		Optional<AuthResponse> authResponse = authService.performLogin(authorizationRequest);
 		return authResponse.map(resp -> new ResponseEntity<>(resp, HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
 	}
@@ -45,7 +45,7 @@ public class AuthController {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		Optional<AuthResponse> authResponseOptional = this.authService.register(authorizationRequest);
+		Optional<AuthResponse> authResponseOptional = authService.register(authorizationRequest);
 		return authResponseOptional.map(resp -> new ResponseEntity<>(resp, HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
 	}
@@ -53,7 +53,7 @@ public class AuthController {
 	@PostMapping("login-by-token")
 	public ResponseEntity<AuthResponse> loginByToken(
 			@RequestBody AuthorizationByTokenRequest authorizationByTokenRequest) {
-		Optional<AuthResponse> authResponseOptional = this.authService.performLoginByToken(authorizationByTokenRequest);
+		Optional<AuthResponse> authResponseOptional = authService.performLoginByToken(authorizationByTokenRequest);
 		return authResponseOptional.map(resp -> new ResponseEntity<>(resp, HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
 	}

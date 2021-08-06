@@ -3,13 +3,12 @@ package com.binarystudio.academy.slidez.infrastructure.security.auth;
 import java.util.Optional;
 
 import com.binarystudio.academy.slidez.domain.user.UserService;
-import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
-import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthResponse;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthorizationByTokenRequest;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthorizationRequest;
 import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtProvider;
+import com.binarystudio.academy.slidez.infrastructure.security.util.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,11 +31,7 @@ public class AuthService {
 
 	public Optional<AuthResponse> performLoginByToken(AuthorizationByTokenRequest authorizationByTokenRequest) {
 		Optional<User> userByToken = this.userService.getByToken(authorizationByTokenRequest.getToken());
-		return userByToken.map(user -> {
-			String newToken = this.jwtProvider.generateAccessToken(user);
-			UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-			return AuthResponse.of(newToken, userDetailsDto);
-		});
+		return userByToken.map(user -> AuthUtil.createResponseFromUser(user, jwtProvider));
 	}
 
 	public Optional<AuthResponse> performLogin(AuthorizationRequest authorizationRequest) {
@@ -50,8 +45,7 @@ public class AuthService {
 		if (!passwordsMatch(authorizationRequest.getPassword(), user.getPassword())) {
 			return Optional.empty();
 		}
-		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-		return Optional.of(AuthResponse.of(jwtProvider.generateAccessToken(user), userDetailsDto));
+		return Optional.of(AuthUtil.createResponseFromUser(user, jwtProvider));
 	}
 
 	private boolean passwordsMatch(String rawPw, String encodedPw) {
@@ -60,13 +54,11 @@ public class AuthService {
 
 	public Optional<AuthResponse> register(AuthorizationRequest registrationRequest) {
 		Optional<AuthResponse> out = Optional.empty();
-		if (this.userService.isEmailPresent(registrationRequest.getEmail())) {
+		if (userService.isEmailPresent(registrationRequest.getEmail())) {
 			return out;
 		}
-		User user = this.userService.create(registrationRequest.getEmail(), registrationRequest.getPassword());
-		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-		String token = this.jwtProvider.generateAccessToken(user);
-		return Optional.of(AuthResponse.of(token, userDetailsDto));
+		User user = userService.create(registrationRequest.getEmail(), registrationRequest.getPassword());
+		return Optional.of(AuthUtil.createResponseFromUser(user, jwtProvider));
 	}
 
 }
