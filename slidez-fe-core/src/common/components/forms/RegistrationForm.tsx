@@ -141,9 +141,11 @@ const RegistrationForm = ({
                         }
                     />
                     <FontAwesomeIcon
-                        icon={isPasswordRevealed ? faEye : faEyeSlash}
+                        icon={isConfirmPasswordRevealed ? faEye : faEyeSlash}
                         className={`input-icon ${
-                            isPasswordRevealed ? 'icon-eye' : 'icon-eye-slash'
+                            isConfirmPasswordRevealed
+                                ? 'icon-eye'
+                                : 'icon-eye-slash'
                         }`}
                         onClick={onRevealConfirmedPasswordClick}
                     />

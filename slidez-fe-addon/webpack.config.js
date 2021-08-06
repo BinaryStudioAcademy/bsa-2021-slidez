@@ -119,10 +119,13 @@ const clientConfig = {
           loader: 'babel-loader',
         },
       },
-      // we could add support for scss here
       {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        test: /\.s[ac]ss$/i,
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader",
+        ],
       },
     ],
   },
