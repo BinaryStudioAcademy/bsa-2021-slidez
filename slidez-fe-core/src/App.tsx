@@ -18,7 +18,7 @@ function App() {
                     />
                     <PrivateRoute
                         exact
-                        path='/dashboard'
+                        path={AppRoute.DASHBOARD}
                         component={Dashboard}
                     />
                 </Switch>
