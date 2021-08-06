@@ -6,6 +6,7 @@ import java.time.ZoneOffset;
 import java.util.Date;
 
 import com.binarystudio.academy.slidez.domain.user.model.User;
+import com.binarystudio.academy.slidez.infrastructure.security.exception.JwtException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtParser;
