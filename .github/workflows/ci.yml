@@ -7,6 +7,7 @@ env:
   AWS_REGION_NAME: "eu-west-1"
   AWS_SPA_S3_BUCKET: "bsa.slidez-fe-spa"
   REACT_APP_API_GATEWAY: "http://bsa2021slidez-env.eba-b3mmt3yw.eu-west-1.elasticbeanstalk.com/"
+  REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}
 
 on:
   push:
