@@ -11,8 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 public class OAuth2Properties {
 
-	private String redirectUri;
-
 	private String clientId;
 
 }
