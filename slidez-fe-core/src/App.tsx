@@ -19,9 +19,9 @@ function App() {
                     component={SignPage}
                 />
                 <PrivateRoute
-                        exact
-                        path={AppRoute.DASHBOARD}
-                        component={Dashboard}
+                    exact
+                    path={AppRoute.DASHBOARD}
+                    component={Dashboard}
                 />
                 <PublicRoute
                     exact
