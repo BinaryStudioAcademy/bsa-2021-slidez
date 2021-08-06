@@ -6,6 +6,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
 import { useAppSelector } from '../../../hooks'
 import { selectSignStatus } from '../../../containers/user/store'
 import { SignStatus } from '../../../containers/user/enums/sign-status'
+import GeneralButton from '../../../common_components/button/GeneralButton'
 import { GoogleOAuth } from '../../../services/auth/google-oauth'
 import GoogleLogin from 'react-google-login'
 
@@ -148,13 +149,14 @@ const RegistrationForm = ({
                     />
                 </div>
             </div>
-            <div className='form-row buttons-row'>
-                <button
+            <div className='form-row' />
+            <div className='form-row'>
+                <GeneralButton
                     className='form-button login-button'
                     onClick={handleRegister}
                 >
                     Sign Up
-                </button>
+                </GeneralButton>
             </div>
             <div className='form-row button-divider'>or</div>
             <div className='form-row'>

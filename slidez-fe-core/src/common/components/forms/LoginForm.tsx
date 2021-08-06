@@ -11,6 +11,7 @@ import { selectSignStatus } from '../../../containers/user/store'
 import { SignStatus } from '../../../containers/user/enums/sign-status'
 import GoogleLogin from 'react-google-login'
 import { GoogleOAuth } from '../../../services/auth/google-oauth'
+import GeneralButton from '../../../common_components/button/GeneralButton'
 
 type LoginProps = {
     onLogin: Function
@@ -35,19 +36,16 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
         }
     }
 
-    const handleLoginWithGoogle = async (googleData: any) => {
-        onLoginWithGoogle(googleData)
+    const handleLoginWithGoogle = () => {
+        onLoginWithGoogle()
     }
+
     return (
         <div className='sign-form'>
-            <div className='form-row header-row'>Log In</div>
+            <div className='form-row'>Log In</div>
             <div className='form-row'>
                 <div className='no-account'>No account?</div>
-                <NavLink
-                    exact
-                    to={AppRoute.REGISTRATION}
-                    className='signUpLink'
-                >
+                <NavLink exact to={AppRoute.REGISTRATION} className='link'>
                     Sign Up
                 </NavLink>
             </div>
@@ -98,21 +96,20 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                         onChange={(event) => setPassword(event.target.value)}
                     />
                     <FontAwesomeIcon
-                        className={`input-icon ${
-                            isPasswordRevealed ? 'icon-eye' : 'icon-eye-slash'
-                        }`}
                         icon={isPasswordRevealed ? faEye : faEyeSlash}
+                        className='input-icon'
                         onClick={onRevealClick}
                     />
                 </div>
             </div>
-            <div className='form-row buttons-row'>
-                <button
+            <div className='form-row' />
+            <div className='form-row'>
+                <GeneralButton
                     className='form-button login-button'
                     onClick={handleLogin}
                 >
                     Log In
-                </button>
+                </GeneralButton>
             </div>
             <div className='form-row button-divider'>or</div>
             <div className='form-row'>
@@ -123,13 +120,13 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                     redirectUri={GoogleOAuth.GOOGLE_REDIRECT_URI}
                     cookiePolicy={GoogleOAuth.GOOGLE_COOKIE_POLICY}
                     render={(renderProps) => (
-                        <button
+                        <GeneralButton
                             onClick={renderProps.onClick}
                             className={'form-button login-with-google-button'}
                             disabled={renderProps.disabled}
                         >
                             Log In with Google
-                        </button>
+                        </GeneralButton>
                     )}
                 />
             </div>
