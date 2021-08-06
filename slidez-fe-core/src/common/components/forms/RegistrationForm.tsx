@@ -2,10 +2,12 @@ import React from 'react'
 import { revealPassword } from './form-utils'
 import validator from 'validator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
 import { useAppSelector } from '../../../hooks'
 import { selectSignStatus } from '../../../containers/user/store'
 import { SignStatus } from '../../../containers/user/enums/sign-status'
+import { GoogleOAuth } from '../../../services/auth/google-oauth'
+import GoogleLogin from 'react-google-login'
 
 type RegistrationProps = {
     onRegister: Function
@@ -54,13 +56,13 @@ const RegistrationForm = ({
         }
     }
 
-    const handleRegisterWithGoogle = () => {
-        onRegisterWithGoogle()
+    const handleRegisterWithGoogle = async (googleData: any) => {
+        onRegisterWithGoogle(googleData)
     }
 
     return (
         <div className='sign-form'>
-            <div className='form-row'>Sign Up</div>
+            <div className='form-row header-row'>Sign Up</div>
             <div className='form-row form-input-holder'>
                 <label htmlFor='register-email-input' className='label'>
                     Email
@@ -103,7 +105,9 @@ const RegistrationForm = ({
                     />
                     <FontAwesomeIcon
                         icon={isPasswordRevealed ? faEye : faEyeSlash}
-                        className='input-icon'
+                        className={`input-icon ${
+                            isPasswordRevealed ? 'icon-eye' : 'icon-eye-slash'
+                        }`}
                         onClick={onRevealPasswordClick}
                     />
                 </div>
@@ -136,14 +140,17 @@ const RegistrationForm = ({
                         }
                     />
                     <FontAwesomeIcon
-                        icon={isPasswordRevealed ? faEye : faEyeSlash}
-                        className='input-icon'
+                        icon={isConfirmPasswordRevealed ? faEye : faEyeSlash}
+                        className={`input-icon ${
+                            isConfirmPasswordRevealed
+                                ? 'icon-eye'
+                                : 'icon-eye-slash'
+                        }`}
                         onClick={onRevealConfirmedPasswordClick}
                     />
                 </div>
             </div>
-            <div className='form-row' />
-            <div className='form-row'>
+            <div className='form-row buttons-row'>
                 <button
                     className='form-button login-button'
                     onClick={handleRegister}
@@ -153,12 +160,22 @@ const RegistrationForm = ({
             </div>
             <div className='form-row button-divider'>or</div>
             <div className='form-row'>
-                <button
+                <GoogleLogin
                     className='form-button login-with-google-button'
-                    onClick={handleRegisterWithGoogle}
-                >
-                    Sign Up with Google
-                </button>
+                    clientId={GoogleOAuth.GOOGLE_CLIENT_ID}
+                    onSuccess={handleRegisterWithGoogle}
+                    redirectUri={GoogleOAuth.GOOGLE_REDIRECT_URI}
+                    cookiePolicy={GoogleOAuth.GOOGLE_COOKIE_POLICY}
+                    render={(renderProps) => (
+                        <button
+                            onClick={renderProps.onClick}
+                            className={'form-button login-with-google-button'}
+                            disabled={renderProps.disabled}
+                        >
+                            Sign Up with Google
+                        </button>
+                    )}
+                />
             </div>
         </div>
     )

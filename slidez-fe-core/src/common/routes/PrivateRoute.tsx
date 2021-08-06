@@ -1,23 +1,27 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import PropTypes from 'prop-types'
+import { AppRoute } from './app-route'
+import { useAppSelector } from '../../hooks'
+import { selectIsLoggedIn } from '../../containers/user/store'
 
-const PrivateRoute = ({
-    component: Component,
-    isAuthenticated,
-    ...rest
-}: any) => (
-    <Route
-        {...rest}
-        render={(props) =>
-            isAuthenticated ? (
-                <Component {...props} />
-            ) : (
-                <Redirect
-                    to={{ pathname: '/login', state: { from: props.location } }}
-                />
-            )
-        }
-    />
-)
+const PrivateRoute = ({ component: Component, ...rest }: any) => {
+    const hasUser = useAppSelector(selectIsLoggedIn)
+    return (
+        <Route
+            {...rest}
+            render={(props) =>
+                hasUser ? (
+                    <Component {...props} />
+                ) : (
+                    <Redirect
+                        to={{
+                            pathname: `${AppRoute.LOGIN}`,
+                            state: { from: props.location },
+                        }}
+                    />
+                )
+            }
+        />
+    )
+}
 export default PrivateRoute
