@@ -22,6 +22,7 @@ const Dashboard = () => {
     const [activeButton, setActiveButton] = useState(false)
     const dropdownRef = useRef<HTMLInputElement>(null)
     const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
+    const [searchField, setSearchField] = useState('')
 
     const handleToggleCurrentView = useCallback(() => {
         setCurrentView((view) => (view === 'table' ? 'grid' : 'table'))
@@ -65,7 +66,7 @@ const Dashboard = () => {
     }
 
     const renderTableData = () => {
-        return MOCK_DATA.map((presentation) => {
+        return filteredPresentation.map((presentation) => {
             return (
                 <tr key={presentation.id}>
                     <td>{presentation.name}</td>
@@ -83,6 +84,25 @@ const Dashboard = () => {
         })
     }
 
+    const filteredPresentation = MOCK_DATA.filter((presentation) => {
+        return presentation.name
+            .toLowerCase()
+            .includes(searchField.toLowerCase())
+    })
+
+    const isNotEmptyPresentation = () => {
+        return filteredPresentation.length === 0 ? (
+            <span>No presentions are found by search term {searchField}.</span>
+        ) : (
+            ''
+        )
+    }
+
+    // @ts-ignore
+    const handleChange = (e) => {
+        setSearchField(e.target.value)
+    }
+
     return (
         <div className='dashboard-page'>
             <SideBar></SideBar>
@@ -97,6 +117,7 @@ const Dashboard = () => {
                             id='searchQueryInput'
                             type='search'
                             placeholder='Search...'
+                            onChange={handleChange}
                         ></input>
                     </div>
                     <div className='user-profile'>
@@ -201,10 +222,11 @@ const Dashboard = () => {
                                         {renderTableData()}
                                     </tbody>
                                 </table>
+                                {isNotEmptyPresentation()}
                             </div>
                         ) : (
                             <div className='grid'>
-                                {MOCK_DATA.map((md) => (
+                                {filteredPresentation.map((md) => (
                                     <div className='card' key={md.id}>
                                         <img
                                             className='card-img'
@@ -235,6 +257,7 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 ))}
+                                {isNotEmptyPresentation()}
                             </div>
                         )}
                     </div>
