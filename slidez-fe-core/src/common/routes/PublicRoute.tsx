@@ -17,7 +17,7 @@ const PublicRoute = ({ component: Component, ...rest }) => {
                 hasUser ? (
                     <Redirect
                         to={{
-                            pathname: AppRoute.ROOT,
+                            pathname: AppRoute.DASHBOARD,
                             state: { from: props.location },
                         }}
                     />
