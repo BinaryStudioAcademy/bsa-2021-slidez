@@ -2,7 +2,7 @@ import React from 'react'
 import { revealPassword } from './form-utils'
 import validator from 'validator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
 import { useAppSelector } from '../../../hooks'
 import { selectSignStatus } from '../../../containers/user/store'
 import { SignStatus } from '../../../containers/user/enums/sign-status'
@@ -62,7 +62,7 @@ const RegistrationForm = ({
 
     return (
         <div className='sign-form'>
-            <div className='form-row'>Sign Up</div>
+            <div className='form-row header-row'>Sign Up</div>
             <div className='form-row form-input-holder'>
                 <label htmlFor='register-email-input' className='label'>
                     Email
@@ -105,7 +105,9 @@ const RegistrationForm = ({
                     />
                     <FontAwesomeIcon
                         icon={isPasswordRevealed ? faEye : faEyeSlash}
-                        className='input-icon'
+                        className={`input-icon ${
+                            isPasswordRevealed ? 'icon-eye' : 'icon-eye-slash'
+                        }`}
                         onClick={onRevealPasswordClick}
                     />
                 </div>
@@ -139,13 +141,14 @@ const RegistrationForm = ({
                     />
                     <FontAwesomeIcon
                         icon={isPasswordRevealed ? faEye : faEyeSlash}
-                        className='input-icon'
+                        className={`input-icon ${
+                            isPasswordRevealed ? 'icon-eye' : 'icon-eye-slash'
+                        }`}
                         onClick={onRevealConfirmedPasswordClick}
                     />
                 </div>
             </div>
-            <div className='form-row' />
-            <div className='form-row'>
+            <div className='form-row buttons-row'>
                 <button
                     className='form-button login-button'
                     onClick={handleRegister}

@@ -1,36 +1,5 @@
 @import "src/global/global";
-a {
-	text-decoration: none;
-}
-button {
-	background: none;
-	cursor: pointer;
-}
-input {
-	-webkit-appearance: none;
-}
-* {
-	box-sizing: border-box;
-	font-family: 'Rubik';
 
-	&::-webkit-scrollbar {
-		width: 4px;
-	}
-	&::-webkit-scrollbar-thumb {
-		background: rgba(0, 0, 0, 0.2);
-		border-radius: 2px;
-	}
-}
-html {
-	margin: 0;
-	padding: 0;
-}
-body {
-	margin: 0;
-	padding: 0;
-	background: #FFFFFF;
-	font-family: Rubik;
-}
 .dashboard-page {
 	padding: 10px;
 	position: fixed;

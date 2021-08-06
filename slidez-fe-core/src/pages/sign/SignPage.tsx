@@ -3,17 +3,19 @@ import { AppRoute } from '../../common/routes/app-route'
 import { useLocation } from 'react-router-dom'
 import LoginForm from '../../common/components/forms/LoginForm'
 import RegistrationForm from '../../common/components/forms/RegistrationForm'
-import './sign-page.scss'
+import styles from './styles.module.scss'
 import { useAppDispatch } from '../../hooks'
 import { LogInDto } from '../../containers/user/dto/LogInDto'
+import { TokenDto } from '../../containers/user/dto/TokenDto'
 import { RegisterDto } from '../../containers/user/dto/RegisterDto'
+import Logo from '../../common/components/logo/Logo'
+import loginPage from '../../assets/images/LogInPageBackground.jpg'
 import {
     logIn,
     loginWithOAuthGoogle,
     register,
     registerWithOAuthGoogle,
 } from '../../containers/user/store'
-import { TokenDto } from '../../containers/user/dto/TokenDto'
 
 const SignPage = () => {
     const { pathname } = useLocation()
@@ -79,15 +81,13 @@ const SignPage = () => {
     }
 
     return (
-        <div className='signPage'>
-            <div>
-                <img
-                    src='http://i.piccy.info/i9/b444f9c17363dd803519567805706967/1627469540/39479/1437067/welcome.jpg'
-                    alt='Piccy.info - Free Image Hosting'
-                    className='welcome-image'
-                />
+        <div className={styles.signPage}>
+            <div className={styles.imageContainer}>
+                <div className={styles.imageBlock}>
+                    <Logo width='50%' />
+                </div>
             </div>
-            <div className='form-holder'>{getForm(pathname)}</div>
+            <div className={styles.formHolder}>{getForm(pathname)}</div>
         </div>
     )
 }

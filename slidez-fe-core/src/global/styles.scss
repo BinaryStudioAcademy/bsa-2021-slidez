@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+	box-sizing: border-box;
+
+	&::-webkit-scrollbar {
+		width: 4px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background: rgba(0, 0, 0, 0.2);
+		border-radius: 2px;
+	}
+}
+
+body {
+    font-family: 'Rubik', sans-serif;
+    font-weight: 300;
+	background: #FFFFFF;
+}
+a {
+	text-decoration: none;
+}
+button {
+	background: none;
+	cursor: pointer;
+}
+input {
+	-webkit-appearance: none;
+}
