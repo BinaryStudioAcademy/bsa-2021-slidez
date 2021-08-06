@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.domain.presentation;
 
+import com.binarystudio.academy.slidez.domain.presentation.dto.PresentationUpdateDto;
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,8 @@ public class PresentationService {
 	}
 
 	public Presentation add(String name) {
-		Presentation presentation = new Presentation(null, name, "", LocalDateTime.now(), null);
+		LocalDateTime now = LocalDateTime.now();
+		Presentation presentation = new Presentation(null, name, "", now, now);
 		return presentationRepository.save(presentation);
 	}
 
@@ -26,9 +28,9 @@ public class PresentationService {
 		return presentationRepository.getById(id);
 	}
 
-	public Presentation update(UUID id, Presentation presentation) {
-		presentation.setId(id);
-		return presentationRepository.save(presentation);
+	public Presentation update(PresentationUpdateDto dto) {
+		presentationRepository.update(dto);
+		return presentationRepository.getById(dto.getId());
 	}
 
 	public void remove(UUID id) {

@@ -4,5 +4,5 @@ create table presentations
     name varchar(255) NOT NULL,
     link varchar(255) NOT NULL,
     created_at TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP
+    updated_at TIMESTAMP NOT NULL
 );
