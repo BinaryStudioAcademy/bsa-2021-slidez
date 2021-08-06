@@ -7,7 +7,13 @@ import './sign-page.scss'
 import { useAppDispatch } from '../../hooks'
 import { LogInDto } from '../../containers/user/dto/LogInDto'
 import { RegisterDto } from '../../containers/user/dto/RegisterDto'
-import { logIn, register } from '../../containers/user/store'
+import {
+    logIn,
+    loginWithOAuthGoogle,
+    register,
+    registerWithOAuthGoogle,
+} from '../../containers/user/store'
+import { TokenDto } from '../../containers/user/dto/TokenDto'
 
 const SignPage = () => {
     const { pathname } = useLocation()
@@ -21,7 +27,12 @@ const SignPage = () => {
         dispatch(logIn(dto))
     }
 
-    const handleLoginWithGoogle = () => {}
+    const handleLoginWithGoogle = async (googleData: any) => {
+        const dto: TokenDto = {
+            token: googleData.tokenId,
+        }
+        dispatch(loginWithOAuthGoogle(dto))
+    }
 
     const handleRegister = (
         email: string,
@@ -36,7 +47,12 @@ const SignPage = () => {
         dispatch(register(dto))
     }
 
-    const handleRegisterWithGoogle = () => {}
+    const handleRegisterWithGoogle = async (googleData: any) => {
+        const dto: TokenDto = {
+            token: googleData.tokenId,
+        }
+        dispatch(registerWithOAuthGoogle(dto))
+    }
 
     const getForm = (path: string) => {
         switch (path) {

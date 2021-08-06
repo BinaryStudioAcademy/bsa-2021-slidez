@@ -12,15 +12,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private void applyRouteRestrictions(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+		http.antMatcher("/**").authorizeRequests()
 				// PUBLIC
-				.antMatchers("/auth/**").permitAll().antMatchers("/ws/**", "/hello").permitAll()
-				.antMatchers(HttpMethod.GET, "/*").permitAll();
+				.antMatchers("/auth/**").permitAll().antMatchers(HttpMethod.GET, "/*").permitAll().anyRequest()
+				.authenticated();
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().httpBasic().disable().formLogin().disable()
+
 				// Set session management to stateless
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

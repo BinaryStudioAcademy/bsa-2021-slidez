@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.binarystudio.academy.slidez.domain.user.UserValidator;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDto;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthResponse;
+import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthorizationByTokenRequest;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthorizationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ public class AuthController {
 
 		Optional<AuthResponse> authResponse = this.authService.performLogin(authorizationRequest);
 		if (authResponse.isEmpty()) {
-			return new ResponseEntity<>("Incorrect password or email.", HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity("Incorrect password or email.", HttpStatus.UNAUTHORIZED);
 		}
 
 		return new ResponseEntity<>(authResponse.get(), HttpStatus.OK);
@@ -51,7 +52,15 @@ public class AuthController {
 		if (authResponse.isEmpty()) {
 			return new ResponseEntity<>("Incorrect password or user email.", HttpStatus.UNAUTHORIZED);
 		}
-		return new ResponseEntity<>(authResponse.get(), HttpStatus.OK);
+		return new ResponseEntity(authResponse.get(), HttpStatus.OK);
+	}
+
+	@PostMapping("login-by-token")
+	public ResponseEntity<AuthResponse> loginByToken(
+			@RequestBody AuthorizationByTokenRequest authorizationByTokenRequest) {
+		Optional<AuthResponse> authResponseOptional = this.authService.performLoginByToken(authorizationByTokenRequest);
+		return authResponseOptional.map(authResponse -> new ResponseEntity<>(authResponse, HttpStatus.OK))
+				.orElseGet(() -> new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
 	}
 
 }

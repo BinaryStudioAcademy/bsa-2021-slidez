@@ -6,6 +6,8 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { useAppSelector } from '../../../hooks'
 import { selectSignStatus } from '../../../containers/user/store'
 import { SignStatus } from '../../../containers/user/enums/sign-status'
+import { GoogleOAuth } from '../../../services/auth/google-oauth'
+import GoogleLogin from 'react-google-login'
 
 type RegistrationProps = {
     onRegister: Function
@@ -54,8 +56,8 @@ const RegistrationForm = ({
         }
     }
 
-    const handleRegisterWithGoogle = () => {
-        onRegisterWithGoogle()
+    const handleRegisterWithGoogle = async (googleData: any) => {
+        onRegisterWithGoogle(googleData)
     }
 
     return (
@@ -153,12 +155,22 @@ const RegistrationForm = ({
             </div>
             <div className='form-row button-divider'>or</div>
             <div className='form-row'>
-                <button
+                <GoogleLogin
                     className='form-button login-with-google-button'
-                    onClick={handleRegisterWithGoogle}
-                >
-                    Sign Up with Google
-                </button>
+                    clientId={GoogleOAuth.GOOGLE_CLIENT_ID}
+                    onSuccess={handleRegisterWithGoogle}
+                    redirectUri={GoogleOAuth.GOOGLE_REDIRECT_URI}
+                    cookiePolicy={GoogleOAuth.GOOGLE_COOKIE_POLICY}
+                    render={(renderProps) => (
+                        <button
+                            onClick={renderProps.onClick}
+                            className={'form-button login-with-google-button'}
+                            disabled={renderProps.disabled}
+                        >
+                            Sign Up with Google
+                        </button>
+                    )}
+                />
             </div>
         </div>
     )

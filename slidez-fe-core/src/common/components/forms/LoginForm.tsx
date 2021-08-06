@@ -10,6 +10,8 @@ import { revealPassword } from './form-utils'
 import { useAppSelector } from '../../../hooks'
 import { selectSignStatus } from '../../../containers/user/store'
 import { SignStatus } from '../../../containers/user/enums/sign-status'
+import GoogleLogin from 'react-google-login'
+import { GoogleOAuth } from '../../../services/auth/google-oauth'
 
 type LoginProps = {
     onLogin: Function
@@ -34,10 +36,9 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
         }
     }
 
-    const handleLoginWithGoogle = () => {
-        onLoginWithGoogle()
+    const handleLoginWithGoogle = async (googleData: any) => {
+        onLoginWithGoogle(googleData)
     }
-
     return (
         <div className='sign-form'>
             <div className='form-row'>Log In</div>
@@ -111,12 +112,22 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
             </div>
             <div className='form-row button-divider'>or</div>
             <div className='form-row'>
-                <button
+                <GoogleLogin
                     className='form-button login-with-google-button'
-                    onClick={handleLoginWithGoogle}
-                >
-                    Log In with Google
-                </button>
+                    clientId={GoogleOAuth.GOOGLE_CLIENT_ID}
+                    onSuccess={handleLoginWithGoogle}
+                    redirectUri={GoogleOAuth.GOOGLE_REDIRECT_URI}
+                    cookiePolicy={GoogleOAuth.GOOGLE_COOKIE_POLICY}
+                    render={(renderProps) => (
+                        <button
+                            onClick={renderProps.onClick}
+                            className={'form-button login-with-google-button'}
+                            disabled={renderProps.disabled}
+                        >
+                            Log In with Google
+                        </button>
+                    )}
+                />
             </div>
         </div>
     )
