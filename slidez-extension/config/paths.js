@@ -21,7 +21,7 @@ const publicUrlOrPath = getPublicUrlOrPath(
     process.env.PUBLIC_URL
 )
 
-const buildPath = process.env.BUILD_PATH || 'build'
+const buildPath = 'dist'
 
 const moduleFileExtensions = [
     'web.mjs',
@@ -57,7 +57,13 @@ module.exports = {
     appBuild: resolveApp(buildPath),
     appPublic: resolveApp('public'),
     appHtml: resolveApp('public/index.html'),
-    appIndexJs: resolveModule(resolveApp, 'src/index'),
+    chromeExtensionPopup: resolveModule(resolveApp, 'src/popup'),
+    chromeExtensionBackground: resolveModule(resolveApp, 'src/background'),
+    chromeExtensionOptions: resolveModule(resolveApp, 'src/options'),
+    chromeExtensionContentScript: resolveModule(
+        resolveApp,
+        'src/content_script'
+    ),
     appPackageJson: resolveApp('package.json'),
     appSrc: resolveApp('src'),
     appTsConfig: resolveApp('tsconfig.json'),
