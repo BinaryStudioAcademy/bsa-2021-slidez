@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faList,
@@ -23,6 +23,8 @@ const Dashboard = () => {
     const dropdownRef = useRef<HTMLInputElement>(null)
     const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
     const [searchField, setSearchField] = useState('')
+    const [filteredPresentations, setFilteredPresentations] =
+        useState(MOCK_DATA)
 
     const handleToggleCurrentView = useCallback(() => {
         setCurrentView((view) => (view === 'table' ? 'grid' : 'table'))
@@ -66,7 +68,7 @@ const Dashboard = () => {
     }
 
     const renderTableData = () => {
-        return filteredPresentation.map((presentation) => {
+        return filteredPresentations.map((presentation) => {
             return (
                 <tr key={presentation.id}>
                     <td>{presentation.name}</td>
@@ -84,22 +86,29 @@ const Dashboard = () => {
         })
     }
 
-    const filteredPresentation = MOCK_DATA.filter((presentation) => {
-        return presentation.name
-            .toLowerCase()
-            .includes(searchField.toLowerCase())
-    })
+    useEffect(() => {
+        setFilteredPresentations(
+            MOCK_DATA.filter((presentation) => {
+                return presentation.name
+                    .toLowerCase()
+                    .includes(searchField.toLowerCase())
+            })
+        )
+    }, [searchField])
 
     const isNotEmptyPresentation = () => {
-        return filteredPresentation.length === 0 ? (
-            <span>No presentions are found by search term {searchField}.</span>
+        return filteredPresentations.length === 0 ? (
+            <span>
+                No presentations are found by search term {searchField}.
+            </span>
         ) : (
             ''
         )
     }
 
-    // @ts-ignore
-    const handleChange = (e) => {
+    const handleChange = (e: {
+        target: { value: React.SetStateAction<string> }
+    }) => {
         setSearchField(e.target.value)
     }
 
@@ -226,7 +235,7 @@ const Dashboard = () => {
                             </div>
                         ) : (
                             <div className='grid'>
-                                {filteredPresentation.map((md) => (
+                                {filteredPresentations.map((md) => (
                                     <div className='card' key={md.id}>
                                         <img
                                             className='card-img'
