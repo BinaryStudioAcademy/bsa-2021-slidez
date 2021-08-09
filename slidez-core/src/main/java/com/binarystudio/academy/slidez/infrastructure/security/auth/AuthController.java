@@ -2,9 +2,7 @@ package com.binarystudio.academy.slidez.infrastructure.security.auth;
 
 import java.util.Optional;
 
-import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthResponse;
-import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthorizationByTokenRequest;
-import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthorizationRequest;
+import com.binarystudio.academy.slidez.infrastructure.security.auth.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,17 +17,17 @@ public class AuthController {
 
 	private final AuthService authService;
 
-	private final AuthorizationDtoValidator authorizationDtoValidator;
+	private final AuthorizationRequestValidator authorizationRequestValidator;
 
 	@Autowired
-	public AuthController(AuthService authService, AuthorizationDtoValidator authorizationDtoValidator) {
+	public AuthController(AuthService authService, AuthorizationRequestValidator authorizationRequestValidator) {
 		this.authService = authService;
-		this.authorizationDtoValidator = authorizationDtoValidator;
+		this.authorizationRequestValidator = authorizationRequestValidator;
 	}
 
 	@InitBinder("authorizationRequest")
 	public void authRequestValidatorBinder(WebDataBinder binder) {
-		binder.addValidators(this.authorizationDtoValidator);
+		binder.addValidators(this.authorizationRequestValidator);
 	}
 
 	@PostMapping("login")
@@ -55,6 +53,14 @@ public class AuthController {
 			@RequestBody AuthorizationByTokenRequest authorizationByTokenRequest) {
 		Optional<AuthResponse> authResponseOptional = authService.performLoginByToken(authorizationByTokenRequest);
 		return authResponseOptional.map(resp -> new ResponseEntity<>(resp, HttpStatus.OK))
+				.orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
+	}
+
+	@PostMapping("refresh-tokens")
+	public ResponseEntity<RefreshTokensResponse> loginByRefreshToken(
+			@RequestBody RefreshTokensRequest refreshTokensRequest) {
+		Optional<RefreshTokensResponse> tokensResponseOptional = authService.getRefreshedTokens(refreshTokensRequest);
+		return tokensResponseOptional.map(resp -> new ResponseEntity<>(resp, HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
 	}
 

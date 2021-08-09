@@ -3,8 +3,8 @@ package com.binarystudio.academy.slidez.infrastructure.security.auth.model;
 import lombok.Data;
 
 @Data
-public class AuthorizationByTokenRequest {
+public class RefreshTokensRequest {
 
-	private String token;
+	private String refreshToken;
 
 }

@@ -4,9 +4,7 @@ import java.util.Optional;
 
 import com.binarystudio.academy.slidez.domain.user.UserService;
 import com.binarystudio.academy.slidez.domain.user.model.User;
-import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthResponse;
-import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthorizationByTokenRequest;
-import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthorizationRequest;
+import com.binarystudio.academy.slidez.infrastructure.security.auth.model.*;
 import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtProvider;
 import com.binarystudio.academy.slidez.infrastructure.security.util.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +29,16 @@ public class AuthService {
 
 	public Optional<AuthResponse> performLoginByToken(AuthorizationByTokenRequest authorizationByTokenRequest) {
 		Optional<User> userByToken = this.userService.getByToken(authorizationByTokenRequest.getToken());
-		return userByToken.map(user -> AuthUtil.createResponseFromUser(user, jwtProvider));
+		return userByToken.map(user -> AuthUtil.createAuthResponseFromUser(user, jwtProvider));
+	}
+
+	public Optional<RefreshTokensResponse> getRefreshedTokens(RefreshTokensRequest refreshTokensRequest) {
+		Optional<User> userByToken = this.userService.getByToken(refreshTokensRequest.getRefreshToken());
+		return userByToken.map(user -> {
+			String accessToken = jwtProvider.generateAccessToken(user);
+			String refreshToken = jwtProvider.generateRefreshToken(user);
+			return new RefreshTokensResponse(accessToken, refreshToken);
+		});
 	}
 
 	public Optional<AuthResponse> performLogin(AuthorizationRequest authorizationRequest) {
@@ -45,7 +52,7 @@ public class AuthService {
 		if (!passwordsMatch(authorizationRequest.getPassword(), user.getPassword())) {
 			return Optional.empty();
 		}
-		return Optional.of(AuthUtil.createResponseFromUser(user, jwtProvider));
+		return Optional.of(AuthUtil.createAuthResponseFromUser(user, jwtProvider));
 	}
 
 	private boolean passwordsMatch(String rawPw, String encodedPw) {
@@ -58,7 +65,7 @@ public class AuthService {
 			return out;
 		}
 		User user = userService.create(registrationRequest.getEmail(), registrationRequest.getPassword());
-		return Optional.of(AuthUtil.createResponseFromUser(user, jwtProvider));
+		return Optional.of(AuthUtil.createAuthResponseFromUser(user, jwtProvider));
 	}
 
 }

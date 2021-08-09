@@ -11,7 +11,7 @@ public final class AuthUtil {
 	private AuthUtil() {
 	}
 
-	public static AuthResponse createResponseFromUser(User user, JwtProvider jwtProvider) {
+	public static AuthResponse createAuthResponseFromUser(User user, JwtProvider jwtProvider) {
 		String accessToken = jwtProvider.generateAccessToken(user);
 		String refreshToken = jwtProvider.generateRefreshToken(user);
 		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);

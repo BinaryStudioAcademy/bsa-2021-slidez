@@ -34,7 +34,7 @@ public class OAuthService {
 		}
 		String email = emailForGoogle.get();
 		Optional<User> byEmail = userService.getByEmail(email);
-		return byEmail.map(user -> AuthUtil.createResponseFromUser(user, jwtProvider));
+		return byEmail.map(user -> AuthUtil.createAuthResponseFromUser(user, jwtProvider));
 	}
 
 	public Optional<AuthResponse> registerWithGoogle(String idToken) {
@@ -45,7 +45,7 @@ public class OAuthService {
 		String email = emailForGoogle.get();
 		if (!userService.isEmailPresent(email)) {
 			User user = userService.createByEmail(email);
-			return Optional.of(AuthUtil.createResponseFromUser(user, jwtProvider));
+			return Optional.of(AuthUtil.createAuthResponseFromUser(user, jwtProvider));
 		}
 		return Optional.empty();
 	}

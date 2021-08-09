@@ -1,17 +1,6 @@
-import axios, { Method } from 'axios'
-import { ApiGateway } from '../api-gateway'
-
-const createDefaultAxios = () => {
-    return axios.create({
-        baseURL: ApiGateway.REACT_APP_API_GATEWAY,
-        timeout: 2500,
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-        },
-    })
-}
+import { Method } from 'axios'
+import { createDefaultAxios } from './http-util'
+import { performRefreshTokens } from '../auth/auth-service'
 
 const sendRequest = (
     route: string,
@@ -21,6 +10,19 @@ const sendRequest = (
     headers: Record<string, string>
 ) => {
     const axiosInstance = createDefaultAxios()
+    axiosInstance.interceptors.response.use(
+        (response) => {
+            return response
+        },
+        (error) => {
+            if (error.response) {
+                const status = error.response.status
+                if (status === 401) {
+                    performRefreshTokens()
+                }
+            }
+        }
+    )
     return axiosInstance.request({
         url: route,
         method: method,

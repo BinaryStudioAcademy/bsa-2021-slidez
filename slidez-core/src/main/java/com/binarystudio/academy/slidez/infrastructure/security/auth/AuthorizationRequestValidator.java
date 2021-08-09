@@ -9,7 +9,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
-public class AuthorizationDtoValidator implements Validator {
+public class AuthorizationRequestValidator implements Validator {
 
 	// (?=.*[A-Z]) Ensure string has 1 uppercase letters.
 	// (?=.*[!@#$&*]) Ensure string has one special case letter.
