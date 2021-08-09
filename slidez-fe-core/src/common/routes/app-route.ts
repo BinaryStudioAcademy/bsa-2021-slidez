@@ -6,6 +6,7 @@ const AppRoute = {
     REGISTRATION: '/registration',
     RESTORE_PASSWORD: '/restore-password',
     DASHBOARD: '/',
+    UPDATE_USER: '/update-user',
 }
 
 export { AppRoute }

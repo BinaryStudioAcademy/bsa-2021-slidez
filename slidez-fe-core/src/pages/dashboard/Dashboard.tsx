@@ -16,6 +16,7 @@ import SideBar from './SideBar'
 import './dashboard.scss'
 import { MOCK_DATA } from './mock-data'
 import { useDetectOutsideClick } from './useDetectOutsideClick'
+import { AppRoute } from '../../common/routes/app-route'
 
 const Dashboard = () => {
     const [currentView, setCurrentView] = useState('table')
@@ -122,7 +123,7 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                                 <hr></hr>
-                                <a href=''>
+                                <a href={AppRoute.UPDATE_USER}>
                                     <FontAwesomeIcon
                                         className='user-icon'
                                         icon={faUser}
