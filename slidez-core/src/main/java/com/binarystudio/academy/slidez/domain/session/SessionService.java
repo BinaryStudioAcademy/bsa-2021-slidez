@@ -19,62 +19,62 @@ import org.springframework.stereotype.Service;
 @Service
 public class SessionService {
 
-    @Autowired
-    private SessionRepository sessionRepository;
+	@Autowired
+	private SessionRepository sessionRepository;
 
+	@Autowired
+	private PresentationService presentationService;
 
-    @Autowired
-    private PresentationService presentationService;
+	public Session add(Presentation presentation, SessionStatus status) {
+		LocalDateTime now = now();
+		Session session = new Session(null, presentation, status, now, now);
+		return sessionRepository.save(session);
+	}
 
-    public Session add(Presentation presentation, SessionStatus status) {
-        LocalDateTime now = now();
-        Session session = new Session(null, presentation, status, now, now);
-        return sessionRepository.save(session);
-    }
+	public Session get(UUID id) {
+		return sessionRepository.getById(id);
+	}
 
-    public Session get(UUID id) {
-        return sessionRepository.getById(id);
-    }
+	public Session update(SessionUpdateDto dto) {
+		Session session = get(dto.getId());
+		if (session == null) {
+			throw new EntityNotFoundException("Sessio with id " + dto.getId() + " not found");
+		}
+		session.setUpdatedAt(now());
 
-    public Session update(SessionUpdateDto dto) {
-        Session session = get(dto.getId());
-        if (session == null) {
-           throw new EntityNotFoundException("Sessio with id " + dto.getId() +  " not found");
-        }
-        session.setUpdatedAt(now());
+		if (dto.getStatus() != null) {
+			session.setStatus(dto.getStatus());
+		}
 
-        if (dto.getStatus() != null) {
-            session.setStatus(dto.getStatus());
-        }
+		UUID presentationId = dto.getPresentationId();
+		if (presentationId != null) {
+			Presentation presentation = presentationService.get(presentationId);
+			if (presentation != null) {
+				session.setPresentation(presentation);
+			}
+		}
 
-        UUID presentationId = dto.getPresentationId();
-        if (presentationId != null) {
-            Presentation presentation = presentationService.get(presentationId);
-            if (presentation != null) {
-                session.setPresentation(presentation);
-            }
-        }
+		sessionRepository.saveAndFlush(session);
+		return session;
+	}
 
-        sessionRepository.saveAndFlush(session);
-        return session;
-    }
+	public void remove(UUID id) {
+		sessionRepository.deleteById(id);
+	}
 
-    public void remove(UUID id) {
-        sessionRepository.deleteById(id);
-    }
+	public Session create(Session session) {
+		LocalDateTime now = now();
+		session.setCreatedAt(now);
+		session.setUpdatedAt(now);
+		return sessionRepository.saveAndFlush(session);
+	}
 
-    public Session create(Session session) {
-        LocalDateTime now = now();
-        session.setCreatedAt(now);
-        session.setUpdatedAt(now);
-        return sessionRepository.saveAndFlush(session);
-    }
+	public List<Session> getAll() {
+		return sessionRepository.findAll();
+	}
 
-    public List<Session> getAll() {
-        return sessionRepository.findAll();
-    }
+	public Optional<Session> getById(UUID id) {
+		return sessionRepository.findById(id);
+	}
 
-    public Optional<Session> getById(UUID id) {
-        return sessionRepository.findById(id);
-    }
 }

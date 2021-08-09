@@ -12,8 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SessionUpdateDto {
+
 	private UUID id;
+
 	private UUID presentationId;
+
 	private SessionStatus status;
+
 	private LocalDateTime updatedAt;
+
 }
