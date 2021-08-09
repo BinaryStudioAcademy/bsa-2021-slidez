@@ -27,7 +27,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "npm link ../slidez-shared",
+    "postupdate": "npm link ../slidez-shared"
   },
   "eslintConfig": {
     "extends": [
