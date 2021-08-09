@@ -9,6 +9,7 @@ import {
     performLoginByToken,
     performRegister,
     performRegisterOAuthWithGoogle,
+    performLogout,
 } from '../../services/auth/auth-service'
 import { SignStatus } from './enums/sign-status'
 import { UserDetailsDto } from './dto/UserDetailsDto'
@@ -58,6 +59,10 @@ export const registerWithOAuthGoogle = createAsyncThunk(
     }
 )
 
+export const logout = createAsyncThunk('user/logout', async () =>
+    performLogout()
+)
+
 export const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -103,6 +108,11 @@ export const userSlice = createSlice({
                     state.user = action.payload.userDetailsDto
                     state.isLoggedIn = isLoggedIn()
                 }
+            })
+            .addCase(logout.fulfilled, (state, action) => {
+                state.signStatus = SignStatus.OK
+                state.user = undefined
+                state.isLoggedIn = false
             })
     },
 })

@@ -82,6 +82,6 @@ export const isLoggedIn = () => {
     return Boolean(window.localStorage.getItem(JWT))
 }
 
-export const logout = () => {
+export const performLogout = () => {
     window.localStorage.removeItem(JWT)
 }
