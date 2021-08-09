@@ -29,7 +29,7 @@ public class SessionController {
 	@Autowired
 	SessionService sessionService;
 
-	@PostMapping
+	@PostMapping("create")
 	@ResponseStatus(HttpStatus.CREATED)
 	public UUID save(@RequestBody Session session) {
 		Session createdSesion = sessionService.create(session);
@@ -37,13 +37,13 @@ public class SessionController {
 		return id;
 	}
 
-	@PostMapping
+	@PostMapping("update")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Session update(@RequestBody SessionUpdateDto dto) {
 		return sessionService.update(dto);
 	}
 
-	@DeleteMapping
+	@DeleteMapping("{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public void delete(@RequestBody UUID id) {
 		sessionService.remove(id);
