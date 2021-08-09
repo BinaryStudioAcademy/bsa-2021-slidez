@@ -6,6 +6,8 @@ import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -38,6 +40,7 @@ public class Session {
 	private Presentation presentation;
 
 	@Column(name = "status")
+	@Enumerated(EnumType.ORDINAL)
 	private SessionStatus status;
 
 	@Column(name = "created_at", columnDefinition = "TIMESTAMP")
