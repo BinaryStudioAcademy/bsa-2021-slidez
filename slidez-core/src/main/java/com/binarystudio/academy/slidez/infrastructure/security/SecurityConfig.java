@@ -14,9 +14,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private void applyRouteRestrictions(HttpSecurity http) throws Exception {
 		http.antMatcher("/**").authorizeRequests()
 				// PUBLIC
-				.antMatchers("/auth/**").permitAll().antMatchers("/swagger-ui/**").permitAll()
-				.antMatchers("/api-docs/**").permitAll().antMatchers(HttpMethod.GET, "/*").permitAll().anyRequest()
-				.authenticated();
+				.antMatchers("/auth/**").permitAll()
+				.antMatchers("/swagger-ui/**").permitAll()
+				.antMatchers("/api-docs/**").permitAll()
+				.antMatchers(HttpMethod.GET, "/**").permitAll().anyRequest().authenticated();
 	}
 
 	@Override
