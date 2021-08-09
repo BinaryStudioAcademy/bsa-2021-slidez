@@ -33,4 +33,11 @@ public class SessionService {
         sessionRepository.deleteById(id);
     }
 
+    public Session create(Session session) {
+        LocalDateTime now = LocalDateTime.now();
+        session.setCreatedAt(now);
+        session.setUpdatedAt(now);
+        return sessionRepository.save(session);
+    }
+
 }

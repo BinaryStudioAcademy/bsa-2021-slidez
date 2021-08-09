@@ -9,14 +9,15 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-@Repository
 public interface SessionRepository extends JpaRepository<Session, UUID> {
 
+    @Transactional
     @Modifying
-    @Query("UPDATE sessions s SET s.presentation_id = :#{#dto.presentation.id} " +
-           // "s.session_status = :#{#dto.sessionStatus} "+
-            "s.updated_at = :#{#dto.updatedAt} " +
+    @Query("UPDATE Session s SET s.presentation = :#{#dto.presentation}, " +
+            "s.status = :#{#dto.sessionStatus}, "+
+            "s.updatedAt = :#{#dto.updatedAt} " +
             "WHERE s.id = :#{#dto.id}")
-    void update(@Param(value = "dto") SessionUpdateDto dto);
+    void update(SessionUpdateDto dto);
 }
