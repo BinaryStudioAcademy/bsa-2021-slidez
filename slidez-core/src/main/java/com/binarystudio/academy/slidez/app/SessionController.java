@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.app;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.binarystudio.academy.slidez.domain.session.SessionService;
@@ -43,6 +44,9 @@ public class SessionController {
 	}
 
 	@GetMapping
+	public List<Session> all() {
+		return sessionService.getAll();
+	}
 
 
 }

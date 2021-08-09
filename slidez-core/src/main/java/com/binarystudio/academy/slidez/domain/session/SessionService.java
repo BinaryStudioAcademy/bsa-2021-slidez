@@ -1,6 +1,7 @@
 package com.binarystudio.academy.slidez.domain.session;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
@@ -40,4 +41,7 @@ public class SessionService {
         return sessionRepository.save(session);
     }
 
+    public List<Session> getAll() {
+        return sessionRepository.findAll();
+    }
 }
