@@ -5,25 +5,29 @@ import Dashboard from './pages/dashboard/Dashboard'
 import PrivateRoute from './common/routes/PrivateRoute'
 import { AppRoute } from './common/routes/app-route'
 import SignPage from './pages/sign/SignPage'
+import { UpdatePage } from './pages/update/UpdatePage'
 
 function App() {
     return (
-        <div>
-            <HashRouter>
-                <Switch>
-                    <PublicRoute
-                        exact
-                        path={[AppRoute.LOGIN, AppRoute.REGISTRATION]}
-                        component={SignPage}
-                    />
-                    <PrivateRoute
-                        exact
-                        path={AppRoute.DASHBOARD}
-                        component={Dashboard}
-                    />
-                </Switch>
-            </HashRouter>
-        </div>
+        <HashRouter>
+            <Switch>
+                <PublicRoute
+                    exact
+                    path={[AppRoute.LOGIN, AppRoute.REGISTRATION]}
+                    component={SignPage}
+                />
+                <PrivateRoute
+                    exact
+                    path={AppRoute.DASHBOARD}
+                    component={Dashboard}
+                />
+                <PublicRoute
+                    exact
+                    path={AppRoute.UPDATE_USER}
+                    component={UpdatePage}
+                />
+            </Switch>
+        </HashRouter>
     )
 }
 
