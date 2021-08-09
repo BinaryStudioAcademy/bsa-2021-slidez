@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
-import { LogInDto } from './dto/LogInDto'
-import { RegisterDto } from './dto/RegisterDto'
+import { LogInDto } from '../../services/auth/dto/LogInDto'
+import { RegisterDto } from '../../services/auth/dto/RegisterDto'
 import {
     performLoginOAuthWithGoogle,
     isLoggedIn,
@@ -9,10 +9,11 @@ import {
     performLoginByToken,
     performRegister,
     performRegisterOAuthWithGoogle,
+    performLogout,
 } from '../../services/auth/auth-service'
 import { SignStatus } from './enums/sign-status'
 import { UserDetailsDto } from './dto/UserDetailsDto'
-import { TokenDto } from './dto/TokenDto'
+import { TokenDto } from '../../services/auth/dto/TokenDto'
 
 export interface UserState {
     signStatus: string
@@ -56,6 +57,10 @@ export const registerWithOAuthGoogle = createAsyncThunk(
     async (dto: TokenDto) => {
         return performRegisterOAuthWithGoogle(dto)
     }
+)
+
+export const logout = createAsyncThunk('user/logout', async () =>
+    performLogout()
 )
 
 export const userSlice = createSlice({
@@ -103,6 +108,11 @@ export const userSlice = createSlice({
                     state.user = action.payload.userDetailsDto
                     state.isLoggedIn = isLoggedIn()
                 }
+            })
+            .addCase(logout.fulfilled, (state, action) => {
+                state.signStatus = SignStatus.OK
+                state.user = undefined
+                state.isLoggedIn = false
             })
     },
 })

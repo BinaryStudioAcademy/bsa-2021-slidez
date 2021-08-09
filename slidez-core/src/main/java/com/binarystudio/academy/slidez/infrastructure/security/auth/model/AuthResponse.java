@@ -10,10 +10,12 @@ public class AuthResponse {
 
 	private String accessToken;
 
+	private String refreshToken;
+
 	private UserDetailsDto userDetailsDto;
 
-	public static AuthResponse of(String accessToken, UserDetailsDto userDetailsDto) {
-		return new AuthResponse(accessToken, userDetailsDto);
+	public static AuthResponse of(String accessToken, String refreshToken, UserDetailsDto userDetailsDto) {
+		return new AuthResponse(accessToken, refreshToken, userDetailsDto);
 	}
 
 }
