@@ -36,16 +36,20 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
         }
     }
 
-    const handleLoginWithGoogle = () => {
-        onLoginWithGoogle()
+    const handleLoginWithGoogle = async (googleData: any) => {
+        onLoginWithGoogle(googleData)
     }
 
     return (
         <div className='sign-form'>
-            <div className='form-row'>Log In</div>
+            <div className='form-row header-row'>Log In</div>
             <div className='form-row'>
                 <div className='no-account'>No account?</div>
-                <NavLink exact to={AppRoute.REGISTRATION} className='link'>
+                <NavLink
+                    exact
+                    to={AppRoute.REGISTRATION}
+                    className='signUpLink'
+                >
                     Sign Up
                 </NavLink>
             </div>
@@ -96,8 +100,10 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                         onChange={(event) => setPassword(event.target.value)}
                     />
                     <FontAwesomeIcon
+                        className={`input-icon ${
+                            isPasswordRevealed ? 'icon-eye' : 'icon-eye-slash'
+                        }`}
                         icon={isPasswordRevealed ? faEye : faEyeSlash}
-                        className='input-icon'
                         onClick={onRevealClick}
                     />
                 </div>
@@ -124,6 +130,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                             onClick={renderProps.onClick}
                             className={'form-button login-with-google-button'}
                             disabled={renderProps.disabled}
+                            transparent={true}
                         >
                             Log In with Google
                         </GeneralButton>

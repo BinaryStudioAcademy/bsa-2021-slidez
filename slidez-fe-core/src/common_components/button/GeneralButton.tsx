@@ -4,16 +4,18 @@ import { withStyles } from '@material-ui/styles'
 
 const styles: any = () => ({
     root: {
-        backgroundColor: '#4af092',
+        backgroundColor: '#59d0a5',
         color: 'white',
         fontFamily: "'Rubik', serif",
-        fontSize: '20px',
+        fontSize: '16px',
         paddingTop: '10px',
         paddingBottom: '10px',
         border: '2px transparent solid',
         borderRadius: '30px',
         flex: 1,
         boxSizing: 'border-box',
+        textTransform: 'none',
+        fontWeight: '400',
     },
 })
 
@@ -32,8 +34,8 @@ function GeneralButton(props: ButtonProps) {
     } = props
 
     const transparentStyle = {
-        border: '2px #4af092 solid',
-        color: '#4af092',
+        border: '2px #59d0a5 solid',
+        color: '#59d0a5',
         backgroundColor: 'white',
     }
 
@@ -46,7 +48,7 @@ function GeneralButton(props: ButtonProps) {
     }
 
     return (
-        <Button id={id} style={style} onClick={() => onClick} {...attrs}>
+        <Button id={id} style={style} onClick={onClick} {...attrs}>
             {Name}
             {children}
         </Button>
