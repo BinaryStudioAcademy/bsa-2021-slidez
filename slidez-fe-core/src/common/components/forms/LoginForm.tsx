@@ -29,12 +29,12 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
         revealPassword('sign-in-password-input')
     }
 
-    const doCheckUpOnClick = () => {
+    const doCheckUp = () => {
         setIsEmailValid(validator.isEmail(email))
     }
 
     const handleLogin = () => {
-        doCheckUpOnClick()
+        doCheckUp()
         if (isEmailValid && email !== '') {
             onLogin(email, password)
         }
