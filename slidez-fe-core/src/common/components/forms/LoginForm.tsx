@@ -29,7 +29,12 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
         revealPassword('sign-in-password-input')
     }
 
+    const doCheckUpOnClick = () => {
+        setIsEmailValid(validator.isEmail(email))
+    }
+
     const handleLogin = () => {
+        doCheckUpOnClick()
         if (isEmailValid && email !== '') {
             onLogin(email, password)
         }
@@ -43,11 +48,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
             <div className='form-row header-row'>Log In</div>
             <div className='form-row'>
                 <div className='no-account'>No account?</div>
-                <NavLink
-                    exact
-                    to={AppRoute.REGISTRATION}
-                    className='signUpLink'
-                >
+                <NavLink exact to={AppRoute.REGISTRATION} className='link'>
                     Sign Up
                 </NavLink>
             </div>
@@ -72,7 +73,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                     placeholder='Enter your email'
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
-                    onBlur={() => setIsEmailValid(validator.isEmail(email))}
+                    onFocus={() => setIsEmailValid(true)}
                 />
             </div>
             <div className='form-row form-input-holder'>
