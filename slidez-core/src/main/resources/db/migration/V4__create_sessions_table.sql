@@ -1,8 +1,8 @@
-create table sessions
+CREATE TABLE IF NOT EXISTS sessions
 (
     id UUID PRIMARY KEY,
-    presentation_id UUID NOT NULL,
-    status varchar(255) NOT NULL,
+    presentation_id UUID,
+    status varchar(255),
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL
 );
