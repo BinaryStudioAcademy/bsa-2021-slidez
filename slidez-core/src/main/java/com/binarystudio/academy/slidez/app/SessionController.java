@@ -29,7 +29,7 @@ public class SessionController {
 	@Autowired
 	SessionService sessionService;
 
-	@PostMapping("create")
+	@PostMapping("/create")
 	@ResponseStatus(HttpStatus.CREATED)
 	public UUID save(@RequestBody Session session) {
 		Session createdSesion = sessionService.create(session);
@@ -37,15 +37,16 @@ public class SessionController {
 		return id;
 	}
 
-	@PostMapping("update")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Session update(@RequestBody SessionUpdateDto dto) {
-		return sessionService.update(dto);
+	@PostMapping("/update")
+	@ResponseStatus(HttpStatus.OK)
+	public UUID update(@RequestBody SessionUpdateDto dto) {
+		Session session = sessionService.update(dto);
+		return session.getId();
 	}
 
-	@DeleteMapping("{id}")
+	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public void delete(@RequestBody UUID id) {
+	public void delete(@PathVariable("id") UUID id) {
 		sessionService.remove(id);
 	}
 
@@ -54,7 +55,7 @@ public class SessionController {
 		return sessionService.getAll();
 	}
 
-	@GetMapping("{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<Object> getById(@PathVariable("id") UUID id) {
 		if (id == null) {
 			return new ResponseEntity<>("Invalid session ID", HttpStatus.BAD_REQUEST);
