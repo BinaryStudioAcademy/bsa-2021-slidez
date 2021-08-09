@@ -2,6 +2,8 @@ import { Method } from 'axios'
 import { createDefaultAxios } from './http-util'
 import { performRefreshTokens } from '../auth/auth-service'
 
+let inProcessOfRefreshingTokens = false
+
 const sendRequest = (
     route: string,
     method: Method,
@@ -18,7 +20,12 @@ const sendRequest = (
             if (error.response) {
                 const status = error.response.status
                 if (status === 401) {
-                    performRefreshTokens()
+                    if (!inProcessOfRefreshingTokens) {
+                        inProcessOfRefreshingTokens = true
+                        performRefreshTokens().finally(
+                            () => (inProcessOfRefreshingTokens = false)
+                        )
+                    }
                 }
             }
         }
