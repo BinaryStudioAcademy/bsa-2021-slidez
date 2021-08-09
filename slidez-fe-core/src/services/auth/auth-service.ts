@@ -83,7 +83,7 @@ export const performRefreshTokens = async () => {
         })
         .catch((error) => {
             if (error.response) {
-                logout()
+                performLogout()
             }
         })
 }
