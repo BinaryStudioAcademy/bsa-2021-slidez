@@ -2,6 +2,7 @@ package com.binarystudio.academy.slidez.domain.session;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
@@ -9,7 +10,9 @@ import com.binarystudio.academy.slidez.domain.session.dto.SessionUpdateDto;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
 import com.binarystudio.academy.slidez.domain.session.model.SessionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SessionService {
 
     @Autowired
@@ -43,5 +46,9 @@ public class SessionService {
 
     public List<Session> getAll() {
         return sessionRepository.findAll();
+    }
+
+    public Optional<Session> getById(UUID id) {
+        return sessionRepository.findById(id);
     }
 }
