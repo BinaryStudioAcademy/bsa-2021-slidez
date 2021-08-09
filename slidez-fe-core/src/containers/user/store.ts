@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
-import { LogInDto } from './dto/LogInDto'
-import { RegisterDto } from './dto/RegisterDto'
+import { LogInDto } from '../../services/auth/dto/LogInDto'
+import { RegisterDto } from '../../services/auth/dto/RegisterDto'
 import {
     performLoginOAuthWithGoogle,
     isLoggedIn,
@@ -13,7 +13,7 @@ import {
 } from '../../services/auth/auth-service'
 import { SignStatus } from './enums/sign-status'
 import { UserDetailsDto } from './dto/UserDetailsDto'
-import { TokenDto } from './dto/TokenDto'
+import { TokenDto } from '../../services/auth/dto/TokenDto'
 
 export interface UserState {
     signStatus: string

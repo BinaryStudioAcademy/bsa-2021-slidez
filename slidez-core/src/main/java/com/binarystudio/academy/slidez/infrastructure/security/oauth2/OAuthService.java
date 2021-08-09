@@ -3,11 +3,10 @@ package com.binarystudio.academy.slidez.infrastructure.security.oauth2;
 import java.util.Optional;
 
 import com.binarystudio.academy.slidez.domain.user.UserService;
-import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
-import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthResponse;
 import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtProvider;
+import com.binarystudio.academy.slidez.infrastructure.security.util.AuthUtil;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,12 +33,8 @@ public class OAuthService {
 			return Optional.empty();
 		}
 		String email = emailForGoogle.get();
-		Optional<User> byEmail = userService.findByEmail(email);
-		return byEmail.map(user -> {
-			String token = this.jwtProvider.generateAccessToken(user);
-			UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-			return AuthResponse.of(token, userDetailsDto);
-		});
+		Optional<User> byEmail = userService.getByEmail(email);
+		return byEmail.map(user -> AuthUtil.createAuthResponseFromUser(user, jwtProvider));
 	}
 
 	public Optional<AuthResponse> registerWithGoogle(String idToken) {
@@ -49,10 +44,8 @@ public class OAuthService {
 		}
 		String email = emailForGoogle.get();
 		if (!userService.isEmailPresent(email)) {
-			User byEmail = userService.createByEmail(email);
-			String token = this.jwtProvider.generateAccessToken(byEmail);
-			UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(byEmail);
-			return Optional.of(AuthResponse.of(token, userDetailsDto));
+			User user = userService.createByEmail(email);
+			return Optional.of(AuthUtil.createAuthResponseFromUser(user, jwtProvider));
 		}
 		return Optional.empty();
 	}
