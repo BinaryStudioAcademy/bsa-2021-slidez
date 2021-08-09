@@ -4,7 +4,7 @@
     "version": "1.0",
     "manifest_version": 2,
     "browser_action": {
-        "default_popup": "index.html",
+        "default_popup": "popup.html",
         "default_title": "Start Slidez Extension"
     },
     "icons": {
@@ -13,21 +13,17 @@
         "128": "logo192.png"
     },
     "content_security_policy": "script-src 'self' 'unsafe-eval' 'sha256-zDo+AU4rypqhbDVpVjJO76tlt4G7UyfaqIlm+lb3sw8='; object-src 'self'",
-    "permissions": [
-        "<all_urls>",
-        "webRequest",
-        "webRequestBlocking",
-        "background",
-        "activeTab"
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["js/vendor.js", "js/content_script.js"]
+        }
     ],
     "background": {
-        "scripts": ["./background.js"],
-        "persistent": true
+      "scripts": ["js/vendor.js", "js/background.js"]
     },
-
-    "content_scripts": [{
-        "matches": ["<all_urls>"],
-        "js": ["./content.js"],
-        "run_at": "document_end"
-    }]
+    "permissions": [
+      "storage",
+      "<all_urls>"
+    ]
 }

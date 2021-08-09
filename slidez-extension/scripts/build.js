@@ -40,7 +40,6 @@ const isInteractive = process.stdout.isTTY
 // Warn and crash if required files are missing
 if (
     !checkRequiredFiles([
-        paths.appHtml,
         paths.chromeExtensionBackground,
         paths.chromeExtensionContentScript,
         paths.chromeExtensionOptions,
