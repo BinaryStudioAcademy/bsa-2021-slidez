@@ -5,6 +5,9 @@ import { withStyles } from '@material-ui/styles'
 const styles: any = () => ({
     root: {
         backgroundColor: '#59d0a5',
+        '&:hover': {
+            backgroundColor: '#73b69e',
+        },
         color: 'white',
         fontFamily: "'Rubik', serif",
         fontSize: '16px',
@@ -37,6 +40,9 @@ function GeneralButton(props: ButtonProps) {
         border: '2px #59d0a5 solid',
         color: '#59d0a5',
         backgroundColor: 'white',
+        '&:hover': {
+            backgroundColor: '#59d0a5',
+        },
     }
 
     const style = {
