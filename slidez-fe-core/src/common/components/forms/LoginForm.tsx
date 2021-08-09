@@ -1,6 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import './sign-form.scss'
+import '../../../global/styles.scss'
 import { AppRoute } from '../../routes/app-route'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import validator from 'validator'
