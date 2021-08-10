@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS sessiones
+CREATE TABLE IF NOT EXISTS sessions
 (
     id UUID PRIMARY KEY,
     presentation_id UUID,

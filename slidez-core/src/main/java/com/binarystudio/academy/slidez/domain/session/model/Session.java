@@ -26,7 +26,7 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "sessiones")
+@Table(name = "sessions")
 public class Session {
 
 	@Id

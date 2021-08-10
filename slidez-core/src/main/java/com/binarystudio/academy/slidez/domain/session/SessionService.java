@@ -15,53 +15,47 @@ import com.binarystudio.academy.slidez.domain.session.model.SessionStatus;
 import static java.time.LocalDateTime.now;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SessionService {
 
-	@Autowired
-	private SessionRepository sessionRepository;
+	private final SessionRepository sessionRepository;
+
+	private final PresentationService presentationService;
 
 	@Autowired
-	private PresentationService presentationService;
-
-	public Session add(Presentation presentation, SessionStatus status) {
-		LocalDateTime now = now();
-		Session session = new Session(null, presentation, status, now, now);
-		return sessionRepository.save(session);
+	public SessionService(SessionRepository sessionRepository, PresentationService presentationService) {
+		this.sessionRepository = sessionRepository;
+		this.presentationService = presentationService;
 	}
 
 	public Session get(UUID id) {
 		return sessionRepository.getById(id);
 	}
 
+	@Transactional
 	public Session update(SessionUpdateDto dto) {
-		Session session = get(dto.getId());
-		if (session == null) {
-			throw new EntityNotFoundException("Sessio with id " + dto.getId() + " not found");
-		}
+		Optional<Session> sessionFromDto = Optional.of(get(dto.getId()));
+		Session session = sessionFromDto
+				.orElseThrow(() -> (new EntityNotFoundException("Session with id " + dto.getId() + " not found")));
 		session.setUpdatedAt(now());
 
-		if (dto.getStatus() != null) {
-			session.setStatus(dto.getStatus());
-		}
+		Optional.of(dto.getStatus()).ifPresent(session::setStatus);
 
-		UUID presentationId = dto.getPresentationId();
-		if (presentationId != null) {
-			Presentation presentation = presentationService.get(presentationId);
-			if (presentation != null) {
-				session.setPresentation(presentation);
-			}
-		}
+		Optional<UUID> presentationId = Optional.of(dto.getPresentationId());
+		presentationId.map(presentationService::get).ifPresent(session::setPresentation);
 
 		sessionRepository.saveAndFlush(session);
 		return session;
 	}
 
+	@Transactional
 	public void remove(UUID id) {
 		sessionRepository.deleteById(id);
 	}
 
+	@Transactional
 	public Session create(Session session) {
 		LocalDateTime now = now();
 		session.setCreatedAt(now);

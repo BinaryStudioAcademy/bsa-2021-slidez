@@ -10,6 +10,6 @@ public interface SessionMapper {
 
 	SessionMapper INSTANCE = Mappers.getMapper(SessionMapper.class);
 
-	Session mapSesionUpdateDtoToSession(SessionUpdateDto sessionUpdateDto);
+	Session mapSessionUpdateDtoToSession(SessionUpdateDto sessionUpdateDto);
 
 }

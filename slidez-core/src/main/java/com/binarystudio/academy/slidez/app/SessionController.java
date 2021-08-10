@@ -26,14 +26,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("${v1API}/sessions")
 public class SessionController {
 
+	private final SessionService sessionService;
+
 	@Autowired
-	SessionService sessionService;
+	public SessionController(SessionService sessionService) {
+		this.sessionService = sessionService;
+	}
 
 	@PostMapping("/create")
 	@ResponseStatus(HttpStatus.CREATED)
 	public UUID save(@RequestBody Session session) {
-		Session createdSesion = sessionService.create(session);
-		UUID id = createdSesion.getId();
+		Session createdSession = sessionService.create(session);
+		UUID id = createdSession.getId();
 		return id;
 	}
 

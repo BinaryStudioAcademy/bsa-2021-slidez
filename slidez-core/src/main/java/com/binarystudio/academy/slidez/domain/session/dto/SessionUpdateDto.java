@@ -19,6 +19,4 @@ public class SessionUpdateDto {
 
 	private SessionStatus status;
 
-	private LocalDateTime updatedAt;
-
 }
