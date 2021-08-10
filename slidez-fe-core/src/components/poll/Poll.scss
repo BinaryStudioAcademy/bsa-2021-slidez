@@ -1,48 +1,41 @@
-@import 'src/global/global';
+@import "src/global/global";
 
 .poll {
     height: 100%;
     border-radius: 10px;
-}
 
-.poll-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 15px;
-    border-bottom: 2px solid $grey;
-}
+    &-header {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 15px;
+        border-bottom: 2px solid $grey;
+    }
+    &-name {
+        font-weight: bold;
+    }
+    &-options {
+        padding: 25px;
+    }
+    &-option {
+        margin-bottom: 25px;
 
-.poll-name {
-    font-weight: bold;
-}
-
-.poll-options {
-    padding: 25px;
-}
-
-.poll-option {
-    margin-bottom: 25px;
-}
-
-.poll-option-votes {
-    display: flex;
-    margin-top: 5px;
-}
-
-.poll-option-bar {
-    min-width: 30px;
-    background-color: $grey;
-    border-radius: 10px;
-}
-
-.poll-option-percent {
-    margin-left: 10px;
-}
-
-.poll-option-winner .poll-option-bar {
-    background-color: $light-green;
-}
-
-.poll-option-winner .poll-option-percent {
-    color: $light-green;
+        &-votes {
+            display: flex;
+            margin-top: 5px;
+        }
+        &-bar {
+            min-width: 30px;
+            background-color: $grey;
+            border-radius: 10px;
+        }
+        &-percent {
+            margin-left: 10px;
+        }
+        &-winner &-bar {
+            background-color: $light-green;
+        }
+        &-winner &-percent {
+            color: $light-green;
+        }
+    }
 }

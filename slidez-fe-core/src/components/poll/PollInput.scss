@@ -1,44 +1,40 @@
 @import "src/global/global";
 @import "./Poll.scss";
 
-.poll-input-send {
-    display: flex;
-    justify-content: center;
-    padding-bottom: 25px;
-}
+.poll-input {
+    &-send {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 25px;
+    }
+    &-edit {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 25px;
+    }
+    &-button {
+        padding: 5px 15px;
+        border-radius: 15px;
+    }
+    &-options {
+        padding: 25px;
+    }
+    &-option {
+        display: flex;
+        background-color: $light-grey;
+        cursor: pointer;
+        padding: 12px;
+        margin-bottom: 25px;
+        border-radius: 10px;
 
-.poll-input-edit {
-    display: flex;
-    justify-content: center;
-    padding-bottom: 25px;
-}
-
-.poll-input-button {
-    padding: 5px 15px;
-    border-radius: 15px;
-}
-
-.poll-input-options {
-    padding: 25px;
-}
-
-.poll-input-option {
-    display: flex;
-    background-color: $light-grey;
-    cursor: pointer;
-    padding: 12px;
-    margin-bottom: 25px;
-    border-radius: 10px;
-}
-
-.poll-input-option-chosen {
-    background-color: rgba(89, 208, 165, 0.4);
-}
-
-.poll-input-option-chosen .poll-input-option-circle {
-    color: $light-green;
-}
-
-.poll-input-option-title {
-    margin-left: 10px;
+        &-chosen {
+            background-color: rgba(89, 208, 165, 0.4);
+        }
+        &-chosen &-circle {
+            color: $light-green;
+        }
+        &-title {
+            margin-left: 10px;
+        }
+    }
 }
