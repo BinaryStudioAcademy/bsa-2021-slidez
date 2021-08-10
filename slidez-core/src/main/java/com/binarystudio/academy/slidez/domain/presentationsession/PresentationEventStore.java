@@ -1,8 +1,8 @@
-package com.binarystudio.academy.slidez.domain.presentationsession.model;
+package com.binarystudio.academy.slidez.domain.presentationsession;
 
 import com.binarystudio.academy.slidez.domain.presentationsession.events.DomainEvent;
+import com.binarystudio.academy.slidez.domain.presentationsession.model.State;
 import com.binarystudio.academy.slidez.domain.presentationsession.snapshots.Snapshot;
-import lombok.val;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class PresentationEventStore {
 	}
 
 	public Snapshot snapshot(Date date) {
-		val stateForSpecificTime = new State();
+		State stateForSpecificTime = new State();
 		events.stream().filter(e -> e.getEventDate().before(date)).forEach(e -> e.applyEvent(stateForSpecificTime));
 
 		return Snapshot.getSimpleSnapshotFromState(stateForSpecificTime);

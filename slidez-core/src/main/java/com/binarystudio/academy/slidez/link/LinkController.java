@@ -28,7 +28,7 @@ public class LinkController {
 
 	@GetMapping("/lease/{duration}")
 	public String leaseALink(@PathVariable int duration) throws Exception {
-		return this.linkService.leaseALink(duration);
+		return this.linkService.leaseLinkAsString(duration);
 	}
 
 	@GetMapping("/clean-expired-leases")

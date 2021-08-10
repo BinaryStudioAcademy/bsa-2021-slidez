@@ -47,11 +47,11 @@ public class LinkGenerationService {
 	public void generateExtraLinks() {
 
 		int countAvailableLinks = this.linkRepository.getCountAvailableLinks();
-		if (countAvailableLinks >= this.MAX_COUNT_AVAILABLE_LINKS) {
+		if (countAvailableLinks >= MAX_COUNT_AVAILABLE_LINKS) {
 			return;
 		}
 		List<Link> generatingLinks = new ArrayList<>();
-		int countLinkForGenerate = this.MAX_COUNT_AVAILABLE_LINKS - countAvailableLinks;
+		int countLinkForGenerate = MAX_COUNT_AVAILABLE_LINKS - countAvailableLinks;
 		String lastLink = getLastLink();
 		for (int i = 0; i < countLinkForGenerate; i++) {
 			String newLink = generateLink(lastLink);
@@ -95,16 +95,26 @@ public class LinkGenerationService {
 	 * @throws IncorrectLeaseDurationException - when lease duration out of bound duration
 	 * lease
 	 */
-	public String leaseALink(int leaseDuration) throws IncorrectLeaseDurationException {
+	public String leaseLinkAsString(int leaseDuration) throws IncorrectLeaseDurationException {
 		checkLeaseDuration(leaseDuration);
-		System.out.println(this.linkRepository.getAvailableLink().isPresent());
-		Link availableLink = this.linkRepository.getAvailableLink()
-				.orElseGet(() -> this.linkRepository.save(Link.createLink(null, generateLink(getLastLink()), null)));
+		Link availableLink = configureAndGetAvailableLink(leaseDuration);
+		return availableLink.getLink();
+	}
+
+	public Optional<Link> leaseLink(int leaseDuration) {
+		if (!isDurationWithinBounds(leaseDuration)) {
+			return Optional.empty();
+		}
+		return Optional.of(configureAndGetAvailableLink(leaseDuration));
+	}
+
+	private Link configureAndGetAvailableLink(int leaseDuration) {
+		Link availableLink = linkRepository.getAvailableLink()
+				.orElseGet(() -> linkRepository.save(Link.createLink(null, generateLink(getLastLink()), null)));
 		LocalDateTime expirationDate = LocalDateTime.now().plus(Period.ofDays(leaseDuration));
 		availableLink.setExpirationDate(expirationDate);
-		this.linkRepository.update(availableLink, availableLink.getLinkId());
-
-		return availableLink.getLink();
+		linkRepository.update(availableLink, availableLink.getLinkId());
+		return availableLink;
 	}
 
 	private String getLastLink() {
@@ -112,11 +122,15 @@ public class LinkGenerationService {
 	}
 
 	private void checkLeaseDuration(int leaseDuration) throws IncorrectLeaseDurationException {
-		if (leaseDuration > this.MAX_LEASE_DURATION || leaseDuration < this.MIN_LEASE_DURATION) {
+		if (!isDurationWithinBounds(leaseDuration)) {
 			throw new IncorrectLeaseDurationException(
 					"Duration of the lease is outside the interval. Expected: A number between 1 and 180, inclusive. Found: "
 							+ leaseDuration);
 		}
+	}
+
+	private boolean isDurationWithinBounds(int leaseDuration) {
+		return leaseDuration > MIN_LEASE_DURATION && leaseDuration < MAX_LEASE_DURATION;
 	}
 
 	/**
