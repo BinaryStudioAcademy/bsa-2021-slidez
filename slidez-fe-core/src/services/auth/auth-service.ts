@@ -1,18 +1,26 @@
-import { LogInDto } from '../../containers/user/dto/LogInDto'
-import { RegisterDto } from '../../containers/user/dto/RegisterDto'
-import { LogInResult } from '../../containers/user/dto/LogInResult'
+import { LogInDto } from './dto/LogInDto'
+import { RegisterDto } from './dto/RegisterDto'
+import { LogInResult } from './dto/LogInResult'
 import { SignStatus } from '../../containers/user/enums/sign-status'
-import { LogInResponseDto } from '../../containers/user/dto/LogInResponseDto'
-import { TokenDto } from '../../containers/user/dto/TokenDto'
-import { doPost } from '../http/http-helper'
+import { LogInResponseDto } from './dto/LogInResponseDto'
+import { TokenDto } from './dto/TokenDto'
+import { createDefaultAxios } from '../http/http-util'
+import { RefreshTokensDto } from './dto/RefreshTokensDto'
+import { RefreshTokensResponseDto } from './dto/RefreshTokensResponseDto'
 
-const JWT = 'jwt'
+export const JWT = 'jwt'
+export const refreshJWT = 'refresh_jwt'
 const constructRoute = (endpoint: string) => {
     return `/auth/${endpoint}`
 }
 
 const sendAuthRequest = async (route: string, body: object = {}) => {
-    return doPost(route, body)
+    const axiosInstance = createDefaultAxios()
+    return axiosInstance.request({
+        url: route,
+        method: 'POST',
+        data: JSON.stringify(body),
+    })
 }
 
 const performSign = async (
@@ -28,6 +36,7 @@ const performSign = async (
             userDetailsDto: payload.userDetailsDto,
         }
         window.localStorage.setItem(JWT, payload.accessToken)
+        window.localStorage.setItem(refreshJWT, payload.refreshToken)
         return out
     } else {
         const out: LogInResult = {
@@ -62,6 +71,23 @@ export const performLoginByToken = async (dto: TokenDto) => {
     )
 }
 
+export const performRefreshTokens = async () => {
+    const dto: RefreshTokensDto = {
+        refreshToken: window.localStorage.getItem(refreshJWT) || '',
+    }
+    return sendAuthRequest(constructRoute('refresh-tokens'), dto)
+        .then((response) => {
+            const payload: RefreshTokensResponseDto = response.data
+            window.localStorage.setItem(JWT, payload.accessToken)
+            window.localStorage.setItem(refreshJWT, payload.refreshToken)
+        })
+        .catch((error) => {
+            if (error.response) {
+                performLogout()
+            }
+        })
+}
+
 export const performLoginOAuthWithGoogle = async (dto: TokenDto) => {
     return performSign(
         constructRoute('login/google'),
@@ -79,9 +105,13 @@ export const performRegisterOAuthWithGoogle = async (dto: TokenDto) => {
 }
 
 export const isLoggedIn = () => {
-    return Boolean(window.localStorage.getItem(JWT))
+    return (
+        Boolean(window.localStorage.getItem(JWT)) &&
+        Boolean(window.localStorage.getItem(refreshJWT))
+    )
 }
 
-export const logout = () => {
+export const performLogout = () => {
     window.localStorage.removeItem(JWT)
+    window.localStorage.removeItem(refreshJWT)
 }
