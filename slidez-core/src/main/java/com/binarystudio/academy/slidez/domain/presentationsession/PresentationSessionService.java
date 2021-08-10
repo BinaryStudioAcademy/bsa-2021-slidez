@@ -2,16 +2,23 @@ package com.binarystudio.academy.slidez.domain.presentationsession;
 
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionRequestDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionResponseDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.events.DomainEvent;
-import com.binarystudio.academy.slidez.domain.presentationsession.events.PollCreatedEvent;
+import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.PollCreatedResponseDto;
+import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.SnapshotResponseDto;
+import com.binarystudio.academy.slidez.domain.presentationsession.enums.WebSocketStatus;
+import com.binarystudio.academy.slidez.domain.presentationsession.event.DomainEvent;
+import com.binarystudio.academy.slidez.domain.presentationsession.event.PollCreatedEvent;
 import com.binarystudio.academy.slidez.domain.link.LinkService;
 import com.binarystudio.academy.slidez.domain.link.model.Link;
+import com.binarystudio.academy.slidez.domain.presentationsession.mapper.PollMapper;
+import com.binarystudio.academy.slidez.domain.presentationsession.model.Poll;
+import com.binarystudio.academy.slidez.domain.presentationsession.snapshot.Snapshot;
 import com.binarystudio.academy.slidez.domain.session.SessionService;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,6 +60,35 @@ public class PresentationSessionService {
 		}
 		// return link
 		return Optional.empty();
+	}
+
+	public SnapshotResponseDto getSnapshot(String link) {
+		PresentationEventStore eventStore = inMemoryPresentationEventRepository.get(link);
+		SnapshotResponseDto snapshotResponseDto = new SnapshotResponseDto();
+		if (eventStore == null) {
+			snapshotResponseDto.setStatus(WebSocketStatus.NOT_FOUND);
+			return snapshotResponseDto;
+		}
+		Snapshot snapshot = eventStore.snapshot();
+		snapshotResponseDto.setPolls(snapshot.getPolls());
+		return snapshotResponseDto;
+	}
+
+	public PollCreatedResponseDto getPollCreatedDto(String link) {
+		PresentationEventStore eventStore = inMemoryPresentationEventRepository.get(link);
+		PollCreatedResponseDto pollCreatedResponseDto = new PollCreatedResponseDto();
+		if (eventStore == null) {
+			pollCreatedResponseDto.setStatus(WebSocketStatus.NOT_FOUND);
+			return pollCreatedResponseDto;
+		}
+		List<Poll> polls = eventStore.snapshot().getPolls();
+		if (polls.size() == 0) {
+			pollCreatedResponseDto.setStatus(WebSocketStatus.BAD_REQUEST);
+			return pollCreatedResponseDto;
+		}
+		Poll last = polls.get(polls.size() - 1);
+        PollMapper pollMapper = PollMapper.INSTANCE;
+		return pollMapper.pollToPollCreatedDtoMapper(last);
 	}
 
 }

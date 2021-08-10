@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.presentationsession.snapshots;
+package com.binarystudio.academy.slidez.domain.presentationsession.snapshot;
 
 import com.binarystudio.academy.slidez.domain.presentationsession.model.Poll;
 import lombok.Getter;

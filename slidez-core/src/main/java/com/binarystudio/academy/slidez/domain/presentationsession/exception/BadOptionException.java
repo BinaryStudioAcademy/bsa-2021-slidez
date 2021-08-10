@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.presentationsession.exceptions;
+package com.binarystudio.academy.slidez.domain.presentationsession.exception;
 
 public class BadOptionException extends RuntimeException {
 

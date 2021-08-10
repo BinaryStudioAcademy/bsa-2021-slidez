@@ -22,4 +22,8 @@ public class InMemoryPresentationEventRepository {
 		store.put(link, eventStore);
 	}
 
+	public PresentationEventStore get(String link) {
+		return store.get(link);
+	}
+
 }

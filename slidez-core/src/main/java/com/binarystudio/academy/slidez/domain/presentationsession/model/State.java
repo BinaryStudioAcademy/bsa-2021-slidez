@@ -1,6 +1,6 @@
 package com.binarystudio.academy.slidez.domain.presentationsession.model;
 
-import com.binarystudio.academy.slidez.domain.presentationsession.exceptions.PollNotFoundException;
+import com.binarystudio.academy.slidez.domain.presentationsession.exception.PollNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Collections;

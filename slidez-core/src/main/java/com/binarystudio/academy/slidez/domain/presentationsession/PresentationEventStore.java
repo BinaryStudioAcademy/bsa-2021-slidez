@@ -1,8 +1,8 @@
 package com.binarystudio.academy.slidez.domain.presentationsession;
 
-import com.binarystudio.academy.slidez.domain.presentationsession.events.DomainEvent;
+import com.binarystudio.academy.slidez.domain.presentationsession.event.DomainEvent;
 import com.binarystudio.academy.slidez.domain.presentationsession.model.State;
-import com.binarystudio.academy.slidez.domain.presentationsession.snapshots.Snapshot;
+import com.binarystudio.academy.slidez.domain.presentationsession.snapshot.Snapshot;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

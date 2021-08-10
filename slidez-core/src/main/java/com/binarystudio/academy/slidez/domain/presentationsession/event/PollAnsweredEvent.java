@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.presentationsession.events;
+package com.binarystudio.academy.slidez.domain.presentationsession.event;
 
 import com.binarystudio.academy.slidez.domain.presentationsession.model.State;
 import lombok.RequiredArgsConstructor;
