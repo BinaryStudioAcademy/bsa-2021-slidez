@@ -1,7 +1,7 @@
-package com.binarystudio.academy.slidez.room.snapshots;
+package com.binarystudio.academy.slidez.domain.presentationsession.snapshots;
 
-import com.binarystudio.academy.slidez.room.state.Poll;
-import com.binarystudio.academy.slidez.room.state.State;
+import com.binarystudio.academy.slidez.domain.presentationsession.model.Poll;
+import com.binarystudio.academy.slidez.domain.presentationsession.model.State;
 
 import java.util.List;
 

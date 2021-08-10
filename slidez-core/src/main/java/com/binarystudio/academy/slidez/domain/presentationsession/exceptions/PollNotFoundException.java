@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.room.exceptions;
+package com.binarystudio.academy.slidez.domain.presentationsession.exceptions;
 
 public class PollNotFoundException extends RuntimeException {
 

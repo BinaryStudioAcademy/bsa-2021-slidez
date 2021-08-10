@@ -1,8 +1,7 @@
-package com.binarystudio.academy.slidez.room;
+package com.binarystudio.academy.slidez.domain.presentationsession.model;
 
-import com.binarystudio.academy.slidez.room.events.DomainEvent;
-import com.binarystudio.academy.slidez.room.snapshots.Snapshot;
-import com.binarystudio.academy.slidez.room.state.State;
+import com.binarystudio.academy.slidez.domain.presentationsession.events.DomainEvent;
+import com.binarystudio.academy.slidez.domain.presentationsession.snapshots.Snapshot;
 import lombok.val;
 import org.springframework.stereotype.Component;
 

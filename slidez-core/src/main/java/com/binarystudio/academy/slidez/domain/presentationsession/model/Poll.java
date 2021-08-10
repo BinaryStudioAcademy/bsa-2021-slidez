@@ -1,6 +1,6 @@
-package com.binarystudio.academy.slidez.room.state;
+package com.binarystudio.academy.slidez.domain.presentationsession.model;
 
-import com.binarystudio.academy.slidez.room.exceptions.BadOptionException;
+import com.binarystudio.academy.slidez.domain.presentationsession.exceptions.BadOptionException;
 import lombok.Value;
 
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
-package com.binarystudio.academy.slidez.room.events;
+package com.binarystudio.academy.slidez.domain.presentationsession.events;
 
-import com.binarystudio.academy.slidez.room.state.State;
+import com.binarystudio.academy.slidez.domain.presentationsession.model.State;
 import lombok.Getter;
 
 import java.util.Date;
