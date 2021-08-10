@@ -1,15 +1,17 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import './sign-form.scss'
+import '../../../global/styles.scss'
 import { AppRoute } from '../../routes/app-route'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import validator from 'validator'
-import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
-import { faEye } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
 import { revealPassword } from './form-utils'
 import { useAppSelector } from '../../../hooks'
 import { selectSignStatus } from '../../../containers/user/store'
 import { SignStatus } from '../../../containers/user/enums/sign-status'
+import GoogleLogin from 'react-google-login'
+import { GoogleOAuth } from '../../../services/auth/google-oauth'
 
 type LoginProps = {
     onLogin: Function
@@ -28,19 +30,23 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
         revealPassword('sign-in-password-input')
     }
 
+    const doCheckUp = () => {
+        setIsEmailValid(validator.isEmail(email))
+    }
+
     const handleLogin = () => {
+        doCheckUp()
         if (isEmailValid && email !== '') {
             onLogin(email, password)
         }
     }
 
-    const handleLoginWithGoogle = () => {
-        onLoginWithGoogle()
+    const handleLoginWithGoogle = async (googleData: any) => {
+        onLoginWithGoogle(googleData)
     }
-
     return (
         <div className='sign-form'>
-            <div className='form-row'>Log In</div>
+            <div className='form-row header-row'>Log In</div>
             <div className='form-row'>
                 <div className='no-account'>No account?</div>
                 <NavLink exact to={AppRoute.REGISTRATION} className='link'>
@@ -68,7 +74,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                     placeholder='Enter your email'
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
-                    onBlur={() => setIsEmailValid(validator.isEmail(email))}
+                    onFocus={() => setIsEmailValid(true)}
                 />
             </div>
             <div className='form-row form-input-holder'>
@@ -94,14 +100,15 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                         onChange={(event) => setPassword(event.target.value)}
                     />
                     <FontAwesomeIcon
+                        className={`input-icon ${
+                            isPasswordRevealed ? 'icon-eye' : 'icon-eye-slash'
+                        }`}
                         icon={isPasswordRevealed ? faEye : faEyeSlash}
-                        className='input-icon'
                         onClick={onRevealClick}
                     />
                 </div>
             </div>
-            <div className='form-row' />
-            <div className='form-row'>
+            <div className='form-row buttons-row'>
                 <button
                     className='form-button login-button'
                     onClick={handleLogin}
@@ -111,12 +118,22 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
             </div>
             <div className='form-row button-divider'>or</div>
             <div className='form-row'>
-                <button
+                <GoogleLogin
                     className='form-button login-with-google-button'
-                    onClick={handleLoginWithGoogle}
-                >
-                    Log In with Google
-                </button>
+                    clientId={GoogleOAuth.GOOGLE_CLIENT_ID}
+                    onSuccess={handleLoginWithGoogle}
+                    redirectUri={GoogleOAuth.GOOGLE_REDIRECT_URI}
+                    cookiePolicy={GoogleOAuth.GOOGLE_COOKIE_POLICY}
+                    render={(renderProps) => (
+                        <button
+                            onClick={renderProps.onClick}
+                            className={'form-button login-with-google-button'}
+                            disabled={renderProps.disabled}
+                        >
+                            Log In with Google
+                        </button>
+                    )}
+                />
             </div>
         </div>
     )

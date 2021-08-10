@@ -1,16 +1,16 @@
 plugins {
-	id 'org.springframework.boot' version '2.5.2'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
-	id 'org.flywaydb.flyway' version '6.4.2'
-	id 'io.spring.javaformat' version '0.0.27'
+    id 'org.springframework.boot' version '2.5.2'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'org.flywaydb.flyway' version '6.4.2'
+    id 'io.spring.javaformat' version '0.0.27'
 }
 
 apply plugin: 'io.spring.javaformat'
 apply plugin: 'checkstyle'
 
 checkstyle {
-	toolVersion = '8.29'
+    toolVersion = '8.29'
 }
 
 group = 'com.binarystudio.academy'
@@ -18,13 +18,13 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
@@ -32,16 +32,22 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    // https://mvnrepository.com/artifact/com.google.api-client/google-api-client
+    implementation group: 'com.google.api-client', name: 'google-api-client', version: '1.32.1'
+    //RD stuff
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.5.9'
 	implementation 'org.springdoc:springdoc-openapi-data-rest:1.5.9'
 	implementation 'org.springdoc:springdoc-openapi-security:1.5.9'
 	implementation 'org.flywaydb:flyway-core'
+	implementation 'io.sentry:sentry-spring:5.0.1'
+    implementation 'io.sentry:sentry-spring-boot-starter:3.2.0'
+    implementation 'io.sentry:sentry-logback:3.2.0'
 	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
 	implementation 'org.projectlombok:lombok-mapstruct-binding:0.1.0'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 	compileOnly "io.jsonwebtoken:jjwt-api:${jjwt}"
 	implementation "io.jsonwebtoken:jjwt-impl:${jjwt}",
 			"io.jsonwebtoken:jjwt-jackson:${jjwt}"
@@ -50,15 +56,18 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 flyway {
-	url = 'jdbc:postgresql://localhost:5432/slidez'
-	user = 'postgres'
-	password = 'admin'
+    url = 'jdbc:postgresql://localhost:5432/slidez'
+    user = 'postgres'
+    password = 'admin'
 }
+
+

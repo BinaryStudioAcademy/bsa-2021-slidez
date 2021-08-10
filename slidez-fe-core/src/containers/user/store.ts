@@ -1,14 +1,19 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
-import { LogInDto } from './dto/LogInDto'
-import { RegisterDto } from './dto/RegisterDto'
+import { LogInDto } from '../../services/auth/dto/LogInDto'
+import { RegisterDto } from '../../services/auth/dto/RegisterDto'
 import {
+    performLoginOAuthWithGoogle,
     isLoggedIn,
     performLogIn,
+    performLoginByToken,
     performRegister,
+    performRegisterOAuthWithGoogle,
+    performLogout,
 } from '../../services/auth/auth-service'
 import { SignStatus } from './enums/sign-status'
 import { UserDetailsDto } from './dto/UserDetailsDto'
+import { TokenDto } from '../../services/auth/dto/TokenDto'
 
 export interface UserState {
     signStatus: string
@@ -33,6 +38,31 @@ export const register = createAsyncThunk(
     }
 )
 
+export const loginByToken = createAsyncThunk(
+    'user/login-by-token',
+    async (dto: TokenDto) => {
+        return performLoginByToken(dto)
+    }
+)
+
+export const loginWithOAuthGoogle = createAsyncThunk(
+    'user/login-with-oauth-google',
+    async (dto: TokenDto) => {
+        return performLoginOAuthWithGoogle(dto)
+    }
+)
+
+export const registerWithOAuthGoogle = createAsyncThunk(
+    'user/register-with-oauth-google',
+    async (dto: TokenDto) => {
+        return performRegisterOAuthWithGoogle(dto)
+    }
+)
+
+export const logout = createAsyncThunk('user/logout', async () =>
+    performLogout()
+)
+
 export const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -54,6 +84,35 @@ export const userSlice = createSlice({
                     state.user = action.payload.userDetailsDto
                     state.isLoggedIn = isLoggedIn()
                 }
+            })
+            .addCase(loginByToken.fulfilled, (state, action) => {
+                const status: string = action.payload.status
+                state.signStatus = status
+                if (status === SignStatus.OK) {
+                    state.user = action.payload.userDetailsDto
+                    state.isLoggedIn = isLoggedIn()
+                }
+            })
+            .addCase(loginWithOAuthGoogle.fulfilled, (state, action) => {
+                const status: string = action.payload.status
+                state.signStatus = status
+                if (status === SignStatus.OK) {
+                    state.user = action.payload.userDetailsDto
+                    state.isLoggedIn = isLoggedIn()
+                }
+            })
+            .addCase(registerWithOAuthGoogle.fulfilled, (state, action) => {
+                const status: string = action.payload.status
+                state.signStatus = status
+                if (status === SignStatus.OK) {
+                    state.user = action.payload.userDetailsDto
+                    state.isLoggedIn = isLoggedIn()
+                }
+            })
+            .addCase(logout.fulfilled, (state, action) => {
+                state.signStatus = SignStatus.OK
+                state.user = undefined
+                state.isLoggedIn = false
             })
     },
 })

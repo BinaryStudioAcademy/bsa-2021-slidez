@@ -6,6 +6,7 @@ import java.time.ZoneOffset;
 import java.util.Date;
 
 import com.binarystudio.academy.slidez.domain.user.model.User;
+import com.binarystudio.academy.slidez.infrastructure.security.exception.JwtException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtParser;
@@ -48,6 +49,12 @@ public class JwtProvider {
 
 	public String generateAccessToken(User user) {
 		Date date = Date.from(LocalDateTime.now().plusSeconds(this.jwtProperties.getSecondsToExpireAccess())
+				.toInstant(ZoneOffset.UTC));
+		return Jwts.builder().setSubject(user.getEmail()).setExpiration(date).signWith(key()).compact();
+	}
+
+	public String generateRefreshToken(User user) {
+		Date date = Date.from(LocalDateTime.now().plusSeconds(this.jwtProperties.getSecondsToExpireRefresh())
 				.toInstant(ZoneOffset.UTC));
 		return Jwts.builder().setSubject(user.getEmail()).setExpiration(date).signWith(key()).compact();
 	}

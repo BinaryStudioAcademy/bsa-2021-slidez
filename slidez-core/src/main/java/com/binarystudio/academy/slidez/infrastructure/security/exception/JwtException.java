@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.infrastructure.security.jwt;
+package com.binarystudio.academy.slidez.infrastructure.security.exception;
 
 import lombok.Getter;
 
