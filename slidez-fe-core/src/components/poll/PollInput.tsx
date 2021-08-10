@@ -24,7 +24,7 @@ function PollInput({ poll }: PollInputProps) {
 
     const mappedOptions = options.map((option, index) => {
         const chosenClass =
-            index === chosenOption ? 'poll-input-option-chosen' : ''
+            index === chosenOption ? ' poll-input-option-chosen' : ''
         const circle =
             index === chosenOption ? (
                 <FontAwesomeIcon icon={faDotCircle} />
@@ -35,7 +35,7 @@ function PollInput({ poll }: PollInputProps) {
         return (
             <div
                 key={index}
-                className={'poll-input-option ' + chosenClass}
+                className={'poll-input-option' + chosenClass}
                 onClick={() => setChosenOption(index)}
             >
                 <div className='poll-input-option-circle'>{circle}</div>
