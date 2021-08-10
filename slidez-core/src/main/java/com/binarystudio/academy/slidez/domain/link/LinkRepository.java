@@ -1,11 +1,11 @@
-package com.binarystudio.academy.slidez.link;
+package com.binarystudio.academy.slidez.domain.link;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.binarystudio.academy.slidez.link.model.Link;
+import com.binarystudio.academy.slidez.domain.link.model.Link;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

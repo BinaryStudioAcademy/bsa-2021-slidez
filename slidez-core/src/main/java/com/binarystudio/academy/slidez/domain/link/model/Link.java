@@ -1,21 +1,19 @@
-package com.binarystudio.academy.slidez.link.model;
+package com.binarystudio.academy.slidez.domain.link.model;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import javax.persistence.*;
 
+import com.binarystudio.academy.slidez.domain.session.model.Session;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Entity
 @Table(name = "link")
 public class Link {
 
@@ -24,8 +22,9 @@ public class Link {
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private Long linkId;
 
-	@Column(name = "session_id")
-	private UUID sessionId;
+	@OneToOne
+	@JoinColumn(name = "session_id", referencedColumnName = "id")
+	private Session session;
 
 	@Column(name = "link")
 	private String link;
@@ -33,8 +32,8 @@ public class Link {
 	@Column(name = "expiration_date")
 	private LocalDateTime expirationDate;
 
-	public static Link createLink(UUID sessionId, String link, LocalDateTime expirationDate) {
-		return Link.builder().sessionId(sessionId).link(link).expirationDate(expirationDate).build();
+	public static Link createLink(Session session, String link, LocalDateTime expirationDate) {
+		return new Link(null, session, link, expirationDate);
 	}
 
 }

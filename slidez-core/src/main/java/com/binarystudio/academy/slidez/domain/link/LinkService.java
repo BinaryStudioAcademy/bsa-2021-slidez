@@ -1,18 +1,19 @@
-package com.binarystudio.academy.slidez.link;
+package com.binarystudio.academy.slidez.domain.link;
 
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.binarystudio.academy.slidez.link.dto.LinkDto;
-import com.binarystudio.academy.slidez.link.exceptions.IncorrectLeaseDurationException;
-import com.binarystudio.academy.slidez.link.model.Link;
+import com.binarystudio.academy.slidez.domain.link.dto.LinkDto;
+import com.binarystudio.academy.slidez.domain.link.exceptions.IncorrectLeaseDurationException;
+import com.binarystudio.academy.slidez.domain.link.mapper.LinkMapper;
+import com.binarystudio.academy.slidez.domain.link.model.Link;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LinkGenerationService {
+public class LinkService {
 
 	private static final int MAX_COUNT_AVAILABLE_LINKS = 100;
 
@@ -20,12 +21,16 @@ public class LinkGenerationService {
 
 	private static final int MAX_LEASE_DURATION = 180;
 
-	@Autowired
-	private LinkRepository linkRepository;
-
 	private static final char[] ALPHABET = new char[('z' - 'a' + 1) + ('9' - '0' + 1)];
 
 	private static final Map<Character, Integer> CHAR_TO_ALPHABET_POS = new HashMap<>();
+
+	private final LinkRepository linkRepository;
+
+	@Autowired
+	public LinkService(LinkRepository linkRepository) {
+		this.linkRepository = linkRepository;
+	}
 
 	// Initialize static variables
 	static {
@@ -140,15 +145,20 @@ public class LinkGenerationService {
 		LocalDateTime now = LocalDateTime.now();
 		List<Link> expiredLinks = this.linkRepository.getLinksWithExpiredLeases(now);
 		expiredLinks.forEach(freeingALink -> {
-			freeingALink.setSessionId(null);
+			freeingALink.setSession(null);
 			freeingALink.setExpirationDate(null);
 			this.linkRepository.update(freeingALink, freeingALink.getLinkId());
 		});
 	}
 
 	public List<LinkDto> getLinks() {
-		return this.linkRepository.findAll().stream().map(LinkDto::fromEntity).collect(Collectors.toList());
+		LinkMapper mapper = LinkMapper.INSTANCE;
+		return this.linkRepository.findAll().stream().map(mapper::linkToLinkDto).collect(Collectors.toList());
 
+	}
+
+	public Link update(Link link) {
+		return linkRepository.save(link);
 	}
 
 }

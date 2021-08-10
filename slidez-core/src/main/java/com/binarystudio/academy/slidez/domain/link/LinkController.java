@@ -1,8 +1,8 @@
-package com.binarystudio.academy.slidez.link;
+package com.binarystudio.academy.slidez.domain.link;
 
 import java.util.List;
 
-import com.binarystudio.academy.slidez.link.dto.LinkDto;
+import com.binarystudio.academy.slidez.domain.link.dto.LinkDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LinkController {
 
 	@Autowired
-	private LinkGenerationService linkService;
+	private LinkService linkService;
 
 	@GetMapping("/generate-extra-links")
 	public void generateExtraLinks() {
