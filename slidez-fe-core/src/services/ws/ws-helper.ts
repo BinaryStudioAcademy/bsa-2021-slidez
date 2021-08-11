@@ -10,34 +10,41 @@ export const send = (stompSendDestination: string, message: object) => {
     }
 }
 
-export const connect = (
-    url: string,
-    stompSubscribeDestination: string,
-    subscribeCallback: Function = (message: Message) => {},
-    connectCallback: Function = () => {}
-) => {
+export const connect = (url: string) => {
     socket = new SockJS(url)
     stompClient = Stomp.over(socket)
     stompClient.debug = () => {}
-    stompClient.connect(
-        {},
-        (frame) => {
-            if (stompClient && stompClient.connected) {
-                stompClient.subscribe(
-                    stompSubscribeDestination,
-                    (message: Message) => subscribeCallback(message)
-                )
+    return new Promise((resolve, reject) => {
+        // @ts-ignore
+        stompClient.connect(
+            {},
+            (frame) => {
+                if (stompClient && stompClient.connected) {
+                    resolve(true)
+                }
+            },
+            (error) => {
+                reject(error)
             }
-            connectCallback()
-        },
-        (error) => {
-            console.log(error)
-        }
-    )
+        )
+    })
 }
 
 export const disconnect = () => {
     if (stompClient && stompClient.connected) {
         stompClient.disconnect()
     }
+}
+
+export const subscribe = (
+    stompSubscribeDestination: string,
+    onMessage: Function = (message: Message) => {}
+) => {
+    if (stompClient && stompClient.connected) {
+        return stompClient.subscribe(
+            stompSubscribeDestination,
+            (message: Message) => onMessage(message)
+        )
+    }
+    return undefined
 }

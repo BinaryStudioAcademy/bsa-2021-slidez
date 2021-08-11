@@ -2,17 +2,17 @@ import * as WsHelper from './ws-helper'
 import { WsEndpoint } from './ws-endpoint'
 import { Message } from 'webstomp-client'
 
-export const connect = () => {
+export const helloConnect = () => {
     const msg = { name: 'Alex' }
-    const subscribeCallback = (message: Message) => {
+    const onMessage = (message: Message) => {
         alert(message.body)
     }
-    const connectCallback = () => WsHelper.send('/slidez/hello', msg)
+    const onConnectionSuccess = () => WsHelper.send('/slidez/hello', msg)
     WsHelper.disconnect()
-    WsHelper.connect(
-        WsEndpoint.REACT_APP_WEB_SOCKET_ENDPOINT,
-        '/topic/greetings',
-        subscribeCallback,
-        connectCallback
-    )
+    const promise = WsHelper.connect(WsEndpoint.REACT_APP_WEB_SOCKET_ENDPOINT)
+        .then(() => WsHelper.subscribe('/topic/greetings', onMessage))
+        .then(onConnectionSuccess)
+        .catch((error) => console.log(error))
 }
+
+export const connectToPollCreated = () => {}

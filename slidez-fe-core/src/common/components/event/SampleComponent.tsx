@@ -2,7 +2,7 @@ import React from 'react'
 import * as WebSocketService from '../../../services/ws/ws-service'
 
 const SampleComponent = () => {
-    WebSocketService.connect()
+    WebSocketService.helloConnect()
     return <div>Hello</div>
 }
 
