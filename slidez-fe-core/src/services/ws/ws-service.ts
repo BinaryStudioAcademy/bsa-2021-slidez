@@ -9,27 +9,31 @@ export const helloConnect = () => {
     }
     const onConnectionSuccess = () => WsHelper.send('/slidez/hello', msg)
     WsHelper.disconnect()
-    const promise = WsHelper.connect(WsEndpoint.REACT_APP_WEB_SOCKET_ENDPOINT)
+    const promise = WsHelper.connect(WsEndpoint.ENDPOINT)
         .then(() => WsHelper.subscribe('/topic/greetings', onMessage))
         .then(onConnectionSuccess)
         .catch((error) => console.log(error))
 }
 
 export const connectToAllEvents = (sessionLink: string) => {
-    return WsHelper.connect(WsEndpoint.REACT_APP_WEB_SOCKET_ENDPOINT)
+    const onMessage = (message: Message) => {
+        alert(message.body)
+    }
+    return WsHelper.connect(WsEndpoint.ENDPOINT)
         .then(() =>
             WsHelper.subscribe(
-                `${WsEndpoint.REACT_APP_WEB_SOCKET_SNAPSHOT}/${sessionLink}`
+                `${WsEndpoint.SNAPSHOT_TOPIC}/${sessionLink}`,
+                onMessage
             )
         )
         .then(() =>
             WsHelper.subscribe(
-                `${WsEndpoint.REACT_APP_WEB_SOCKET_CREATED_POLL}/${sessionLink}`
+                `${WsEndpoint.CREATED_POLL_TOPIC}/${sessionLink}`
             )
         )
         .then(() =>
             WsHelper.subscribe(
-                `${WsEndpoint.REACT_APP_WEB_SOCKET_ANSWERED_POLL}/${sessionLink}`
+                `${WsEndpoint.ANSWERED_POLL_TOPIC}/${sessionLink}`
             )
         )
         .catch((error) => console.log(error))
@@ -39,4 +43,6 @@ export const disconnect = () => {
     WsHelper.disconnect()
 }
 
-export const getSnapshot = () => {}
+export const sendSnapshotRequest = (sessionLink: string) => {
+    WsHelper.send(`${WsEndpoint.SNAPSHOT_QUEUE}/${sessionLink}`)
+}

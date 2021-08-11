@@ -4,7 +4,7 @@ import Stomp, { Client, Message } from 'webstomp-client'
 let socket: WebSocket | undefined = undefined
 let stompClient: Client | undefined = undefined
 
-export const send = (stompSendDestination: string, message: object) => {
+export const send = (stompSendDestination: string, message: object = {}) => {
     if (stompClient && stompClient.connected) {
         stompClient.send(stompSendDestination, JSON.stringify(message), {})
     }

@@ -17,7 +17,7 @@ export const initWebSocketSession = createAsyncThunk(
     'presentationSession/initWebSocketSession',
     async (link: string) => {
         return WebSocketService.connectToAllEvents(link).then(() =>
-            WebSocketService.getSnapshot()
+            WebSocketService.sendSnapshotRequest(link)
         )
     }
 )
