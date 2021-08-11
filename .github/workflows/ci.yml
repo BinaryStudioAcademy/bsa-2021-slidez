@@ -71,11 +71,15 @@ jobs:
            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
            aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
            aws-region: ${{ env.AWS_REGION_NAME }}
-           
+      - name: Enable experimental workspaces
+        run: yarn config set workspaces-experimental true
+      
+      - name: Link deps with yarn
+        run: yarn install --frozen-lockfile;
+      
       - name: Build frontend
         working-directory: slidez-fe-core
         run : |
-          yarn install --frozen-lockfile; \
           yarn build; \
           aws s3 sync --cache-control 'max-age=604800' --exclude index.html build/ s3://${{ env.AWS_SPA_S3_BUCKET }}/; \
           aws s3 sync --cache-control 'no-cache' build/ s3://${{ env.AWS_SPA_S3_BUCKET }}/;
