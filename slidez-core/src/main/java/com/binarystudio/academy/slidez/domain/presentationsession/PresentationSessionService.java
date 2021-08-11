@@ -2,6 +2,7 @@ package com.binarystudio.academy.slidez.domain.presentationsession;
 
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionRequestDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionResponseDto;
+import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.CreatePollRequestDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.PollCreatedResponseDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.SnapshotResponseDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.enums.WebSocketStatus;
@@ -26,15 +27,16 @@ public class PresentationSessionService {
 
 	private final LinkService linkService;
 
-	private final InMemoryPresentationEventRepository inMemoryPresentationEventRepository;
+	private final InMemoryPresentationEventStoreRepository inMemoryPresentationEventStoreRepository;
 
 	private final SessionService sessionService;
 
 	@Autowired
 	public PresentationSessionService(LinkService linkService,
-			InMemoryPresentationEventRepository inMemoryPresentationEventRepository, SessionService sessionService) {
+			InMemoryPresentationEventStoreRepository inMemoryPresentationEventStoreRepository,
+			SessionService sessionService) {
 		this.linkService = linkService;
-		this.inMemoryPresentationEventRepository = inMemoryPresentationEventRepository;
+		this.inMemoryPresentationEventStoreRepository = inMemoryPresentationEventStoreRepository;
 		this.sessionService = sessionService;
 	}
 
@@ -55,7 +57,7 @@ public class PresentationSessionService {
 		Link link = linkOptional.get();
 		link.setSession(session);
 		linkService.update(link);
-		if (inMemoryPresentationEventRepository.add(link.getLink(), presentationEventStore)) {
+		if (inMemoryPresentationEventStoreRepository.add(link.getLink(), presentationEventStore)) {
 			return Optional.of(new CreateSessionResponseDto(link.getLink()));
 		}
 		// return link
@@ -63,7 +65,7 @@ public class PresentationSessionService {
 	}
 
 	public SnapshotResponseDto getSnapshot(String link) {
-		PresentationEventStore eventStore = inMemoryPresentationEventRepository.get(link);
+		PresentationEventStore eventStore = inMemoryPresentationEventStoreRepository.get(link);
 		SnapshotResponseDto snapshotResponseDto = new SnapshotResponseDto();
 		if (eventStore == null) {
 			snapshotResponseDto.setStatus(WebSocketStatus.NOT_FOUND);
@@ -74,20 +76,22 @@ public class PresentationSessionService {
 		return snapshotResponseDto;
 	}
 
-	public PollCreatedResponseDto getPollCreatedDto(String link) {
-		PresentationEventStore eventStore = inMemoryPresentationEventRepository.get(link);
+	public PollCreatedResponseDto createPoll(String link, CreatePollRequestDto dto) {
+		PresentationEventStore eventStore = inMemoryPresentationEventStoreRepository.get(link);
 		PollCreatedResponseDto pollCreatedResponseDto = new PollCreatedResponseDto();
 		if (eventStore == null) {
 			pollCreatedResponseDto.setStatus(WebSocketStatus.NOT_FOUND);
 			return pollCreatedResponseDto;
 		}
+        PollCreatedEvent pollCreatedEvent = new PollCreatedEvent(dto.getName(), dto.getOptions());
+        eventStore.applyEvent(pollCreatedEvent);
 		List<Poll> polls = eventStore.snapshot().getPolls();
 		if (polls.size() == 0) {
 			pollCreatedResponseDto.setStatus(WebSocketStatus.BAD_REQUEST);
 			return pollCreatedResponseDto;
 		}
 		Poll last = polls.get(polls.size() - 1);
-        PollMapper pollMapper = PollMapper.INSTANCE;
+		PollMapper pollMapper = PollMapper.INSTANCE;
 		return pollMapper.pollToPollCreatedDtoMapper(last);
 	}
 

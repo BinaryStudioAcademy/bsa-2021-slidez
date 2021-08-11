@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class InMemoryPresentationEventRepository {
+public class InMemoryPresentationEventStoreRepository {
 
 	private final Map<String, PresentationEventStore> store = new ConcurrentHashMap<>();
 

@@ -15,6 +15,6 @@ public interface PollMapper {
 	@Mappings({ @Mapping(source = "poll.id", target = "id"), @Mapping(source = "poll.name", target = "name"),
 			@Mapping(source = "poll.options", target = "options"),
 			@Mapping(source = "poll.answers", target = "answers") })
-    PollCreatedResponseDto pollToPollCreatedDtoMapper(Poll poll);
+	PollCreatedResponseDto pollToPollCreatedDtoMapper(Poll poll);
 
 }
