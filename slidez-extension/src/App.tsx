@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
+import { CLASS_NAME_PUNCH_PRESENT_IFRAME } from './dom/dom-constants'
+import { queryElementAsync } from './dom/dom-helpers'
 
 const App = () => {
     const [url, setUrl] = useState<string>('')
@@ -17,6 +19,10 @@ const App = () => {
                 // @ts-ignore
                 setUrl(url)
             })
+        queryElementAsync<HTMLElement>(
+            document,
+            'iframe[class=' + CLASS_NAME_PUNCH_PRESENT_IFRAME + ']'
+        ).then((el) => console.log('done'))
     }, [])
 
     return (
@@ -33,6 +39,40 @@ const App = () => {
                     Learn React
                 </a>
             </header>
+            <div style={{ padding: '25px' }}>
+                <button
+                    onClick={() => {
+                        const container =
+                            document.getElementsByClassName('container')[0]
+                        const iframe = document.createElement('iframe')
+                        iframe.classList.add(CLASS_NAME_PUNCH_PRESENT_IFRAME)
+                        if (
+                            !document.getElementsByClassName(
+                                CLASS_NAME_PUNCH_PRESENT_IFRAME
+                            )[0]
+                        ) {
+                            container?.append(iframe)
+                        }
+                    }}
+                >
+                    append iframe
+                </button>
+                <button
+                    onClick={() => {
+                        const iframe = document.getElementsByClassName(
+                            CLASS_NAME_PUNCH_PRESENT_IFRAME
+                        )[0]
+                        if (iframe) {
+                            const container =
+                                document.getElementsByClassName('container')[0]
+                            container?.removeChild(iframe)
+                        }
+                    }}
+                >
+                    remove iframe
+                </button>
+            </div>
+            <div className='container'></div>
         </div>
     )
 }
