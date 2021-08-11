@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { ChromeEvents, doPost } from 'slidez-shared'
+import { ChromeEvents, doPost, log } from 'slidez-shared'
 import './login.css'
 
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    log()
     const handleLogin = () => {
         // doPost('/login', {email, password})
         chrome.runtime.sendMessage(
