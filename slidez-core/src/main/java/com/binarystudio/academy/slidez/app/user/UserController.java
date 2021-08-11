@@ -10,11 +10,7 @@ import com.binarystudio.academy.slidez.domain.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("${v1API}/users")
@@ -51,5 +47,15 @@ public class UserController {
 		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
 		return new ResponseEntity<>(userDetailsDto, HttpStatus.OK);
 	}
+
+	@PutMapping("{id}")
+    public ResponseEntity<Object> updateUser(@PathVariable("id") UUID id,  User user) {
+        if (id == null) {
+            return new ResponseEntity<>("Invalid ID", HttpStatus.BAD_REQUEST);
+        }
+        User userUpdated = userService.update(user);
+        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(userUpdated);
+        return new ResponseEntity<>(userDetailsDto, HttpStatus.OK);
+    }
 
 }

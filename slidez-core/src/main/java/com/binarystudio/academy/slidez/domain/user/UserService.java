@@ -11,6 +11,7 @@ import com.binarystudio.academy.slidez.infrastructure.security.auth.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
@@ -68,4 +69,11 @@ public class UserService {
 		return this.userRepository.save(user);
 	}
 
+    @Transactional
+	public User update(User user) {
+	    User userUpdated = new User();
+        userUpdated.setFirstName(user.getFirstName());
+        userUpdated.setLastName(user.getLastName());
+	    return this.userRepository.saveAndFlush(userUpdated);
+    }
 }
