@@ -1,17 +1,16 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Formik, Field, FieldArray } from 'formik';
 
 import server from '../../utils/server';
 import { Form } from 'react-bootstrap';
 import './styles.scss';
-import { ChromeEvents, log } from 'slidez-shared';
+// import { ChromeEvents, log } from 'slidez-shared';
 
 const { serverFunctions } = server;
 
-log();
+// log();
 
 const Poll: FC = () => {
-    log();
     const OptionsArray = () => (
         <div>
             <Formik
@@ -81,27 +80,21 @@ const Poll: FC = () => {
         </div>
     );
 
-    // function isCustomEvent(event: Event): event is CustomEvent {
-    //     return 'extension_connected' in event;
-    // }
-    //
-    // window.addEventListener('extension_connected', (e: ChromeEvents) => {
-    //     if (!isCustomEvent(e)) throw new Error('not a custom event');
-    //     const type = e.type;
-    //     const auth_token = e.auth_token;
+    // useEffect(() => {
+    //     handleEventExtension();
     // });
-
-    // const handleEventExtension = (event: React.FormEvent<HTMLDivElement>) => {
-    //     // const val = event.;
-    //     const type = event.type;
-    //     const auth_token = event.auth_token;
+    //
+    // const handleEventExtension = () => {
+    //     chrome.runtime.connect('extension_connected', function(response: ChromeEvents) {
+    //         console.log('connect - ' + response);
+    //         log();
+    //         const { type, auth_token } = response;
+    //         console.log(type + ' ' + auth_token);
+    //     });
     // };
-    // window.addEventListener('extension_connected', handleEventExtension, false);
+
     return (
-        <div
-            className='app-wrapper'
-            // onChange={event => handleEventExtension(event)}
-        >
+        <div className='app-wrapper'>
             <div className='app'>
                 <h2>Poll</h2>
                 <Formik
