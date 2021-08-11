@@ -1,40 +1,18 @@
-import SockJS from 'sockjs-client'
-import Stomp, { Client } from 'webstomp-client'
+import * as WsHelper from './ws-helper'
+import { WsEndpoint } from './ws-endpoint'
+import { Message } from 'webstomp-client'
 
-let connected = false
-let socket = undefined
-let stompClient: Client | undefined = undefined
-
-export const send = () => {
-    let send_message = 'hello !'
-    if (stompClient && stompClient.connected) {
-        const msg = { name: send_message }
-        stompClient.send('/slidez/hello', JSON.stringify(msg), {})
-    }
-}
 export const connect = () => {
-    socket = new SockJS('http://localhost:5000/ws')
-    stompClient = Stomp.over(socket)
-    stompClient.connect(
-        {
-            'Access-Control-Allow-Credentials': 'true',
-        },
-        (frame) => {
-            connected = true
-            if (stompClient && stompClient.connected) {
-                stompClient.subscribe('/topic/greetings', (tick) => {})
-                send()
-            }
-        },
-        (error) => {
-            console.log(error)
-            connected = false
-        }
-    )
-}
-export const disconnect = () => {
-    if (stompClient) {
-        stompClient.disconnect()
+    const msg = { name: 'Alex' }
+    const subscribeCallback = (message: Message) => {
+        alert(message.body)
     }
-    connected = false
+    const connectCallback = () => WsHelper.send('/slidez/hello', msg)
+    WsHelper.disconnect()
+    WsHelper.connect(
+        WsEndpoint.REACT_APP_WEB_SOCKET_ENDPOINT,
+        '/topic/greetings',
+        subscribeCallback,
+        connectCallback
+    )
 }
