@@ -3,7 +3,6 @@ package com.binarystudio.academy.slidez.infrastructure.security.oauth2;
 import java.util.Optional;
 
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthResponse;
-import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthorizationByTokenRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,7 @@ public class OAuthController {
 
 	@PostMapping("/login/google")
 	public ResponseEntity<AuthResponse> loginWithGoogle(
-			@RequestBody AuthorizationByTokenRequest authorizationByTokenRequest) {
+			@RequestBody AuthorizationByOAuthTokenRequest authorizationByTokenRequest) {
 		Optional<AuthResponse> authResponse = this.oAuthService.loginWithGoogle(authorizationByTokenRequest.getToken());
 		return authResponse.map(response -> new ResponseEntity<>(response, HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
@@ -33,7 +32,7 @@ public class OAuthController {
 
 	@PostMapping("/register/google")
 	public ResponseEntity<AuthResponse> registerWithGoogle(
-			@RequestBody AuthorizationByTokenRequest authorizationByTokenRequest) {
+			@RequestBody AuthorizationByOAuthTokenRequest authorizationByTokenRequest) {
 		Optional<AuthResponse> authResponse = this.oAuthService
 				.registerWithGoogle(authorizationByTokenRequest.getToken());
 		return authResponse.map(response -> new ResponseEntity<>(response, HttpStatus.OK))

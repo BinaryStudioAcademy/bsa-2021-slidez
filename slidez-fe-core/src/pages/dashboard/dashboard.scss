@@ -19,7 +19,7 @@
 	overflow: auto;
 	padding-top: 20px;
 	width: 161px;
-	background: $dark-blue;
+	background: $dark-color;
 	text-align: center;
 	.logo {
 		a {
@@ -99,7 +99,7 @@
 			font-family: 'Work Sans';
 			font-size: 14px;
 			color: $default-color;
-			background: $dark-violet;
+			background: $accent-color;
 			&:hover {
 				cursor: pointer;
 			}
@@ -152,7 +152,7 @@
 		align-items: center;
 		font-size: 14px;
 		&:hover {
-			color:$dark-violet;
+			color:$accent-color;
 		}
 	}
 	.user-icon {
@@ -196,6 +196,7 @@
 		color: rgba(0, 0, 0, 0.4);
 	}
 }
+
 .presentations-section {
 	position: absolute;
 	margin-top: 26px;
@@ -203,7 +204,7 @@
 	flex-direction: column;
 	justify-content: center;
 	left: 380px;
-	right: 138px;
+	right: 219px;
 	align-items: stretch;
 	padding-bottom: 388px;
 	.above-section {
@@ -211,6 +212,7 @@
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
+		margin-bottom: 10px;
 		p {
 			font-family: 'Rubik';
 			font-style: normal;
@@ -253,7 +255,7 @@
 .card {
 	width: 234px;
 	height: 203px;
-	background-color: $main-color;
+	background-color: $light-color;
 	float: left;
 	display: flex;
 	flex-direction: column;

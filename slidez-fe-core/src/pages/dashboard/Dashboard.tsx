@@ -16,6 +16,8 @@ import SideBar from './SideBar'
 import './dashboard.scss'
 import { MOCK_DATA } from './mock-data'
 import { useDetectOutsideClick } from './useDetectOutsideClick'
+import { useAppDispatch } from '../../hooks'
+import { logout } from '../../containers/user/store'
 
 const Dashboard = () => {
     const [currentView, setCurrentView] = useState('table')
@@ -25,6 +27,7 @@ const Dashboard = () => {
     const [searchField, setSearchField] = useState('')
     const [filteredPresentations, setFilteredPresentations] =
         useState(MOCK_DATA)
+    const dispatch = useAppDispatch()
 
     const handleToggleCurrentView = useCallback(() => {
         setCurrentView((view) => (view === 'table' ? 'grid' : 'table'))
@@ -36,6 +39,10 @@ const Dashboard = () => {
 
     const handleDropDown = () => {
         setIsActive(!isActive)
+    }
+
+    const handleLogout = () => {
+        dispatch(logout())
     }
 
     const tableHeader = [
@@ -165,7 +172,7 @@ const Dashboard = () => {
                                     />
                                     Setting
                                 </a>
-                                <a href=''>
+                                <a href='' onClick={handleLogout}>
                                     <FontAwesomeIcon
                                         className='user-icon'
                                         icon={faSignOutAlt}
