@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react'
+import { ChromeEvents, doPost } from 'slidez-shared'
 import './login.css'
 
 const Login = () => {
-    const [email, setEmail] = React.useState('')
-    const [password, setPassword] = React.useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
     const handleLogin = () => {
-        if (email !== '' &&  password !== '') {
-        }
+        // doPost('/login', {email, password})
+        chrome.runtime.sendMessage(
+            { message: 'login', payload: { email, password } },
+            function (response) {
+                if (response === 'success') {
+                    console.log('success')
+                }
+            }
+        )
     }
 
     return (
@@ -18,15 +26,22 @@ const Login = () => {
                 <label>
                     <b>Email</b>
                 </label>
-                <input placeholder='Enter Email' name='email' required />
+                <input
+                    value={email}
+                    type='email'
+                    onChange={(event) => setEmail(event.target.value)}
+                    placeholder='Enter Email'
+                    required
+                />
 
                 <label>
                     <b>Password</b>
                 </label>
                 <input
+                    value={password}
                     type='password'
                     placeholder='Enter Password'
-                    name='psw'
+                    onChange={(event) => setPassword(event.target.value)}
                     required
                 />
 
