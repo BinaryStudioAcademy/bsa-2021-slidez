@@ -11,8 +11,9 @@ import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
 import com.binarystudio.academy.slidez.domain.session.dto.SessionUpdateDto;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
-import com.binarystudio.academy.slidez.domain.session.model.SessionStatus;
 import static java.time.LocalDateTime.now;
+
+import com.binarystudio.academy.slidez.domain.session.model.SessionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,6 +62,13 @@ public class SessionService {
 		session.setCreatedAt(now);
 		session.setUpdatedAt(now);
 		return sessionRepository.saveAndFlush(session);
+	}
+
+	public Session createForPresentation(UUID presentationId) {
+		LocalDateTime now = LocalDateTime.now();
+		Presentation presentation = presentationService.get(presentationId);
+		Session session = new Session(null, presentation, SessionStatus.ACTIVE, now, now);
+		return sessionRepository.save(session);
 	}
 
 	public List<Session> getAll() {

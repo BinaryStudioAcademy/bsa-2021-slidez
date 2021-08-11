@@ -3,16 +3,7 @@ package com.binarystudio.academy.slidez.domain.session.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
 import lombok.AllArgsConstructor;
@@ -35,7 +26,7 @@ public class Session {
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "presentation_id", referencedColumnName = "id")
 	private Presentation presentation;
 
