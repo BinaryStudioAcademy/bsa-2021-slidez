@@ -3,6 +3,7 @@ package com.binarystudio.academy.slidez.domain.presentationsession;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
@@ -22,8 +23,8 @@ public class InMemoryPresentationEventStoreRepository {
 		store.put(link, eventStore);
 	}
 
-	public PresentationEventStore get(String link) {
-		return store.get(link);
+	public Optional<PresentationEventStore> get(String link) {
+		return Optional.ofNullable(store.get(link));
 	}
 
 }

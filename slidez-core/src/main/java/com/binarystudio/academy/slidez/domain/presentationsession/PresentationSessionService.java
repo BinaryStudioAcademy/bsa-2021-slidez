@@ -64,41 +64,41 @@ public class PresentationSessionService {
 	}
 
 	public SnapshotResponseDto getSnapshot(String link) {
-		PresentationEventStore eventStore = inMemoryPresentationEventStoreRepository.get(link);
+		Optional<PresentationEventStore> eventStore = inMemoryPresentationEventStoreRepository.get(link);
 		SnapshotResponseDto snapshotResponseDto = new SnapshotResponseDto();
-		if (eventStore == null) {
+		if (eventStore.isEmpty()) {
 			snapshotResponseDto.setStatus(WebSocketStatus.NOT_FOUND);
 			return snapshotResponseDto;
 		}
-		Snapshot snapshot = eventStore.snapshot();
+		Snapshot snapshot = eventStore.get().snapshot();
 		snapshotResponseDto.setPolls(snapshot.getPolls());
 		return snapshotResponseDto;
 	}
 
 	public PollCreatedResponseDto createPoll(String link, CreatePollRequestDto dto) {
-		PresentationEventStore eventStore = inMemoryPresentationEventStoreRepository.get(link);
+		Optional<PresentationEventStore> eventStore = inMemoryPresentationEventStoreRepository.get(link);
 		PollCreatedResponseDto pollCreatedResponseDto = new PollCreatedResponseDto();
-		if (eventStore == null) {
+		if (eventStore.isEmpty()) {
 			pollCreatedResponseDto.setStatus(WebSocketStatus.NOT_FOUND);
 			return pollCreatedResponseDto;
 		}
 		PollCreatedEvent pollCreatedEvent = new PollCreatedEvent(dto.getName(), dto.getOptions());
-		eventStore.applyEvent(pollCreatedEvent);
-		List<Poll> polls = eventStore.snapshot().getPolls();
+		eventStore.get().applyEvent(pollCreatedEvent);
+		List<Poll> polls = eventStore.get().snapshot().getPolls();
 		Poll last = polls.get(polls.size() - 1);
 		PollMapper pollMapper = PollMapper.INSTANCE;
 		return pollMapper.pollToPollCreatedDtoMapper(last);
 	}
 
 	public PollAnsweredDto answerPoll(String link, AnswerPollDto dto) {
-		PresentationEventStore eventStore = inMemoryPresentationEventStoreRepository.get(link);
+		Optional<PresentationEventStore> eventStore = inMemoryPresentationEventStoreRepository.get(link);
 		PollAnsweredDto pollAnsweredDto = new PollAnsweredDto();
-		if (eventStore == null) {
+		if (eventStore.isEmpty()) {
 			pollAnsweredDto.setStatus(WebSocketStatus.NOT_FOUND);
 			return pollAnsweredDto;
 		}
 		PollAnsweredEvent pollAnsweredEvent = new PollAnsweredEvent(dto.getPollId(), dto.getOption());
-		eventStore.applyEvent(pollAnsweredEvent);
+		eventStore.get().applyEvent(pollAnsweredEvent);
 		return new PollAnsweredDto(dto.getPollId(), dto.getOption());
 	}
 
