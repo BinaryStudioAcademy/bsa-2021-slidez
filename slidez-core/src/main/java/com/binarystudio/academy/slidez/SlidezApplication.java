@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 class SlidezApplication {
 
 	public static void main(String[] args) {
-		//Sentry.init();
 		SpringApplication.run(SlidezApplication.class, args);
 	}
 
