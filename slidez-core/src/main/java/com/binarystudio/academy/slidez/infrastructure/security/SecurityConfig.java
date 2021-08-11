@@ -18,7 +18,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 				.antMatchers(PUBLIC_URLS)
                     .permitAll()
-            .anyRequest().authenticated();
+                .anyRequest().authenticated();
 	}
 
 	@Override

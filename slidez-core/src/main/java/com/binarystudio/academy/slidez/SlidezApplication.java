@@ -1,6 +1,5 @@
 package com.binarystudio.academy.slidez;
 
-import io.sentry.Sentry;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 class SlidezApplication {
 
 	public static void main(String[] args) {
-		Sentry.init();
+		//Sentry.init();
 		SpringApplication.run(SlidezApplication.class, args);
 	}
 
