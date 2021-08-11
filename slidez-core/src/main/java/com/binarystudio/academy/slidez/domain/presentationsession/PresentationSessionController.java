@@ -35,20 +35,20 @@ public class PresentationSessionController {
 	}
 
 	@MessageMapping("/snapshot/{link}")
-	@SendTo("/topic/snapshot/{link}/")
+	@SendTo("/topic/snapshot/{link}")
 	public SnapshotResponseDto getPresentationSnapshot(@PathVariable String link) {
 		return presentationSessionService.getSnapshot(link);
 	}
 
 	@MessageMapping("/create/poll/{link}")
-	@SendTo("/topic/created/poll/{link}/")
+	@SendTo("/topic/created/poll/{link}")
 	public PollCreatedResponseDto createPoll(@PathVariable String link,
 			@Payload CreatePollRequestDto createPollRequestDto) {
 		return presentationSessionService.createPoll(link, createPollRequestDto);
 	}
 
 	@MessageMapping("/answer/poll/{link}")
-	@SendTo("/topic/answered/poll/{link}/")
+	@SendTo("/topic/answered/poll/{link}")
 	public PollAnsweredDto answerPoll(@PathVariable String link, @Payload AnswerPollDto answerPollDto) {
 		return presentationSessionService.answerPoll(link, answerPollDto);
 	}
