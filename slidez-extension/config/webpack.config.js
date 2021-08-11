@@ -371,7 +371,7 @@ module.exports = function (webpackEnv) {
                         // The preset includes JSX, Flow, TypeScript, and some ESnext features.
                         {
                             test: /\.(js|mjs|jsx|ts|tsx)$/,
-                            include: paths.appSrc,
+                            include: [paths.appSrc, paths.appShared],
                             loader: require.resolve('babel-loader'),
                             options: {
                                 customize: require.resolve(
@@ -627,9 +627,8 @@ module.exports = function (webpackEnv) {
                 new MiniCssExtractPlugin({
                     // Options similar to the same options in webpackOptions.output
                     // both options are optional
-                    filename: 'static/css/[name].[contenthash:8].css',
-                    chunkFilename:
-                        'static/css/[name].[contenthash:8].chunk.css',
+                    filename: 'static/css/[name].css',
+                    chunkFilename: 'static/css/[name].chunk.css',
                 }),
             // Moment.js is an extremely popular library that bundles large locale files
             // by default due to how webpack interprets its code. This is a practical

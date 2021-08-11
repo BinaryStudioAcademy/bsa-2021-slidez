@@ -56,6 +56,7 @@ module.exports = {
     appPath: resolveApp('.'),
     appBuild: resolveApp(buildPath),
     appPublic: resolveApp('public'),
+    appShared: path.resolve(path.join(__dirname, '../../slidez-shared')),
     appHtml: resolveApp('public/index.html'),
     chromeExtensionPopup: resolveModule(resolveApp, 'src/popup'),
     chromeExtensionBackground: resolveModule(resolveApp, 'src/background'),
