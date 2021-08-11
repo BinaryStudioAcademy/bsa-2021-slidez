@@ -85,10 +85,6 @@ public class PresentationSessionService {
 		PollCreatedEvent pollCreatedEvent = new PollCreatedEvent(dto.getName(), dto.getOptions());
 		eventStore.applyEvent(pollCreatedEvent);
 		List<Poll> polls = eventStore.snapshot().getPolls();
-		if (polls.size() == 0) {
-			pollCreatedResponseDto.setStatus(WebSocketStatus.BAD_REQUEST);
-			return pollCreatedResponseDto;
-		}
 		Poll last = polls.get(polls.size() - 1);
 		PollMapper pollMapper = PollMapper.INSTANCE;
 		return pollMapper.pollToPollCreatedDtoMapper(last);
