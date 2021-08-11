@@ -5,7 +5,7 @@ import Dashboard from './pages/dashboard/Dashboard'
 import PrivateRoute from './common/routes/PrivateRoute'
 import { AppRoute } from './common/routes/app-route'
 import SignPage from './pages/sign/SignPage'
-import SampleComponent from './common/components/event/SampleComponent'
+import EventPage from './pages/event/EventPage'
 
 function App() {
     return (
@@ -17,7 +17,7 @@ function App() {
                         path={[AppRoute.LOGIN, AppRoute.REGISTRATION]}
                         component={SignPage}
                     />
-                    <Route path={AppRoute.EVENT} component={SampleComponent} />
+                    <Route path={AppRoute.EVENT} component={EventPage} />
                     <PrivateRoute
                         exact
                         path={AppRoute.DASHBOARD}

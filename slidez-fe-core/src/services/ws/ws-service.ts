@@ -16,7 +16,7 @@ export const helloConnect = () => {
 }
 
 export const connectToAllEvents = (sessionLink: string) => {
-    WsHelper.connect(WsEndpoint.REACT_APP_WEB_SOCKET_ENDPOINT)
+    return WsHelper.connect(WsEndpoint.REACT_APP_WEB_SOCKET_ENDPOINT)
         .then(() =>
             WsHelper.subscribe(
                 `${WsEndpoint.REACT_APP_WEB_SOCKET_SNAPSHOT}/${sessionLink}`
@@ -38,3 +38,5 @@ export const connectToAllEvents = (sessionLink: string) => {
 export const disconnect = () => {
     WsHelper.disconnect()
 }
+
+export const getSnapshot = () => {}
