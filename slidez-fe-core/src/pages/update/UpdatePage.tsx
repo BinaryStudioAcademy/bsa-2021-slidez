@@ -1,7 +1,7 @@
-import React, { FC, useRef } from 'react'
+import React, { FC, useRef, useState } from 'react'
 import { Button } from '@material-ui/core'
 import { Formik, Form, Field } from 'formik'
-import { handleSubmit } from './helper'
+import * as yup from 'yup'
 import { UserField } from './Field'
 import { useDetectOutsideClick } from '../dashboard/useDetectOutsideClick'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,7 +14,24 @@ import {
 import SideBar from '../dashboard/SideBar'
 import '../dashboard/dashboard.scss'
 import './update.scss'
+import PropTypes from 'prop-types'
 import { AppRoute } from '../../common/routes/app-route'
+
+const userValues = {
+    email: '',
+    firstName: 'test',
+    lastName: 'test',
+}
+const pwdValues = {
+    password: '',
+    confirmedPassword: '',
+}
+
+const schema = yup.object({
+    email: yup.string().email().max(64),
+    firstName: yup.string().required().min(3).max(30),
+    lastName: yup.string().required().min(3).max(30),
+})
 
 export const UpdatePage: FC = () => {
     const dropdownRef = useRef<HTMLInputElement>(null)
@@ -24,6 +41,16 @@ export const UpdatePage: FC = () => {
         setIsActive(!isActive)
     }
 
+    const [userData, setUserData] = useState(userValues)
+    const [userPassword, setUserPassword] = useState(pwdValues)
+
+    const handleInfoSubmit = (values: typeof userValues) => {
+        console.log(values)
+    }
+
+    const handlePwdSubmit = (values: typeof pwdValues) => {
+        console.log(values)
+    }
     return (
         <div className='dashboard-page'>
             <SideBar></SideBar>
@@ -87,78 +114,90 @@ export const UpdatePage: FC = () => {
                 <div className='verticalLine' />
                 <div className='form'>
                     <Formik
-                        initialValues={{
-                            firstName: '',
-                            lastName: '',
-                            email: '',
-                        }}
+                        validationSchema={schema}
+                        enableReinitialize={true}
+                        initialValues={userData}
                         onSubmit={(values) => {
-                            handleSubmit(values)
+                            handleInfoSubmit(values)
                         }}
                     >
                         {({ values }) => (
-                            <>
-                                <Form className='form-body'>
-                                    <div className='form-inputs'>
-                                        <h3>Profile info</h3>
-                                        <div className='top-input'>
-                                            <p>Email</p>
-                                            <Field
-                                                name='email'
-                                                component={UserField}
-                                            />
-                                        </div>
-                                        <div className='bottom-inputs'>
-                                            <div>
-                                                <p>First Name</p>
-                                                <Field
-                                                    name='firstName'
-                                                    component={UserField}
-                                                />
-                                            </div>
-                                            <div>
-                                                <p>Last Name</p>
-                                                <Field
-                                                    name='lastName'
-                                                    component={UserField}
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <Button
-                                            className='user-btn'
-                                            type='submit'
-                                        >
-                                            Save
-                                        </Button>
+                            <Form className='form-body'>
+                                <div className='form-inputs'>
+                                    <h3>Profile info</h3>
+                                    <div className='top-input'>
+                                        <p>Email</p>
+                                        <Field
+                                            name='email'
+                                            component={UserField}
+                                            value={values.email}
+                                        />
                                     </div>
-                                </Form>
-                                <Form className='form-body'>
-                                    <div className='form-inputs'>
-                                        <h3>Change password</h3>
-                                        <div className='top-input pwd-input'>
-                                            <p>New password</p>
+                                    <div className='bottom-inputs'>
+                                        <div>
+                                            <p>First Name</p>
                                             <Field
-                                                name='password'
+                                                name='firstName'
                                                 component={UserField}
+                                                value={values.firstName}
                                             />
                                         </div>
-                                        <div className='top-input pwd-input'>
-                                            <p>Confirm password</p>
+                                        <div>
+                                            <p>Last Name</p>
                                             <Field
-                                                name='confirm-password'
+                                                name='lastName'
                                                 component={UserField}
+                                                value={values.lastName}
                                             />
                                         </div>
-                                        <Button
-                                            className='user-btn'
-                                            type='submit'
-                                        >
-                                            Save
-                                        </Button>
                                     </div>
-                                </Form>
-                            </>
+                                    <Button
+                                        className='user-btn'
+                                        type='submit'
+                                        onClick={() => setUserData(values)}
+                                    >
+                                        Save
+                                    </Button>
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
+                    <Formik
+                        enableReinitialize={true}
+                        initialValues={userPassword}
+                        onSubmit={(values) => {
+                            handlePwdSubmit(values)
+                        }}
+                    >
+                        {({ values }) => (
+                            <Form className='form-body'>
+                                <div className='form-inputs'>
+                                    <h3>Change password</h3>
+                                    <div className='top-input pwd-input'>
+                                        <p>New password</p>
+                                        <Field
+                                            name='password'
+                                            component={UserField}
+                                            value={values.password}
+                                        />
+                                    </div>
+                                    <div className='top-input pwd-input'>
+                                        <p>Confirm password</p>
+                                        <Field
+                                            name='confirmedPassword'
+                                            component={UserField}
+                                            value={values.confirmedPassword}
+                                        />
+                                    </div>
+                                    <Button
+                                        className='user-btn'
+                                        type='submit'
+                                        onClick={() => setUserPassword(values)}
+                                    >
+                                        Save
+                                    </Button>
+                                </div>
+                            </Form>
                         )}
                     </Formik>
                 </div>
