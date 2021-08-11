@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/session")
+@RequestMapping("${v1API}/session")
 public class PresentationSessionController {
 
 	private final PresentationSessionService presentationSessionService;
