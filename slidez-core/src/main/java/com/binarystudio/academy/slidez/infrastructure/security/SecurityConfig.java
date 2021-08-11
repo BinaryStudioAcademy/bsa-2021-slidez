@@ -16,14 +16,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final String[] PUBLIC_URLS = { "/", "/health", "/auth/**", "/swagger-ui/**", "/api-docs/**" };
 
-    private JwtFilter jwtFilter;
+	private JwtFilter jwtFilter;
 
-    @Autowired
-    public void setJwtFilter(JwtFilter jwtFilter) {
-        this.jwtFilter = jwtFilter;
-    }
+	@Autowired
+	public void setJwtFilter(JwtFilter jwtFilter) {
+		this.jwtFilter = jwtFilter;
+	}
 
-    private void applyRouteRestrictions(HttpSecurity http) throws Exception {
+	private void applyRouteRestrictions(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers(PUBLIC_URLS).permitAll().anyRequest().authenticated();
 	}
 

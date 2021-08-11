@@ -21,7 +21,7 @@ import static org.springframework.util.StringUtils.hasText;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final String[] PUBLIC_URLS = { "/", "/health", "/auth/**", "/swagger-ui/**", "/api-docs/**" };
+	private final String[] PUBLIC_URLS = { "/", "/health", "/auth/**", "/swagger-ui/**", "/api-docs/**" };
 
 	private final JwtProvider jwtProvider;
 
@@ -33,15 +33,15 @@ public class JwtFilter extends OncePerRequestFilter {
 		this.userService = userService;
 	}
 
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        for (String excludedPath : PUBLIC_URLS) {
-            if (request.getRequestURI().startsWith(excludedPath)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) {
+		for (String excludedPath : PUBLIC_URLS) {
+			if (request.getRequestURI().startsWith(excludedPath)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -53,7 +53,7 @@ public class JwtFilter extends OncePerRequestFilter {
 					Arrays.asList(user.get().getRole()));
 			SecurityContextHolder.getContext().setAuthentication(auth);
 		}
-        filterChain.doFilter(request, response);
+		filterChain.doFilter(request, response);
 	}
 
 	private String getTokenFromRequest(HttpServletRequest request) {
