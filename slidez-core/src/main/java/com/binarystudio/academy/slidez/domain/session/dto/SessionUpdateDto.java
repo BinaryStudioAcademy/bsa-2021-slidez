@@ -1,6 +1,5 @@
 package com.binarystudio.academy.slidez.domain.session.dto;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.binarystudio.academy.slidez.domain.session.model.SessionStatus;
