@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.infrastructure.web;
 
+import com.binarystudio.academy.slidez.infrastructure.enums.AllowedOrigin;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -14,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
 		var cors = registry.addMapping("/**");
 		cors.allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "HEAD");
 		// TODO: Move to config
-		cors.allowedOrigins("*");
+		cors.allowedOrigins(AllowedOrigin.getAllAllowedOrigins()).allowCredentials(true);
 	}
 
 }

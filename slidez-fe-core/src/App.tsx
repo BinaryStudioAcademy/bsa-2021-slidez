@@ -1,21 +1,23 @@
 import React from 'react'
-import { HashRouter, Switch } from 'react-router-dom'
-import PublicRoute from './common/routes/PublicRoute'
+import { HashRouter, Route, Switch } from 'react-router-dom'
+import AuthenticationRoute from './common/routes/AuthenticationRoute'
 import Dashboard from './pages/dashboard/Dashboard'
 import PrivateRoute from './common/routes/PrivateRoute'
 import { AppRoute } from './common/routes/app-route'
 import SignPage from './pages/sign/SignPage'
+import SampleComponent from './common/components/event/SampleComponent'
 
 function App() {
     return (
         <div>
             <HashRouter>
                 <Switch>
-                    <PublicRoute
+                    <AuthenticationRoute
                         exact
                         path={[AppRoute.LOGIN, AppRoute.REGISTRATION]}
                         component={SignPage}
                     />
+                    <Route path={AppRoute.EVENT} component={SampleComponent} />
                     <PrivateRoute
                         exact
                         path={AppRoute.DASHBOARD}

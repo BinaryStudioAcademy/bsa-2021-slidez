@@ -7,7 +7,7 @@ import { useAppSelector } from '../../hooks'
 import { selectIsLoggedIn } from '../../containers/user/store'
 
 // @ts-ignore
-const PublicRoute = ({ component: Component, ...rest }) => {
+const AuthenticationRoute = ({ component: Component, ...rest }) => {
     const hasUser = useAppSelector(selectIsLoggedIn)
 
     return (
@@ -29,13 +29,13 @@ const PublicRoute = ({ component: Component, ...rest }) => {
     )
 }
 
-PublicRoute.propTypes = {
+AuthenticationRoute.propTypes = {
     component: PropTypes.elementType.isRequired,
     location: locationType,
 }
 
-PublicRoute.defaultProps = {
+AuthenticationRoute.defaultProps = {
     location: undefined,
 }
 
-export default PublicRoute
+export default AuthenticationRoute
