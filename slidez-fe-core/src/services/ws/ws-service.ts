@@ -15,4 +15,26 @@ export const helloConnect = () => {
         .catch((error) => console.log(error))
 }
 
-export const connectToPollCreated = () => {}
+export const connectToAllEvents = (sessionLink: string) => {
+    WsHelper.connect(WsEndpoint.REACT_APP_WEB_SOCKET_ENDPOINT)
+        .then(() =>
+            WsHelper.subscribe(
+                `${WsEndpoint.REACT_APP_WEB_SOCKET_SNAPSHOT}/${sessionLink}`
+            )
+        )
+        .then(() =>
+            WsHelper.subscribe(
+                `${WsEndpoint.REACT_APP_WEB_SOCKET_CREATED_POLL}/${sessionLink}`
+            )
+        )
+        .then(() =>
+            WsHelper.subscribe(
+                `${WsEndpoint.REACT_APP_WEB_SOCKET_ANSWERED_POLL}/${sessionLink}`
+            )
+        )
+        .catch((error) => console.log(error))
+}
+
+export const disconnect = () => {
+    WsHelper.disconnect()
+}
