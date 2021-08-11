@@ -326,6 +326,14 @@
 		cursor: pointer;
 	}
 }
+.no-found-presentations {
+    display:flex;
+    justify-content: center;
+    align-content: center;
+    font-weight: 400;
+    font-size: 16px;
+    margin-top: 20px;
+}
 #table-presentation {
 	text-align: center;
 	border-collapse: collapse;

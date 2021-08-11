@@ -88,23 +88,22 @@ const Dashboard = () => {
 
     useEffect(() => {
         setFilteredPresentations(
-            MOCK_DATA.filter((presentation) => {
-                return presentation.name
+            MOCK_DATA.filter((presentation) =>
+                presentation.name
                     .toLowerCase()
                     .includes(searchField.toLowerCase())
-            })
+            )
         )
     }, [searchField])
 
-    const isNotEmptyPresentation = () => {
-        return filteredPresentations.length === 0 ? (
+    const isNotEmptyPresentation = () =>
+        filteredPresentations.length === 0 ? (
             <span>
                 No presentations are found by search term {searchField}.
             </span>
         ) : (
             ''
         )
-    }
 
     const handleChange = (e: {
         target: { value: React.SetStateAction<string> }
@@ -231,7 +230,9 @@ const Dashboard = () => {
                                         {renderTableData()}
                                     </tbody>
                                 </table>
-                                {isNotEmptyPresentation()}
+                                <div className='no-found-presentations'>
+                                    {isNotEmptyPresentation()}
+                                </div>
                             </div>
                         ) : (
                             <div className='grid'>
@@ -266,7 +267,9 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 ))}
-                                {isNotEmptyPresentation()}
+                                <div className='no-found-presentations'>
+                                    {isNotEmptyPresentation()}
+                                </div>
                             </div>
                         )}
                     </div>
