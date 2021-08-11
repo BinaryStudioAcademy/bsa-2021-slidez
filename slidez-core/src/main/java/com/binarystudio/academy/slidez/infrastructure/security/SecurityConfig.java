@@ -10,9 +10,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final String[] PUBLIC_URLS = { "/auth/**",
-                                     "/swagger-ui/**",
-                                    "/api-docs/**" };
+    private final String[] PUBLIC_URLS = {
+        "/auth/**",
+        "/swagger-ui/**",
+        "/api-docs/**"
+    };
 
 	private void applyRouteRestrictions(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
