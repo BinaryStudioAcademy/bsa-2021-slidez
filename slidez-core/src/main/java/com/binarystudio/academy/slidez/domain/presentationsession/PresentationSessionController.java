@@ -2,9 +2,7 @@ package com.binarystudio.academy.slidez.domain.presentationsession;
 
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionRequestDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionResponseDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.CreatePollRequestDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.PollCreatedResponseDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.SnapshotResponseDto;
+import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +45,12 @@ public class PresentationSessionController {
 	public PollCreatedResponseDto createPoll(@PathVariable String link,
 			@Payload CreatePollRequestDto createPollRequestDto) {
 		return presentationSessionService.createPoll(link, createPollRequestDto);
+	}
+
+	@MessageMapping("/answer/poll/{link}")
+	@SendTo("/topic/answered/poll/{link}/")
+	public PollAnsweredDto answerPoll(@PathVariable String link, @Payload AnswerPollDto answerPollDto) {
+		return presentationSessionService.answerPoll(link, answerPollDto);
 	}
 
 }

@@ -2,11 +2,10 @@ package com.binarystudio.academy.slidez.domain.presentationsession;
 
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionRequestDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionResponseDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.CreatePollRequestDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.PollCreatedResponseDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.SnapshotResponseDto;
+import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.*;
 import com.binarystudio.academy.slidez.domain.presentationsession.enums.WebSocketStatus;
 import com.binarystudio.academy.slidez.domain.presentationsession.event.DomainEvent;
+import com.binarystudio.academy.slidez.domain.presentationsession.event.PollAnsweredEvent;
 import com.binarystudio.academy.slidez.domain.presentationsession.event.PollCreatedEvent;
 import com.binarystudio.academy.slidez.domain.link.LinkService;
 import com.binarystudio.academy.slidez.domain.link.model.Link;
@@ -83,8 +82,8 @@ public class PresentationSessionService {
 			pollCreatedResponseDto.setStatus(WebSocketStatus.NOT_FOUND);
 			return pollCreatedResponseDto;
 		}
-        PollCreatedEvent pollCreatedEvent = new PollCreatedEvent(dto.getName(), dto.getOptions());
-        eventStore.applyEvent(pollCreatedEvent);
+		PollCreatedEvent pollCreatedEvent = new PollCreatedEvent(dto.getName(), dto.getOptions());
+		eventStore.applyEvent(pollCreatedEvent);
 		List<Poll> polls = eventStore.snapshot().getPolls();
 		if (polls.size() == 0) {
 			pollCreatedResponseDto.setStatus(WebSocketStatus.BAD_REQUEST);
@@ -93,6 +92,18 @@ public class PresentationSessionService {
 		Poll last = polls.get(polls.size() - 1);
 		PollMapper pollMapper = PollMapper.INSTANCE;
 		return pollMapper.pollToPollCreatedDtoMapper(last);
+	}
+
+	public PollAnsweredDto answerPoll(String link, AnswerPollDto dto) {
+		PresentationEventStore eventStore = inMemoryPresentationEventStoreRepository.get(link);
+		PollAnsweredDto pollAnsweredDto = new PollAnsweredDto();
+		if (eventStore == null) {
+			pollAnsweredDto.setStatus(WebSocketStatus.NOT_FOUND);
+			return pollAnsweredDto;
+		}
+		PollAnsweredEvent pollAnsweredEvent = new PollAnsweredEvent(dto.getPollId(), dto.getOption());
+		eventStore.applyEvent(pollAnsweredEvent);
+		return new PollAnsweredDto(dto.getPollId(), dto.getOption());
 	}
 
 }
