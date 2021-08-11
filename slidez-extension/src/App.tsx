@@ -3,9 +3,15 @@ import logo from './logo.svg'
 import './App.css'
 import { CLASS_NAME_PUNCH_PRESENT_IFRAME } from './dom/dom-constants'
 import { queryElementAsync } from './dom/dom-helpers'
+import presentMode from './present-mode/present-mode'
+
+const Iframe = () => {
+    return <iframe className={CLASS_NAME_PUNCH_PRESENT_IFRAME}></iframe>
+}
 
 const App = () => {
     const [url, setUrl] = useState<string>('')
+    const [iframePresent, setIframePresent] = useState(false)
 
     /**
      * Get current URL
@@ -19,10 +25,13 @@ const App = () => {
                 // @ts-ignore
                 setUrl(url)
             })
+
         queryElementAsync<HTMLElement>(
             document,
-            'iframe[class=' + CLASS_NAME_PUNCH_PRESENT_IFRAME + ']'
-        ).then((el) => console.log('done'))
+            '.' + CLASS_NAME_PUNCH_PRESENT_IFRAME
+        ).then(() => console.log('done'))
+
+        presentMode.init()
     }, [])
 
     return (
@@ -40,39 +49,14 @@ const App = () => {
                 </a>
             </header>
             <div style={{ padding: '25px' }}>
-                <button
-                    onClick={() => {
-                        const container =
-                            document.getElementsByClassName('container')[0]
-                        const iframe = document.createElement('iframe')
-                        iframe.classList.add(CLASS_NAME_PUNCH_PRESENT_IFRAME)
-                        if (
-                            !document.getElementsByClassName(
-                                CLASS_NAME_PUNCH_PRESENT_IFRAME
-                            )[0]
-                        ) {
-                            container?.append(iframe)
-                        }
-                    }}
-                >
+                <button onClick={() => setIframePresent(true)}>
                     append iframe
                 </button>
-                <button
-                    onClick={() => {
-                        const iframe = document.getElementsByClassName(
-                            CLASS_NAME_PUNCH_PRESENT_IFRAME
-                        )[0]
-                        if (iframe) {
-                            const container =
-                                document.getElementsByClassName('container')[0]
-                            container?.removeChild(iframe)
-                        }
-                    }}
-                >
+                <button onClick={() => setIframePresent(false)}>
                     remove iframe
                 </button>
             </div>
-            <div className='container'></div>
+            <div className='container'>{iframePresent && <Iframe />}</div>
         </div>
     )
 }
