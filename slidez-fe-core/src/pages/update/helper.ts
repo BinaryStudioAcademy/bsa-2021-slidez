@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { UserField } from './Field'
 
 export interface Values {
     firstName: string
