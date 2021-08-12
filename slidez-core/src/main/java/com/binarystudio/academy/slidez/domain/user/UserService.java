@@ -53,22 +53,6 @@ public class UserService {
         return Optional.of(userDetailsDto);
     }
 
-    @Transactional
-    public Optional<UserDetailsDto> updateUserByToken(String token, User updatedUser) {
-        String email = this.authService.getLoginFromToken(token);
-        if (email == null) {
-            return Optional.empty();
-        }
-        Optional<User> userOptional = findByEmail(email);
-        User user = userOptional.orElseThrow();
-        user.setFirstName(updatedUser.getFirstName());
-        user.setLastName(updatedUser.getLastName());
-        user.setEmail(updatedUser.getEmail());
-        this.userRepository.saveAndFlush(user);
-        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-        return Optional.of(userDetailsDto);
-    }
-
     public User create(UserDto userDto) {
         User user = UserMapper.INSTANCE.userDtoToUser(userDto);
         user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
@@ -87,11 +71,18 @@ public class UserService {
     }
 
     @Transactional
-    public User update(User user) {
-        User userUpdated = new User();
-        userUpdated.setFirstName(user.getFirstName());
-        userUpdated.setLastName(user.getLastName());
-        return this.userRepository.saveAndFlush(userUpdated);
+    public Optional<User> updateUserByToken(String token, UserDto userDto) {
+        String email = this.authService.getLoginFromToken(token);
+        if (email == null) {
+            return Optional.empty();
+        }
+        Optional<User> userOptional = findByEmail(email);
+        User updatedUser = userOptional.orElseThrow();
+        updatedUser.setFirstName(userDto.getFirstName());
+        updatedUser.setLastName(userDto.getLastName());
+        this.userRepository.saveAndFlush(updatedUser);
+        User user = UserMapper.INSTANCE.userDtoToUser(userDto);
+        return Optional.of(user);
     }
 
     public List<User> findAll() {
