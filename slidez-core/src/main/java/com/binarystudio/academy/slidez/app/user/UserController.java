@@ -1,8 +1,5 @@
 package com.binarystudio.academy.slidez.app.user;
 
-import java.util.Optional;
-import java.util.UUID;
-
 import com.binarystudio.academy.slidez.domain.user.UserService;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
 import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
@@ -12,50 +9,67 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @RestController
 @RequestMapping("${v1API}/users")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@GetMapping("userInfo")
-	public ResponseEntity<Object> getUserInfo(@RequestParam("token") String token) {
-		if (token == null || token.isEmpty()) {
-			return new ResponseEntity<>("Invalid token", HttpStatus.BAD_REQUEST);
-		}
+    @GetMapping("")
+    public ResponseEntity<Object> findAll() {
+        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+    }
 
-		Optional<UserDetailsDto> userDetailsDto = this.userService.getDetailsByToken(token);
-		if (userDetailsDto.isEmpty()) {
-			return new ResponseEntity<>("Bad token.", HttpStatus.BAD_REQUEST);
-		}
+    @GetMapping("userInfo")
+    public ResponseEntity<Object> getUserInfo(@RequestParam("token") String token) {
+        if (token == null || token.isEmpty()) {
+            return new ResponseEntity<>("Invalid token", HttpStatus.BAD_REQUEST);
+        }
 
-		return new ResponseEntity<>(userDetailsDto.get(), HttpStatus.OK);
-	}
+        Optional<UserDetailsDto> userDetailsDto = this.userService.getDetailsByToken(token);
+        if (userDetailsDto.isEmpty()) {
+            return new ResponseEntity<>("Bad token.", HttpStatus.BAD_REQUEST);
+        }
 
-	@GetMapping("{id}")
-	public ResponseEntity<Object> getById(@PathVariable("id") UUID id) {
-		if (id == null) {
-			return new ResponseEntity<>("Invalid ID", HttpStatus.BAD_REQUEST);
-		}
-		Optional<User> userOptional = this.userService.getById(id);
-		if (userOptional.isEmpty()) {
-			return new ResponseEntity<>("User not found.", HttpStatus.NOT_FOUND);
-		}
+        return new ResponseEntity<>(userDetailsDto.get(), HttpStatus.OK);
+    }
 
-		User user = userOptional.get();
-		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-		return new ResponseEntity<>(userDetailsDto, HttpStatus.OK);
-	}
-
-	@PutMapping("{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable("id") UUID id,  User user) {
+    @GetMapping("{id}")
+    public ResponseEntity<Object> getById(@PathVariable("id") UUID id) {
         if (id == null) {
             return new ResponseEntity<>("Invalid ID", HttpStatus.BAD_REQUEST);
         }
+        Optional<User> userOptional = this.userService.getById(id);
+        if (userOptional.isEmpty()) {
+            return new ResponseEntity<>("User not found.", HttpStatus.NOT_FOUND);
+        }
+
+        User user = userOptional.get();
+        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
+        return new ResponseEntity<>(userDetailsDto, HttpStatus.OK);
+    }
+
+    @PostMapping("update")
+    public ResponseEntity<Object> updateUser(User user) {
         User userUpdated = userService.update(user);
         UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(userUpdated);
         return new ResponseEntity<>(userDetailsDto, HttpStatus.OK);
     }
 
-}
+    @PostMapping("")
+    public ResponseEntity<Object> updateUserByToken(@RequestParam("token") String token, User updatedUser) {
+        if (token == null || token.isEmpty()) {
+            return new ResponseEntity<>("Invalid token", HttpStatus.BAD_REQUEST);
+        }
+
+        Optional<UserDetailsDto> userDetailsDto = this.userService.updateUserByToken(token, updatedUser);
+        if (userDetailsDto.isEmpty()) {
+            return new ResponseEntity<>("Bad token.", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(userDetailsDto.get(), HttpStatus.OK);}
+    }

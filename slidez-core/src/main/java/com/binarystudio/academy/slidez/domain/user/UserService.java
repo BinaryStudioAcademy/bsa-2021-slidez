@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.domain.user;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,64 +17,84 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
 
-	@Autowired
-	protected PasswordEncoder passwordEncoder;
+    @Autowired
+    protected PasswordEncoder passwordEncoder;
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Autowired
-	private AuthService authService;
+    @Autowired
+    private AuthService authService;
 
-	public boolean isEmailPresent(String email) {
-		return this.userRepository.existsByEmail(email);
-	}
+    public boolean isEmailPresent(String email) {
+        return this.userRepository.existsByEmail(email);
+    }
 
-	public Optional<User> findByEmail(String email) {
-		return this.userRepository.findByEmail(email);
-	}
+    public Optional<User> findByEmail(String email) {
+        return this.userRepository.findByEmail(email);
+    }
 
-	public Optional<User> findByToken(String token) {
-		String email = this.authService.getLoginFromToken(token);
-		if (email == null) {
-			return Optional.empty();
-		}
-		return findByEmail(email);
-	}
+    public Optional<User> findByToken(String token) {
+        String email = this.authService.getLoginFromToken(token);
+        if (email == null) {
+            return Optional.empty();
+        }
+        return findByEmail(email);
+    }
 
-	public Optional<UserDetailsDto> getDetailsByToken(String token) {
-		String email = this.authService.getLoginFromToken(token);
-		if (email == null) {
-			return Optional.empty();
-		}
-		Optional<User> userOptional = findByEmail(email);
-		User user = userOptional.orElseThrow();
-		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-		return Optional.of(userDetailsDto);
-	}
-
-	public User create(UserDto userDto) {
-		User user = UserMapper.INSTANCE.userDtoToUser(userDto);
-		user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
-		return this.userRepository.saveAndFlush(user);
-	}
-
-	public Optional<User> getById(UUID id) {
-		return this.userRepository.findById(id);
-	}
-
-	public User createByEmail(String email) {
-		User user = new User();
-		user.setEmail(email);
-		user.setPassword(this.passwordEncoder.encode(""));
-		return this.userRepository.save(user);
-	}
+    public Optional<UserDetailsDto> getDetailsByToken(String token) {
+        String email = this.authService.getLoginFromToken(token);
+        if (email == null) {
+            return Optional.empty();
+        }
+        Optional<User> userOptional = findByEmail(email);
+        User user = userOptional.orElseThrow();
+        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
+        return Optional.of(userDetailsDto);
+    }
 
     @Transactional
-	public User update(User user) {
-	    User userUpdated = new User();
+    public Optional<UserDetailsDto> updateUserByToken(String token, User updatedUser) {
+        String email = this.authService.getLoginFromToken(token);
+        if (email == null) {
+            return Optional.empty();
+        }
+        Optional<User> userOptional = findByEmail(email);
+        User user = userOptional.orElseThrow();
+        user.setFirstName(updatedUser.getFirstName());
+        user.setLastName(updatedUser.getLastName());
+        user.setEmail(updatedUser.getEmail());
+        this.userRepository.saveAndFlush(user);
+        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
+        return Optional.of(userDetailsDto);
+    }
+
+    public User create(UserDto userDto) {
+        User user = UserMapper.INSTANCE.userDtoToUser(userDto);
+        user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
+        return this.userRepository.saveAndFlush(user);
+    }
+
+    public Optional<User> getById(UUID id) {
+        return this.userRepository.findById(id);
+    }
+
+    public User createByEmail(String email) {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(this.passwordEncoder.encode(""));
+        return this.userRepository.save(user);
+    }
+
+    @Transactional
+    public User update(User user) {
+        User userUpdated = new User();
         userUpdated.setFirstName(user.getFirstName());
         userUpdated.setLastName(user.getLastName());
-	    return this.userRepository.saveAndFlush(userUpdated);
+        return this.userRepository.saveAndFlush(userUpdated);
+    }
+
+    public List<User> findAll() {
+        return this.userRepository.findAll();
     }
 }
