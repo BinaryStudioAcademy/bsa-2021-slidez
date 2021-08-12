@@ -76,11 +76,18 @@
 	background: $white;
 }
 .search-and-user {
-	display: flex;
-	justify-content: flex-end;
-	grid-column-gap: 25px;
-	align-items: center;
-	background: $white;
+    display: flex;
+    justify-content: flex-end;
+    grid-column-gap: 25px;
+    align-items: center;
+    background: $white;
+    position: fixed;
+    right: 10px;
+    width: 70%;
+    z-index: 1;
+    padding-top: 17px;
+    padding-bottom: 17px;
+    top: 0;
 	.search-bar {
 		position: relative;
 		overflow: hidden;
@@ -198,7 +205,7 @@
 
 .presentations-section {
 	position: absolute;
-	margin-top: 26px;
+	margin-top: 105px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
