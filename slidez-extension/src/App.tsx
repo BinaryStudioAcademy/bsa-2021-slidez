@@ -5,10 +5,6 @@ import { CLASS_NAME_PUNCH_PRESENT_IFRAME } from './dom/dom-constants'
 import { queryElementAsync } from './dom/dom-helpers'
 import presentMode from './present-mode/present-mode'
 
-const Iframe = () => {
-    return <iframe className={CLASS_NAME_PUNCH_PRESENT_IFRAME}></iframe>
-}
-
 const App = () => {
     const [url, setUrl] = useState<string>('')
     const [iframePresent, setIframePresent] = useState(false)
@@ -47,16 +43,22 @@ const App = () => {
                 >
                     Learn React
                 </a>
+                <div style={{ padding: '25px' }}>
+                    <button onClick={() => setIframePresent(true)}>
+                        append iframe
+                    </button>
+                    <button onClick={() => setIframePresent(false)}>
+                        remove iframe
+                    </button>
+                </div>
             </header>
-            <div style={{ padding: '25px' }}>
-                <button onClick={() => setIframePresent(true)}>
-                    append iframe
-                </button>
-                <button onClick={() => setIframePresent(false)}>
-                    remove iframe
-                </button>
+            <div className='container'>
+                {iframePresent && (
+                    <iframe
+                        className={CLASS_NAME_PUNCH_PRESENT_IFRAME}
+                    ></iframe>
+                )}
             </div>
-            <div className='container'>{iframePresent && <Iframe />}</div>
         </div>
     )
 }
