@@ -1,52 +1,76 @@
+import { doPost } from 'slidez-shared'
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.message === 'login') {
-        user_status(true, request?.payload)
+        userStatus(true, request?.payload)
             .then((res) => sendResponse(res))
             .catch((err) => console.log(err))
         return true
+    } else if (request.message === 'userStatus') {
+        // isUserSignedIn()
+        //     .then(res => {
+        //         sendResponse({
+        //             message: 'success',
+        //             userStatus: logInResult: res.logInResult.email
+        //         });
+        //     })
+        //     .catch(err => console.log(err));
+        //     return true;
     }
 })
 
-function user_status(signIn: any, user_info: any): Promise<any> {
+async function userStatus(signIn: any, userInfo: any) {
     if (signIn) {
-        return fetch('http://localhost:5000/login', {
-            method: 'GET',
-            headers: {
-                Authorization:
-                    'Basic ' + btoa(`${user_info.email}:${user_info.pass}`),
-            },
-        })
-            .then((res) => {
-                return new Promise((resolve) => {
-                    if (res.status !== 200) resolve('fail')
-
-                    chrome.storage.local.set(
-                        { userStatus: signIn, user_info },
-                        function () {
-                            if (chrome.runtime.lastError) resolve('fail')
+        const { data, status } = await doPost(
+            'login',
+            { email: String, password: String },
+            userInfo
+        )
+        return new Promise((resolve) => {
+            if (status === 200) {
+                const logInResult: {
+                    accessToken: string
+                    email: string
+                    password: string
+                } = data
+                chrome.storage.local.set(
+                    { userStatus: signIn, logInResult },
+                    function () {
+                        if (chrome.runtime.lastError) {
+                            resolve('fail')
+                        } else {
+                            chrome.runtime.sendMessage({
+                                message: logInResult.accessToken,
+                            })
                             resolve('success')
                         }
-                    )
-                })
-            })
-            .catch((err) => console.log(err))
+                    }
+                )
+            } else {
+                resolve('fail')
+            }
+        })
     }
-    return Promise.resolve()
 }
-//   function is_user_signed_in() {
-//     return new Promise(resolve => {
-//         chrome.storage.local.get(['userStatus', 'user_info'],
-//             function (response) {
-//                 if (chrome.runtime.lastError) resolve({ userStatus:
-//                     false, user_info: {} })
-//             resolve(response.userStatus === undefined ?
-//                     { userStatus: false, user_info: {} } :
-//                     { userStatus: response.userStatus, user_info:
-//                     response.user_info }
-//                     )
-//             });
-//     });
-// }
+function isUserSignedIn() {
+    return new Promise((resolve) => {
+        chrome.storage.local.get(
+            ['userStatus', 'logInResult'],
+            function (response) {
+                if (chrome.runtime.lastError)
+                    resolve({ userStatus: false, logInResult: {} })
+                resolve(
+                    response.userStatus === undefined
+                        ? { userStatus: false, logInResult: {} }
+                        : {
+                              userStatus: response.userStatus,
+                              logInResult: response.logInResult,
+                          }
+                )
+            }
+        )
+    })
+}
 
 function polling() {
     console.log('polling')
