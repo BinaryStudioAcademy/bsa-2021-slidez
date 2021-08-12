@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import * as WebSocketService from '../../services/ws/ws-service'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import {
@@ -18,7 +17,6 @@ const EventPage = () => {
     if (!sentConnectionRequest) {
         setSentConnectionRequest(true)
         dispatch(initWebSocketSession(link))
-        setTimeout(() => WebSocketService.disconnect(), 10_000)
     }
     const connectionStatus = useAppSelector(selectConnectionStatus)
     const snapshot = useAppSelector(selectSnapshot)
