@@ -21,7 +21,7 @@ function App() {
                     path={AppRoute.DASHBOARD}
                     component={Dashboard}
                 />
-                <PublicRoute
+                <PrivateRoute
                     exact
                     path={AppRoute.UPDATE_USER}
                     component={UpdatePage}

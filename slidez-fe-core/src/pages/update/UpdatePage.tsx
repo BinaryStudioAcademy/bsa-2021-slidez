@@ -58,8 +58,6 @@ export const UpdatePage: FC = () => {
             )
             .then((response) => {
                 setUserData(response.data)
-                console.log(response.data)
-                console.log(userData)
             })
     }, [])
 
@@ -70,9 +68,7 @@ export const UpdatePage: FC = () => {
                 values
             )
             .then((response) => {
-                setUserData(response.data)
-                console.log(values)
-                console.log(response.data)
+                setUserData(response.data || initialValues)
             })
     }
 

@@ -5,7 +5,7 @@ const AppRoute = {
     LOGOUT: '/logout',
     REGISTRATION: '/registration',
     RESTORE_PASSWORD: '/restore-password',
-    DASHBOARD: '/',
+    DASHBOARD: '/dashboard',
     UPDATE_USER: '/update-user',
 }
 
