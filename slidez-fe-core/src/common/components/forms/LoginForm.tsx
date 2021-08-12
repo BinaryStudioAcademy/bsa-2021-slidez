@@ -12,6 +12,8 @@ import { selectSignStatus } from '../../../containers/user/store'
 import { SignStatus } from '../../../containers/user/enums/sign-status'
 import GoogleLogin from 'react-google-login'
 import { GoogleOAuth } from '../../../services/auth/google-oauth'
+import { ErrorMessage, Field, Form, Formik } from 'formik'
+import * as Yup from 'yup'
 
 type LoginProps = {
     onLogin: Function
@@ -20,9 +22,9 @@ type LoginProps = {
 
 const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
     const [isPasswordRevealed, setIsPasswordRevealed] = React.useState(false)
-    const [email, setEmail] = React.useState('')
-    const [isEmailValid, setIsEmailValid] = React.useState(true)
-    const [password, setPassword] = React.useState('')
+    // const [email, setEmail] = React.useState('')
+    // const [isEmailValid, setIsEmailValid] = React.useState(true)
+    // const [password, setPassword] = React.useState('')
     const signStatus = useAppSelector(selectSignStatus)
 
     const onRevealClick = () => {
@@ -30,16 +32,16 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
         revealPassword('sign-in-password-input')
     }
 
-    const doCheckUp = () => {
-        setIsEmailValid(validator.isEmail(email))
-    }
+    // const doCheckUp = () => {
+    //     setIsEmailValid(validator.isEmail(email))
+    // }
 
-    const handleLogin = () => {
-        doCheckUp()
-        if (isEmailValid && email !== '') {
-            onLogin(email, password)
-        }
-    }
+    // const handleLogin = () => {
+    //     doCheckUp()
+    //     if (isEmailValid && email !== '') {
+    //         onLogin(email, password)
+    //     }
+    // }
 
     const handleLoginWithGoogle = async (googleData: any) => {
         onLoginWithGoogle(googleData)
@@ -53,7 +55,32 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                     Sign Up
                 </NavLink>
             </div>
-            <div className='form-row form-input-holder'>
+            {/* ======================================================================== */}
+            <Formik
+                initialValues={{ email: '', password: '' }}
+                validationSchema={Yup.object({
+                    email: Yup.string()
+                        .email('Invalid email address')
+                        .required('Required'),
+                    password: Yup.string().required('Required'),
+                })}
+                onSubmit={(values, { setSubmitting }) => {
+                    console.log('Yeees')
+                }}
+            >
+                <Form>
+                    <label htmlFor='email'>Email</label>
+                    <Field name='email' type='text' />
+                    <ErrorMessage name='email' />
+
+                    <label htmlFor='password'>Password</label>
+                    <Field name='password' type='password' />
+                    <ErrorMessage name='password' />
+                </Form>
+            </Formik>
+            {/* ======================================================================== */}
+            {/* ======================================================================== */}
+            {/* <div className='form-row form-input-holder'>
                 <p
                     className={
                         signStatus === SignStatus.INVALID_CREDENTIALS
@@ -76,8 +103,8 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                     onChange={(event) => setEmail(event.target.value)}
                     onFocus={() => setIsEmailValid(true)}
                 />
-            </div>
-            <div className='form-row form-input-holder'>
+            </div> */}
+            {/* <div className='form-row form-input-holder'>
                 <div className='row-with-components-on-opposite-sides'>
                     <label htmlFor='sign-in-password-input' className='label'>
                         Password
@@ -107,15 +134,16 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                         onClick={onRevealClick}
                     />
                 </div>
-            </div>
-            <div className='form-row buttons-row'>
+            </div> */}
+            {/* <div className='form-row buttons-row'>
                 <button
                     className='form-button login-button'
                     onClick={handleLogin}
                 >
                     Log In
                 </button>
-            </div>
+            </div> */}
+            {/* ======================================================================== */}
             <div className='form-row button-divider'>or</div>
             <div className='form-row'>
                 <GoogleLogin
