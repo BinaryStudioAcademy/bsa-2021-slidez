@@ -1,6 +1,7 @@
 import * as WsHelper from './ws-helper'
 import { WsEndpoint } from './ws-endpoint'
 import { Message } from 'webstomp-client'
+import { SnapshotDto } from '../../containers/presentation_session/dto/SnapshotDto'
 
 export const helloConnect = () => {
     const msg = { name: 'Alex' }
@@ -15,15 +16,17 @@ export const helloConnect = () => {
         .catch((error) => console.log(error))
 }
 
-export const connectToAllEvents = (sessionLink: string) => {
-    const onMessage = (message: Message) => {
-        alert(message.body)
-    }
+export const connectToAllEvents = (
+    sessionLink: string,
+    onConnectionSuccess: Function = () => {},
+    onGetSnapshot: Function = (snapshot: SnapshotDto) => {}
+) => {
     return WsHelper.connect(WsEndpoint.ENDPOINT)
+        .then(() => onConnectionSuccess())
         .then(() =>
             WsHelper.subscribe(
                 `${WsEndpoint.SNAPSHOT_TOPIC}/${sessionLink}`,
-                onMessage
+                (message: Message) => onGetSnapshot(message.body)
             )
         )
         .then(() =>
