@@ -11,10 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Frontend linter
 
-    defaults:
-      run:
-        working-directory: slidez-fe-core
-
     steps:
     - name: Clone code from repository
       uses: actions/checkout@v2
