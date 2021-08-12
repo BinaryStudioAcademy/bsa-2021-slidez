@@ -4,11 +4,11 @@ import { Formik, Field, FieldArray } from 'formik';
 import server from '../../utils/server';
 import { Form } from 'react-bootstrap';
 import './styles.scss';
-// import { ChromeEvents, log } from 'slidez-shared';
+import { ChromeEvents, log } from 'slidez-shared';
 
 const { serverFunctions } = server;
 
-// log();
+log();
 
 const Poll: FC = () => {
     const OptionsArray = () => (
@@ -79,6 +79,25 @@ const Poll: FC = () => {
             />
         </div>
     );
+
+    const port = chrome.runtime.connect({ name: 'extension_connected' });
+    port.postMessage({
+        type: 'extension_connected',
+        auth_token: 'auth_token',
+    });
+
+    port.onMessage.addListener(function(response: ChromeEvents) {
+        log();
+        const { type, auth_token } = response;
+        console.log(' - type -  ' + type + '\n - auth_token - ' + auth_token);
+    });
+
+    document.body.addEventListener('click', function() {
+        port.postMessage({
+            type: 'extension_connected',
+            auth_token: 'auth_token',
+        });
+    });
 
     // useEffect(() => {
     //     handleEventExtension();
