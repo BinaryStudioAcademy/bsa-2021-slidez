@@ -1,8 +1,9 @@
-import React, { FC, useRef, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { Button } from '@material-ui/core'
 import { Formik, Form, Field } from 'formik'
 import * as yup from 'yup'
 import { UserField } from './Field'
+import axios from 'axios'
 import { useDetectOutsideClick } from '../dashboard/useDetectOutsideClick'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -14,24 +15,15 @@ import {
 import SideBar from '../dashboard/SideBar'
 import '../dashboard/dashboard.scss'
 import './update.scss'
-import PropTypes from 'prop-types'
 import { AppRoute } from '../../common/routes/app-route'
 
-const userValues = {
-    email: '',
-    firstName: 'test',
-    lastName: 'test',
+interface User {
+    id: string
+    firstName: string
+    lastName: string
+    email: string
+    password: string
 }
-const pwdValues = {
-    password: '',
-    confirmedPassword: '',
-}
-
-const schema = yup.object({
-    email: yup.string().email().max(64),
-    firstName: yup.string().required().min(3).max(30),
-    lastName: yup.string().required().min(3).max(30),
-})
 
 export const UpdatePage: FC = () => {
     const dropdownRef = useRef<HTMLInputElement>(null)
@@ -41,14 +33,50 @@ export const UpdatePage: FC = () => {
         setIsActive(!isActive)
     }
 
-    const [userData, setUserData] = useState(userValues)
-    const [userPassword, setUserPassword] = useState(pwdValues)
-
-    const handleInfoSubmit = (values: typeof userValues) => {
-        console.log(values)
+    const initialValues: User = {
+        id: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
     }
 
-    const handlePwdSubmit = (values: typeof pwdValues) => {
+    const [userData, setUserData] = useState<User>(initialValues)
+
+    const schema = yup.object({
+        email: yup.string().email().max(64),
+        firstName: yup.string().required().min(3).max(30),
+        lastName: yup.string().required().min(3).max(30),
+    })
+    const currentToken =
+        'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlbWFpbF8xMTJAdWtyLm5ldCIsImV4cCI6MTYyODg2NzY5Mn0.Y488vLEvUZrFV2mCv4V-W95z7SocWPgJgTs1xFZjXSNlW96jXYumdclEpzOPaXPd_ZwbkkBdUFBd9tFfeOOmBQ'
+
+    useEffect(() => {
+        axios
+            .get(
+                `http://localhost:5000/api/v1/users/userInfo?token=${currentToken}`
+            )
+            .then((response) => {
+                setUserData(response.data)
+                console.log(response.data)
+                console.log(userData)
+            })
+    }, [])
+
+    const handleInfoSubmit = (values: typeof userData) => {
+        axios
+            .post(
+                `http://localhost:5000/api/v1/users?token=${currentToken}`,
+                values
+            )
+            .then((response) => {
+                setUserData(response.data)
+                console.log(values)
+                console.log(response.data)
+            })
+    }
+
+    const handlePwdSubmit = (values: typeof userData) => {
         console.log(values)
     }
     return (
@@ -151,11 +179,7 @@ export const UpdatePage: FC = () => {
                                             />
                                         </div>
                                     </div>
-                                    <Button
-                                        className='user-btn'
-                                        type='submit'
-                                        onClick={() => setUserData(values)}
-                                    >
+                                    <Button className='user-btn' type='submit'>
                                         Save
                                     </Button>
                                 </div>
@@ -164,7 +188,7 @@ export const UpdatePage: FC = () => {
                     </Formik>
                     <Formik
                         enableReinitialize={true}
-                        initialValues={userPassword}
+                        initialValues={userData}
                         onSubmit={(values) => {
                             handlePwdSubmit(values)
                         }}
@@ -186,14 +210,9 @@ export const UpdatePage: FC = () => {
                                         <Field
                                             name='confirmedPassword'
                                             component={UserField}
-                                            value={values.confirmedPassword}
                                         />
                                     </div>
-                                    <Button
-                                        className='user-btn'
-                                        type='submit'
-                                        onClick={() => setUserPassword(values)}
-                                    >
+                                    <Button className='user-btn' type='submit'>
                                         Save
                                     </Button>
                                 </div>
