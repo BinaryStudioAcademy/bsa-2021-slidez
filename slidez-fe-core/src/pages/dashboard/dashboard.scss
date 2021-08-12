@@ -53,8 +53,8 @@
 		.icon-add {
 			width: 58px;
 			height: 58px;
-			color: $default-color;
-			background-color: $light-green;
+			color: $light-color;
+			background-color: $main-color;
 			border-radius: 50%;
 			display: flex;
 			align-items: center;
@@ -63,7 +63,7 @@
 		.icon-book {
 			width: 58px;
 			height: 58px;
-			color: $light-green;
+			color: $main-color;
 			background-color: rgba(89, 208, 165, 0.2);
 			border-radius: 50%;
 			display: flex;
@@ -105,7 +105,7 @@
 			border-radius: 50%;
 			font-family: 'Work Sans';
 			font-size: 14px;
-			color: $default-color;
+			color: $light-color;
 			background: $accent-color;
 			&:hover {
 				cursor: pointer;
@@ -118,7 +118,7 @@
 	height: 45px;
 	right: 119px;
 	top: calc(50% - 45px/2 - 554px);
-	background: $default-color;
+	background: $light-color;
 	color: $black;
 	border-radius: 50px;
 	outline: none;
@@ -254,7 +254,7 @@
 		margin: 5px;
 	}
 	.view-btn-active {
-		color: $light-green;
+		color: $main-color;
 		margin: 5px;
 	}
 }
@@ -305,7 +305,7 @@
 	}
 	.icon-users {
 		&:hover {
-			color: $light-green;
+			color: $main-color;
 			cursor: pointer;
 		}
 		margin-left: 10px;
@@ -319,13 +319,13 @@
 }
 .icon-presentation {
 	&:hover {
-		color: $light-green;
+		color: $main-color;
 		cursor: pointer;
 	}
 }
 .icon-details {
 	&:hover {
-		color: $light-green;
+		color: $main-color;
 		cursor: pointer;
 	}
 	margin-right: 18px;
@@ -363,7 +363,7 @@
 		color: rgba(0, 0, 0, 0.5);
 		border-top: 1px solid #EBEBEB;
 		border-bottom: 1px solid #EBEBEB;
-		background-color: $default-color;
+		background-color: $light-color;
 		font-weight: normal;
 		font-size: 13px;
 		line-height: 15px;

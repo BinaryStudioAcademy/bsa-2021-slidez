@@ -2,13 +2,19 @@ import React from 'react'
 import { revealPassword } from './form-utils'
 import validator from 'validator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
+import {
+    faEye,
+    faEyeSlash,
+    faArrowAltCircleLeft,
+} from '@fortawesome/free-regular-svg-icons'
 import { useAppSelector } from '../../../hooks'
 import { selectSignStatus } from '../../../containers/user/store'
 import { SignStatus } from '../../../containers/user/enums/sign-status'
 import { GoogleOAuth } from '../../../services/auth/google-oauth'
 import GoogleLogin from 'react-google-login'
 import { isPasswordStrongEnough } from './validation-utils'
+import { NavLink } from 'react-router-dom'
+import { AppRoute } from '../../routes/app-route'
 
 type RegistrationProps = {
     onRegister: Function
@@ -171,6 +177,15 @@ const RegistrationForm = ({
                         </button>
                     )}
                 />
+            </div>
+            <div className='form-row back-to-login'>
+                <NavLink exact to={AppRoute.LOGIN} className='link'>
+                    <FontAwesomeIcon
+                        icon={faArrowAltCircleLeft}
+                        className='icon-arrow'
+                    />
+                    Back to Log In
+                </NavLink>
             </div>
         </div>
     )
