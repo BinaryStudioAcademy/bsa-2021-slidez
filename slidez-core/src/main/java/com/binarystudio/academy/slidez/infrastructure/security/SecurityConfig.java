@@ -10,7 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private static final String[] PUBLIC_URLS = { "/", "/health", "/auth/**", "/swagger-ui/**", "/api-docs/**" };
+	private static final String[] PUBLIC_URLS = { "/", "/health", "/auth/**", "ws/**", "/swagger-ui/**", "/api-docs/**" };
 
 	private void applyRouteRestrictions(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers(PUBLIC_URLS).permitAll().anyRequest().authenticated();
@@ -23,7 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// Set session management to stateless
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-		applyRouteRestrictions(http);
+		 applyRouteRestrictions(http);
 	}
 
 }
