@@ -11,14 +11,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
-    private final AllowedOriginProperties allowedOriginProperties;
+	private final AllowedOriginProperties allowedOriginProperties;
 
-    @Autowired
-    public WebConfig(AllowedOriginProperties allowedOriginProperties) {
-        this.allowedOriginProperties = allowedOriginProperties;
-    }
+	@Autowired
+	public WebConfig(AllowedOriginProperties allowedOriginProperties) {
+		this.allowedOriginProperties = allowedOriginProperties;
+	}
 
-    @Override
+	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		var cors = registry.addMapping("/**");
 		cors.allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "HEAD");

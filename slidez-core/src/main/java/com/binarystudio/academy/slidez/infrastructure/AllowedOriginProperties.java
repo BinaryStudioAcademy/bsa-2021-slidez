@@ -11,6 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 public class AllowedOriginProperties {
 
-    private String[] allowedOrigins;
+	private String[] allowedOrigins;
 
 }

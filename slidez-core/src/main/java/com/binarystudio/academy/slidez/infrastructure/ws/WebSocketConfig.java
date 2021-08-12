@@ -12,14 +12,14 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    private final AllowedOriginProperties allowedOriginProperties;
+	private final AllowedOriginProperties allowedOriginProperties;
 
-    @Autowired
-    public WebSocketConfig(AllowedOriginProperties allowedOriginProperties) {
-        this.allowedOriginProperties = allowedOriginProperties;
-    }
+	@Autowired
+	public WebSocketConfig(AllowedOriginProperties allowedOriginProperties) {
+		this.allowedOriginProperties = allowedOriginProperties;
+	}
 
-    @Override
+	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
 		config.enableSimpleBroker("/topic");
 		config.setApplicationDestinationPrefixes("/slidez");
