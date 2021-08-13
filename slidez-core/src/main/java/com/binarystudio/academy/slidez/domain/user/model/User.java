@@ -1,18 +1,19 @@
 package com.binarystudio.academy.slidez.domain.user.model;
 
-import java.util.UUID;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -39,5 +40,13 @@ public class User {
 
 	@Column
 	private String password;
+
+	@Column(unique = true)
+	@Enumerated(EnumType.STRING)
+	private UserRole role;
+
+	public boolean isAdmin() {
+		return role == UserRole.ADMIN;
+	}
 
 }
