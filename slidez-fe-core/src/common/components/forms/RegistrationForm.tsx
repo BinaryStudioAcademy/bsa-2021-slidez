@@ -140,7 +140,7 @@ const RegistrationForm = ({
 
                         <div className='form-row form-input-holder'>
                             <label htmlFor='confirmPassword' className='label'>
-                                Password
+                                Confirm Password
                             </label>
                             <div className='input-with-icon-holder'>
                                 <Field

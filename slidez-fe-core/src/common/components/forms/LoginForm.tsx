@@ -88,9 +88,18 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                         </div>
 
                         <div className='form-row form-input-holder'>
-                            <label htmlFor='password' className='label'>
-                                Password
-                            </label>
+                            <div className='row-with-components-on-opposite-sides'>
+                                <label htmlFor='password' className='label'>
+                                    Password
+                                </label>
+                                <NavLink
+                                    exact
+                                    to={AppRoute.RESTORE_PASSWORD}
+                                    className='link'
+                                >
+                                    Forgot password?
+                                </NavLink>
+                            </div>
                             <div className='input-with-icon-holder'>
                                 <Field
                                     id='sign-in-password-input'
