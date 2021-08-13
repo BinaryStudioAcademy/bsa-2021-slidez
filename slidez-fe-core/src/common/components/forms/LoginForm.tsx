@@ -44,8 +44,8 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                 initialValues={{ email: '', password: '' }}
                 validationSchema={Yup.object({
                     email: Yup.string()
-                        .email('Invalid email address')
-                        .required('Required'),
+                        .required('Required')
+                        .email('Invalid email address'),
                     password: Yup.string().required('Required'),
                 })}
                 onSubmit={({ email, password }, { setSubmitting }) => {
