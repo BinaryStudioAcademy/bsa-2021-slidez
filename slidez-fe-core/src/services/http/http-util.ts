@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ApiGateway } from '../api-gateway'
+import { ApiGateway } from './api-gateway'
 
 export const createDefaultAxios = () => {
     return axios.create({

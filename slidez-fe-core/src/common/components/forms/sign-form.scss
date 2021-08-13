@@ -33,9 +33,21 @@
   font-size: 14px;
 }
 
+.back-to-login {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 400;
+  align-self: center;
+}
+
+.icon-arrow {
+  margin-right: 5px;
+}
+
 .form-input-holder {
   display: flex;
   flex-direction: column;
+  min-height: 82px;
 }
 
 .form-input {
