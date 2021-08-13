@@ -1,4 +1,4 @@
-import * as WsHelper from './ws-helper'
+import { WsHelper } from './ws-helper'
 import { WsEndpoint } from './ws-endpoint'
 import { Message } from 'webstomp-client'
 import { SnapshotDto } from '../../containers/presentation_session/dto/SnapshotDto'
@@ -8,31 +8,32 @@ export const connectToAllEvents = (
     onConnectionSuccess: Function = () => {},
     onGetSnapshot: Function = (snapshot: SnapshotDto) => {}
 ) => {
-    return WsHelper.connect(WsEndpoint.ENDPOINT)
+    return WsHelper.getInstance()
+        .connect(WsEndpoint.ENDPOINT)
         .then(() => onConnectionSuccess())
         .then(() =>
-            WsHelper.subscribe(
+            WsHelper.getInstance().subscribe(
                 `${WsEndpoint.SNAPSHOT_TOPIC}/${sessionLink}`,
                 (message: Message) => onGetSnapshot(message.body)
             )
         )
         .then(() =>
-            WsHelper.subscribe(
+            WsHelper.getInstance().subscribe(
                 `${WsEndpoint.CREATED_POLL_TOPIC}/${sessionLink}`
             )
         )
         .then(() =>
-            WsHelper.subscribe(
+            WsHelper.getInstance().subscribe(
                 `${WsEndpoint.ANSWERED_POLL_TOPIC}/${sessionLink}`
             )
         )
-        .catch((error) => console.log(error))
+        .catch((error: any) => console.log(error))
 }
 
 export const disconnect = () => {
-    WsHelper.disconnect()
+    WsHelper.getInstance().disconnect()
 }
 
 export const sendSnapshotRequest = (sessionLink: string) => {
-    WsHelper.send(`${WsEndpoint.SNAPSHOT_QUEUE}/${sessionLink}`)
+    WsHelper.getInstance().send(`${WsEndpoint.SNAPSHOT_QUEUE}/${sessionLink}`)
 }
