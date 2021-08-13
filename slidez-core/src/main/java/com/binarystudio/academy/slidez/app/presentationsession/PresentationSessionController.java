@@ -1,5 +1,6 @@
-package com.binarystudio.academy.slidez.domain.presentationsession;
+package com.binarystudio.academy.slidez.app.presentationsession;
 
+import com.binarystudio.academy.slidez.domain.presentationsession.PresentationSessionService;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionRequestDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionResponseDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.*;

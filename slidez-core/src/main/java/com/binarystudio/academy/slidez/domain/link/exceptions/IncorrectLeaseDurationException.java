@@ -1,6 +1,8 @@
 package com.binarystudio.academy.slidez.domain.link.exceptions;
 
-public class IncorrectLeaseDurationException extends Exception {
+import com.binarystudio.academy.slidez.domain.exception.DomainException;
+
+public class IncorrectLeaseDurationException extends DomainException {
 
 	public IncorrectLeaseDurationException(String message) {
 		super(message);

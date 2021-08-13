@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.app;
+package com.binarystudio.academy.slidez.app.session;
 
 import java.util.List;
 import java.util.Optional;
