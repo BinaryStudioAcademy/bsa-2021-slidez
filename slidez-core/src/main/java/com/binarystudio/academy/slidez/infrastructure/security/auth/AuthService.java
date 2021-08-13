@@ -28,13 +28,21 @@ public class AuthService {
 	}
 
 	public Optional<AuthResponse> performLoginByToken(AuthorizationByTokenRequest authorizationByTokenRequest) {
-		Optional<User> userByToken = this.userService.getByToken(authorizationByTokenRequest.getToken());
-		return userByToken.map(user -> AuthUtil.createAuthResponseFromUser(user, jwtProvider));
+		Optional<String> email = jwtProvider.getLoginFromToken(authorizationByTokenRequest.getToken());
+		if (email.isEmpty()) {
+			return Optional.empty();
+		}
+		Optional<User> userOptional = userService.getByEmail(email.get());
+		return userOptional.map(user -> AuthUtil.createAuthResponseFromUser(user, jwtProvider));
 	}
 
 	public Optional<RefreshTokensResponse> getRefreshedTokens(RefreshTokensRequest refreshTokensRequest) {
-		Optional<User> userByToken = this.userService.getByToken(refreshTokensRequest.getRefreshToken());
-		return userByToken.map(user -> {
+		Optional<String> email = jwtProvider.getLoginFromToken(refreshTokensRequest.getRefreshToken());
+		if (email.isEmpty()) {
+			return Optional.empty();
+		}
+		Optional<User> userOptional = userService.getByEmail(email.get());
+		return userOptional.map(user -> {
 			String accessToken = jwtProvider.generateAccessToken(user);
 			String refreshToken = jwtProvider.generateRefreshToken(user);
 			return new RefreshTokensResponse(accessToken, refreshToken);

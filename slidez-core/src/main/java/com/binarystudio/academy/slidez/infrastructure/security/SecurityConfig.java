@@ -2,7 +2,6 @@ package com.binarystudio.academy.slidez.infrastructure.security;
 
 import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,18 +13,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private static final String[] PUBLIC_URLS = { "/", "/health", "/auth/**", "ws/**", "/swagger-ui/**",
-			"/api-docs/**" };
+	private final SecurityProperties securityProperties;
 
-	private JwtFilter jwtFilter;
+	private final JwtFilter jwtFilter;
 
 	@Autowired
-	public void setJwtFilter(JwtFilter jwtFilter) {
+	public SecurityConfig(SecurityProperties securityProperties, JwtFilter jwtFilter) {
+		this.securityProperties = securityProperties;
 		this.jwtFilter = jwtFilter;
 	}
 
 	private void applyRouteRestrictions(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers(PUBLIC_URLS).permitAll().anyRequest().authenticated();
+		http.authorizeRequests().antMatchers(securityProperties.getPublicUrlPatterns().toArray(new String[0]))
+				.permitAll().anyRequest().authenticated();
 	}
 
 	@Override
