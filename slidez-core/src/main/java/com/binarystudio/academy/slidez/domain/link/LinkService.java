@@ -135,7 +135,7 @@ public class LinkService {
 	}
 
 	private boolean isDurationWithinBounds(int leaseDuration) {
-		return leaseDuration > MIN_LEASE_DURATION && leaseDuration < MAX_LEASE_DURATION;
+		return leaseDuration >= MIN_LEASE_DURATION && leaseDuration <= MAX_LEASE_DURATION;
 	}
 
 	/**

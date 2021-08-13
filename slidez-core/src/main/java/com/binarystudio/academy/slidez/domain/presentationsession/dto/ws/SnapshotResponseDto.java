@@ -1,6 +1,5 @@
 package com.binarystudio.academy.slidez.domain.presentationsession.dto.ws;
 
-import com.binarystudio.academy.slidez.domain.presentationsession.enums.WebSocketStatus;
 import com.binarystudio.academy.slidez.domain.presentationsession.model.Poll;
 import lombok.*;
 
@@ -16,7 +15,5 @@ import java.util.List;
 public class SnapshotResponseDto extends AbstractWebSocketResponseDto {
 
 	private List<Poll> polls = new ArrayList<>();
-
-	private WebSocketStatus status = WebSocketStatus.OK;
 
 }

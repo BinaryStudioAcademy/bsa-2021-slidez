@@ -14,7 +14,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private final String[] PUBLIC_URLS = { "/", "/health", "/auth/**", "/swagger-ui/**", "/api-docs/**" };
+	private static final String[] PUBLIC_URLS = { "/", "/health", "/auth/**", "ws/**", "/swagger-ui/**",
+			"/api-docs/**" };
 
 	private JwtFilter jwtFilter;
 
