@@ -53,6 +53,12 @@ public class JwtProvider {
 		return Jwts.builder().setSubject(user.getEmail()).setExpiration(date).signWith(key()).compact();
 	}
 
+	public String generateRefreshToken(User user) {
+		Date date = Date.from(LocalDateTime.now().plusSeconds(this.jwtProperties.getSecondsToExpireRefresh())
+				.toInstant(ZoneOffset.UTC));
+		return Jwts.builder().setSubject(user.getEmail()).setExpiration(date).signWith(key()).compact();
+	}
+
 	public String getLoginFromToken(String token) {
 		Claims claims;
 		try {

@@ -1,7 +1,6 @@
 package com.binarystudio.academy.slidez.infrastructure.security;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -11,11 +10,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	private final String[] PUBLIC_URLS = { "/", "/health", "/auth/**", "/swagger-ui/**", "/api-docs/**" };
+
 	private void applyRouteRestrictions(HttpSecurity http) throws Exception {
-		http.antMatcher("/**").authorizeRequests()
-				// PUBLIC
-				.antMatchers("/auth/**").permitAll().antMatchers(HttpMethod.GET, "/*").permitAll().anyRequest()
-				.authenticated();
+		http.authorizeRequests().antMatchers(PUBLIC_URLS).permitAll().anyRequest().authenticated();
 	}
 
 	@Override
