@@ -1,53 +1,62 @@
 import { doPost } from 'slidez-shared'
 
+function notify(title: string) {
+    var options = {
+        title: title,
+        message: 'Failed to login',
+        type: 'basic',
+        iconUrl: '../public/logo192.png',
+    }
+
+    return chrome.notifications.create('', options)
+}
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.message === 'login') {
-        userStatus(true, request?.payload)
+        logIn(true, request?.payload)
             .then((res) => sendResponse(res))
-            .catch((err) => console.log(err))
+            .catch((err) => {
+                notify('Error')
+                return err
+            })
         return true
     } else if (request.message === 'userStatus') {
-        // isUserSignedIn()
-        //     .then(res => {
-        //         sendResponse({
-        //             message: 'success',
-        //             userStatus: logInResult: res.logInResult.email
-        //         });
-        //     })
-        //     .catch(err => console.log(err));
-        //     return true;
+        isUserSignedIn()
+            .then((res) => {
+                sendResponse({
+                    message: 'success',
+                })
+            })
+            .catch((err) => {
+                return err
+            })
+        return true
     }
 })
 
-async function userStatus(signIn: any, userInfo: any) {
+async function logIn(signIn: any, userInfo: any) {
+    const JWT = 'jwt'
     if (signIn) {
-        const { data, status } = await doPost(
-            'login',
-            { email: String, password: String },
-            userInfo
-        )
+        const { data, status } = await doPost('auth/login', userInfo)
         return new Promise((resolve) => {
             if (status === 200) {
                 const logInResult: {
                     accessToken: string
-                    email: string
-                    password: string
                 } = data
                 chrome.storage.local.set(
                     { userStatus: signIn, logInResult },
                     function () {
                         if (chrome.runtime.lastError) {
+                            notify('Error')
                             resolve('fail')
                         } else {
-                            chrome.runtime.sendMessage({
+                            chrome.runtime.sendMessage(JWT, {
                                 message: logInResult.accessToken,
                             })
                             resolve('success')
                         }
                     }
                 )
-            } else {
-                resolve('fail')
             }
         })
     }

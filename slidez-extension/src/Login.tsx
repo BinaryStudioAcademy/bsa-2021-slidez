@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './login.css'
+import Main from './MainPage'
 
 const Login = () => {
     const [email, setEmail] = useState('')
@@ -7,10 +8,10 @@ const Login = () => {
 
     const handleLogin = () => {
         chrome.runtime.sendMessage(
-            { message: 'login', payload: { email, password } },
+            { message: 'login', payload: { email: email, password: password } },
             function (response) {
                 if (response === 'success') {
-                    console.log('success')
+                    return <Main />
                 }
             }
         )

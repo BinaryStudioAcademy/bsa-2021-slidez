@@ -29,6 +29,7 @@
         "webRequestBlocking",
         "background",
         "activeTab",
-        "storage"
+        "storage",
+        "notifications"
     ]
 }
