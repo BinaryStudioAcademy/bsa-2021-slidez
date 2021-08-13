@@ -1,6 +1,6 @@
 import React from 'react'
 import PublicRoute from './common/routes/PublicRoute'
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
+import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 import Dashboard from './pages/dashboard/Dashboard'
 import PrivateRoute from './common/routes/PrivateRoute'
 import { AppRoute } from './common/routes/app-route'
@@ -12,7 +12,7 @@ import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
 function App() {
     return (
         <div>
-            <BrowserRouter>
+            <HashRouter>
                 <Switch>
                     <PublicRoute
                         exact
@@ -29,7 +29,7 @@ function App() {
                         <Redirect to={AppRoute.LOGIN} />
                     </Route>
                 </Switch>
-            </BrowserRouter>
+            </HashRouter>
             <ReduxToastr
                 timeOut={5000}
                 newestOnTop={false}
