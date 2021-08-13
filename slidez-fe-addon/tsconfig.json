@@ -1,12 +1,18 @@
 {
   "compilerOptions": {
-    "types": ["gas-types-detailed", "chrome"],
+    "target": "es5",
+    "types": [
+      "node",
+      "gas-types-detailed",
+      "chrome"
+    ],
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
     "allowJs": true,
+    "outDir": "target",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -19,6 +25,8 @@
     "isolatedModules": true,
     "jsx": "react",
     "baseUrl": "./",
-    "paths": { "slidez-shared": ["../slidez-shared"] }
-  }
+  },
+  "include": [
+    "src"
+  ]
 }

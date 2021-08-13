@@ -4,11 +4,8 @@ import { Formik, Field, FieldArray } from 'formik';
 import server from '../../utils/server';
 import { Form } from 'react-bootstrap';
 import './styles.scss';
-import { ChromeEvents, log } from 'slidez-shared';
 
 const { serverFunctions } = server;
-
-log();
 
 const Poll: FC = () => {
     const OptionsArray = () => (
@@ -26,7 +23,7 @@ const Poll: FC = () => {
                             render={arrayHelpers => (
                                 <div>
                                     {values.options &&
-                                    values.options.length > 0 ? (
+                                        values.options.length > 0 ? (
                                         values.options.map((option, index) => (
                                             <div
                                                 key={index}
@@ -79,38 +76,6 @@ const Poll: FC = () => {
             />
         </div>
     );
-
-    const port = chrome.runtime.connect({ name: 'extension_connected' });
-    port.postMessage({
-        type: 'extension_connected',
-        auth_token: 'auth_token',
-    });
-
-    port.onMessage.addListener(function(response: ChromeEvents) {
-        log();
-        const { type, auth_token } = response;
-        console.log(' - type -  ' + type + '\n - auth_token - ' + auth_token);
-    });
-
-    document.body.addEventListener('click', function() {
-        port.postMessage({
-            type: 'extension_connected',
-            auth_token: 'auth_token',
-        });
-    });
-
-    // useEffect(() => {
-    //     handleEventExtension();
-    // });
-    //
-    // const handleEventExtension = () => {
-    //     chrome.runtime.connect('extension_connected', function(response: ChromeEvents) {
-    //         console.log('connect - ' + response);
-    //         log();
-    //         const { type, auth_token } = response;
-    //         console.log(type + ' ' + auth_token);
-    //     });
-    // };
 
     return (
         <div className='app-wrapper'>

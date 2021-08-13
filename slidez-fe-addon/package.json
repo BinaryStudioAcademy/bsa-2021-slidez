@@ -17,7 +17,7 @@
         "deploy:dev": "rimraf dist && npm run build:dev && npx clasp push",
         "deploy": "rimraf dist && npm run build && npx clasp push",
         "serve": "cross-env NODE_ENV=development webpack-dev-server",
-        "start": "npm run deploy:dev && npm run serve"
+        "start": "npm run deploy:dev && npm run serve"        
     },
     "keywords": [
         "react",
@@ -43,8 +43,7 @@
         "react-bootstrap": "^1.3.0",
         "react-dom": "^17.0.2",
         "react-transition-group": "^4.4.1",
-        "typescript": "^4.3.5",
-        "slidez-shared": "^1.0.0"
+        "typescript": "^4.3.5"
     },
     "devDependencies": {
         "@babel/cli": "^7.10.5",
@@ -57,6 +56,7 @@
         "@babel/preset-env": "^7.11.0",
         "@babel/preset-react": "^7.10.4",
         "@google/clasp": "^2.4.0",
+        "@types/node": "^16.6.0",
         "babel-eslint": "^10.1.0",
         "babel-loader": "^8.1.0",
         "babel-plugin-add-module-exports": "^1.0.2",
