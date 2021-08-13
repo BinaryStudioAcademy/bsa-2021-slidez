@@ -20,7 +20,7 @@ public class PresentationService {
 
 	public Presentation add(String name) {
 		LocalDateTime now = LocalDateTime.now();
-		Presentation presentation = new Presentation(null, name, "", now, now);
+		Presentation presentation = Presentation.builder().createdAt(now).updatedAt(now).name(name).build();
 		return presentationRepository.save(presentation);
 	}
 

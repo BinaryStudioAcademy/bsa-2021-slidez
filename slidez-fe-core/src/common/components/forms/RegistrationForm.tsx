@@ -2,12 +2,19 @@ import React from 'react'
 import { revealPassword } from './form-utils'
 import validator from 'validator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
+import {
+    faEye,
+    faEyeSlash,
+    faArrowAltCircleLeft,
+} from '@fortawesome/free-regular-svg-icons'
 import { useAppSelector } from '../../../hooks'
 import { selectSignStatus } from '../../../containers/user/store'
 import { SignStatus } from '../../../containers/user/enums/sign-status'
 import { GoogleOAuth } from '../../../services/auth/google-oauth'
 import GoogleLogin from 'react-google-login'
+import { isPasswordStrongEnough } from './validation-utils'
+import { NavLink } from 'react-router-dom'
+import { AppRoute } from '../../routes/app-route'
 
 type RegistrationProps = {
     onRegister: Function
@@ -39,19 +46,15 @@ const RegistrationForm = ({
         revealPassword('register-password-confirm-input')
     }
 
-    const validatePassword = () => {
+    const doCheckUp = () => {
+        setIsEmailValid(validator.isEmail(email))
+        setIsPasswordValid(isPasswordStrongEnough(password))
         setPasswordsMatch(password === confirmedPassword)
-        setIsPasswordValid(true)
     }
 
     const handleRegister = () => {
-        if (
-            isEmailValid &&
-            email !== '' &&
-            isPasswordValid &&
-            password !== '' &&
-            passwordsMatch
-        ) {
+        doCheckUp()
+        if (isEmailValid && isPasswordValid && passwordsMatch) {
             onRegister(email, password, confirmedPassword)
         }
     }
@@ -75,7 +78,7 @@ const RegistrationForm = ({
                     placeholder='Enter your email'
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
-                    onBlur={() => setIsEmailValid(validator.isEmail(email))}
+                    onFocus={() => setIsEmailValid(true)}
                 />
                 <p
                     className={
@@ -101,7 +104,7 @@ const RegistrationForm = ({
                         placeholder='Enter your password'
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
-                        onBlur={() => validatePassword()}
+                        onFocus={() => setIsPasswordValid(true)}
                     />
                     <FontAwesomeIcon
                         icon={isPasswordRevealed ? faEye : faEyeSlash}
@@ -135,9 +138,7 @@ const RegistrationForm = ({
                         onChange={(event) =>
                             setConfirmedPassword(event.target.value)
                         }
-                        onBlur={() =>
-                            setPasswordsMatch(password === confirmedPassword)
-                        }
+                        onFocus={() => setPasswordsMatch(true)}
                     />
                     <FontAwesomeIcon
                         icon={isConfirmPasswordRevealed ? faEye : faEyeSlash}
@@ -176,6 +177,15 @@ const RegistrationForm = ({
                         </button>
                     )}
                 />
+            </div>
+            <div className='form-row back-to-login'>
+                <NavLink exact to={AppRoute.LOGIN} className='link'>
+                    <FontAwesomeIcon
+                        icon={faArrowAltCircleLeft}
+                        className='icon-arrow'
+                    />
+                    Back to Log In
+                </NavLink>
             </div>
         </div>
     )

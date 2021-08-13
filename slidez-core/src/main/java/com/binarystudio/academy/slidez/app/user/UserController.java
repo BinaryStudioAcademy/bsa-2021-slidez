@@ -7,6 +7,7 @@ import com.binarystudio.academy.slidez.domain.user.UserService;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
 import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
 import com.binarystudio.academy.slidez.domain.user.model.User;
+import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,21 +21,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("${v1API}/users")
 public class UserController {
 
-	@Autowired
-	private UserService userService;
+	// TODO: EVERYTHING CONNECTED WITH TOKEN MUST BE REMOVED !!!
 
+	private final UserService userService;
+
+	private final JwtProvider jwtProvider;
+
+	@Autowired
+	public UserController(UserService userService, JwtProvider jwtProvider) {
+		this.userService = userService;
+		this.jwtProvider = jwtProvider;
+	}
+
+	// THIS METHOD WILL BE REMOVED AND I LEAVE IT HERE ONLY BECAUSE OF BACKWARDS
+	// COMPATIBILITY
 	@GetMapping("userInfo")
 	public ResponseEntity<Object> getUserInfo(@RequestParam("token") String token) {
 		if (token == null || token.isEmpty()) {
 			return new ResponseEntity<>("Invalid token", HttpStatus.BAD_REQUEST);
 		}
-
-		Optional<UserDetailsDto> userDetailsDto = this.userService.getDetailsByToken(token);
-		if (userDetailsDto.isEmpty()) {
-			return new ResponseEntity<>("Bad token.", HttpStatus.BAD_REQUEST);
+		Optional<String> email = jwtProvider.getLoginFromToken(token);
+		if (email.isPresent()) {
+			Optional<User> userOptional = this.userService.getByEmail(email.get());
+			if (userOptional.isEmpty()) {
+				return new ResponseEntity<>("Bad token.", HttpStatus.BAD_REQUEST);
+			}
+			UserMapper userMapper = UserMapper.INSTANCE;
+			return new ResponseEntity<>(userMapper.mapUserToUserDetailsDto(userOptional.get()), HttpStatus.OK);
 		}
-
-		return new ResponseEntity<>(userDetailsDto.get(), HttpStatus.OK);
+		return new ResponseEntity<>("Bad token.", HttpStatus.BAD_REQUEST);
 	}
 
 	@GetMapping("{id}")

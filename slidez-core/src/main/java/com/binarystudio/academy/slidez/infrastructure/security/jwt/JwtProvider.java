@@ -4,6 +4,7 @@ import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.Optional;
 
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import com.binarystudio.academy.slidez.infrastructure.security.exception.JwtException;
@@ -53,15 +54,21 @@ public class JwtProvider {
 		return Jwts.builder().setSubject(user.getEmail()).setExpiration(date).signWith(key()).compact();
 	}
 
-	public String getLoginFromToken(String token) {
+	public String generateRefreshToken(User user) {
+		Date date = Date.from(LocalDateTime.now().plusSeconds(this.jwtProperties.getSecondsToExpireRefresh())
+				.toInstant(ZoneOffset.UTC));
+		return Jwts.builder().setSubject(user.getEmail()).setExpiration(date).signWith(key()).compact();
+	}
+
+	public Optional<String> getLoginFromToken(String token) {
 		Claims claims;
 		try {
 			claims = parseToken(token);
 		}
 		catch (Exception ex) {
-			return null;
+			return Optional.empty();
 		}
-		return claims.getSubject();
+		return Optional.ofNullable(claims.getSubject());
 	}
 
 	private Claims parseToken(String token) {

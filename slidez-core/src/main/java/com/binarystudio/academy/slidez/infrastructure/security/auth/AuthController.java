@@ -2,65 +2,66 @@ package com.binarystudio.academy.slidez.infrastructure.security.auth;
 
 import java.util.Optional;
 
-import com.binarystudio.academy.slidez.domain.user.UserValidator;
-import com.binarystudio.academy.slidez.domain.user.dto.UserDto;
-import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthResponse;
-import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthorizationByTokenRequest;
-import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthorizationRequest;
+import com.binarystudio.academy.slidez.infrastructure.security.auth.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("auth")
 public class AuthController {
 
-	@Autowired
-	private AuthService authService;
+	private final AuthService authService;
+
+	private final AuthorizationRequestValidator authorizationRequestValidator;
 
 	@Autowired
-	private UserValidator userValidator;
+	public AuthController(AuthService authService, AuthorizationRequestValidator authorizationRequestValidator) {
+		this.authService = authService;
+		this.authorizationRequestValidator = authorizationRequestValidator;
+	}
+
+	@InitBinder("authorizationRequest")
+	public void authRequestValidatorBinder(WebDataBinder binder) {
+		binder.addValidators(this.authorizationRequestValidator);
+	}
 
 	@PostMapping("login")
-	public ResponseEntity<Object> login(@RequestBody AuthorizationRequest authorizationRequest) {
-		String validationResult = this.userValidator.isEmailAndPasswordValid(authorizationRequest.getEmail(),
-				authorizationRequest.getPassword());
-		if (validationResult != null) {
-			return new ResponseEntity<>(validationResult, HttpStatus.BAD_REQUEST);
-		}
-
-		Optional<AuthResponse> authResponse = this.authService.performLogin(authorizationRequest);
-		if (authResponse.isEmpty()) {
-			return new ResponseEntity("Incorrect password or email.", HttpStatus.UNAUTHORIZED);
-		}
-
-		return new ResponseEntity<>(authResponse.get(), HttpStatus.OK);
+	public ResponseEntity<AuthResponse> login(@RequestBody AuthorizationRequest authorizationRequest) {
+		Optional<AuthResponse> authResponse = authService.performLogin(authorizationRequest);
+		return authResponse.map(resp -> new ResponseEntity<>(resp, HttpStatus.OK))
+				.orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
 	}
 
 	@PostMapping("register")
-	public ResponseEntity<Object> register(@RequestBody UserDto userDto) {
-		String validationResult = this.userValidator.isEmailAndPasswordValid(userDto.getEmail(), userDto.getPassword());
-		if (validationResult != null) {
-			return new ResponseEntity<>(validationResult, HttpStatus.BAD_REQUEST);
+	public ResponseEntity<AuthResponse> register(@RequestBody @Validated AuthorizationRequest authorizationRequest,
+			BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-
-		Optional<AuthResponse> authResponse = this.authService.register(userDto);
-		if (authResponse.isEmpty()) {
-			return new ResponseEntity<>("Incorrect password or user email.", HttpStatus.UNAUTHORIZED);
-		}
-		return new ResponseEntity(authResponse.get(), HttpStatus.OK);
+		Optional<AuthResponse> authResponseOptional = authService.register(authorizationRequest);
+		return authResponseOptional.map(resp -> new ResponseEntity<>(resp, HttpStatus.OK))
+				.orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
 	}
 
 	@PostMapping("login-by-token")
 	public ResponseEntity<AuthResponse> loginByToken(
 			@RequestBody AuthorizationByTokenRequest authorizationByTokenRequest) {
-		Optional<AuthResponse> authResponseOptional = this.authService.performLoginByToken(authorizationByTokenRequest);
-		return authResponseOptional.map(authResponse -> new ResponseEntity<>(authResponse, HttpStatus.OK))
-				.orElseGet(() -> new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
+		Optional<AuthResponse> authResponseOptional = authService.performLoginByToken(authorizationByTokenRequest);
+		return authResponseOptional.map(resp -> new ResponseEntity<>(resp, HttpStatus.OK))
+				.orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
+	}
+
+	@PostMapping("refresh-tokens")
+	public ResponseEntity<RefreshTokensResponse> loginByRefreshToken(
+			@RequestBody RefreshTokensRequest refreshTokensRequest) {
+		Optional<RefreshTokensResponse> tokensResponseOptional = authService.getRefreshedTokens(refreshTokensRequest);
+		return tokensResponseOptional.map(resp -> new ResponseEntity<>(resp, HttpStatus.OK))
+				.orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
 	}
 
 }
