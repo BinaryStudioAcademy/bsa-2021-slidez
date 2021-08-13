@@ -1,5 +1,5 @@
 import React from 'react'
-import AuthenticationRoute from './common/routes/AuthenticationRoute'
+import PublicRoute from './common/routes/PublicRoute'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import Dashboard from './pages/dashboard/Dashboard'
 import PrivateRoute from './common/routes/PrivateRoute'
@@ -14,7 +14,7 @@ function App() {
         <div>
             <BrowserRouter>
                 <Switch>
-                    <AuthenticationRoute
+                    <PublicRoute
                         exact
                         path={[AppRoute.LOGIN, AppRoute.REGISTRATION]}
                         component={SignPage}

@@ -28,7 +28,7 @@ public class PresentationSessionController {
 	@PostMapping("/new")
 	public ResponseEntity<CreateSessionResponseDto> createSession(
 			@RequestBody CreateSessionRequestDto createSessionRequestDto,
-			@RequestParam(name = "leaseDuration", defaultValue = "120") int leaseDuration) {
+			@RequestParam(name = "leaseDuration", defaultValue = "180") int leaseDuration) {
 		Optional<CreateSessionResponseDto> sessionOptional = presentationSessionService
 				.createSession(createSessionRequestDto, leaseDuration);
 		return sessionOptional.map(s -> new ResponseEntity<>(s, HttpStatus.OK))

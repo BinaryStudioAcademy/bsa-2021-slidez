@@ -1,13 +1,11 @@
 const WsEndpoint = Object.freeze({
     ENDPOINT: process.env.REACT_APP_WEB_SOCKET_ENDPOINT || '',
-    SNAPSHOT_TOPIC: process.env.REACT_APP_WEB_SOCKET_SNAPSHOT_TOPIC || '',
-    CREATED_POLL_TOPIC:
-        process.env.REACT_APP_WEB_SOCKET_CREATED_POLL_TOPIC || '',
-    ANSWERED_POLL_TOPIC:
-        process.env.REACT_APP_WEB_SOCKET_ANSWERED_POLL_TOPIC || '',
-    SNAPSHOT_QUEUE: process.env.REACT_APP_WEB_SOCKET_SNAPSHOT_QUEUE || '',
-    CREATE_POLL_QUEUE: process.env.REACT_APP_WEB_SOCKET_CREATE_POLL_QUEUE || '',
-    ANSWER_POLL_QUEUE: process.env.REACT_APP_WEB_SOCKET_ANSWER_POLL_QUEUE || '',
+    SNAPSHOT_TOPIC: '/topic/snapshot',
+    CREATED_POLL_TOPIC: '/topic/created/poll',
+    ANSWERED_POLL_TOPIC: '/topic/answered/poll',
+    SNAPSHOT_QUEUE: '/slidez/snapshot',
+    CREATE_POLL_QUEUE: '/slidez/create/poll',
+    ANSWER_POLL_QUEUE: '/slidez/answer/poll',
 })
 
 export { WsEndpoint }

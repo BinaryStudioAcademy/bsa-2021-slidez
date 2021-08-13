@@ -3,19 +3,6 @@ import { WsEndpoint } from './ws-endpoint'
 import { Message } from 'webstomp-client'
 import { SnapshotDto } from '../../containers/presentation_session/dto/SnapshotDto'
 
-export const helloConnect = () => {
-    const msg = { name: 'Alex' }
-    const onMessage = (message: Message) => {
-        alert(message.body)
-    }
-    const onConnectionSuccess = () => WsHelper.send('/slidez/hello', msg)
-    WsHelper.disconnect()
-    const promise = WsHelper.connect(WsEndpoint.ENDPOINT)
-        .then(() => WsHelper.subscribe('/topic/greetings', onMessage))
-        .then(onConnectionSuccess)
-        .catch((error) => console.log(error))
-}
-
 export const connectToAllEvents = (
     sessionLink: string,
     onConnectionSuccess: Function = () => {},
