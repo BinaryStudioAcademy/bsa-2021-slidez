@@ -6,6 +6,7 @@ import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -36,20 +37,20 @@ public class PresentationSessionController {
 
 	@MessageMapping("/snapshot/{link}")
 	@SendTo("/topic/snapshot/{link}")
-	public SnapshotResponseDto getPresentationSnapshot(@PathVariable String link) {
+	public SnapshotResponseDto getPresentationSnapshot(@DestinationVariable String link) {
 		return presentationSessionService.getSnapshot(link);
 	}
 
 	@MessageMapping("/create/poll/{link}")
 	@SendTo("/topic/created/poll/{link}")
-	public PollCreatedResponseDto createPoll(@PathVariable String link,
+	public PollCreatedResponseDto createPoll(@DestinationVariable String link,
 			@Payload CreatePollRequestDto createPollRequestDto) {
 		return presentationSessionService.createPoll(link, createPollRequestDto);
 	}
 
 	@MessageMapping("/answer/poll/{link}")
 	@SendTo("/topic/answered/poll/{link}")
-	public PollAnsweredDto answerPoll(@PathVariable String link, @Payload AnswerPollDto answerPollDto) {
+	public PollAnsweredDto answerPoll(@DestinationVariable String link, @Payload AnswerPollDto answerPollDto) {
 		return presentationSessionService.answerPoll(link, answerPollDto);
 	}
 
