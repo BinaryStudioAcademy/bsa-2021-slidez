@@ -38,12 +38,16 @@ public class JwtFilter extends OncePerRequestFilter {
 
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) {
-		for (String excludedPath : securityProperties.getPublicUrlPatterns()) {
-			if (request.getRequestURI().startsWith(excludedPath)) {
-				return false;
+		String requestURI = request.getRequestURI();
+		if (securityProperties.getInfrastructurePaths().contains(requestURI)) {
+			return true;
+		}
+		for (String excludedPathStart : securityProperties.getPublicUrlStarts()) {
+			if (request.getRequestURI().startsWith(excludedPathStart)) {
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	@Override
