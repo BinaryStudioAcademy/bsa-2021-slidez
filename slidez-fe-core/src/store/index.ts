@@ -1,9 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
-import counterReducer from '../containers/counter/store'
+import userReducer from '../containers/user/store'
+import presentationReducer from '../containers/presentation_session/store'
+import { reducer as toastrReducer } from 'react-redux-toastr'
 
 export const store = configureStore({
     reducer: {
-        counter: counterReducer,
+        user: userReducer,
+        presentationSession: presentationReducer,
+        toastr: toastrReducer,
     },
 })
 

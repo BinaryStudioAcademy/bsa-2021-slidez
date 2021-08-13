@@ -1,20 +1,31 @@
 package com.binarystudio.academy.slidez.infrastructure.security;
 
+import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	private final SecurityProperties securityProperties;
+
+	private final JwtFilter jwtFilter;
+
+	@Autowired
+	public SecurityConfig(SecurityProperties securityProperties, JwtFilter jwtFilter) {
+		this.securityProperties = securityProperties;
+		this.jwtFilter = jwtFilter;
+	}
+
 	private void applyRouteRestrictions(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-				// PUBLIC
-				.antMatchers("/auth/**").permitAll().antMatchers(HttpMethod.GET, "/*").permitAll();
+		http.authorizeRequests().antMatchers(securityProperties.getPublicUrlPatterns().toArray(new String[0]))
+				.permitAll().anyRequest().authenticated();
 	}
 
 	@Override
@@ -25,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		applyRouteRestrictions(http);
+		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 
 }
