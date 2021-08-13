@@ -12,7 +12,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("${v1API}/auth")
 public class AuthController {
 
 	private final AuthService authService;
