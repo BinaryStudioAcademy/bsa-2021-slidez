@@ -1,6 +1,5 @@
 import React from 'react'
 import { revealPassword } from './form-utils'
-import validator from 'validator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
 import { useAppSelector } from '../../../hooks'
@@ -8,7 +7,8 @@ import { selectSignStatus } from '../../../containers/user/store'
 import { SignStatus } from '../../../containers/user/enums/sign-status'
 import { GoogleOAuth } from '../../../services/auth/google-oauth'
 import GoogleLogin from 'react-google-login'
-import { isPasswordStrongEnough } from './validation-utils'
+import { ErrorMessage, Field, Form, Formik } from 'formik'
+import * as Yup from 'yup'
 
 type RegistrationProps = {
     onRegister: Function
@@ -22,35 +22,16 @@ const RegistrationForm = ({
     const [isPasswordRevealed, setIsPasswordRevealed] = React.useState(false)
     const [isConfirmPasswordRevealed, setIsConfirmPasswordRevealed] =
         React.useState(false)
-    const [email, setEmail] = React.useState('')
-    const [isEmailValid, setIsEmailValid] = React.useState(true)
     const signStatus = useAppSelector(selectSignStatus)
-    const [password, setPassword] = React.useState('')
-    const [isPasswordValid, setIsPasswordValid] = React.useState(true)
-    const [confirmedPassword, setConfirmedPassword] = React.useState('')
-    const [passwordsMatch, setPasswordsMatch] = React.useState(true)
 
     const onRevealPasswordClick = () => {
         setIsPasswordRevealed(!isPasswordRevealed)
         revealPassword('register-password-input')
     }
 
-    const onRevealConfirmedPasswordClick = () => {
+    const onRevealConfirmPasswordClick = () => {
         setIsConfirmPasswordRevealed(!isConfirmPasswordRevealed)
-        revealPassword('register-password-confirm-input')
-    }
-
-    const doCheckUp = () => {
-        setIsEmailValid(validator.isEmail(email))
-        setIsPasswordValid(isPasswordStrongEnough(password))
-        setPasswordsMatch(password === confirmedPassword)
-    }
-
-    const handleRegister = () => {
-        doCheckUp()
-        if (isEmailValid && isPasswordValid && passwordsMatch) {
-            onRegister(email, password, confirmedPassword)
-        }
+        revealPassword('register-confirmPassword-input')
     }
 
     const handleRegisterWithGoogle = async (googleData: any) => {
@@ -60,99 +41,151 @@ const RegistrationForm = ({
     return (
         <div className='sign-form'>
             <div className='form-row header-row'>Sign Up</div>
-            <div className='form-row form-input-holder'>
-                <label htmlFor='register-email-input' className='label'>
-                    Email
-                </label>
-                <input
-                    id='register-email-input'
-                    className={`form-input ${
-                        isEmailValid ? '' : 'error-input'
-                    }`}
-                    placeholder='Enter your email'
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    onFocus={() => setIsEmailValid(true)}
-                />
-                <p
-                    className={
-                        signStatus === SignStatus.EMAIL_IS_TAKEN
-                            ? 'error-text'
-                            : 'hidden'
-                    }
-                >
-                    This email is taken!
-                </p>
-            </div>
-            <div className='form-row form-input-holder'>
-                <label htmlFor='register-password-input' className='label'>
-                    Password
-                </label>
-                <div className='input-with-icon-holder'>
-                    <input
-                        id='register-password-input'
-                        type='password'
-                        className={`form-input input-with-icon ${
-                            isPasswordValid ? '' : 'error-input'
-                        }`}
-                        placeholder='Enter your password'
-                        value={password}
-                        onChange={(event) => setPassword(event.target.value)}
-                        onFocus={() => setIsPasswordValid(true)}
-                    />
-                    <FontAwesomeIcon
-                        icon={isPasswordRevealed ? faEye : faEyeSlash}
-                        className={`input-icon ${
-                            isPasswordRevealed ? 'icon-eye' : 'icon-eye-slash'
-                        }`}
-                        onClick={onRevealPasswordClick}
-                    />
-                </div>
-                <p className={isPasswordValid ? 'hidden' : 'error-text'}>
-                    Password must contain 1 uppercase, 1 digit and 1 special
-                    character
-                </p>
-            </div>
-            <div className='form-row form-input-holder'>
-                <label
-                    htmlFor='register-password-confirm-input'
-                    className='label'
-                >
-                    Confirm Password
-                </label>
-                <div className='input-with-icon-holder'>
-                    <input
-                        id='register-password-confirm-input'
-                        type='password'
-                        className={`form-input input-with-icon ${
-                            passwordsMatch ? '' : 'error-input'
-                        }`}
-                        placeholder='Confirm password'
-                        value={confirmedPassword}
-                        onChange={(event) =>
-                            setConfirmedPassword(event.target.value)
-                        }
-                        onFocus={() => setPasswordsMatch(true)}
-                    />
-                    <FontAwesomeIcon
-                        icon={isConfirmPasswordRevealed ? faEye : faEyeSlash}
-                        className={`input-icon ${
-                            isConfirmPasswordRevealed
-                                ? 'icon-eye'
-                                : 'icon-eye-slash'
-                        }`}
-                        onClick={onRevealConfirmedPasswordClick}
-                    />
-                </div>
-            </div>
-            <div className='form-row buttons-row'>
-                <button
-                    className='form-button login-button'
-                    onClick={handleRegister}
-                >
-                    Sign Up
-                </button>
-            </div>
+
+            <Formik
+                initialValues={{ email: '', password: '', confirmPassword: '' }}
+                validationSchema={Yup.object({
+                    email: Yup.string()
+                        .required('Required')
+                        .email('Invalid email address'),
+                    password: Yup.string()
+                        .required('Required')
+                        .min(12, 'Too short - 12 symbols minimum')
+                        .max(32, 'Too long - 32 symbols maximum')
+                        .matches(/^\S*$/, 'Must not contain spaces')
+                        .matches(/[a-z]/, 'Must have lowercase letters')
+                        .matches(/[A-Z]/, 'Must have uppercase letters')
+                        .matches(/[0-9]/, 'Must have digits')
+                        .matches(/[^A-Za-z0-9]/, 'Must have symbols'),
+                    confirmPassword: Yup.string()
+                        .required('Required')
+                        .oneOf([Yup.ref('password')], 'Passwords must match'),
+                })}
+                onSubmit={(
+                    { email, password, confirmPassword },
+                    { setSubmitting }
+                ) => {
+                    onRegister(email, password, confirmPassword)
+                    setSubmitting(false)
+                }}
+            >
+                {({ errors, touched }) => (
+                    <Form>
+                        <div className='form-row form-input-holder'>
+                            <label htmlFor='email' className='label'>
+                                Email
+                            </label>
+                            <Field
+                                name='email'
+                                className={
+                                    'form-input' +
+                                    (touched.email && errors.email
+                                        ? ' error-input'
+                                        : '')
+                                }
+                                type='text'
+                                placeholder='Enter your email'
+                            />
+                            <ErrorMessage name='email'>
+                                {(msg) => (
+                                    <div className='error-text'>{msg}</div>
+                                )}
+                            </ErrorMessage>
+                            <div
+                                className={
+                                    signStatus === SignStatus.EMAIL_IS_TAKEN
+                                        ? 'error-text'
+                                        : 'hidden'
+                                }
+                            >
+                                This email is taken
+                            </div>
+                        </div>
+
+                        <div className='form-row form-input-holder'>
+                            <label htmlFor='password' className='label'>
+                                Password
+                            </label>
+                            <div className='input-with-icon-holder'>
+                                <Field
+                                    id='register-password-input'
+                                    name='password'
+                                    className={
+                                        'form-input input-with-icon' +
+                                        (touched.password && errors.password
+                                            ? ' error-input'
+                                            : '')
+                                    }
+                                    type='password'
+                                    placeholder='Enter your password'
+                                />
+                                <FontAwesomeIcon
+                                    className={`input-icon ${
+                                        isPasswordRevealed
+                                            ? 'icon-eye'
+                                            : 'icon-eye-slash'
+                                    }`}
+                                    icon={
+                                        isPasswordRevealed ? faEye : faEyeSlash
+                                    }
+                                    onClick={onRevealPasswordClick}
+                                />
+                            </div>
+                            <ErrorMessage name='password'>
+                                {(msg) => (
+                                    <div className='error-text'>{msg}</div>
+                                )}
+                            </ErrorMessage>
+                        </div>
+
+                        <div className='form-row form-input-holder'>
+                            <label htmlFor='confirmPassword' className='label'>
+                                Confirm Password
+                            </label>
+                            <div className='input-with-icon-holder'>
+                                <Field
+                                    id='register-confirmPassword-input'
+                                    name='confirmPassword'
+                                    className={
+                                        'form-input input-with-icon' +
+                                        (touched.confirmPassword &&
+                                        errors.confirmPassword
+                                            ? ' error-input'
+                                            : '')
+                                    }
+                                    type='password'
+                                    placeholder='Confirm password'
+                                />
+                                <FontAwesomeIcon
+                                    className={`input-icon ${
+                                        isConfirmPasswordRevealed
+                                            ? 'icon-eye'
+                                            : 'icon-eye-slash'
+                                    }`}
+                                    icon={
+                                        isConfirmPasswordRevealed
+                                            ? faEye
+                                            : faEyeSlash
+                                    }
+                                    onClick={onRevealConfirmPasswordClick}
+                                />
+                            </div>
+                            <ErrorMessage name='confirmPassword'>
+                                {(msg) => (
+                                    <div className='error-text'>{msg}</div>
+                                )}
+                            </ErrorMessage>
+                        </div>
+
+                        <div className='form-row buttons-row'>
+                            <button className='form-button login-button'>
+                                Sign Up
+                            </button>
+                        </div>
+                    </Form>
+                )}
+            </Formik>
+
             <div className='form-row button-divider'>or</div>
             <div className='form-row'>
                 <GoogleLogin
