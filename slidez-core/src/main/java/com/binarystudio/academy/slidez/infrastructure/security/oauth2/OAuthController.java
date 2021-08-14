@@ -3,6 +3,7 @@ package com.binarystudio.academy.slidez.infrastructure.security.oauth2;
 import java.util.Optional;
 
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthResponse;
+import com.binarystudio.academy.slidez.infrastructure.security.oauth2.dto.AuthorizationByOAuthTokenRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

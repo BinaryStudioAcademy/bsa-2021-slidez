@@ -1,6 +1,8 @@
 package com.binarystudio.academy.slidez.infrastructure.security.exception;
 
-public class GoogleTokenIdException extends RuntimeException {
+import com.binarystudio.academy.slidez.domain.exception.DomainException;
+
+public class GoogleTokenIdException extends DomainException {
 
 	public GoogleTokenIdException(String message) {
 		super(message);

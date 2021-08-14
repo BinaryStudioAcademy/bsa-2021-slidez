@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.link.exceptions;
+package com.binarystudio.academy.slidez.domain.link.exception;
 
 import com.binarystudio.academy.slidez.domain.exception.DomainException;
 

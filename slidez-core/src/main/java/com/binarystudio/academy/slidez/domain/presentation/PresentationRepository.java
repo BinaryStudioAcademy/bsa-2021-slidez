@@ -13,8 +13,8 @@ public interface PresentationRepository extends JpaRepository<Presentation, UUID
 
 	@Transactional
 	@Modifying
-	@Query("UPDATE Presentation p SET " + "p.name = :#{#dto.name}, " + "p.link = :#{#dto.link}, "
-			+ "p.updatedAt = :#{#dto.updatedAt} " + "WHERE p.id = :#{#dto.id}")
+	@Query("UPDATE Presentation p SET p.name = :#{#dto.name}, p.link = :#{#dto.link}, "
+			+ "p.updatedAt = :#{#dto.updatedAt} WHERE p.id = :#{#dto.id}")
 	void update(PresentationUpdateDto dto);
 
 }

@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.infrastructure.security.oauth2;
+package com.binarystudio.academy.slidez.infrastructure.security.oauth2.dto;
 
 import lombok.Data;
 

@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GenericResponse<Data, Error> {
+public class GenericResponse<T, E> {
 
-	private Data data;
+	private T data;
 
-	private Error error;
+	private E error;
 
-	public GenericResponse(Data data){
-	    this.data = data;
-    }
+	public GenericResponse(T data) {
+		this.data = data;
+	}
+
 }

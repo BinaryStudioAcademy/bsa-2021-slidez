@@ -1,9 +1,10 @@
 package com.binarystudio.academy.slidez.infrastructure.security.exception;
 
+import com.binarystudio.academy.slidez.domain.exception.DomainException;
 import lombok.Getter;
 
 @Getter
-public class JwtException extends RuntimeException {
+public class JwtException extends DomainException {
 
 	private final String code;
 

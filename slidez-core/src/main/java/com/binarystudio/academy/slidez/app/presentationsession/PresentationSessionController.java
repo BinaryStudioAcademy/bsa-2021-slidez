@@ -4,9 +4,8 @@ import com.binarystudio.academy.slidez.domain.presentationsession.PresentationSe
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionRequestDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionResponseDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.*;
+import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -27,13 +26,14 @@ public class PresentationSessionController {
 	}
 
 	@PostMapping("/new")
-	public ResponseEntity<CreateSessionResponseDto> createSession(
+	public GenericResponse<CreateSessionResponseDto, PresentationSessionResponseCodes> createSession(
 			@RequestBody CreateSessionRequestDto createSessionRequestDto,
 			@RequestParam(name = "leaseDuration", defaultValue = "180") int leaseDuration) {
 		Optional<CreateSessionResponseDto> sessionOptional = presentationSessionService
 				.createSession(createSessionRequestDto, leaseDuration);
-		return sessionOptional.map(s -> new ResponseEntity<>(s, HttpStatus.OK))
-				.orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+		return sessionOptional
+				.<GenericResponse<CreateSessionResponseDto, PresentationSessionResponseCodes>>map(GenericResponse::new)
+				.orElseGet(() -> new GenericResponse<>(null, PresentationSessionResponseCodes.COULD_NOT_ADD_SESSION));
 	}
 
 	@MessageMapping("/snapshot/{link}")

@@ -18,7 +18,7 @@ public class Poll {
 
 	List<Integer> answers = new ArrayList<>();
 
-	public void addAnswer(int optionId) {
+	public void addAnswer(int optionId) throws BadOptionException {
 		if (optionId < 0 || optionId >= options.size()) {
 			throw new BadOptionException(String.format("Option should be in range 0...%d;", options.size()));
 		}

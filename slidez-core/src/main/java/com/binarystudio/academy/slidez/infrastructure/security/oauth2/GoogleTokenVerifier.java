@@ -29,13 +29,11 @@ public class GoogleTokenVerifier {
 		this.oAuth2Properties = oAuth2Properties;
 	}
 
-	public GoogleIdToken.Payload verify(String idTokenString)
-			throws GeneralSecurityException, IOException, GoogleTokenIdException {
+	public GoogleIdToken.Payload verify(String idTokenString) throws GoogleTokenIdException {
 		return verifyToken(idTokenString);
 	}
 
-	private GoogleIdToken.Payload verifyToken(String idTokenString)
-			throws GeneralSecurityException, IOException, GoogleTokenIdException {
+	private GoogleIdToken.Payload verifyToken(String idTokenString) throws GoogleTokenIdException {
 		final GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(TRANSPORT, JSON_FACTORY)
 				.setIssuers(Arrays.asList("https://accounts.google.com", "accounts.google.com"))
 				.setAudience(Collections.singletonList(this.oAuth2Properties.getClientId())).build();
@@ -44,7 +42,7 @@ public class GoogleTokenVerifier {
 		try {
 			idToken = verifier.verify(idTokenString);
 		}
-		catch (IllegalArgumentException e) {
+		catch (GeneralSecurityException | IOException | IllegalArgumentException e) {
 			throw new GoogleTokenIdException(e);
 		}
 		if (idToken == null) {

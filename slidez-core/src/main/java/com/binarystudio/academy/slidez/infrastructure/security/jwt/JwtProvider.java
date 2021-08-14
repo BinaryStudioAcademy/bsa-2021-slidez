@@ -65,13 +65,13 @@ public class JwtProvider {
 		try {
 			claims = parseToken(token);
 		}
-		catch (Exception ex) {
+		catch (JwtException ex) {
 			return Optional.empty();
 		}
 		return Optional.ofNullable(claims.getSubject());
 	}
 
-	private Claims parseToken(String token) {
+	private Claims parseToken(String token) throws JwtException {
 		try {
 			return jwtParser().parseClaimsJws(token).getBody();
 		}

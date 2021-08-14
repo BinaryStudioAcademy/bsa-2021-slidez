@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.binarystudio.academy.slidez.domain.user.UserService;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthResponse;
+import com.binarystudio.academy.slidez.infrastructure.security.exception.GoogleTokenIdException;
 import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtProvider;
 import com.binarystudio.academy.slidez.infrastructure.security.util.AuthUtil;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -27,7 +28,7 @@ public class OAuthService {
 		this.jwtProvider = jwtProvider;
 	}
 
-	public Optional<AuthResponse> loginWithGoogle(String idToken) {
+	public Optional<AuthResponse> loginWithGoogle(String idToken) throws GoogleTokenIdException {
 		Optional<String> emailForGoogle = getEmailForGoogle(idToken);
 		if (emailForGoogle.isEmpty()) {
 			return Optional.empty();
@@ -37,7 +38,7 @@ public class OAuthService {
 		return byEmail.map(user -> AuthUtil.createAuthResponseFromUser(user, jwtProvider));
 	}
 
-	public Optional<AuthResponse> registerWithGoogle(String idToken) {
+	public Optional<AuthResponse> registerWithGoogle(String idToken) throws GoogleTokenIdException {
 		Optional<String> emailForGoogle = getEmailForGoogle(idToken);
 		if (emailForGoogle.isEmpty()) {
 			return Optional.empty();
@@ -50,16 +51,9 @@ public class OAuthService {
 		return Optional.empty();
 	}
 
-	private Optional<String> getEmailForGoogle(String idToken) {
-		Optional<String> emailHolder = Optional.empty();
-		try {
-			GoogleIdToken.Payload verify = this.googleTokenVerifier.verify(idToken);
-			emailHolder = Optional.of(verify.getEmail());
-		}
-		catch (Throwable e) {
-			e.printStackTrace();
-		}
-		return emailHolder;
+	private Optional<String> getEmailForGoogle(String idToken) throws GoogleTokenIdException {
+		GoogleIdToken.Payload verify = this.googleTokenVerifier.verify(idToken);
+		return Optional.of(verify.getEmail());
 	}
 
 }

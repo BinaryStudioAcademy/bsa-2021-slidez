@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.infrastructure;
+package com.binarystudio.academy.slidez.infrastructure.security;
 
 import lombok.Getter;
 import lombok.Setter;

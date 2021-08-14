@@ -15,18 +15,18 @@ public class LinkController {
 	private final LinkService linkService;
 
 	@Autowired
-    public LinkController(LinkService linkService) {
-        this.linkService = linkService;
-    }
+	public LinkController(LinkService linkService) {
+		this.linkService = linkService;
+	}
 
-    @PostMapping("/generate-extra")
+	@PostMapping("/generate-extra")
 	public void generateExtraLinks() {
 		this.linkService.generateExtraLinks();
 	}
 
 	@GetMapping
 	public GenericResponse<List<LinkDto>, String> getLinks() {
-	    return new GenericResponse<>(linkService.getLinks());
+		return new GenericResponse<>(linkService.getLinks());
 	}
 
 	@PostMapping("/lease/{duration}")
