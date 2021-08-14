@@ -1,0 +1,17 @@
+{
+  "name": "slidez-shared",
+  "version": "0.0.1",
+  "description": "Slidez shared components",
+  "main": "index.ts",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "typescript": "^4.3.5"
+  },
+  "scripts": {
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
+}
