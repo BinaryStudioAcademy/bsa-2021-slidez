@@ -1,5 +1,6 @@
-package com.binarystudio.academy.slidez.infrastructure.security.jwt;
+package com.binarystudio.academy.slidez.infrastructure.security.filter;
 
+import com.binarystudio.academy.slidez.domain.auth.jwtauth.JwtProvider;
 import com.binarystudio.academy.slidez.domain.user.UserService;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import com.binarystudio.academy.slidez.domain.user.model.UserRole;

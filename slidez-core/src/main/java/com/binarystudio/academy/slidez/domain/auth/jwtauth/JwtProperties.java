@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.infrastructure.security.jwt;
+package com.binarystudio.academy.slidez.domain.auth.jwtauth;
 
 import lombok.Getter;
 import lombok.Setter;

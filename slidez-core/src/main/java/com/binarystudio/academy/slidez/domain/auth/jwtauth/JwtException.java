@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.auth.exception;
+package com.binarystudio.academy.slidez.domain.auth.jwtauth;
 
 import com.binarystudio.academy.slidez.domain.exception.DomainException;
 import lombok.Getter;

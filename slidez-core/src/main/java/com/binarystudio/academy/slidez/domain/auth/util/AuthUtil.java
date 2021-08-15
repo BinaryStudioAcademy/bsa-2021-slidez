@@ -4,7 +4,7 @@ import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
 import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import com.binarystudio.academy.slidez.domain.auth.jwtauth.model.AuthResponse;
-import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtProvider;
+import com.binarystudio.academy.slidez.domain.auth.jwtauth.JwtProvider;
 
 public final class AuthUtil {
 

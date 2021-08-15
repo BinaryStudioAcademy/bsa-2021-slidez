@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import com.binarystudio.academy.slidez.domain.auth.jwtauth.model.AuthResponse;
-import com.binarystudio.academy.slidez.domain.auth.exception.GoogleTokenIdException;
+import com.binarystudio.academy.slidez.domain.auth.oauth2.GoogleTokenIdException;
 import com.binarystudio.academy.slidez.domain.auth.oauth2.OAuthService;
 import com.binarystudio.academy.slidez.domain.auth.oauth2.dto.AuthorizationByOAuthTokenRequest;
 import org.springframework.beans.factory.annotation.Autowired;
