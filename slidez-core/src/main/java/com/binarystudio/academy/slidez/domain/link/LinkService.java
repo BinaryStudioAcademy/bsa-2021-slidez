@@ -5,7 +5,6 @@ import java.time.Period;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.binarystudio.academy.slidez.domain.exception.DomainException;
 import com.binarystudio.academy.slidez.domain.link.dto.LinkDto;
 import com.binarystudio.academy.slidez.domain.link.exception.IncorrectLeaseDurationException;
 import com.binarystudio.academy.slidez.domain.link.exception.InvalidCharacterException;
@@ -88,7 +87,7 @@ public class LinkService {
 			carry = newCodePoint / ALPHABET.length;
 		}
 		if (carry != 0) {
-			throw new OverflowException();
+			throw new OverflowException("Cannot generate new link due to overflow");
 		}
 
 		return nextCode.reverse().toString();

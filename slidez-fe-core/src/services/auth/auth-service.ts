@@ -6,7 +6,7 @@ import { TokenDto } from './dto/TokenDto'
 import { createDefaultAxios } from '../http/http-util'
 import { RefreshTokensDto } from './dto/RefreshTokensDto'
 import { RefreshTokensResponseDto } from './dto/RefreshTokensResponseDto'
-import { GenericResponse } from '../http/GenericResponse'
+import { GenericResponse } from '../dto/GenericResponse'
 
 export const JWT = 'jwt'
 export const refreshJWT = 'refresh_jwt'

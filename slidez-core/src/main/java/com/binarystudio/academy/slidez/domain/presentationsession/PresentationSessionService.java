@@ -4,7 +4,6 @@ import com.binarystudio.academy.slidez.domain.link.exception.IncorrectLeaseDurat
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionRequestDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionResponseDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.*;
-import com.binarystudio.academy.slidez.domain.presentationsession.enums.WebSocketStatus;
 import com.binarystudio.academy.slidez.domain.presentationsession.event.DomainEvent;
 import com.binarystudio.academy.slidez.domain.presentationsession.event.PollAnsweredEvent;
 import com.binarystudio.academy.slidez.domain.presentationsession.event.PollCreatedEvent;
@@ -61,43 +60,39 @@ public class PresentationSessionService {
 		return Optional.empty();
 	}
 
-	public SnapshotResponseDto getSnapshot(String link) {
+	public Optional<SnapshotResponseDto> getSnapshot(String link) {
 		Optional<PresentationEventStore> eventStore = inMemoryPresentationEventStoreRepository.get(link);
-		SnapshotResponseDto snapshotResponseDto = new SnapshotResponseDto();
 		if (eventStore.isEmpty()) {
-			snapshotResponseDto.setStatus(WebSocketStatus.NOT_FOUND);
-			return snapshotResponseDto;
+			return Optional.empty();
 		}
 		Snapshot snapshot = eventStore.get().snapshot();
+		SnapshotResponseDto snapshotResponseDto = new SnapshotResponseDto();
 		snapshotResponseDto.setPolls(snapshot.getPolls());
-		return snapshotResponseDto;
+		return Optional.of(snapshotResponseDto);
 	}
 
-	public PollCreatedResponseDto createPoll(String link, CreatePollRequestDto dto) {
+	public Optional<PollCreatedResponseDto> createPoll(String link, CreatePollRequestDto dto) {
 		Optional<PresentationEventStore> eventStore = inMemoryPresentationEventStoreRepository.get(link);
-		PollCreatedResponseDto pollCreatedResponseDto = new PollCreatedResponseDto();
 		if (eventStore.isEmpty()) {
-			pollCreatedResponseDto.setStatus(WebSocketStatus.NOT_FOUND);
-			return pollCreatedResponseDto;
+			return Optional.empty();
 		}
 		PollCreatedEvent pollCreatedEvent = new PollCreatedEvent(dto.getName(), dto.getOptions());
 		eventStore.get().applyEvent(pollCreatedEvent);
 		List<Poll> polls = eventStore.get().snapshot().getPolls();
 		Poll last = polls.get(polls.size() - 1);
-		PollMapper pollMapper = PollMapper.INSTANCE;
-		return pollMapper.pollToPollCreatedDtoMapper(last);
+		PollCreatedResponseDto pollCreatedResponseDto = PollMapper.INSTANCE.pollToPollCreatedDtoMapper(last);
+		return Optional.of(pollCreatedResponseDto);
 	}
 
-	public PollAnsweredDto answerPoll(String link, AnswerPollDto dto) {
+	public Optional<PollAnsweredDto> answerPoll(String link, AnswerPollDto dto) {
 		Optional<PresentationEventStore> eventStore = inMemoryPresentationEventStoreRepository.get(link);
-		PollAnsweredDto pollAnsweredDto = new PollAnsweredDto();
 		if (eventStore.isEmpty()) {
-			pollAnsweredDto.setStatus(WebSocketStatus.NOT_FOUND);
-			return pollAnsweredDto;
+			return Optional.empty();
 		}
 		PollAnsweredEvent pollAnsweredEvent = new PollAnsweredEvent(dto.getPollId(), dto.getOption());
 		eventStore.get().applyEvent(pollAnsweredEvent);
-		return new PollAnsweredDto(dto.getPollId(), dto.getOption());
+		PollAnsweredDto pollAnsweredDto = new PollAnsweredDto(dto.getPollId(), dto.getOption());
+		return Optional.of(pollAnsweredDto);
 	}
 
 }

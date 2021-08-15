@@ -5,13 +5,10 @@ import lombok.*;
 import java.util.List;
 import java.util.UUID;
 
-@Getter
-@Setter
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PollCreatedResponseDto extends AbstractWebSocketResponseDto {
+public class PollCreatedResponseDto {
 
 	private String name;
 

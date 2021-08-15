@@ -38,21 +38,36 @@ public class PresentationSessionController {
 
 	@MessageMapping("/snapshot/{link}")
 	@SendTo("/topic/snapshot/{link}")
-	public SnapshotResponseDto getPresentationSnapshot(@DestinationVariable String link) {
-		return presentationSessionService.getSnapshot(link);
+	public GenericResponse<SnapshotResponseDto, PresentationSessionResponseCodes> getPresentationSnapshot(
+			@DestinationVariable String link) {
+		Optional<SnapshotResponseDto> snapshotOptional = presentationSessionService.getSnapshot(link);
+		if (snapshotOptional.isEmpty()) {
+			return new GenericResponse<>(null, PresentationSessionResponseCodes.COULD_NOT_LOAD_SNAPSHOT);
+		}
+		return new GenericResponse<>(snapshotOptional.get());
 	}
 
 	@MessageMapping("/create/poll/{link}")
 	@SendTo("/topic/created/poll/{link}")
-	public PollCreatedResponseDto createPoll(@DestinationVariable String link,
-			@Payload CreatePollRequestDto createPollRequestDto) {
-		return presentationSessionService.createPoll(link, createPollRequestDto);
+	public GenericResponse<PollCreatedResponseDto, PresentationSessionResponseCodes> createPoll(
+			@DestinationVariable String link, @Payload CreatePollRequestDto createPollRequestDto) {
+		Optional<PollCreatedResponseDto> pollOptional = presentationSessionService.createPoll(link,
+				createPollRequestDto);
+		if (pollOptional.isEmpty()) {
+			return new GenericResponse<>(null, PresentationSessionResponseCodes.COULD_NOT_CREATE_POLL);
+		}
+		return new GenericResponse<>(pollOptional.get());
 	}
 
 	@MessageMapping("/answer/poll/{link}")
 	@SendTo("/topic/answered/poll/{link}")
-	public PollAnsweredDto answerPoll(@DestinationVariable String link, @Payload AnswerPollDto answerPollDto) {
-		return presentationSessionService.answerPoll(link, answerPollDto);
+	public GenericResponse<PollAnsweredDto, PresentationSessionResponseCodes> answerPoll(
+			@DestinationVariable String link, @Payload AnswerPollDto answerPollDto) {
+		Optional<PollAnsweredDto> pollAnsweredOptional = presentationSessionService.answerPoll(link, answerPollDto);
+		if (pollAnsweredOptional.isEmpty()) {
+			return new GenericResponse<>(null, PresentationSessionResponseCodes.COULD_NOT_ANSWER_POLL);
+		}
+		return new GenericResponse<>(pollAnsweredOptional.get());
 	}
 
 }

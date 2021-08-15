@@ -1,31 +1,30 @@
 import { SnapshotDto } from './dto/SnapshotDto'
-import { LoadSessionStatus } from './enums/load-session-status'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import * as WebSocketService from '../../services/ws/ws-service'
 import { WsConnectionStatus } from './enums/ws-connection-status'
 import { RootState } from '../../store'
+import { GenericResponse } from '../../services/dto/GenericResponse'
 
 export interface PresentationSessionState {
     connectionStatus: string
-    loadStatus: string
+    error: string | undefined
     snapshot: SnapshotDto | undefined
 }
 
 const initialState: PresentationSessionState = {
     connectionStatus: WsConnectionStatus.ESTABLISHING,
-    loadStatus: LoadSessionStatus.IN_PROGRESS,
+    error: undefined,
     snapshot: undefined,
 }
 
 const gotSnapshot = createAsyncThunk(
     'presentationSession/gotSnapshot',
-    async (snapshot: SnapshotDto) => {
+    async (response: string) => {
+        const genericResponse: GenericResponse<SnapshotDto, string> =
+            JSON.parse(response)
         const out: PresentationSessionState = { ...initialState }
-        out.snapshot = snapshot
-        out.loadStatus =
-            snapshot.status === 'OK'
-                ? LoadSessionStatus.OK
-                : LoadSessionStatus.FAILED
+        out.snapshot = genericResponse.data
+        out.error = genericResponse.error
         return out
     }
 )
@@ -37,8 +36,8 @@ export const initWebSocketSession = createAsyncThunk(
         const onConnectionSuccess = () => {
             out.connectionStatus = WsConnectionStatus.CONNECTED
         }
-        const onGetSnapshot = (snapshot: SnapshotDto) => {
-            dispatch(gotSnapshot(snapshot))
+        const onGetSnapshot = (response: string) => {
+            dispatch(gotSnapshot(response))
         }
         await WebSocketService.connectToAllEvents(
             link,
@@ -59,7 +58,7 @@ export const presentationSessionSlice = createSlice({
                 state.connectionStatus = action.payload.connectionStatus
             })
             .addCase(gotSnapshot.fulfilled, (state, action) => {
-                state.loadStatus = action.payload.loadStatus
+                state.error = action.payload.error
                 state.snapshot = action.payload.snapshot
             })
     },
