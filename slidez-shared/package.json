@@ -12,6 +12,9 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "formik": "^2.2.9",
+    "react": "^17.0.2",
+    "rx-js": "^0.0.0"
   }
 }

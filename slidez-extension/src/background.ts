@@ -1,92 +1,90 @@
-import { doPost } from 'slidez-shared'
+import {
+    ChromeMultiPortMessageBusDriver,
+    BasicMessagingBus,
+    isRunningInChrome,
+    of,
+    EventType,
+    ExtensionAuthenticationSuccess,
+} from 'slidez-shared'
 
-function notify(title: string) {
-    var options = {
-        title: title,
-        message: 'Failed to login',
-        type: 'basic',
-        iconUrl: '../public/logo192.png',
-    }
-
-    return chrome.notifications.create('', options)
-}
-
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.message === 'login') {
-        logIn(true, request?.payload)
-            .then((res) => sendResponse(res))
-            .catch((err) => {
-                notify('Error')
-                return err
+const checkUserDataInStorage = (eb: BasicMessagingBus) => () => {
+    chrome.storage.local.get(['userData'], (userData) => {
+        if (userData.accessToken) {
+            eb.sendMessageNoCallback({
+                type: EventType.AUTH_DETAILS,
+                data: {
+                    success: true,
+                    accessToken: userData.accessToken,
+                },
             })
-        return true
-    } else if (request.message === 'userStatus') {
-        isUserSignedIn()
-            .then((res) => {
-                sendResponse({
-                    message: 'success',
-                })
+        } else {
+            eb.sendMessageNoCallback({
+                type: EventType.AUTH_DETAILS,
+                data: {
+                    success: false,
+                    error: 'No token available',
+                },
             })
-            .catch((err) => {
-                return err
-            })
-        return true
-    }
-})
-
-async function logIn(signIn: any, userInfo: any) {
-    const JWT = 'jwt'
-    if (signIn) {
-        const { data, status } = await doPost('auth/login', userInfo)
-        return new Promise((resolve) => {
-            if (status === 200) {
-                const logInResult: {
-                    accessToken: string
-                } = data
-                chrome.storage.local.set(
-                    { userStatus: signIn, logInResult },
-                    function () {
-                        if (chrome.runtime.lastError) {
-                            notify('Error')
-                            resolve('fail')
-                        } else {
-                            chrome.runtime.sendMessage(JWT, {
-                                message: logInResult.accessToken,
-                            })
-                            resolve('success')
-                        }
-                    }
-                )
-            }
-        })
-    }
-}
-function isUserSignedIn() {
-    return new Promise((resolve) => {
-        chrome.storage.local.get(
-            ['userStatus', 'logInResult'],
-            function (response) {
-                if (chrome.runtime.lastError)
-                    resolve({ userStatus: false, logInResult: {} })
-                resolve(
-                    response.userStatus === undefined
-                        ? { userStatus: false, logInResult: {} }
-                        : {
-                              userStatus: response.userStatus,
-                              logInResult: response.logInResult,
-                          }
-                )
-            }
-        )
+        }
     })
 }
 
-function polling() {
-    console.log('polling')
-    setTimeout(polling, 1000 * 30)
+const setUserDataInStore =
+    (eb: BasicMessagingBus) => (message: ExtensionAuthenticationSuccess) => {
+        chrome.storage.local.set(
+            {
+                userData: {
+                    accessToken: message.data.accessToken,
+                    refreshToken: message.data.refreshToken,
+                },
+            },
+            () => {
+                eb.sendMessageNoCallback({
+                    type: EventType.AUTH_DETAILS,
+                    data: {
+                        success: true,
+                        accessToken: message.data.accessToken,
+                    },
+                })
+            }
+        )
+    }
+
+async function background() {
+    if (!isRunningInChrome()) {
+        throw new Error(
+            'This is a Chrome-only script. Please, run in a proper environment'
+        )
+    }
+
+    const driver = new ChromeMultiPortMessageBusDriver()
+
+    chrome.runtime.onConnect.addListener((port) => {
+        console.log('Adding port')
+        driver.addPort(port)
+    })
+
+    chrome.runtime.onConnectExternal.addListener((port) => {
+        console.log('Adding external port')
+        driver.addPort(port)
+    })
+
+    const eb = new BasicMessagingBus(driver)
+
+    eb.registerEventHandler(
+        EventType.AUTH_REQUESTED,
+        of(checkUserDataInStorage(eb))
+    )
+
+    eb.registerEventHandler(
+        EventType.EXTENSION_AUTH_SUCCESS,
+        of(setUserDataInStore(eb))
+    )
+
+    console.log('Event bus is ready and running!')
 }
 
-polling()
+background()
 
 //isolatedModules hack
 export {}

@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
-import Login from './Login'
+import Popup from './popup/App'
 import './index.css'
-
-const Popup = () => {
-    return <Login />
-}
 
 ReactDOM.render(
     <React.StrictMode>
