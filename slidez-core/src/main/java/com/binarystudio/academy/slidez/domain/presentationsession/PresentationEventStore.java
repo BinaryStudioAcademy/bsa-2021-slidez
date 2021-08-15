@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.domain.presentationsession;
 
+import com.binarystudio.academy.slidez.domain.exception.DomainException;
 import com.binarystudio.academy.slidez.domain.presentationsession.event.DomainEvent;
 import com.binarystudio.academy.slidez.domain.presentationsession.model.State;
 import com.binarystudio.academy.slidez.domain.presentationsession.snapshot.Snapshot;
@@ -29,7 +30,7 @@ public class PresentationEventStore {
 		return Collections.unmodifiableList(events);
 	}
 
-	public PresentationEventStore applyEvent(DomainEvent event) {
+	public PresentationEventStore applyEvent(DomainEvent event) throws DomainException {
 		synchronized (this) {
 			event.applyEvent(state);
 			events.add(event);
@@ -41,7 +42,7 @@ public class PresentationEventStore {
 		return Snapshot.getSimpleSnapshotFromState(state);
 	}
 
-	public Snapshot snapshot(Date date) {
+	public Snapshot snapshot(Date date) throws DomainException {
 		State stateForSpecificTime = new State();
 		synchronized (this) {
 			events.stream().filter(e -> e.getEventDate().before(date)).forEach(e -> e.applyEvent(stateForSpecificTime));

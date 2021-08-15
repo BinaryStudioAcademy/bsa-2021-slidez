@@ -1,6 +1,7 @@
 package com.binarystudio.academy.slidez.domain.email;
 
 import com.binarystudio.academy.slidez.domain.email.dto.EmailMessageDto;
+import com.binarystudio.academy.slidez.domain.email.exception.CouldNotSendEmailException;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -25,16 +26,19 @@ public class SendGridEmailSender implements EmailSender {
 	private String fromEmail;
 
 	@Override
-	public boolean sendEmail(EmailMessageDto emailMessageDto) throws IOException {
+	public boolean sendEmail(EmailMessageDto emailMessageDto) throws CouldNotSendEmailException {
 		Mail mail = getMailFromDto(emailMessageDto);
 		setSandboxMode(mail);
-		Request request = getSendMailRequest(mail);
-		Response response = sendMailRequest(request);
-
-		// Logger in future
-		System.out.println(response.getStatusCode());
-		System.out.println(response.getBody());
-
+		try {
+			Request request = getSendMailRequest(mail);
+			Response response = sendMailRequest(request);
+			// Logger in future
+			System.out.println(response.getStatusCode());
+			System.out.println(response.getBody());
+		}
+		catch (IOException e) {
+			throw new CouldNotSendEmailException(e);
+		}
 		return true;
 	}
 

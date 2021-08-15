@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.persistence.EntityNotFoundException;
-
 import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
+import com.binarystudio.academy.slidez.domain.session.dto.SessionResponseDto;
 import com.binarystudio.academy.slidez.domain.session.dto.SessionUpdateDto;
+import com.binarystudio.academy.slidez.domain.session.exception.SessionNotFoundException;
+import com.binarystudio.academy.slidez.domain.session.mapper.SessionMapper;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
 import static java.time.LocalDateTime.now;
 
@@ -36,10 +37,10 @@ public class SessionService {
 	}
 
 	@Transactional
-	public Session update(SessionUpdateDto dto) {
+	public Session update(SessionUpdateDto dto) throws SessionNotFoundException {
 		Optional<Session> sessionFromDto = Optional.of(get(dto.getId()));
 		Session session = sessionFromDto
-				.orElseThrow(() -> (new EntityNotFoundException("Session with id " + dto.getId() + " not found")));
+				.orElseThrow(() -> (new SessionNotFoundException("Session with id " + dto.getId() + " not found")));
 		session.setUpdatedAt(now());
 
 		Optional.of(dto.getStatus()).ifPresent(session::setStatus);
@@ -75,8 +76,10 @@ public class SessionService {
 		return sessionRepository.findAll();
 	}
 
-	public Optional<Session> getById(UUID id) {
-		return sessionRepository.findById(id);
+	public Optional<SessionResponseDto> getById(UUID id) {
+		Optional<Session> sessionOptional = sessionRepository.findById(id);
+		SessionMapper sessionMapper = SessionMapper.INSTANCE;
+		return sessionOptional.map(sessionMapper::mapSessionToSessionResponseDto);
 	}
 
 }

@@ -1,10 +1,8 @@
 package com.binarystudio.academy.slidez.domain.presentationsession.exception;
 
-public class PollNotFoundException extends RuntimeException {
+import com.binarystudio.academy.slidez.domain.exception.DomainException;
 
-	public PollNotFoundException() {
-		super();
-	}
+public class PollNotFoundException extends DomainException {
 
 	public PollNotFoundException(String message) {
 		super(message);
