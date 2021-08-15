@@ -1,12 +1,12 @@
-package com.binarystudio.academy.slidez.infrastructure.security.auth;
+package com.binarystudio.academy.slidez.domain.auth.jwtauth;
 
 import java.util.Optional;
 
+import com.binarystudio.academy.slidez.domain.auth.jwtauth.model.*;
 import com.binarystudio.academy.slidez.domain.user.UserService;
 import com.binarystudio.academy.slidez.domain.user.model.User;
-import com.binarystudio.academy.slidez.infrastructure.security.auth.model.*;
 import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtProvider;
-import com.binarystudio.academy.slidez.infrastructure.security.util.AuthUtil;
+import com.binarystudio.academy.slidez.domain.auth.util.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

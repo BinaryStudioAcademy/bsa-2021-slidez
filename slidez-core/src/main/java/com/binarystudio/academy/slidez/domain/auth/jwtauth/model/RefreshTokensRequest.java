@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.infrastructure.security.auth.model;
+package com.binarystudio.academy.slidez.domain.auth.jwtauth.model;
 
 import lombok.Data;
 

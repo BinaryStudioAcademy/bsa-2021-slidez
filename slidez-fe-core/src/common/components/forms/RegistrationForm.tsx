@@ -7,8 +7,7 @@ import {
     faArrowAltCircleLeft,
 } from '@fortawesome/free-regular-svg-icons'
 import { useAppSelector } from '../../../hooks'
-import { selectSignStatus } from '../../../containers/user/store'
-import { SignStatus } from '../../../containers/user/enums/sign-status'
+import { selectError } from '../../../containers/user/store'
 import { GoogleOAuth } from '../../../services/auth/google-oauth'
 import GoogleLogin from 'react-google-login'
 import { NavLink } from 'react-router-dom'
@@ -28,7 +27,7 @@ const RegistrationForm = ({
     const [isPasswordRevealed, setIsPasswordRevealed] = React.useState(false)
     const [isConfirmPasswordRevealed, setIsConfirmPasswordRevealed] =
         React.useState(false)
-    const signStatus = useAppSelector(selectSignStatus)
+    const registrationError = useAppSelector(selectError)
 
     const onRevealPasswordClick = () => {
         setIsPasswordRevealed(!isPasswordRevealed)
@@ -99,9 +98,7 @@ const RegistrationForm = ({
                             </ErrorMessage>
                             <div
                                 className={
-                                    signStatus === SignStatus.EMAIL_IS_TAKEN
-                                        ? 'error-text'
-                                        : 'hidden'
+                                    registrationError ? 'error-text' : 'hidden'
                                 }
                             >
                                 This email is taken

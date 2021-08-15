@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.infrastructure.security.oauth2;
+package com.binarystudio.academy.slidez.domain.auth.oauth2;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.infrastructure.security.exception;
+package com.binarystudio.academy.slidez.domain.auth.exception;
 
 import com.binarystudio.academy.slidez.domain.exception.DomainException;
 

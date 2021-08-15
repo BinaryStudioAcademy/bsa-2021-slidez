@@ -1,9 +1,9 @@
-package com.binarystudio.academy.slidez.infrastructure.security.util;
+package com.binarystudio.academy.slidez.domain.auth.util;
 
 import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
 import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
 import com.binarystudio.academy.slidez.domain.user.model.User;
-import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthResponse;
+import com.binarystudio.academy.slidez.domain.auth.jwtauth.model.AuthResponse;
 import com.binarystudio.academy.slidez.infrastructure.security.jwt.JwtProvider;
 
 public final class AuthUtil {

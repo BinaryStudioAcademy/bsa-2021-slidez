@@ -6,8 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
 import { revealPassword } from './form-utils'
 import { useAppSelector } from '../../../hooks'
-import { selectSignStatus } from '../../../containers/user/store'
-import { SignStatus } from '../../../containers/user/enums/sign-status'
+import { selectError } from '../../../containers/user/store'
 import GoogleLogin from 'react-google-login'
 import { GoogleOAuth } from '../../../services/auth/google-oauth'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
@@ -20,7 +19,7 @@ type LoginProps = {
 
 const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
     const [isPasswordRevealed, setIsPasswordRevealed] = React.useState(false)
-    const signStatus = useAppSelector(selectSignStatus)
+    const loginError = useAppSelector(selectError)
 
     const onRevealClick = () => {
         setIsPasswordRevealed(!isPasswordRevealed)
@@ -56,12 +55,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                     <Form>
                         <div className='form-row form-input-holder'>
                             <div
-                                className={
-                                    signStatus ===
-                                    SignStatus.INVALID_CREDENTIALS
-                                        ? 'error-text'
-                                        : 'hidden'
-                                }
+                                className={loginError ? 'error-text' : 'hidden'}
                             >
                                 {"Can't log in: email or password is invalid"}
                             </div>

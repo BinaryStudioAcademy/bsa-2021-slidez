@@ -1,9 +1,9 @@
-package com.binarystudio.academy.slidez.infrastructure.security.auth;
+package com.binarystudio.academy.slidez.domain.auth.jwtauth.validation;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import com.binarystudio.academy.slidez.infrastructure.security.auth.model.AuthorizationRequest;
+import com.binarystudio.academy.slidez.domain.auth.jwtauth.model.AuthorizationRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

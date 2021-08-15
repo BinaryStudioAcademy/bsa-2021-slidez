@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.infrastructure.security.auth.model;
+package com.binarystudio.academy.slidez.domain.auth.jwtauth.model;
 
 import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
 import lombok.AllArgsConstructor;

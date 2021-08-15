@@ -1,11 +1,11 @@
-package com.binarystudio.academy.slidez.infrastructure.security.oauth2;
+package com.binarystudio.academy.slidez.domain.auth.oauth2;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Collections;
 
-import com.binarystudio.academy.slidez.infrastructure.security.exception.GoogleTokenIdException;
+import com.binarystudio.academy.slidez.domain.auth.exception.GoogleTokenIdException;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.HttpTransport;

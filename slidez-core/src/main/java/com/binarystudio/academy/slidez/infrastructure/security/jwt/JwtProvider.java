@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Optional;
 
 import com.binarystudio.academy.slidez.domain.user.model.User;
-import com.binarystudio.academy.slidez.infrastructure.security.exception.JwtException;
+import com.binarystudio.academy.slidez.domain.auth.exception.JwtException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtParser;
