@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Formik, Field, FieldArray } from 'formik';
 
-import server from '../../utils/server';
+import server from '../../../utils/server';
 import { Form } from 'react-bootstrap';
 import './styles.scss';
 
