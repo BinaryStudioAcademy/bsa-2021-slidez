@@ -1,8 +1,10 @@
-@import "../../../../slidez-fe-core/src/global/global";
+@import "../../global/global";
 
 .poll {
     height: 100%;
     border-radius: 10px;
+    position: absolute;
+    z-index: 999;
 
     &-header {
         display: flex;
@@ -32,10 +34,10 @@
             margin-left: 10px;
         }
         &-winner &-bar {
-            background-color: $light-green;
+            background-color: $main-color;
         }
         &-winner &-percent {
-            color: $light-green;
+            color: $main-color;
         }
     }
 }

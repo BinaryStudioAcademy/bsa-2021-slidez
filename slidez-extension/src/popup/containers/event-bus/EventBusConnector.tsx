@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { EventBusConnectionStatus, useEventBus } from '../../hooks/event-bus'
+import { EventBusConnectionStatus, useEventBus } from '../../hooks'
 import { connect } from './redux/eventBusSlice'
 
 const Loader = () => <span>Loader...</span>
