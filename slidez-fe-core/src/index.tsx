@@ -6,6 +6,9 @@ import reportWebVitals from './reportWebVitals'
 import { store } from './store'
 import { Provider } from 'react-redux'
 import './global/styles.scss'
+import { log } from 'slidez-shared'
+
+log()
 
 ReactDOM.render(
     <React.StrictMode>

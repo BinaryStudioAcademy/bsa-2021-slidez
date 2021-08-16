@@ -1,5 +1,7 @@
 package com.binarystudio.academy.slidez.domain.presentationsession.event;
 
+import com.binarystudio.academy.slidez.domain.presentationsession.exception.BadOptionException;
+import com.binarystudio.academy.slidez.domain.presentationsession.exception.PollNotFoundException;
 import com.binarystudio.academy.slidez.domain.presentationsession.model.State;
 import lombok.RequiredArgsConstructor;
 
@@ -13,7 +15,7 @@ public class PollAnsweredEvent extends DomainEvent {
 	private final int pollOption;
 
 	@Override
-	public void applyEvent(State state) {
+	public void applyEvent(State state) throws PollNotFoundException, BadOptionException {
 		state.addAnswerToThePoll(pollId, pollOption);
 	}
 

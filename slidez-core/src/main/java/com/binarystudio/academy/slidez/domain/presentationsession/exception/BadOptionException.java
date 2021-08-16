@@ -1,10 +1,8 @@
 package com.binarystudio.academy.slidez.domain.presentationsession.exception;
 
-public class BadOptionException extends RuntimeException {
+import com.binarystudio.academy.slidez.domain.exception.DomainException;
 
-	public BadOptionException() {
-		super();
-	}
+public class BadOptionException extends DomainException {
 
 	public BadOptionException(String message) {
 		super(message);

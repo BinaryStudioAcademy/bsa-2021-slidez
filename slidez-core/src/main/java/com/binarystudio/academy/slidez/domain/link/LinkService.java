@@ -6,7 +6,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.binarystudio.academy.slidez.domain.link.dto.LinkDto;
-import com.binarystudio.academy.slidez.domain.link.exceptions.IncorrectLeaseDurationException;
+import com.binarystudio.academy.slidez.domain.link.exception.IncorrectLeaseDurationException;
+import com.binarystudio.academy.slidez.domain.link.exception.InvalidCharacterException;
+import com.binarystudio.academy.slidez.domain.link.exception.OverflowException;
 import com.binarystudio.academy.slidez.domain.link.mapper.LinkMapper;
 import com.binarystudio.academy.slidez.domain.link.model.Link;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +37,11 @@ public class LinkService {
 	// Initialize static variables
 	static {
 		int position = 0;
-		for (int i = (int) 'a'; i <= (int) 'z'; i++, position++) {
+		for (int i = 'a'; i <= (int) 'z'; i++, position++) {
 			ALPHABET[position] = (char) i;
 			CHAR_TO_ALPHABET_POS.put((char) i, position);
 		}
-		for (int i = (int) '0'; i <= (int) '9'; i++, position++) {
+		for (int i = '0'; i <= (int) '9'; i++, position++) {
 			ALPHABET[position] = (char) i;
 			CHAR_TO_ALPHABET_POS.put((char) i, position);
 		}
@@ -50,8 +52,7 @@ public class LinkService {
 	 * available
 	 */
 	public void generateExtraLinks() {
-
-		int countAvailableLinks = this.linkRepository.getCountAvailableLinks();
+		int countAvailableLinks = linkRepository.getCountAvailableLinks();
 		if (countAvailableLinks >= MAX_COUNT_AVAILABLE_LINKS) {
 			return;
 		}
@@ -63,7 +64,7 @@ public class LinkService {
 			generatingLinks.add(Link.createLink(null, newLink, null));
 			lastLink = newLink;
 		}
-		this.linkRepository.saveAll(generatingLinks);
+		linkRepository.saveAll(generatingLinks);
 	}
 
 	/**
@@ -71,7 +72,7 @@ public class LinkService {
 	 * @param code - last link in table "Link" database
 	 * @return new link in order
 	 */
-	private String generateLink(String code) {
+	private String generateLink(String code) throws InvalidCharacterException, OverflowException {
 		StringBuilder nextCode = new StringBuilder();
 		// convert string to a number in base(powerOf(alphabet)) and add 1 to it;
 		// carry over from previous operation
@@ -79,14 +80,14 @@ public class LinkService {
 		for (int i = code.length() - 1; i >= 0; i--) {
 			var codePoint = CHAR_TO_ALPHABET_POS.get(code.charAt(i));
 			if (codePoint == null) {
-				throw new IllegalArgumentException(String.format("Invalid character %c in %s", code.charAt(i), code));
+				throw new InvalidCharacterException(String.format("Invalid character %c in %s", code.charAt(i), code));
 			}
 			var newCodePoint = codePoint + carry;
 			nextCode.append(ALPHABET[newCodePoint % ALPHABET.length]);
 			carry = newCodePoint / ALPHABET.length;
 		}
 		if (carry != 0) {
-			throw new IllegalArgumentException("%s - cannot get next code due to overflow");
+			throw new OverflowException("Cannot generate new link due to overflow");
 		}
 
 		return nextCode.reverse().toString();
@@ -101,19 +102,11 @@ public class LinkService {
 	 * lease
 	 */
 	public String leaseLinkAsString(int leaseDuration) throws IncorrectLeaseDurationException {
+		return leaseLink(leaseDuration).getLink();
+	}
+
+	public Link leaseLink(int leaseDuration) throws IncorrectLeaseDurationException {
 		checkLeaseDuration(leaseDuration);
-		Link availableLink = configureAndGetAvailableLink(leaseDuration);
-		return availableLink.getLink();
-	}
-
-	public Optional<Link> leaseLink(int leaseDuration) {
-		if (!isDurationWithinBounds(leaseDuration)) {
-			return Optional.empty();
-		}
-		return Optional.of(configureAndGetAvailableLink(leaseDuration));
-	}
-
-	private Link configureAndGetAvailableLink(int leaseDuration) {
 		Link availableLink = linkRepository.getAvailableLink()
 				.orElseGet(() -> linkRepository.save(Link.createLink(null, generateLink(getLastLink()), null)));
 		LocalDateTime expirationDate = LocalDateTime.now().plus(Period.ofDays(leaseDuration));
@@ -123,19 +116,15 @@ public class LinkService {
 	}
 
 	private String getLastLink() {
-		return this.linkRepository.getLastLink().orElse("aaaaaa");
+		return linkRepository.getLastLink().orElse("aaaaaa");
 	}
 
 	private void checkLeaseDuration(int leaseDuration) throws IncorrectLeaseDurationException {
-		if (!isDurationWithinBounds(leaseDuration)) {
-			throw new IncorrectLeaseDurationException(
-					"Duration of the lease is outside the interval. Expected: A number between 1 and 180, inclusive. Found: "
-							+ leaseDuration);
+		if (leaseDuration < MIN_LEASE_DURATION || leaseDuration > MAX_LEASE_DURATION) {
+			String template = "Duration of lease must be between %d and %d incl. Instead: %d";
+			String message = String.format(template, MIN_LEASE_DURATION, MAX_LEASE_DURATION, leaseDuration);
+			throw new IncorrectLeaseDurationException(message);
 		}
-	}
-
-	private boolean isDurationWithinBounds(int leaseDuration) {
-		return leaseDuration >= MIN_LEASE_DURATION && leaseDuration <= MAX_LEASE_DURATION;
 	}
 
 	/**
@@ -143,18 +132,17 @@ public class LinkService {
 	 */
 	public void cleanExpiredLeases() {
 		LocalDateTime now = LocalDateTime.now();
-		List<Link> expiredLinks = this.linkRepository.getLinksWithExpiredLeases(now);
+		List<Link> expiredLinks = linkRepository.getLinksWithExpiredLeases(now);
 		expiredLinks.forEach(freeingALink -> {
 			freeingALink.setSession(null);
 			freeingALink.setExpirationDate(null);
-			this.linkRepository.update(freeingALink, freeingALink.getLinkId());
+			linkRepository.update(freeingALink, freeingALink.getLinkId());
 		});
 	}
 
 	public List<LinkDto> getLinks() {
 		LinkMapper mapper = LinkMapper.INSTANCE;
-		return this.linkRepository.findAll().stream().map(mapper::linkToLinkDto).collect(Collectors.toList());
-
+		return linkRepository.findAll().stream().map(mapper::linkToLinkDto).collect(Collectors.toList());
 	}
 
 	public Link update(Link link) {

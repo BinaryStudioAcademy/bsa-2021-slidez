@@ -1,6 +1,6 @@
 package com.binarystudio.academy.slidez.infrastructure.ws;
 
-import com.binarystudio.academy.slidez.infrastructure.AllowedOriginProperties;
+import com.binarystudio.academy.slidez.infrastructure.security.AllowedOriginProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

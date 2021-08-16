@@ -1,6 +1,6 @@
 import { UserDetailsDto } from '../../../containers/user/dto/UserDetailsDto'
 
 export interface LogInResult {
-    status: string
+    error?: string
     userDetailsDto?: UserDetailsDto
 }
