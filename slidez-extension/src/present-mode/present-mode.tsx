@@ -1,5 +1,9 @@
 import { CLASS_NAME_PUNCH_PRESENT_IFRAME } from '../dom/dom-constants'
 import { queryElement } from '../dom/dom-helpers'
+import ReactDOM from 'react-dom'
+import React from 'react'
+import Poll from '../components/poll/Poll'
+import { poll } from '../components/poll/dto/pollDtoMock'
 
 class PresentMode {
     private iframe?: HTMLIFrameElement
@@ -53,6 +57,26 @@ class PresentMode {
     private onPresentModeLoad() {
         // check if all content is loaded
         // throw new Event
+        if (this.document) {
+            const element = document.getElementsByClassName(
+                CLASS_NAME_PUNCH_PRESENT_IFRAME
+            )[0]
+            const div = document.createElement('div')
+            div.style.position = 'fixed'
+            div.style.zIndex = '2147483647'
+            div.style.backgroundColor = 'red'
+            div.style.top = '300px'
+            div.style.left = '400px'
+            div.innerHTML = '<div>AAAAAAAAAAAAAA</div>'
+            // @ts-ignore
+            element.parentNode.insertBefore(div, element)
+            console.log(element.children)
+            ReactDOM.render(
+                <Poll poll={poll} />,
+                // @ts-ignore
+                div
+            )
+        }
         console.log('Present mode started')
     }
 
@@ -118,4 +142,4 @@ class PresentMode {
     }
 }
 
-export default new PresentMode()
+export default PresentMode

@@ -1,14 +1,8 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import Poll from 'slidez-shared/src/components/poll/Poll'
-import { poll } from 'slidez-shared/src/components/poll/dto/pollDtoMock'
+import PresentMode from './present-mode/present-mode'
 
-ReactDOM.render(
-    <React.StrictMode>
-        <Poll poll={poll} />
-    </React.StrictMode>,
-    document.getElementById('root')
-)
+const presentNode: PresentMode = new PresentMode()
+presentNode.init()
 
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     if (msg.color) {
