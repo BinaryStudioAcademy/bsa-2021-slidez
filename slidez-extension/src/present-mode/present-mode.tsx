@@ -1,9 +1,13 @@
+import React from 'react'
 import {
     CLASS_NAME_PUNCH_PRESENT_IFRAME,
     CLASS_NAME_PUNCH_VIEWER_CONTAINER,
     CLASS_NAME_PUNCH_VIEWER_CONTENT,
 } from '../dom/dom-constants'
 import { queryElement, queryElementAsync } from '../dom/dom-helpers'
+import Poll from '../components/poll/Poll'
+import { poll } from '../components/poll/dto/pollDtoMock'
+import ReactDOM from 'react-dom'
 
 class PresentMode {
     private iframe?: HTMLIFrameElement
@@ -67,8 +71,20 @@ class PresentMode {
                 this.document!,
                 '.' + CLASS_NAME_PUNCH_VIEWER_CONTAINER
             )
-            slideContainer.append('POLL WILL BE INSERTERD HERE')
+            const div = document.createElement('div')
+            div.style.position = 'fixed'
+            div.style.zIndex = '2147483647'
+            div.style.backgroundColor = 'red'
+            div.style.top = '300px'
+            div.style.left = '400px'
 
+            slideContainer.appendChild(div)
+            slideContainer.insertAdjacentElement('beforebegin', div)
+            ReactDOM.render(
+                <Poll poll={poll} />,
+                // @ts-ignore
+                div
+            )
             // throw new Event
             console.log('Present mode started')
         })()
