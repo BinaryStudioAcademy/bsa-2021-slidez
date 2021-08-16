@@ -38,7 +38,7 @@ public class Poll {
 
 
     @OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-    @JoinColumn(name = "presentation_id", referencedColumnName = "id")
+    @JoinColumn(name = "pie_id", referencedColumnName = "id")
     private PresentationInteractiveElement owner;
 
     @Column

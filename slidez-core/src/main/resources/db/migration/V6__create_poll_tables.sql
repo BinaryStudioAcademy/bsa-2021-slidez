@@ -16,6 +16,12 @@ create table if not exists poll_options
     primary key (id)
 );
 
+create table if not exists presentation_interactive_element
+(
+    id uuid not null
+);
+
+
 alter table if exists polls
     add constraint fk_polls2users foreign key (user_id) references users;
 
