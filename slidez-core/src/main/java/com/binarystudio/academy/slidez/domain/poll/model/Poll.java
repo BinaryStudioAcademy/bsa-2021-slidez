@@ -41,6 +41,13 @@ public class Poll {
     @Column
     private String name;
 
+    @Column(name = "is_multi")
+    private boolean isMulti;
+
+    @Column(name = "is_template")
+    private boolean isTemplate;
+
+
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 

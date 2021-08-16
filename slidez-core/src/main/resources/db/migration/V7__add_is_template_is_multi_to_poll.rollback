@@ -1,0 +1,3 @@
+ALTER TABLE polls drop is_multi;
+ALTER TABLE polls drop is_template;
+
