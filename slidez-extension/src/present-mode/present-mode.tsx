@@ -68,8 +68,8 @@ class PresentMode {
             div.style.top = '300px'
             div.style.left = '400px'
             div.innerHTML = '<div>AAAAAAAAAAAAAA</div>'
-            // @ts-ignore
-            element.parentNode.insertBefore(div, element)
+            element.appendChild(div)
+            element.insertAdjacentElement('beforebegin', div)
             console.log(element.children)
             ReactDOM.render(
                 <Poll poll={poll} />,
