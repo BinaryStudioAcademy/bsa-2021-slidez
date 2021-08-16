@@ -1,8 +1,4 @@
-import React from 'react'
-import PresentMode from './present-mode/present-mode'
-
-const presentNode: PresentMode = new PresentMode()
-presentNode.init()
+import presentMode from './present-mode/present-mode'
 
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     if (msg.color) {
@@ -13,6 +9,12 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
         sendResponse('Color message is none.')
     }
 })
+
+function init() {
+    presentMode.init()
+}
+
+init()
 
 //Isolated modules hack
 export {}

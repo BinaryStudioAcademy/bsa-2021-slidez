@@ -1,9 +1,9 @@
-import { CLASS_NAME_PUNCH_PRESENT_IFRAME } from '../dom/dom-constants'
-import { queryElement } from '../dom/dom-helpers'
-import ReactDOM from 'react-dom'
-import React from 'react'
-import Poll from '../components/poll/Poll'
-import { poll } from '../components/poll/dto/pollDtoMock'
+import {
+    CLASS_NAME_PUNCH_PRESENT_IFRAME,
+    CLASS_NAME_PUNCH_VIEWER_CONTAINER,
+    CLASS_NAME_PUNCH_VIEWER_CONTENT,
+} from '../dom/dom-constants'
+import { queryElement, queryElementAsync } from '../dom/dom-helpers'
 
 class PresentMode {
     private iframe?: HTMLIFrameElement
@@ -45,39 +45,33 @@ class PresentMode {
         )
         this.watchPresentModeEnd()
 
-        // const alreadyLoaded = this.document!.readyState === 'complete' && this.window!.location.href !== 'about:blank';
-        // if (alreadyLoaded) {
-        //     this.onPresentModeLoad();
-        // } else {
-        //     this.iframe.onload = () => this.onPresentModeLoad();
-        // }
-        this.onPresentModeLoad()
+        const alreadyLoaded =
+            this.document!.readyState === 'complete' &&
+            this.window!.location.href !== 'about:blank'
+        if (alreadyLoaded) {
+            this.onPresentModeLoad()
+        } else {
+            this.iframe!.onload = () => this.onPresentModeLoad()
+        }
     }
 
     private onPresentModeLoad() {
-        // check if all content is loaded
-        // throw new Event
-        if (this.document) {
-            const element = document.getElementsByClassName(
-                CLASS_NAME_PUNCH_PRESENT_IFRAME
-            )[0]
-            const div = document.createElement('div')
-            div.style.position = 'fixed'
-            div.style.zIndex = '2147483647'
-            div.style.backgroundColor = 'red'
-            div.style.top = '300px'
-            div.style.left = '400px'
-            div.innerHTML = '<div>AAAAAAAAAAAAAA</div>'
-            // @ts-ignore
-            element.parentNode.insertBefore(div, element)
-            console.log(element.children)
-            ReactDOM.render(
-                <Poll poll={poll} />,
-                // @ts-ignore
-                div
+        ;(async () => {
+            // if slide has interactions
+            const slideContent = await queryElementAsync<Element>(
+                this.document!,
+                '.' + CLASS_NAME_PUNCH_VIEWER_CONTENT
             )
-        }
-        console.log('Present mode started')
+            slideContent.remove()
+            const slideContainer = await queryElementAsync<Element>(
+                this.document!,
+                '.' + CLASS_NAME_PUNCH_VIEWER_CONTAINER
+            )
+            slideContainer.append('POLL WILL BE INSERTERD HERE')
+
+            // throw new Event
+            console.log('Present mode started')
+        })()
     }
 
     private onPresentModeEnd() {
@@ -142,4 +136,4 @@ class PresentMode {
     }
 }
 
-export default PresentMode
+export default new PresentMode()
