@@ -1,0 +1,29 @@
+
+ .form-container {
+    max-width: 300px;
+    padding: 10px;
+    background-color: white;
+    
+    input {
+      width: 90%;
+      padding: 15px;
+      margin: 5px 5px 22px 0;
+      border: none;
+      background: #f1f1f1;
+    }
+    
+    .btn {
+      background-color: #04AA6D;
+      color: white;
+      padding: 16px 20px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom:10px;
+      opacity: 0.8;
+    }
+
+    .btn:hover, .open-button:hover {
+      opacity: 1;
+    }
+  }

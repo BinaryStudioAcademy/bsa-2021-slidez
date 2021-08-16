@@ -1,25 +1,21 @@
 import React from 'react'
 import PublicRoute from './common/routes/PublicRoute'
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
+import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 import Dashboard from './pages/dashboard/Dashboard'
 import PrivateRoute from './common/routes/PrivateRoute'
 import { AppRoute } from './common/routes/app-route'
 import SignPage from './pages/sign/SignPage'
-<<<<<<< HEAD
-import { ChromeEvents, log } from 'slidez-shared'
-
-log()
-||||||| 23d6c85
-=======
 import EventPage from './pages/event/EventPage'
 import ReduxToastr from 'react-redux-toastr'
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
->>>>>>> b725c11d54cceb7987e1d340937f9f494754fe7e
+import { ChromeEvents, log } from 'slidez-shared'
+
+log()
 
 function App() {
     return (
         <div>
-            <BrowserRouter>
+            <HashRouter>
                 <Switch>
                     <PublicRoute
                         exact
@@ -36,7 +32,7 @@ function App() {
                         <Redirect to={AppRoute.LOGIN} />
                     </Route>
                 </Switch>
-            </BrowserRouter>
+            </HashRouter>
             <ReduxToastr
                 timeOut={5000}
                 newestOnTop={false}

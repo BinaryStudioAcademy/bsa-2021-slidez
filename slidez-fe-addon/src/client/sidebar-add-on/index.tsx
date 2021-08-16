@@ -1,8 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Poll from './components/Poll';
-import { log } from 'slidez-shared';
+import App from './App';
 
-log();
-
-ReactDOM.render(<Poll />, document.getElementById('index'));
+ReactDOM.render(<App />, document.getElementById('index'));

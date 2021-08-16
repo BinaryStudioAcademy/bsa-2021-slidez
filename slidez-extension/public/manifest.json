@@ -23,12 +23,16 @@
     "background": {
       "scripts": ["js/vendor.js", "js/background.js"]
     },
+    "externally_connectable": {
+        "matches": ["https://docs.google.com/*", "*://localhost/*"]
+    },
     "permissions": [
         "<all_urls>",
         "webRequest",
         "webRequestBlocking",
         "background",
         "activeTab",
-        "storage"
+        "storage",
+        "notifications"
     ]
 }

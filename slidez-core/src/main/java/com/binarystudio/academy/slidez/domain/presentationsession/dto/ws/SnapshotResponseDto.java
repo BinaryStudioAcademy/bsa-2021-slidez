@@ -6,13 +6,10 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SnapshotResponseDto extends AbstractWebSocketResponseDto {
+public class SnapshotResponseDto {
 
 	private List<Poll> polls = new ArrayList<>();
 

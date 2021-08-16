@@ -1,12 +1,11 @@
 import { WsHelper } from './ws-helper'
 import { WsEndpoint } from './ws-endpoint'
 import { Message } from 'webstomp-client'
-import { SnapshotDto } from '../../containers/presentation_session/dto/SnapshotDto'
 
 export const connectToAllEvents = (
     sessionLink: string,
     onConnectionSuccess: Function = () => {},
-    onGetSnapshot: Function = (snapshot: SnapshotDto) => {}
+    onGetSnapshot: Function = (response: string) => {}
 ) => {
     return WsHelper.getInstance()
         .connect(WsEndpoint.ENDPOINT)
