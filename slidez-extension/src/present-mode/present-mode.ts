@@ -45,32 +45,33 @@ class PresentMode {
         )
         this.watchPresentModeEnd()
 
-        // const alreadyLoaded = this.document!.readyState === 'complete' && this.window!.location.href !== 'about:blank';
-        // if (alreadyLoaded) {
-        //     this.onPresentModeLoad();
-        // } else {
-        //     this.iframe.onload = () => this.onPresentModeLoad();
-        // }
-        this.onPresentModeLoad()
+        const alreadyLoaded =
+            this.document!.readyState === 'complete' &&
+            this.window!.location.href !== 'about:blank'
+        if (alreadyLoaded) {
+            this.onPresentModeLoad()
+        } else {
+            this.iframe!.onload = () => this.onPresentModeLoad()
+        }
     }
 
     private onPresentModeLoad() {
-        // if slide has interactions
-        ;async () => {
+        ;(async () => {
+            // if slide has interactions
             const slideContent = await queryElementAsync<Element>(
-                document,
+                this.document!,
                 '.' + CLASS_NAME_PUNCH_VIEWER_CONTENT
             )
             slideContent.remove()
             const slideContainer = await queryElementAsync<Element>(
-                document,
+                this.document!,
                 '.' + CLASS_NAME_PUNCH_VIEWER_CONTAINER
             )
             slideContainer.append('POLL WILL BE INSERTERD HERE')
-        }
 
-        // throw new Event
-        console.log('Present mode started')
+            // throw new Event
+            console.log('Present mode started')
+        })()
     }
 
     private onPresentModeEnd() {
