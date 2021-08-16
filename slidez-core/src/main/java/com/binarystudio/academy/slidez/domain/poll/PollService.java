@@ -2,6 +2,7 @@ package com.binarystudio.academy.slidez.domain.poll;
 
 import com.binarystudio.academy.slidez.domain.poll.dto.PollDto;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollResponseDto;
+import com.binarystudio.academy.slidez.domain.poll.exception.PollNotFoundException;
 import com.binarystudio.academy.slidez.domain.poll.mapper.PollMapper;
 import com.binarystudio.academy.slidez.domain.poll.model.Poll;
 import com.binarystudio.academy.slidez.domain.user.UserRepository;
@@ -36,15 +37,20 @@ public class PollService {
     }
 
     @Transactional
-    public void update(PollDto pollDto) throws EntityNotFoundException {
+    public Poll update(PollDto pollDto) throws EntityNotFoundException {
         if(!existsById(pollDto.getId())) {
-         throw new EntityNotFoundException("Poll with such Id not found.");
+         throw new PollNotFoundException("Poll with such Id not found.");
         }
         Poll poll = PollMapper.INSTANCE.pollDtoToPoll(pollDto);
         LocalDateTime now = now();
-        poll.setCreatedAt(now);
         poll.setUpdatedAt(now);
         pollRepository.saveAndFlush(poll);
+        return poll;
+    }
+
+    @Transactional
+    public void remove(UUID id) {
+        pollRepository.deleteById(id);
     }
 
     public List<Poll> getAll() {

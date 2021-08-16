@@ -29,5 +29,5 @@ public class PollDto {
 
     private UserDto user;
 
-    private List<PollOption> options = new ArrayList<>();
+    private List<PollOption> options;
 }
