@@ -1,17 +1,20 @@
 package com.binarystudio.academy.slidez.domain.poll;
 
-import com.binarystudio.academy.slidez.domain.poll.dto.CreatePollDto;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollDto;
+import com.binarystudio.academy.slidez.domain.poll.mapper.PollMapper;
 import com.binarystudio.academy.slidez.domain.poll.model.Poll;
-import com.binarystudio.academy.slidez.user.UserRepository;
+import com.binarystudio.academy.slidez.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
+import static java.time.LocalDateTime.now;
 
 @Service
 public class PollService {
@@ -22,37 +25,36 @@ public class PollService {
     @Autowired
     private UserRepository userRepository;
 
-    //TODO: Create a check for userId
-    //TODO: Write an utility to auto update PollOption
-
-    //TODO: It make a snapshot of the Poll with options and then compare with new data o create or update
-
-    public Optional<UUID> createPoll(CreatePollDto pollDto) {
-        var user = userRepository.findById(pollDto.getUserId());
-
-        return user.map(o -> {
-            var poll = Poll.fromDto(pollDto, o);
-            var result = pollRepository.save(poll);
-            return result.getId();
-        });
+    @Transactional
+    public Poll create(PollDto pollDto) {
+        Poll poll = PollMapper.INSTANCE.pollDtoToPoll(pollDto);
+        LocalDateTime now = now();
+        poll.setCreatedAt(now);
+        poll.setUpdatedAt(now);
+        return pollRepository.saveAndFlush(poll);
     }
 
-    public void updatePoll(UUID id, String name, Date updatedAt) throws Exception {
-        PollDto poll = getPollById(id)
-            .orElseThrow(() -> new Exception("There is no poll with this id: " + id));
-        pollRepository.update(poll.getId(), name, updatedAt);
+    @Transactional
+    public void update(PollDto pollDto) throws EntityNotFoundException {
+        if(!existsById(pollDto.getId())) {
+         throw new EntityNotFoundException("Poll with such Id not found.");
+        }
+        Poll poll = PollMapper.INSTANCE.pollDtoToPoll(pollDto);
+        LocalDateTime now = now();
+        poll.setCreatedAt(now);
+        poll.setUpdatedAt(now);
+        pollRepository.saveAndFlush(poll);
     }
 
-    public List<PollDto> getPolls() {
-        return pollRepository
-            .findAll()
-            .stream()
-            .map(PollDto::fromEntity)
-            .collect(Collectors.toList());
+    public List<Poll> getAll() {
+        return pollRepository.findAll();
     }
 
-    public Optional<PollDto> getPollById(UUID id) {
-        return pollRepository.findById(id).map(PollDto::fromEntity);
+    public Optional<Poll> getById(UUID id) {
+        return pollRepository.findById(id);
     }
 
+    public boolean existsById(UUID id) {
+       return pollRepository.existsById(id);
+    }
 }

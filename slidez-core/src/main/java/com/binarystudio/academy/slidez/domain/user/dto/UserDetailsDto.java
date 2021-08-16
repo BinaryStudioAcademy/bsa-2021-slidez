@@ -1,8 +1,9 @@
-package com.binarystudio.academy.slidez.user.dto;
+package com.binarystudio.academy.slidez.domain.user.dto;
 
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

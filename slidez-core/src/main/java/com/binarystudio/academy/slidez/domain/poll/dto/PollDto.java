@@ -1,13 +1,16 @@
 package com.binarystudio.academy.slidez.domain.poll.dto;
 
 import com.binarystudio.academy.slidez.domain.poll.model.Poll;
-import com.binarystudio.academy.slidez.user.dto.UserDto;
+import com.binarystudio.academy.slidez.domain.poll.model.PollOption;
+import com.binarystudio.academy.slidez.domain.user.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -26,16 +29,5 @@ public class PollDto {
 
     private UserDto user;
 
-    //TODO: add PollOption data
-
-    public static PollDto fromEntity(Poll poll) {
-        return PollDto
-            .builder()
-            .id(poll.getId())
-            .name(poll.getName())
-            .createdAt(poll.getCreatedAt())
-            .updatedAt(poll.getUpdatedAt())
-            .user(UserDto.fromEntity(poll.getUser()))
-            .build();
-    }
+    private List<PollOption> options = new ArrayList<>();
 }

@@ -1,43 +1,63 @@
 package com.binarystudio.academy.slidez.app.poll;
 
 import com.binarystudio.academy.slidez.domain.poll.PollService;
-import com.binarystudio.academy.slidez.domain.poll.dto.CreatePollDto;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollDto;
 import com.binarystudio.academy.slidez.domain.poll.model.Poll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("${v1API}/polls")
 public class PollController {
+
+    private final PollService pollService;
+
     @Autowired
-    private PollService pollService;
+    public PollController(PollService pollService) {
+        this.pollService = pollService;
+    }
 
     @GetMapping
-    public List<PollDto> getPolls() {
-        return pollService.getPolls();
+    public List<Poll> getAll() {
+        return pollService.getAll();
     }
 
     @GetMapping("/{id}")
-    public PollDto getPoll(@PathVariable UUID id) {
-        return pollService.getPollById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Poll not found"));
+    public ResponseEntity<Object> getById(@PathVariable UUID id) {
+        if (id == null) {
+            return new ResponseEntity<>("Invalid poll ID", HttpStatus.BAD_REQUEST);
+        }
+        Optional<Poll> pollOptional = pollService.getById(id);
+
+        if (pollOptional.isEmpty()) {
+            return new ResponseEntity<>("Poll not found.", HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(pollOptional, HttpStatus.OK);
     }
 
     @PostMapping
-    public UUID createPoll(@RequestBody CreatePollDto poll) {
-        return pollService.createPoll(poll)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not create poll."));
+    public UUID create(@RequestBody PollDto pollDto) {
+        Poll poll = pollService.create(pollDto);
+        return poll.getId();
     }
 
-    @PutMapping("/{id}")
-    public void updatePoll(@Valid @RequestBody Poll poll, @PathVariable UUID id) throws Exception {
-        pollService.updatePoll(id, poll.getName(), poll.getUpdatedAt());
+    @PutMapping
+    public void update(@RequestBody PollDto pollDto) {
+        pollService.update(pollDto);
     }
 }

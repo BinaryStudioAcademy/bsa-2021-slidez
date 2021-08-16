@@ -13,12 +13,4 @@ import java.util.UUID;
 @Repository
 public interface PollRepository extends JpaRepository<Poll, UUID> {
 
-    @Modifying
-    @Transactional
-    @Query(value = "update polls p\n" +
-        "set name = ?2 and updated_at = ?3\n" +
-        "from polls p\n" +
-        "where p.id = ?1",
-        nativeQuery = true)
-    void update(UUID id, String newName, Date newUpdateAt);
 }
