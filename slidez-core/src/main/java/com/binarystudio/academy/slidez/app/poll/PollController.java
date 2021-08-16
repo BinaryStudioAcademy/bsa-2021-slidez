@@ -2,7 +2,9 @@ package com.binarystudio.academy.slidez.app.poll;
 
 import com.binarystudio.academy.slidez.domain.poll.PollService;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollDto;
+import com.binarystudio.academy.slidez.domain.poll.dto.PollResponseDto;
 import com.binarystudio.academy.slidez.domain.poll.model.Poll;
+import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,17 +37,17 @@ public class PollController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getById(@PathVariable UUID id) {
+    public GenericResponse<PollResponseDto, PollResponseCodes> getById(@PathVariable UUID id) {
         if (id == null) {
-            return new ResponseEntity<>("Invalid poll ID", HttpStatus.BAD_REQUEST);
+            return new GenericResponse<>(null,  PollResponseCodes.ID_NOT_FOUND);
         }
-        Optional<Poll> pollOptional = pollService.getById(id);
+        Optional<PollResponseDto> pollOptional = pollService.getById(id);
 
         if (pollOptional.isEmpty()) {
-            return new ResponseEntity<>("Poll not found.", HttpStatus.NOT_FOUND);
+            return new GenericResponse<>(null, PollResponseCodes.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(pollOptional, HttpStatus.OK);
+        return new GenericResponse<>(pollOptional.get());
     }
 
     @PostMapping

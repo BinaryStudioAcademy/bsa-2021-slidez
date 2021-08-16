@@ -1,13 +1,11 @@
 package com.binarystudio.academy.slidez.domain.poll.model;
 
-import com.binarystudio.academy.slidez.domain.user.model.User;
+import com.binarystudio.academy.slidez.domain.presentationiteractiveelement.model.PresentationInteractiveElement;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,8 +14,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -38,6 +36,11 @@ public class Poll {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
+
+    @OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+    @JoinColumn(name = "presentation_id", referencedColumnName = "id")
+    private PresentationInteractiveElement owner;
+
     @Column
     private String name;
 
@@ -46,7 +49,6 @@ public class Poll {
 
     @Column(name = "is_template")
     private boolean isTemplate;
-
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;

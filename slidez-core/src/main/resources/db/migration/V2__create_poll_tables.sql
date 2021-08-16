@@ -1,4 +1,4 @@
-create table polls
+create table if not exists polls
 (
     id         uuid not null,
     name       varchar(255),
@@ -8,7 +8,7 @@ create table polls
     primary key (id)
 );
 
-create table poll_options
+create table if not exists poll_options
 (
     id      uuid not null,
     name    varchar(255),

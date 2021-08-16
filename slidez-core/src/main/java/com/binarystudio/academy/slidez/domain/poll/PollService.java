@@ -1,6 +1,7 @@
 package com.binarystudio.academy.slidez.domain.poll;
 
 import com.binarystudio.academy.slidez.domain.poll.dto.PollDto;
+import com.binarystudio.academy.slidez.domain.poll.dto.PollResponseDto;
 import com.binarystudio.academy.slidez.domain.poll.mapper.PollMapper;
 import com.binarystudio.academy.slidez.domain.poll.model.Poll;
 import com.binarystudio.academy.slidez.domain.user.UserRepository;
@@ -50,8 +51,13 @@ public class PollService {
         return pollRepository.findAll();
     }
 
-    public Optional<Poll> getById(UUID id) {
-        return pollRepository.findById(id);
+    public Optional<PollResponseDto> getById(UUID id) {
+        Optional<Poll> pollOptional = pollRepository.findById(id);
+        if(pollOptional.isEmpty()) {
+            return Optional.empty();
+        }
+        PollResponseDto pollResponseDto = PollMapper.INSTANCE.pollToPollResponseDto(pollOptional.get());
+        return Optional.of(pollResponseDto);
     }
 
     public boolean existsById(UUID id) {
