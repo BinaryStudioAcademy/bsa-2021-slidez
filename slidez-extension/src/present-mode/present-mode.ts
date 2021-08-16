@@ -1,4 +1,8 @@
-import { CLASS_NAME_PUNCH_PRESENT_IFRAME, CLASS_NAME_PUNCH_VIEWER_CONTAINER, CLASS_NAME_PUNCH_VIEWER_CONTENT } from '../dom/dom-constants'
+import {
+    CLASS_NAME_PUNCH_PRESENT_IFRAME,
+    CLASS_NAME_PUNCH_VIEWER_CONTAINER,
+    CLASS_NAME_PUNCH_VIEWER_CONTENT,
+} from '../dom/dom-constants'
 import { queryElement, queryElementAsync } from '../dom/dom-helpers'
 
 class PresentMode {
@@ -52,12 +56,18 @@ class PresentMode {
 
     private onPresentModeLoad() {
         // if slide has interactions
-        (async () => {
-            const slideContent = await queryElementAsync<Element>(document, '.' + CLASS_NAME_PUNCH_VIEWER_CONTENT)
+        ;async () => {
+            const slideContent = await queryElementAsync<Element>(
+                document,
+                '.' + CLASS_NAME_PUNCH_VIEWER_CONTENT
+            )
             slideContent.remove()
-            const slideContainer = await queryElementAsync<Element>(document, '.' + CLASS_NAME_PUNCH_VIEWER_CONTAINER)
+            const slideContainer = await queryElementAsync<Element>(
+                document,
+                '.' + CLASS_NAME_PUNCH_VIEWER_CONTAINER
+            )
             slideContainer.append('POLL WILL BE INSERTERD HERE')
-        })
+        }
 
         // throw new Event
         console.log('Present mode started')
