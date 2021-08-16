@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { AuthenticationDetails, EventType, doPost } from 'slidez-shared'
-import { getMessageBusUnsafe } from '../../../hooks/event-bus'
+import { getMessageBusUnsafe } from '../../../hooks'
 
 export interface AuthenticationState {
     accessToken?: string
