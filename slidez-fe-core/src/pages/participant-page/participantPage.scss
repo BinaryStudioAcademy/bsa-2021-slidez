@@ -57,6 +57,11 @@
         }
     }
 }
+
+.event-item:hover {
+    background-color: #efeef0; /* Цвет фона */
+}
+
 @media (min-width: 555px) {
     .event-item {
         max-width: 60%;
