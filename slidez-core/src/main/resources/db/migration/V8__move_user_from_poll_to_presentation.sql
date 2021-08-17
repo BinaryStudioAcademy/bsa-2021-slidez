@@ -1,3 +1,3 @@
-ALTER TABLE polls drop user_id;
-ALTER TABLE presentations add user_id uuid;
+ALTER TABLE polls DROP user_id;
+ALTER TABLE presentations ADD user_id uuid;
 
