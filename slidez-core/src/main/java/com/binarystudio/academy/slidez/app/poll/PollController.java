@@ -58,7 +58,7 @@ public class PollController {
     }
 
     @PutMapping
-    public GenericResponse<UUID, PollResponseCodes>  update(@RequestBody PollDto pollDto) {
+    public GenericResponse<UUID, PollResponseCodes> update(@RequestBody PollDto pollDto) {
         Poll poll = pollService.update(pollDto);
         return new GenericResponse<>(poll.getId());
     }
