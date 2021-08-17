@@ -9,6 +9,7 @@ import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,5 +62,10 @@ public class PollController {
     public GenericResponse<UUID, PollResponseCodes> update(@RequestBody PollDto pollDto) {
         Poll poll = pollService.update(pollDto);
         return new GenericResponse<>(poll.getId());
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") UUID id) {
+        pollService.remove(id);
     }
 }
