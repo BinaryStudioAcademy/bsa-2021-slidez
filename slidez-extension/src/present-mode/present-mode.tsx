@@ -78,6 +78,7 @@ class PresentMode {
             this.injectStyles()
 
             this.createPollContainerAndPutOnTopOfSlide()
+            console.log(document.location.hash)
             // throw new Event
             console.log('Present mode started')
         })()
