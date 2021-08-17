@@ -23,46 +23,47 @@ import java.util.UUID;
 @RequestMapping("${v1API}/polls")
 public class PollController {
 
-    private final PollService pollService;
+	private final PollService pollService;
 
-    @Autowired
-    public PollController(PollService pollService) {
-        this.pollService = pollService;
-    }
+	@Autowired
+	public PollController(PollService pollService) {
+		this.pollService = pollService;
+	}
 
-    @GetMapping
-    public List<Poll> getAll() {
-        return pollService.getAll();
-    }
+	@GetMapping
+	public List<Poll> getAll() {
+		return pollService.getAll();
+	}
 
-    @GetMapping("/{id}")
-    public GenericResponse<PollResponseDto, PollResponseCodes> getById(@PathVariable UUID id) {
-        if (id == null) {
-            return new GenericResponse<>(null,  PollResponseCodes.ID_NOT_FOUND);
-        }
-        Optional<PollResponseDto> pollOptional = pollService.getById(id);
+	@GetMapping("/{id}")
+	public GenericResponse<PollResponseDto, PollResponseCodes> getById(@PathVariable UUID id) {
+		if (id == null) {
+			return new GenericResponse<>(null, PollResponseCodes.ID_NOT_FOUND);
+		}
+		Optional<PollResponseDto> pollOptional = pollService.getById(id);
 
-        if (pollOptional.isEmpty()) {
-            return new GenericResponse<>(null, PollResponseCodes.NOT_FOUND);
-        }
+		if (pollOptional.isEmpty()) {
+			return new GenericResponse<>(null, PollResponseCodes.NOT_FOUND);
+		}
 
-        return new GenericResponse<>(pollOptional.get());
-    }
+		return new GenericResponse<>(pollOptional.get());
+	}
 
-    @PostMapping
-    public GenericResponse<UUID, PollResponseCodes> create(@RequestBody PollDto pollDto) {
-        Poll poll = pollService.create(pollDto);
-        return new GenericResponse<>(poll.getId());
-    }
+	@PostMapping
+	public GenericResponse<UUID, PollResponseCodes> create(@RequestBody PollDto pollDto) {
+		Poll poll = pollService.create(pollDto);
+		return new GenericResponse<>(poll.getId());
+	}
 
-    @PutMapping
-    public GenericResponse<UUID, PollResponseCodes> update(@RequestBody PollDto pollDto) {
-        Poll poll = pollService.update(pollDto);
-        return new GenericResponse<>(poll.getId());
-    }
+	@PutMapping
+	public GenericResponse<UUID, PollResponseCodes> update(@RequestBody PollDto pollDto) {
+		Poll poll = pollService.update(pollDto);
+		return new GenericResponse<>(poll.getId());
+	}
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") UUID id) {
-        pollService.remove(id);
-    }
+	@DeleteMapping("/{id}")
+	public void delete(@PathVariable("id") UUID id) {
+		pollService.remove(id);
+	}
+
 }

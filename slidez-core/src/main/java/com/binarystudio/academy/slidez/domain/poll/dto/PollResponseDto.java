@@ -11,20 +11,20 @@ import java.util.UUID;
 @Data
 public class PollResponseDto {
 
-    private UUID id;
+	private UUID id;
 
-    private String name;
+	private String name;
 
-    private boolean isMulti;
+	private boolean isMulti;
 
-    private boolean isTemplate;
+	private boolean isTemplate;
 
-    private LocalDateTime createdAt;
+	private LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
+	private LocalDateTime updatedAt;
 
-    private List<PollOption> options;
+	private List<PollOption> options;
 
-    private PresentationInteractiveElement owner;
+	private PresentationInteractiveElement owner;
 
 }

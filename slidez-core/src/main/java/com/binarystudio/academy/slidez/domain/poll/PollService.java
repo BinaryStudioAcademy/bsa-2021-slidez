@@ -20,51 +20,52 @@ import static java.time.LocalDateTime.now;
 @Service
 public class PollService {
 
-    @Autowired
-    private PollRepository pollRepository;
+	@Autowired
+	private PollRepository pollRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    @Transactional
-    public Poll create(PollDto pollDto) {
-        Poll poll = PollMapper.INSTANCE.pollDtoToPoll(pollDto);
-        LocalDateTime now = now();
-        poll.setCreatedAt(now);
-        poll.setUpdatedAt(now);
-        return pollRepository.saveAndFlush(poll);
-    }
+	@Transactional
+	public Poll create(PollDto pollDto) {
+		Poll poll = PollMapper.INSTANCE.pollDtoToPoll(pollDto);
+		LocalDateTime now = now();
+		poll.setCreatedAt(now);
+		poll.setUpdatedAt(now);
+		return pollRepository.saveAndFlush(poll);
+	}
 
-    @Transactional
-    public Poll update(PollDto pollDto) throws PollNotFoundException {
-        if (!existsById(pollDto.getId())) {
-         throw new PollNotFoundException("Poll with such Id not found.");
-        }
-        Poll poll = PollMapper.INSTANCE.pollDtoToPoll(pollDto);
-        poll.setUpdatedAt(now());
-        pollRepository.saveAndFlush(poll);
-        return poll;
-    }
+	@Transactional
+	public Poll update(PollDto pollDto) throws PollNotFoundException {
+		if (!existsById(pollDto.getId())) {
+			throw new PollNotFoundException("Poll with such Id not found.");
+		}
+		Poll poll = PollMapper.INSTANCE.pollDtoToPoll(pollDto);
+		poll.setUpdatedAt(now());
+		pollRepository.saveAndFlush(poll);
+		return poll;
+	}
 
-    @Transactional
-    public void remove(UUID id) {
-        pollRepository.deleteById(id);
-    }
+	@Transactional
+	public void remove(UUID id) {
+		pollRepository.deleteById(id);
+	}
 
-    public List<Poll> getAll() {
-        return pollRepository.findAll();
-    }
+	public List<Poll> getAll() {
+		return pollRepository.findAll();
+	}
 
-    public Optional<PollResponseDto> getById(UUID id) {
-        Optional<Poll> pollOptional = pollRepository.findById(id);
-        if (pollOptional.isEmpty()) {
-            return Optional.empty();
-        }
-        PollResponseDto pollResponseDto = PollMapper.INSTANCE.pollToPollResponseDto(pollOptional.get());
-        return Optional.of(pollResponseDto);
-    }
+	public Optional<PollResponseDto> getById(UUID id) {
+		Optional<Poll> pollOptional = pollRepository.findById(id);
+		if (pollOptional.isEmpty()) {
+			return Optional.empty();
+		}
+		PollResponseDto pollResponseDto = PollMapper.INSTANCE.pollToPollResponseDto(pollOptional.get());
+		return Optional.of(pollResponseDto);
+	}
 
-    public boolean existsById(UUID id) {
-       return pollRepository.existsById(id);
-    }
+	public boolean existsById(UUID id) {
+		return pollRepository.existsById(id);
+	}
+
 }

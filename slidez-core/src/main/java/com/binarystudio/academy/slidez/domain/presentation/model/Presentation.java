@@ -44,8 +44,9 @@ public class Presentation {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "presentation", cascade = CascadeType.ALL)
 	private Set<Session> sessions = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private User user;
+
 }

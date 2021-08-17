@@ -17,19 +17,20 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PollDto {
 
-    private UUID id;
+	private UUID id;
 
-    private String name;
+	private String name;
 
-    private boolean isMulti;
+	private boolean isMulti;
 
-    private boolean isTemplate;
+	private boolean isTemplate;
 
-    private Date createdAt;
+	private Date createdAt;
 
-    private Date updatedAt;
+	private Date updatedAt;
 
-    private List<PollOption> options;
+	private List<PollOption> options;
 
-    private PresentationInteractiveElement owner;
+	private PresentationInteractiveElement owner;
+
 }
