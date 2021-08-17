@@ -17,7 +17,9 @@
     "deploy:dev": "rimraf dist && npm run build:dev && npx clasp push",
     "deploy": "rimraf dist && npm run build && npx clasp push",
     "serve": "cross-env NODE_ENV=development webpack-dev-server",
-    "start": "npm run deploy:dev && npm run serve"
+    "start": "npm run deploy:dev && npm run serve",
+    "lint": "eslint --fix --ext .ts,.tsx,.js,.jsx src/",
+    "lint-nofix": "eslint --ext .ts,.tsx,.js,.jsx src/"
   },
   "keywords": [
     "react",
