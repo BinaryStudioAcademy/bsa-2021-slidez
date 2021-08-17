@@ -24,20 +24,17 @@ export const eventBusSlice = createSlice({
             state.connectionStatus = EventBusStatus.CONNECTED_READY;
             state.accessToken = token.payload;
         },
-        connectionTimeout: state => {
+        connectionTimeout: (state) => {
             state.connectionStatus = EventBusStatus.CONNECTION_FAILED;
         },
-        connectionNotAuthenticated: state => {
+        connectionNotAuthenticated: (state) => {
             state.connectionStatus = EventBusStatus.CONNECTED_NOT_AUTHENTICATED;
         },
     },
 });
 
 // Action creators are generated for each case reducer function
-export const {
-    connect,
-    connectionNotAuthenticated,
-    connectionTimeout,
-} = eventBusSlice.actions;
+export const { connect, connectionNotAuthenticated, connectionTimeout } =
+    eventBusSlice.actions;
 
 export default eventBusSlice.reducer;
