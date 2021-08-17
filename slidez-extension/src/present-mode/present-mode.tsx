@@ -1,8 +1,7 @@
 import React from 'react'
 import {
     CLASS_NAME_PUNCH_PRESENT_IFRAME,
-    CLASS_NAME_PUNCH_VIEWER_CONTAINER,
-    CLASS_NAME_PUNCH_VIEWER_CONTENT,
+    CLASS_NAME_PUNCH_VIEWER_PAGE_WRAPPER_CONTAINER,
 } from '../dom/dom-constants'
 import { queryElement, queryElementAsync } from '../dom/dom-helpers'
 import Poll from '../components/poll/Poll'
@@ -59,13 +58,11 @@ class PresentMode {
         }
     }
 
-    private onPresentModeLoad() {
+    private createPollContainerAndPutOnTopOfSlide() {
         ;(async () => {
-            this.injectStyles()
-            //punch-viewer-page-wrapper-container
             const slideContent = await queryElementAsync<HTMLElement>(
                 this.document!,
-                '.punch-viewer-page-wrapper-container'
+                '.' + CLASS_NAME_PUNCH_VIEWER_PAGE_WRAPPER_CONTAINER
             )
             const div = document.createElement('div')
             div.style.height = '100%'
@@ -73,7 +70,14 @@ class PresentMode {
             slideContent.style.display = 'none'
             slideContent.insertAdjacentElement('afterend', div)
             ReactDOM.render(<Poll poll={poll} />, div)
+        })()
+    }
 
+    private onPresentModeLoad() {
+        ;(async () => {
+            this.injectStyles()
+
+            this.createPollContainerAndPutOnTopOfSlide()
             // throw new Event
             console.log('Present mode started')
         })()
