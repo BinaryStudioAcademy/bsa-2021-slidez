@@ -37,13 +37,12 @@ public class PollService {
     }
 
     @Transactional
-    public Poll update(PollDto pollDto) throws EntityNotFoundException {
+    public Poll update(PollDto pollDto) throws PollNotFoundException {
         if(!existsById(pollDto.getId())) {
          throw new PollNotFoundException("Poll with such Id not found.");
         }
         Poll poll = PollMapper.INSTANCE.pollDtoToPoll(pollDto);
-        LocalDateTime now = now();
-        poll.setUpdatedAt(now);
+        poll.setUpdatedAt(now());
         pollRepository.saveAndFlush(poll);
         return poll;
     }

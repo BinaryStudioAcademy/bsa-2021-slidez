@@ -1,4 +1,4 @@
 ALTER TABLE polls drop is_multi;
 ALTER TABLE polls is_template;
-ALTER TABLE polls pie_id;
+ALTER TABLE polls presentation_interactive_element_id;
 

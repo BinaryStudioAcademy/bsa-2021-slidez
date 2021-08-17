@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.app.poll;
 
+import com.binarystudio.academy.slidez.app.session.SessionResponseCodes;
 import com.binarystudio.academy.slidez.domain.poll.PollService;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollDto;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollResponseDto;
@@ -51,13 +52,14 @@ public class PollController {
     }
 
     @PostMapping
-    public UUID create(@RequestBody PollDto pollDto) {
+    public GenericResponse<UUID, PollResponseCodes> create(@RequestBody PollDto pollDto) {
         Poll poll = pollService.create(pollDto);
-        return poll.getId();
+        return new GenericResponse<>(poll.getId());
     }
 
     @PutMapping
-    public void update(@RequestBody PollDto pollDto) {
-        pollService.update(pollDto);
+    public GenericResponse<UUID, PollResponseCodes>  update(@RequestBody PollDto pollDto) {
+        Poll poll = pollService.update(pollDto);
+        return new GenericResponse<>(poll.getId());
     }
 }

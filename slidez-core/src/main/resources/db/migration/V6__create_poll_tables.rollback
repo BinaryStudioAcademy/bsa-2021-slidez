@@ -1,2 +1,2 @@
 DROP TABLE if not exists polls;
-DROP TABLE  if not exists poll_options;
+DROP TABLE if not exists poll_options;

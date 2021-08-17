@@ -1,6 +1,7 @@
 package com.binarystudio.academy.slidez.domain.poll.model;
 
 import com.binarystudio.academy.slidez.domain.presentationiteractiveelement.model.PresentationInteractiveElement;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +19,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +38,7 @@ public class Poll {
 
 
     @OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-    @JoinColumn(name = "pie_id", referencedColumnName = "id")
+    @JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
     private PresentationInteractiveElement owner;
 
     @Column
@@ -56,7 +56,7 @@ public class Poll {
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PollOption> options = new ArrayList<>();
+    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval=true)
+    private List<PollOption> options;
 
 }
