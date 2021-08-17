@@ -1,10 +1,9 @@
 const AppRoute = {
-    ROOT: '/',
     ANY: '*',
     LOGIN: '/login',
-    LOGOUT: '/logout',
     REGISTRATION: '/registration',
     RESTORE_PASSWORD: '/restore-password',
+    EVENT: '/event/:link',
     DASHBOARD: '/dashboard',
     UPDATE_USER: '/update-user',
 }

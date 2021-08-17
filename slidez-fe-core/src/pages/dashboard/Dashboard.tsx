@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faList,
@@ -16,13 +16,19 @@ import SideBar from './SideBar'
 import './dashboard.scss'
 import { MOCK_DATA } from './mock-data'
 import { useDetectOutsideClick } from './useDetectOutsideClick'
-import { AppRoute } from '../../common/routes/app-route'
+import { useAppDispatch } from '../../hooks'
+import { logout } from '../../containers/user/store'
+//import { AppRoute } from '../../common/routes/app-route'
 
 const Dashboard = () => {
     const [currentView, setCurrentView] = useState('table')
     const [activeButton, setActiveButton] = useState(false)
     const dropdownRef = useRef<HTMLInputElement>(null)
     const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
+    const [searchField, setSearchField] = useState('')
+    const [filteredPresentations, setFilteredPresentations] =
+        useState(MOCK_DATA)
+    const dispatch = useAppDispatch()
 
     const handleToggleCurrentView = useCallback(() => {
         setCurrentView((view) => (view === 'table' ? 'grid' : 'table'))
@@ -34,6 +40,10 @@ const Dashboard = () => {
 
     const handleDropDown = () => {
         setIsActive(!isActive)
+    }
+
+    const handleLogout = () => {
+        dispatch(logout())
     }
 
     const tableHeader = [
@@ -66,7 +76,7 @@ const Dashboard = () => {
     }
 
     const renderTableData = () => {
-        return MOCK_DATA.map((presentation) => {
+        return filteredPresentations.map((presentation) => {
             return (
                 <tr key={presentation.id}>
                     <td>{presentation.name}</td>
@@ -84,6 +94,31 @@ const Dashboard = () => {
         })
     }
 
+    useEffect(() => {
+        setFilteredPresentations(
+            MOCK_DATA.filter((presentation) =>
+                presentation.name
+                    .toLowerCase()
+                    .includes(searchField.toLowerCase())
+            )
+        )
+    }, [searchField])
+
+    const isNotEmptyPresentation = () =>
+        filteredPresentations.length === 0 ? (
+            <span>
+                No presentations are found by search term {searchField}.
+            </span>
+        ) : (
+            ''
+        )
+
+    const handleChange = (e: {
+        target: { value: React.SetStateAction<string> }
+    }) => {
+        setSearchField(e.target.value)
+    }
+
     return (
         <div className='dashboard-page'>
             <SideBar></SideBar>
@@ -98,6 +133,7 @@ const Dashboard = () => {
                             id='searchQueryInput'
                             type='search'
                             placeholder='Search...'
+                            onChange={handleChange}
                         ></input>
                     </div>
                     <div className='user-profile'>
@@ -137,7 +173,7 @@ const Dashboard = () => {
                                     />
                                     Setting
                                 </a>
-                                <a href=''>
+                                <a href='' onClick={handleLogout}>
                                     <FontAwesomeIcon
                                         className='user-icon'
                                         icon={faSignOutAlt}
@@ -202,10 +238,13 @@ const Dashboard = () => {
                                         {renderTableData()}
                                     </tbody>
                                 </table>
+                                <div className='no-found-presentations'>
+                                    {isNotEmptyPresentation()}
+                                </div>
                             </div>
                         ) : (
                             <div className='grid'>
-                                {MOCK_DATA.map((md) => (
+                                {filteredPresentations.map((md) => (
                                     <div className='card' key={md.id}>
                                         <img
                                             className='card-img'
@@ -236,6 +275,9 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 ))}
+                                <div className='no-found-presentations'>
+                                    {isNotEmptyPresentation()}
+                                </div>
                             </div>
                         )}
                     </div>
