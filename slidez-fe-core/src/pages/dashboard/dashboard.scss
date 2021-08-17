@@ -19,7 +19,7 @@
 	overflow: auto;
 	padding-top: 20px;
 	width: 161px;
-	background: $dark-blue;
+	background: $dark-color;
 	text-align: center;
 	.logo {
 		a {
@@ -53,8 +53,8 @@
 		.icon-add {
 			width: 58px;
 			height: 58px;
-			color: $default-color;
-			background-color: $light-green;
+			color: $light-color;
+			background-color: $main-color;
 			border-radius: 50%;
 			display: flex;
 			align-items: center;
@@ -63,7 +63,7 @@
 		.icon-book {
 			width: 58px;
 			height: 58px;
-			color: $light-green;
+			color: $main-color;
 			background-color: rgba(89, 208, 165, 0.2);
 			border-radius: 50%;
 			display: flex;
@@ -76,11 +76,18 @@
 	background: $white;
 }
 .search-and-user {
-	display: flex;
-	justify-content: flex-end;
-	grid-column-gap: 25px;
-	align-items: center;
-	background: $white;
+    display: flex;
+    justify-content: flex-end;
+    grid-column-gap: 25px;
+    align-items: center;
+    background: $white;
+    position: fixed;
+    right: 10px;
+    width: 70%;
+    z-index: 1;
+    padding-top: 17px;
+    padding-bottom: 17px;
+    top: 0;
 	.search-bar {
 		position: relative;
 		overflow: hidden;
@@ -98,8 +105,8 @@
 			border-radius: 50%;
 			font-family: 'Work Sans';
 			font-size: 14px;
-			color: $default-color;
-			background: $dark-violet;
+			color: $light-color;
+			background: $accent-color;
 			&:hover {
 				cursor: pointer;
 			}
@@ -111,23 +118,24 @@
 	height: 45px;
 	right: 119px;
 	top: calc(50% - 45px/2 - 554px);
-	background: $default-color;
+	background: $light-color;
 	color: $black;
 	border-radius: 50px;
 	outline: none;
 	border: none;
 	padding: 0 10px 0 47px;
-	font-size: 12px;
+	font-size: 13px;
 	line-height: 14px;
 }
 .search-icon {
-	margin: 16px 19px 14px;
-	position: absolute;
-	background: none;
-	border: none;
-	outline: none;
-	color: $black;
-	opacity: 0.4;
+    margin: 13px 16px 13px;
+    position: absolute;
+    background: none;
+    border: none;
+    outline: none;
+    color: $black;
+    opacity: 0.4;
+    font-size: 19px;
 }
 .dropdown-content {
 	visibility: hidden;
@@ -151,7 +159,7 @@
 		align-items: center;
 		font-size: 14px;
 		&:hover {
-			color:$dark-violet;
+			color:$accent-color;
 		}
 	}
 	.user-icon {
@@ -195,14 +203,15 @@
 		color: rgba(0, 0, 0, 0.4);
 	}
 }
+
 .presentations-section {
 	position: absolute;
-	margin-top: 26px;
+	margin-top: 105px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	left: 380px;
-	right: 138px;
+	right: 219px;
 	align-items: stretch;
 	padding-bottom: 388px;
 	.above-section {
@@ -210,6 +219,7 @@
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
+		margin-bottom: 10px;
 		p {
 			font-family: 'Rubik';
 			font-style: normal;
@@ -245,14 +255,14 @@
 		margin: 5px;
 	}
 	.view-btn-active {
-		color: $light-green;
+		color: $main-color;
 		margin: 5px;
 	}
 }
 .card {
 	width: 234px;
 	height: 203px;
-	background-color: $main-color;
+	background-color: $light-color;
 	float: left;
 	display: flex;
 	flex-direction: column;
@@ -296,7 +306,7 @@
 	}
 	.icon-users {
 		&:hover {
-			color: $light-green;
+			color: $main-color;
 			cursor: pointer;
 		}
 		margin-left: 10px;
@@ -310,13 +320,13 @@
 }
 .icon-presentation {
 	&:hover {
-		color: $light-green;
+		color: $main-color;
 		cursor: pointer;
 	}
 }
 .icon-details {
 	&:hover {
-		color: $light-green;
+		color: $main-color;
 		cursor: pointer;
 	}
 	margin-right: 18px;
@@ -325,6 +335,14 @@
 	&:hover {
 		cursor: pointer;
 	}
+}
+.no-found-presentations {
+    display:flex;
+    justify-content: center;
+    align-content: center;
+    font-weight: 400;
+    font-size: 16px;
+    margin-top: 20px;
 }
 #table-presentation {
 	text-align: center;
@@ -354,7 +372,7 @@
 		color: rgba(0, 0, 0, 0.5);
 		border-top: 1px solid #EBEBEB;
 		border-bottom: 1px solid #EBEBEB;
-		background-color: $default-color;
+		background-color: $light-color;
 		font-weight: normal;
 		font-size: 13px;
 		line-height: 15px;
@@ -374,4 +392,8 @@
 			width: 100%;
 		}
 	}
+}
+input[type=search]::-webkit-search-cancel-button{
+    opacity: 0.3;
+    font-size: 15px;
 }

@@ -1,27 +1,27 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
-import { LogInDto } from './dto/LogInDto'
-import { RegisterDto } from './dto/RegisterDto'
+import { LogInDto } from '../../services/auth/dto/LogInDto'
+import { RegisterDto } from '../../services/auth/dto/RegisterDto'
 import {
-    performLoginOAuthWithGoogle,
     isLoggedIn,
     performLogIn,
     performLoginByToken,
+    performLoginOAuthWithGoogle,
+    performLogout,
     performRegister,
     performRegisterOAuthWithGoogle,
 } from '../../services/auth/auth-service'
-import { SignStatus } from './enums/sign-status'
 import { UserDetailsDto } from './dto/UserDetailsDto'
-import { TokenDto } from './dto/TokenDto'
+import { TokenDto } from '../../services/auth/dto/TokenDto'
 
 export interface UserState {
-    signStatus: string
+    error?: string
     user?: UserDetailsDto
     isLoggedIn: boolean
 }
 
 const initialState: UserState = {
-    signStatus: SignStatus.OK,
+    error: undefined,
     user: undefined,
     isLoggedIn: isLoggedIn(),
 }
@@ -58,6 +58,10 @@ export const registerWithOAuthGoogle = createAsyncThunk(
     }
 )
 
+export const logout = createAsyncThunk('user/logout', async () =>
+    performLogout()
+)
+
 export const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -65,51 +69,51 @@ export const userSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(logIn.fulfilled, (state, action) => {
-                const status: string = action.payload.status
-                state.signStatus = status
-                if (status === SignStatus.OK) {
+                state.error = action.payload.error
+                if (action.payload.userDetailsDto) {
                     state.user = action.payload.userDetailsDto
                     state.isLoggedIn = isLoggedIn()
                 }
             })
             .addCase(register.fulfilled, (state, action) => {
-                const status: string = action.payload.status
-                state.signStatus = status
-                if (status === SignStatus.OK) {
+                state.error = action.payload.error
+                if (action.payload.userDetailsDto) {
                     state.user = action.payload.userDetailsDto
                     state.isLoggedIn = isLoggedIn()
                 }
             })
             .addCase(loginByToken.fulfilled, (state, action) => {
-                const status: string = action.payload.status
-                state.signStatus = status
-                if (status === SignStatus.OK) {
+                state.error = action.payload.error
+                if (action.payload.userDetailsDto) {
                     state.user = action.payload.userDetailsDto
                     state.isLoggedIn = isLoggedIn()
                 }
             })
             .addCase(loginWithOAuthGoogle.fulfilled, (state, action) => {
-                const status: string = action.payload.status
-                state.signStatus = status
-                if (status === SignStatus.OK) {
+                state.error = action.payload.error
+                if (action.payload.userDetailsDto) {
                     state.user = action.payload.userDetailsDto
                     state.isLoggedIn = isLoggedIn()
                 }
             })
             .addCase(registerWithOAuthGoogle.fulfilled, (state, action) => {
-                const status: string = action.payload.status
-                state.signStatus = status
-                if (status === SignStatus.OK) {
+                state.error = action.payload.error
+                if (action.payload.userDetailsDto) {
                     state.user = action.payload.userDetailsDto
                     state.isLoggedIn = isLoggedIn()
                 }
+            })
+            .addCase(logout.fulfilled, (state, action) => {
+                state.error = undefined
+                state.user = undefined
+                state.isLoggedIn = false
             })
     },
 })
 
 export const selectId = (state: RootState) => state.user.user?.id
 
-export const selectSignStatus = (state: RootState) => state.user.signStatus
+export const selectError = (state: RootState) => state.user.error
 
 export const selectIsLoggedIn = (state: RootState) => state.user.isLoggedIn
 
