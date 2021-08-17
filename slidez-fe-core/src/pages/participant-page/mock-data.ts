@@ -2,21 +2,21 @@ export const MOCK_DATA = [
     {
         id: 0,
         name: 'Animate',
-        viewsDate: 'watched 5 hour ago',
+        viewsDate: '2021-08-17T11:03:55',
     },
     {
         id: 1,
         name: 'GitHub',
-        viewsDate: 'watched 1 day ago',
+        viewsDate: '2021-08-16T21:03:55',
     },
     {
         id: 3,
         name: 'Amet, consectetur adipiscing elit. ',
-        viewsDate: 'watched 7 days ago',
+        viewsDate: '2021-08-16T21:03:55',
     },
     {
         id: 4,
         name: 'Ut tortor venenatis ',
-        viewsDate: 'watched 1 month ago',
+        viewsDate: '2021-08-15T21:03:55',
     },
 ]

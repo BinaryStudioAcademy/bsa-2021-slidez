@@ -4,12 +4,18 @@ import { faAngleRight, faBars } from '@fortawesome/free-solid-svg-icons'
 import './participantPage.scss'
 import { MOCK_DATA } from './mock-data'
 import Header from './Header'
+import moment from 'moment'
 
 const ParticipantPage = () => {
     const [listQuestions, setListQuestions] = useState(MOCK_DATA)
     const [title, setTitle] = useState('Select event')
 
     const createEndpoint = (id: number) => '/event/' + id
+
+    const lastViewsDate = (date: string) => {
+        const diffDate = moment(date, 'YYYY-MM-DD HH:mm:ss').fromNow()
+        return 'watched ' + diffDate
+    }
 
     return (
         <div className='participant-page'>
@@ -24,7 +30,7 @@ const ParticipantPage = () => {
                         <div className='event-info'>
                             <div className='event-info-name'>{event.name}</div>
                             <div className='event-info-viewsDate'>
-                                {event.viewsDate}
+                                {lastViewsDate(event.viewsDate)}
                             </div>
                         </div>
                         <a
