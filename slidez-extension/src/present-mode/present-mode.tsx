@@ -1,8 +1,7 @@
 import React from 'react'
 import {
     CLASS_NAME_PUNCH_PRESENT_IFRAME,
-    CLASS_NAME_PUNCH_VIEWER_CONTAINER,
-    CLASS_NAME_PUNCH_VIEWER_CONTENT,
+    CLASS_NAME_PUNCH_VIEWER_PAGE_WRAPPER_CONTAINER,
 } from '../dom/dom-constants'
 import { queryElement, queryElementAsync } from '../dom/dom-helpers'
 import Poll from '../components/poll/Poll'
@@ -68,22 +67,25 @@ class PresentMode {
         }
     }
 
+    private createPollContainerAndPutOnTopOfSlide() {
+        ;(async () => {
+            const slideContent = await queryElementAsync<HTMLElement>(
+                this.document!,
+                '.' + CLASS_NAME_PUNCH_VIEWER_PAGE_WRAPPER_CONTAINER
+            )
+            const div = document.createElement('div')
+            div.style.height = '100%'
+            div.style.width = '100%'
+            slideContent.style.display = 'none'
+            slideContent.insertAdjacentElement('afterend', div)
+            ReactDOM.render(<Poll poll={poll} />, div)
+        })()
+    }
+
     private onPresentModeLoad() {
         ;(async () => {
             this.injectStyles()
-            this.currentSlideWatcher!.init()
-            const slideContent = await queryElementAsync<Element>(
-                this.document!,
-                '.' + CLASS_NAME_PUNCH_VIEWER_CONTENT
-            )
-            // slideContent.remove()
-            const slideContainer = await queryElementAsync<Element>(
-                this.document!,
-                '.' + CLASS_NAME_PUNCH_VIEWER_CONTAINER
-            )
-
-            // ReactDOM.render(<Poll poll={poll} />, slideContainer)
-
+            this.createPollContainerAndPutOnTopOfSlide()
             // throw new Event
             console.log('Present mode started')
         })()
