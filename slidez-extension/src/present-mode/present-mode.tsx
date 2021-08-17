@@ -62,18 +62,17 @@ class PresentMode {
     private onPresentModeLoad() {
         ;(async () => {
             this.injectStyles()
-            // if slide has interactions
-            const slideContent = await queryElementAsync<Element>(
+            //punch-viewer-page-wrapper-container
+            const slideContent = await queryElementAsync<HTMLElement>(
                 this.document!,
-                '.' + CLASS_NAME_PUNCH_VIEWER_CONTENT
+                '.punch-viewer-page-wrapper-container'
             )
-            slideContent.remove()
-            const slideContainer = await queryElementAsync<Element>(
-                this.document!,
-                '.' + CLASS_NAME_PUNCH_VIEWER_CONTAINER
-            )
-
-            ReactDOM.render(<Poll poll={poll} />, slideContainer)
+            const div = document.createElement('div')
+            div.style.height = '100%'
+            div.style.width = '100%'
+            slideContent.style.display = 'none'
+            slideContent.insertAdjacentElement('afterend', div)
+            ReactDOM.render(<Poll poll={poll} />, div)
 
             // throw new Event
             console.log('Present mode started')
