@@ -24,8 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	private void applyRouteRestrictions(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers(securityProperties.getPublicUrlPatterns().toArray(new String[0]))
-				.permitAll().anyRequest().authenticated();
+		http.authorizeRequests().anyRequest().permitAll();
 	}
 
 	@Override
@@ -34,9 +33,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 				// Set session management to stateless
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-		applyRouteRestrictions(http);
-		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 
 }
