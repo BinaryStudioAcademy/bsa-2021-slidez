@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.presentationsession.exception;
+package com.binarystudio.academy.slidez.domain.poll.exception;
 
 import com.binarystudio.academy.slidez.domain.exception.DomainException;
 

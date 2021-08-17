@@ -3,8 +3,6 @@ name: FE and BE linters on [develop] PR
 on:
   pull_request:
     branches: [ develop ]
-  push:
-    branches: [ feature/18-github-actions-linters ]
 
 jobs:
   linter_frontend:
@@ -19,12 +17,18 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '16.x'
+    
+    - name: Enable experimental workspaces
+      run: yarn config set workspaces-experimental true
 
     - name: Install dependencies
       run: yarn --frozen-lockfile
 
-    - name: Lint with Yarn
-      run: yarn lint-nofix
+    - name: Lint core frontend
+      run: |
+        cd slidez-fe-core; \
+        yarn --frozen-lockfile; \
+        yarn lint-nofix;
 
   linter_backend:
     runs-on: ubuntu-latest

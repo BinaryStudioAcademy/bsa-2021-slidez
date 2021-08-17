@@ -1,9 +1,9 @@
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
+const path = require('path')
 
 module.exports = (config) => {
     config.resolve.alias = {
         ...config.resolve.alias,
-        'slidez-shared': '../../slidez-shared',
+        'slidez-shared': path.resolve(__dirname, '../slidez-shared'),
     }
     // Remove the ModuleScopePlugin which throws when we try
     // to import something outside of src/.

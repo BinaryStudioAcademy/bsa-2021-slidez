@@ -52,7 +52,9 @@ dependencies {
 			"io.jsonwebtoken:jjwt-jackson:${jjwt}"
 
 	implementation 'com.sendgrid:sendgrid-java:4.7.2'
-	compileOnly 'org.projectlombok:lombok'
+    implementation 'com.google.code.findbugs:jsr305:3.0.0'
+
+    compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
