@@ -8,9 +8,6 @@ import SignPage from './pages/sign/SignPage'
 import EventPage from './pages/event/EventPage'
 import ReduxToastr from 'react-redux-toastr'
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
-import { ChromeEvents, log } from 'slidez-shared'
-
-log()
 
 function App() {
     return (
