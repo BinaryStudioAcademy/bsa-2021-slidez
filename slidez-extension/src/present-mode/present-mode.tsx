@@ -71,20 +71,9 @@ class PresentMode {
                 this.document!,
                 '.' + CLASS_NAME_PUNCH_VIEWER_CONTAINER
             )
-            const div = document.createElement('div')
-            div.style.position = 'fixed'
-            div.style.zIndex = '2147483647'
-            div.style.backgroundColor = 'red'
-            div.style.top = '300px'
-            div.style.left = '400px'
 
-            slideContainer.appendChild(div)
-            slideContainer.insertAdjacentElement('beforebegin', div)
-            ReactDOM.render(
-                <Poll poll={poll} />,
-                // @ts-ignore
-                div
-            )
+            ReactDOM.render(<Poll poll={poll} />, slideContainer)
+
             // throw new Event
             console.log('Present mode started')
         })()
