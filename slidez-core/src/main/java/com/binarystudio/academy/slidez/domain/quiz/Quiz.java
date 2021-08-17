@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.domain.quiz;
 
+import com.binarystudio.academy.slidez.domain.poll.model.PollOption;
 import com.binarystudio.academy.slidez.domain.presentationiteractiveelement.model.PresentationInteractiveElement;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,11 +11,15 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -43,5 +48,14 @@ public class Quiz {
 
     @Column(name = "is_template")
     private boolean isTemplate;
+
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+    private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<QuizAnswer> quizAnswers;
 }
 

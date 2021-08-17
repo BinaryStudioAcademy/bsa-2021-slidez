@@ -1,6 +1,8 @@
 package com.binarystudio.academy.slidez.domain.presentationiteractiveelement.model;
 
 import com.binarystudio.academy.slidez.domain.poll.model.Poll;
+import com.binarystudio.academy.slidez.domain.qasession.QASession;
+import com.binarystudio.academy.slidez.domain.quiz.Quiz;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -42,9 +45,19 @@ public class PresentationInteractiveElement {
     @Column(name = "poll_id")
     private Poll poll;
 
+    @OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+    @JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
     @Column(name = "quiz_id")
-    private UUID quizId;
+    private Quiz quiz;
 
+    @OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+    @JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
     @Column(name = "qa_id")
-    private UUID qaId;
+    private QASession qaSession;
+
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+    private LocalDateTime updatedAt;
 }

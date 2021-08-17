@@ -22,7 +22,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "qasessions")
+@Table(name = "qa_sessions")
 public class QASession {
 
     @Id

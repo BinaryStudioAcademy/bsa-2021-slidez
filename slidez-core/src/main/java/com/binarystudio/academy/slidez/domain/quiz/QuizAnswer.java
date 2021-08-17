@@ -26,7 +26,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "poll_options")
+@Table(name = "quiz_answers")
 public class QuizAnswer {
 
 	@Id
