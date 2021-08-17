@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +37,7 @@ public class PollService {
 
     @Transactional
     public Poll update(PollDto pollDto) throws PollNotFoundException {
-        if(!existsById(pollDto.getId())) {
+        if (!existsById(pollDto.getId())) {
          throw new PollNotFoundException("Poll with such Id not found.");
         }
         Poll poll = PollMapper.INSTANCE.pollDtoToPoll(pollDto);
@@ -58,7 +57,7 @@ public class PollService {
 
     public Optional<PollResponseDto> getById(UUID id) {
         Optional<Poll> pollOptional = pollRepository.findById(id);
-        if(pollOptional.isEmpty()) {
+        if (pollOptional.isEmpty()) {
             return Optional.empty();
         }
         PollResponseDto pollResponseDto = PollMapper.INSTANCE.pollToPollResponseDto(pollOptional.get());

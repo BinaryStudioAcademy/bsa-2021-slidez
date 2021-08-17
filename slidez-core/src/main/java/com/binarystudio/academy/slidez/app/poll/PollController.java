@@ -1,14 +1,11 @@
 package com.binarystudio.academy.slidez.app.poll;
 
-import com.binarystudio.academy.slidez.app.session.SessionResponseCodes;
 import com.binarystudio.academy.slidez.domain.poll.PollService;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollDto;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollResponseDto;
 import com.binarystudio.academy.slidez.domain.poll.model.Poll;
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
