@@ -12,15 +12,15 @@ const Poll: FC = () => {
         <div>
             <Formik
                 initialValues={{ options: [''] }}
-                onSubmit={async values => {
-                    await new Promise(resolve => setTimeout(resolve, 500));
+                onSubmit={async (values) => {
+                    await new Promise((resolve) => setTimeout(resolve, 500));
                     alert(JSON.stringify(values, null, 2));
                 }}
                 render={({ values }) => (
                     <Form>
                         <FieldArray
                             name='options'
-                            render={arrayHelpers => (
+                            render={(arrayHelpers) => (
                                 <div>
                                     {values.options &&
                                     values.options.length > 0 ? (
@@ -82,12 +82,13 @@ const Poll: FC = () => {
             <h2>Poll</h2>
             <Formik
                 initialValues={{ name: '' }}
-                onSubmit={async values => {
-                    await new Promise(resolve => setTimeout(resolve, 500));
+                onSubmit={async (values) => {
+                    await new Promise((resolve) => setTimeout(resolve, 500));
                     alert(JSON.stringify(values, null, 2));
                 }}
             >
-                {props => {
+                {(props) => {
+                    // eslint-disable-next-line react/prop-types
                     const { values, handleChange, handleSubmit } = props;
                     return (
                         <form onSubmit={handleSubmit}>
@@ -98,6 +99,7 @@ const Poll: FC = () => {
                                         <Field
                                             id='name'
                                             type='text'
+                                            //eslint-disable-next-line react/prop-types
                                             value={values.name}
                                             onChange={handleChange}
                                             className='text-input'

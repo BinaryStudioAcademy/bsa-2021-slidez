@@ -120,7 +120,7 @@ const Dashboard = () => {
 
     return (
         <div className='dashboard-page'>
-            <SideBar></SideBar>
+            <SideBar />
             <div className='page-content'>
                 <div className='search-and-user'>
                     <div className='search-bar'>
@@ -133,7 +133,7 @@ const Dashboard = () => {
                             type='search'
                             placeholder='Search...'
                             onChange={handleChange}
-                        ></input>
+                        />
                     </div>
                     <div className='user-profile'>
                         <div className='user-avatar'>
@@ -157,7 +157,7 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <hr></hr>
+                                <hr />
                                 <a href=''>
                                     <FontAwesomeIcon
                                         className='user-icon'
@@ -206,7 +206,7 @@ const Dashboard = () => {
                                     />
                                 </label>
                             </div>
-                            <div className='verticalLine'></div>
+                            <div className='verticalLine' />
                             <div>
                                 <label>
                                     <input
@@ -248,7 +248,7 @@ const Dashboard = () => {
                                         <img
                                             className='card-img'
                                             src={md.pictureUrl}
-                                        ></img>
+                                        />
                                         <div className='card-name'>
                                             {md.name}
                                         </div>
