@@ -40,18 +40,6 @@ public class PresentationInteractiveElement {
 	@Column(name = "slide_id")
 	private String slideId;
 
-	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "poll_id", referencedColumnName = "id")
-	private Poll poll;
-
-	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "quiz_id", referencedColumnName = "id")
-	private Quiz quiz;
-
-	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "qa_id", referencedColumnName = "id")
-	private QASession qaSession;
-
 	@Column(name = "created_at", columnDefinition = "TIMESTAMP")
 	private LocalDateTime createdAt;
 
