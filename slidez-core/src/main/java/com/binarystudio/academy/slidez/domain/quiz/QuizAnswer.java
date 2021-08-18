@@ -1,6 +1,5 @@
 package com.binarystudio.academy.slidez.domain.quiz;
 
-import com.binarystudio.academy.slidez.domain.poll.model.Poll;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
