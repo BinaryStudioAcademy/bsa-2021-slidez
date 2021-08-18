@@ -43,6 +43,7 @@ public class QuizAnswer {
 	@JsonIgnore
 	private Quiz quiz;
 
-    @Column(name = "is_correct")
-    private boolean isCorrect;
+	@Column(name = "is_correct")
+	private boolean isCorrect;
+
 }

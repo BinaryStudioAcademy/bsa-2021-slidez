@@ -12,10 +12,15 @@ import java.util.UUID;
 public class PresentationInteractiveElementDto {
 
 	private UUID id;
-    private PresentationInteractiveElementType type;
-    private String slideId;
-    private Poll poll;
-    private Quiz quiz;
-    private QASession qaSession;
+
+	private PresentationInteractiveElementType type;
+
+	private String slideId;
+
+	private Poll poll;
+
+	private Quiz quiz;
+
+	private QASession qaSession;
 
 }

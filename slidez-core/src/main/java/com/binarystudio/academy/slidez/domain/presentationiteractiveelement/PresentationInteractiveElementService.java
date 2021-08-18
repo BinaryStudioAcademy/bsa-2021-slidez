@@ -27,12 +27,10 @@ public class PresentationInteractiveElementService {
 
 	@Transactional
 	public PresentationInteractiveElement create(PresentationInteractiveElementDto dto) {
-	    var mapper = PresentationInteractiveElementMapper.INSTANCE;
-        PresentationInteractiveElement presentationInteractiveElement =
-          mapper.dtoToPresentationInteractiveElement(
-              dto);
+		var mapper = PresentationInteractiveElementMapper.INSTANCE;
+		PresentationInteractiveElement presentationInteractiveElement = mapper.dtoToPresentationInteractiveElement(dto);
 
-        LocalDateTime now = now();
+		LocalDateTime now = now();
 		presentationInteractiveElement.setCreatedAt(now);
 		presentationInteractiveElement.setUpdatedAt(now);
 		return presentationInteractiveElementRepository.saveAndFlush(presentationInteractiveElement);
@@ -40,10 +38,11 @@ public class PresentationInteractiveElementService {
 
 	@Transactional
 	public PresentationInteractiveElement update(PresentationInteractiveElementDto dto)
-                    throws PresentationInteractiveElementNotFoundException {
+			throws PresentationInteractiveElementNotFoundException {
 
-	    if (!existsById(dto.getId())) {
-			throw new PresentationInteractiveElementNotFoundException("Presentation Interactive Element with such Id not found.");
+		if (!existsById(dto.getId())) {
+			throw new PresentationInteractiveElementNotFoundException(
+					"Presentation Interactive Element with such Id not found.");
 		}
 		var mapper = PresentationInteractiveElementMapper.INSTANCE;
 		PresentationInteractiveElement presentationInteractiveElement = mapper.dtoToPresentationInteractiveElement(dto);
@@ -62,12 +61,13 @@ public class PresentationInteractiveElementService {
 	}
 
 	public Optional<PresentationInteractiveElementDto> getById(UUID id) {
-		Optional<PresentationInteractiveElement> elementOptional = presentationInteractiveElementRepository.findById(id);
+		Optional<PresentationInteractiveElement> elementOptional = presentationInteractiveElementRepository
+				.findById(id);
 		if (elementOptional.isEmpty()) {
 			return Optional.empty();
 		}
 		var mapper = PresentationInteractiveElementMapper.INSTANCE;
-        PresentationInteractiveElementDto dto = mapper.presentationInteractiveElementToDto(elementOptional.get());
+		PresentationInteractiveElementDto dto = mapper.presentationInteractiveElementToDto(elementOptional.get());
 		return Optional.of(dto);
 	}
 

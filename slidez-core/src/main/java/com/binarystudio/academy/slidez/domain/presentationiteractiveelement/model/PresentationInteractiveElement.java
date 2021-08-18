@@ -34,30 +34,31 @@ public class PresentationInteractiveElement {
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 
-    @Column(name = "type")
-    private PresentationInteractiveElementType type;
+	@Column(name = "type")
+	private PresentationInteractiveElementType type;
 
-    @Column(name = "slide_id")
-    private String slideId;
+	@Column(name = "slide_id")
+	private String slideId;
 
-    @OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-    @JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
-    @Column(name = "poll_id")
-    private Poll poll;
+	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
+	@Column(name = "poll_id")
+	private Poll poll;
 
-    @OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-    @JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
-    @Column(name = "quiz_id")
-    private Quiz quiz;
+	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
+	@Column(name = "quiz_id")
+	private Quiz quiz;
 
-    @OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-    @JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
-    @Column(name = "qa_id")
-    private QASession qaSession;
+	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
+	@Column(name = "qa_id")
+	private QASession qaSession;
 
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
-    private LocalDateTime createdAt;
+	@Column(name = "created_at", columnDefinition = "TIMESTAMP")
+	private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
-    private LocalDateTime updatedAt;
+	@Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+	private LocalDateTime updatedAt;
+
 }

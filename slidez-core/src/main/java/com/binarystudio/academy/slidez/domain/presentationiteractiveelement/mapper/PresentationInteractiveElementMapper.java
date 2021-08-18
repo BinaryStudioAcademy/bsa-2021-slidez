@@ -10,7 +10,10 @@ public interface PresentationInteractiveElementMapper {
 
 	PresentationInteractiveElementMapper INSTANCE = Mappers.getMapper(PresentationInteractiveElementMapper.class);
 
-	PresentationInteractiveElementDto presentationInteractiveElementToDto(PresentationInteractiveElement presentationInteractiveElement);
+	PresentationInteractiveElementDto presentationInteractiveElementToDto(
+			PresentationInteractiveElement presentationInteractiveElement);
 
-	PresentationInteractiveElement dtoToPresentationInteractiveElement(PresentationInteractiveElementDto presentationInteractiveElementDto);
+	PresentationInteractiveElement dtoToPresentationInteractiveElement(
+			PresentationInteractiveElementDto presentationInteractiveElementDto);
+
 }

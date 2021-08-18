@@ -25,21 +25,20 @@ import java.util.UUID;
 @Table(name = "qa_sessions")
 public class QASession {
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+	@Id
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(name = "id", updatable = false, nullable = false)
+	private UUID id;
 
-    @OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-    @JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
-    private PresentationInteractiveElement owner;
+	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
+	private PresentationInteractiveElement owner;
 
-    @Column(name = "title")
-    private String title;
+	@Column(name = "title")
+	private String title;
 
-    @Column(name = "is_moderated")
-    private boolean isModerated;
+	@Column(name = "is_moderated")
+	private boolean isModerated;
 
 }
-

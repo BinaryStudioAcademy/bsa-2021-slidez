@@ -29,32 +29,32 @@ import java.util.UUID;
 @Table(name = "quizzes")
 public class Quiz {
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+	@Id
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(name = "id", updatable = false, nullable = false)
+	private UUID id;
 
-    @OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-    @JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
-    private PresentationInteractiveElement owner;
+	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
+	private PresentationInteractiveElement owner;
 
-    @Column(name = "title")
-    private String title;
+	@Column(name = "title")
+	private String title;
 
-    @Column(name = "is_multi")
-    private boolean isMulti;
+	@Column(name = "is_multi")
+	private boolean isMulti;
 
-    @Column(name = "is_template")
-    private boolean isTemplate;
+	@Column(name = "is_template")
+	private boolean isTemplate;
 
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
-    private LocalDateTime createdAt;
+	@Column(name = "created_at", columnDefinition = "TIMESTAMP")
+	private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
-    private LocalDateTime updatedAt;
+	@Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+	private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<QuizAnswer> quizAnswers;
+	@OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+	private List<QuizAnswer> quizAnswers;
+
 }
-
