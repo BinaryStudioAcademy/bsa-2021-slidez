@@ -1,9 +1,10 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { Button } from '@material-ui/core'
 import { Formik, Form, Field } from 'formik'
-import * as yup from 'yup'
+import * as Yup from 'yup'
 import { UserField } from './Field'
 import axios from 'axios'
+import { HttpHelper } from '../../services/http/http-helper'
 import { useDetectOutsideClick } from '../dashboard/useDetectOutsideClick'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -16,6 +17,7 @@ import SideBar from '../dashboard/SideBar'
 import '../dashboard/dashboard.scss'
 import './update.scss'
 import { AppRoute } from '../../common/routes/app-route'
+import { JWT } from '../../services/auth/auth-service'
 
 interface User {
     id: string
@@ -25,7 +27,7 @@ interface User {
     password: string
 }
 
-export const UpdatePage: FC = () => {
+const UpdatePage = () => {
     const dropdownRef = useRef<HTMLInputElement>(null)
     const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
 
@@ -43,30 +45,20 @@ export const UpdatePage: FC = () => {
 
     const [userData, setUserData] = useState<User>(initialValues)
 
-    const schema = yup.object({
-        email: yup.string().email().max(64),
-        firstName: yup.string().required().min(3).max(30),
-        lastName: yup.string().required().min(3).max(30),
-    })
-    const currentToken =
-        'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlbWFpbF8xMTJAdWtyLm5ldCIsImV4cCI6MTYyODg2NzY5Mn0.Y488vLEvUZrFV2mCv4V-W95z7SocWPgJgTs1xFZjXSNlW96jXYumdclEpzOPaXPd_ZwbkkBdUFBd9tFfeOOmBQ'
-
+    // const currentToken = window.localStorage.getItem(JWT)
+    const userId = 'eb335b4d-4bd9-4bab-bae2-5096daa2e272'
     useEffect(() => {
         axios
-            .get(
-                `http://localhost:5000/api/v1/users/userInfo?token=${currentToken}`
-            )
+            .get(`http://localhost:5000/api/v1/users/${userId}`)
             .then((response) => {
-                setUserData(response.data)
+                setUserData(response.data.data)
             })
     }, [])
 
     const handleInfoSubmit = (values: typeof userData) => {
         axios
-            .post(
-                `http://localhost:5000/api/v1/users?token=${currentToken}`,
-                values
-            )
+            //change it
+            .post(`http://localhost:5000/api/v1/users/${userId}`, values)
             .then((response) => {
                 setUserData(response.data || initialValues)
             })
@@ -138,9 +130,22 @@ export const UpdatePage: FC = () => {
                 <div className='verticalLine' />
                 <div className='form'>
                     <Formik
-                        validationSchema={schema}
-                        enableReinitialize={true}
                         initialValues={userData}
+                        validationSchema={Yup.object({
+                            email: Yup.string()
+                                .required('Required')
+                                .email('Invalid email address')
+                                .max(64),
+                            firstName: Yup.string()
+                                .required('Required')
+                                .min(3)
+                                .max(30),
+                            lastName: Yup.string()
+                                .required('Required')
+                                .min(3)
+                                .max(30),
+                        })}
+                        enableReinitialize={true}
                         onSubmit={(values) => {
                             handleInfoSubmit(values)
                         }}
@@ -184,7 +189,7 @@ export const UpdatePage: FC = () => {
                     </Formik>
                     <Formik
                         enableReinitialize={true}
-                        initialValues={userData}
+                        initialValues={initialValues}
                         onSubmit={(values) => {
                             handlePwdSubmit(values)
                         }}
@@ -206,6 +211,7 @@ export const UpdatePage: FC = () => {
                                         <Field
                                             name='confirmedPassword'
                                             component={UserField}
+                                            value={''}
                                         />
                                     </div>
                                     <Button className='user-btn' type='submit'>
@@ -223,3 +229,5 @@ export const UpdatePage: FC = () => {
         </div>
     )
 }
+
+export default UpdatePage

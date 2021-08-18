@@ -9,6 +9,7 @@ import EventPage from './pages/event/EventPage'
 import ReduxToastr from 'react-redux-toastr'
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
 import { ChromeEvents, log } from 'slidez-shared'
+import UpdatePage from './pages/update/UpdatePage'
 
 log()
 
@@ -29,10 +30,10 @@ function App() {
                         component={Dashboard}
                     />
                     <PrivateRoute
-                    exact
-                    path={AppRoute.UPDATE_USER}
-                    component={UpdatePage}
-                />
+                        exact
+                        path={AppRoute.UPDATE_USER}
+                        component={UpdatePage}
+                    />
                     <Route exact strict path={AppRoute.ANY}>
                         <Redirect to={AppRoute.LOGIN} />
                     </Route>

@@ -18,7 +18,7 @@ import { MOCK_DATA } from './mock-data'
 import { useDetectOutsideClick } from './useDetectOutsideClick'
 import { useAppDispatch } from '../../hooks'
 import { logout } from '../../containers/user/store'
-//import { AppRoute } from '../../common/routes/app-route'
+import { AppRoute } from '../../common/routes/app-route'
 
 const Dashboard = () => {
     const [currentView, setCurrentView] = useState('table')
