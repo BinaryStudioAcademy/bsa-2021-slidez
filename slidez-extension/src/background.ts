@@ -8,8 +8,9 @@ import {
 } from 'slidez-shared'
 
 const checkUserDataInStorage = (eb: BasicMessagingBus) => () => {
-    chrome.storage.local.get(['userData'], (userData) => {
+    chrome.storage.local.get(['userData'], ({ userData } = {}) => {
         if (userData.accessToken) {
+            console.log('User data found, providing token to requester')
             eb.sendMessageNoCallback({
                 type: EventType.AUTH_DETAILS,
                 data: {
@@ -18,6 +19,7 @@ const checkUserDataInStorage = (eb: BasicMessagingBus) => () => {
                 },
             })
         } else {
+            console.log('No user data found')
             eb.sendMessageNoCallback({
                 type: EventType.AUTH_DETAILS,
                 data: {
@@ -31,6 +33,7 @@ const checkUserDataInStorage = (eb: BasicMessagingBus) => () => {
 
 const setUserDataInStore =
     (eb: BasicMessagingBus) => (message: ExtensionAuthenticationSuccess) => {
+        console.log('Setting user in store, data:', message.data)
         chrome.storage.local.set(
             {
                 userData: {
