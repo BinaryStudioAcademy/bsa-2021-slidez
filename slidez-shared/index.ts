@@ -4,5 +4,3 @@ export * from './src/event-bus';
 export * from './src/chrome';
 
 export const log = () => console.log('Hello from shared');
-
-
