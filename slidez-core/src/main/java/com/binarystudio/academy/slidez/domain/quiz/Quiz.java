@@ -1,8 +1,6 @@
-package com.binarystudio.academy.slidez.domain.presentationiteractiveelement.model;
+package com.binarystudio.academy.slidez.domain.quiz;
 
-import com.binarystudio.academy.slidez.domain.poll.model.Poll;
-import com.binarystudio.academy.slidez.domain.qasession.QASession;
-import com.binarystudio.academy.slidez.domain.quiz.Quiz;
+import com.binarystudio.academy.slidez.domain.presentationiteractiveelement.model.PresentationInteractiveElement;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,12 +10,15 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -25,8 +26,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "presentation_interactive_element")
-public class PresentationInteractiveElement {
+@Table(name = "quizzes")
+public class Quiz {
 
 	@Id
 	@GeneratedValue(generator = "UUID")
@@ -34,31 +35,26 @@ public class PresentationInteractiveElement {
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 
-	@Column(name = "type")
-	private PresentationInteractiveElementType type;
-
-	@Column(name = "slide_id")
-	private String slideId;
-
 	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
-	@Column(name = "poll_id")
-	private Poll poll;
+	private PresentationInteractiveElement owner;
 
-	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
-	@Column(name = "quiz_id")
-	private Quiz quiz;
+	@Column(name = "title")
+	private String title;
 
-	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
-	@Column(name = "qa_id")
-	private QASession qaSession;
+	@Column(name = "is_multi")
+	private boolean isMulti;
+
+	@Column(name = "is_template")
+	private boolean isTemplate;
 
 	@Column(name = "created_at", columnDefinition = "TIMESTAMP")
 	private LocalDateTime createdAt;
 
 	@Column(name = "updated_at", columnDefinition = "TIMESTAMP")
 	private LocalDateTime updatedAt;
+
+	@OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+	private List<QuizAnswer> quizAnswers;
 
 }
