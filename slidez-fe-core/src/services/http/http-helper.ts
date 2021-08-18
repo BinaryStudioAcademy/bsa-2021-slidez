@@ -1,6 +1,6 @@
 import { Method } from 'axios'
 import { createDefaultAxios } from './http-util'
-import { performRefreshTokens } from '../auth/auth-service'
+import { getAuthHeaderValue, performRefreshTokens } from '../auth/auth-service'
 
 export interface HttpHelper {
     doGet: Function
@@ -49,6 +49,7 @@ export const HttpHelper = (() => {
             headers: {
                 ...axiosInstance.defaults.headers,
                 headers,
+                authorization: getAuthHeaderValue(),
             },
         })
     }

@@ -8,8 +8,9 @@ import { RefreshTokensDto } from './dto/RefreshTokensDto'
 import { RefreshTokensResponseDto } from './dto/RefreshTokensResponseDto'
 import { GenericResponse } from '../dto/GenericResponse'
 
-export const JWT = 'jwt'
-export const refreshJWT = 'refresh_jwt'
+const JWT = 'jwt'
+const refreshJWT = 'refresh_jwt'
+const bearer = 'Bearer '
 const constructRoute = (endpoint: string) => {
     return `/auth/${endpoint}`
 }
@@ -90,4 +91,8 @@ export const isLoggedIn = () => {
 export const performLogout = () => {
     window.localStorage.removeItem(JWT)
     window.localStorage.removeItem(refreshJWT)
+}
+
+export const getAuthHeaderValue = () => {
+    return bearer + window.localStorage.getItem(JWT)
 }

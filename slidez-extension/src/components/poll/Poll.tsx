@@ -32,7 +32,7 @@ function Poll({ poll, children }: PollProps) {
                     <div
                         className='poll-option-bar'
                         style={{ width: percentageFormat }}
-                    ></div>
+                    />
                     <div className='poll-option-percent'>
                         {percentageFormat}
                     </div>
