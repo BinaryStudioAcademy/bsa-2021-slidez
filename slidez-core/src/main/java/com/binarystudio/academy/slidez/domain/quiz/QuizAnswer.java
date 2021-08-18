@@ -35,7 +35,7 @@ public class QuizAnswer {
 	private UUID id;
 
 	@Column
-	private String name;
+	private String title;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "quiz_id")
