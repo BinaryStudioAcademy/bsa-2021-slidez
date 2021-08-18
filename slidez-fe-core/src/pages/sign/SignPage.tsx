@@ -8,7 +8,7 @@ import { useAppDispatch } from '../../hooks'
 import { LogInDto } from '../../services/auth/dto/LogInDto'
 import { TokenDto } from '../../services/auth/dto/TokenDto'
 import { RegisterDto } from '../../services/auth/dto/RegisterDto'
-import Logo from '../../common/components/logo/logo'
+import { Logo } from '../../common/components/logo/logo'
 
 import {
     logIn,
