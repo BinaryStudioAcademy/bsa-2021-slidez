@@ -39,14 +39,20 @@ export function queryElementAsync<T extends Element>(
         // Define observer
         const mutationObserver = new MutationObserver((mutations) => {
             for (const mutation of mutations) {
-                if (parent.querySelector(selector)) {
+                if (
+                    'matches' in mutation.target &&
+                    (mutation.target as Element).matches(selector)
+                ) {
                     destroyObserver()
                     resolve(mutation.target as T)
                     return
                 }
 
                 for (const addedNode of Array.from(mutation.addedNodes)) {
-                    if (parent.querySelector(selector)) {
+                    if (
+                        'matches' in mutation.target &&
+                        (mutation.target as Element).matches(selector)
+                    ) {
                         destroyObserver()
                         resolve(addedNode as T)
                         return

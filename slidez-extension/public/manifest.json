@@ -17,7 +17,8 @@
         {
             "matches": ["<all_urls>"],
             "js": ["js/vendor.js", "js/content_script.js"],
-            "run_at": "document_end"
+            "run_at": "document_end",
+            "css": ["static/css/content_script.css"]
         }
     ],
     "background": {
@@ -34,5 +35,6 @@
         "activeTab",
         "storage",
         "notifications"
-    ]
+    ],
+    "web_accessible_resources": ["static/css/content_script.css"]
 }

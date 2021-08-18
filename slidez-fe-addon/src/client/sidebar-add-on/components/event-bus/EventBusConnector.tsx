@@ -26,7 +26,7 @@ const EventBusConnector: React.FC<{}> = () => {
                     EventType.AUTH_DETAILS,
                     3000
                 )
-                .then(message => {
+                .then((message) => {
                     if (message.data.success) {
                         return dispatch(connect(message.data.accessToken));
                     }
