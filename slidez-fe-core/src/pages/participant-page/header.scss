@@ -1,10 +1,12 @@
+@import "src/global/global";
+
 .header {
-    background-color: #22313f;
+    background-color: $dark-color;
     position: fixed;
     top: 0px;
     width: 100%;
     .header-title {
-        color: #f6f4f8;
+        color: $light-color;
         text-align: center;
         font-family: Rubik;
         font-size: 20px;

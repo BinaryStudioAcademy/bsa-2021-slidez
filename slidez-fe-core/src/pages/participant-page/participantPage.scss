@@ -1,3 +1,5 @@
+@import "src/global/global";
+
 .menu {
     position: absolute;
     width: 22px;
@@ -6,7 +8,7 @@
     top: 47px;
     font-size: 22px;
     .menu-icon {
-        color: #663999;
+        color: $accent-color;
     }
 }
 .title {
@@ -17,7 +19,7 @@
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
-    color: #000000;
+    color: $black;
 }
 .page-content {
     margin-top: 85px;
@@ -42,24 +44,24 @@
                 font-weight: 500;
                 font-size: 14px;
                 line-height: 17px;
-                color: #000000;
+                color: $black;
             }
             .event-info-viewsDate {
                 font-family: Rubik;
                 font-size: 12px;
-                color: #7b7a7c;
+                color: $grey-color;
             }
         }
         .event-icon {
             .angle-right {
-                color: #59d0a5;
+                color: $mint;
             }
         }
     }
 }
 
 .event-item:hover {
-    background-color: #efeef0;
+    background-color: $light-grey;
 }
 
 @media (min-width: 555px) {
