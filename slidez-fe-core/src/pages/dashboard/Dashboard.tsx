@@ -18,6 +18,7 @@ import { MOCK_DATA } from './mock-data'
 import { useDetectOutsideClick } from './useDetectOutsideClick'
 import { useAppDispatch } from '../../hooks'
 import { logout } from '../../containers/user/store'
+import { getAccessToken, performLoginByToken } from './user-data'
 
 const Dashboard = () => {
     const [currentView, setCurrentView] = useState('table')
@@ -27,6 +28,12 @@ const Dashboard = () => {
     const [searchField, setSearchField] = useState('')
     const [filteredPresentations, setFilteredPresentations] =
         useState(MOCK_DATA)
+    // const [logo, setLogo] = useState('')
+    const [userData, SetUserData] = useState({
+        name: '',
+        surname: '',
+        email: '',
+    })
     const dispatch = useAppDispatch()
 
     const handleToggleCurrentView = useCallback(() => {
@@ -118,6 +125,11 @@ const Dashboard = () => {
         setSearchField(e.target.value)
     }
 
+    // const handleLogo = (name: string, surname: string) =>
+    //     setLogo(name.charAt(0) + surname.charAt(0))
+
+    // const loadUserDataByToken (token: string) =>//("${v1API}/auth")@PostMapping("login-by-token")
+
     return (
         <div className='dashboard-page'>
             <SideBar />
@@ -151,6 +163,7 @@ const Dashboard = () => {
                                     <div>
                                         <div className='user-name'>
                                             Wilson Herwitz
+                                            {console.log(performLoginByToken())}
                                         </div>
                                         <div className='user-email'>
                                             herwitz@example.com
