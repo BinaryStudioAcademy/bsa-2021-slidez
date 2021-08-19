@@ -36,7 +36,6 @@ public class State {
         polls.add(poll);
     }
 
-
 	public void addPoll(Poll poll) {
 		polls.add(poll);
 	}

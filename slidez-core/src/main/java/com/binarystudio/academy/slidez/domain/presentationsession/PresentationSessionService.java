@@ -48,7 +48,7 @@ public class PresentationSessionService {
 			throws IncorrectLeaseDurationException {
 		// 1. Load all interactive elements for presentation
 		// 2. For each such element create event-initiator (like PollCreatedEvt)
-        String pollIdFromDB = "12456789";
+        String pollIdFromDB = "ed60e789-ab15-4756-b95e-218b43b6dfcf"; // Hardcoded TO-DO
 		DomainEvent event = new PollCreatedEvent("Do you like Java?", UUID.fromString(pollIdFromDB));
 		// 3. Create PresentationEventStore
 		PresentationEventStore presentationEventStore = new PresentationEventStore();
