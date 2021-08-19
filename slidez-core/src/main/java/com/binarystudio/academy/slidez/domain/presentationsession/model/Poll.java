@@ -9,27 +9,26 @@ import java.util.UUID;
 
 @Data
 public class Poll {
-    private UUID id;
 
-    private String name;
+	private UUID id;
 
-    private List<PollOption> options;
+	private String name;
 
-    private List<UUID> answers = new ArrayList<>();
+	private List<PollOption> options = new ArrayList<>();
 
-    public Poll(UUID id, String name) {
-        this.name = name;
-        if (id != null) {
-            this.id = id;
+	private List<UUID> answers = new ArrayList<>();
 
-        }
-    }
+	public Poll(UUID id, String name) {
+		this.name = name;
+		if (id != null) {
+			this.id = id;
+
+		}
+	}
 
 	public void addAnswer(UUID optionId) throws BadOptionException {
-        options.stream()
-            .filter(option -> optionId.equals(option.getId()))
-            .findFirst()
-            .orElseThrow(() -> new BadOptionException(String.format("Option with ID %s not found", optionId)));
+		options.stream().filter(option -> optionId.equals(option.getId())).findFirst()
+				.orElseThrow(() -> new BadOptionException(String.format("Option with ID %s not found", optionId)));
 		answers.add(optionId);
 	}
 

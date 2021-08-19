@@ -15,6 +15,7 @@ import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.Snapsho
 import com.binarystudio.academy.slidez.domain.presentationsession.event.DomainEvent;
 import com.binarystudio.academy.slidez.domain.presentationsession.event.PollAnsweredEvent;
 import com.binarystudio.academy.slidez.domain.presentationsession.event.PollCreatedEvent;
+import com.binarystudio.academy.slidez.domain.presentationsession.mapper.MapperToPoll;
 import com.binarystudio.academy.slidez.domain.presentationsession.mapper.PollMapper;
 import com.binarystudio.academy.slidez.domain.presentationsession.model.Poll;
 import com.binarystudio.academy.slidez.domain.presentationsession.snapshot.Snapshot;
@@ -29,7 +30,8 @@ import java.util.UUID;
 
 @Service
 public class PresentationSessionService {
-    private final String MOCK_POLL_ID = "ed60e789-ab15-4756-b95e-218b43b6dfcf";
+
+	private static final String MOCK_POLL_ID = "ed60e789-ab15-4756-b95e-218b43b6dfcf";
 
 	private final LinkService linkService;
 
@@ -37,25 +39,28 @@ public class PresentationSessionService {
 
 	private final SessionService sessionService;
 
-    private final PollService pollService;
+	private final PollService pollService;
 
-    @Autowired
+	private final MapperToPoll mapperToPoll;
+
+	@Autowired
 	public PresentationSessionService(LinkService linkService,
 			InMemoryPresentationEventStoreRepository inMemoryPresentationEventStoreRepository,
-			SessionService sessionService, PollService pollService) {
+			SessionService sessionService, PollService pollService, MapperToPoll mapperToPoll) {
 		this.linkService = linkService;
 		this.inMemoryPresentationEventStoreRepository = inMemoryPresentationEventStoreRepository;
 		this.sessionService = sessionService;
-        this.pollService = pollService;
+		this.pollService = pollService;
+        this.mapperToPoll = mapperToPoll;
 	}
 
 	public Optional<CreateSessionResponseDto> createSession(CreateSessionRequestDto dto, int leaseDuration)
 			throws IncorrectLeaseDurationException {
 		// 1. Load all interactive elements for presentation
 		// 2. For each such element create event-initiator (like PollCreatedEvt)
-        // Hardcoded sample TO-DO
-        UUID pollFromDBId = UUID.fromString(MOCK_POLL_ID);
-        Poll poll = getPollFromDbById(pollFromDBId);
+		// Hardcoded sample TO-DO
+		UUID pollFromDBId = UUID.fromString(MOCK_POLL_ID);
+		Poll poll = getPollFromDbById(pollFromDBId);
 		DomainEvent event = new PollCreatedEvent(poll);
 
 		// 3. Create PresentationEventStore
@@ -110,11 +115,11 @@ public class PresentationSessionService {
 		return Optional.of(pollAnsweredDto);
 	}
 
-	private Poll getPollFromDbById(UUID pollFromDBId) {
-        Optional<PollResponseDto> pollResponseDtoOptional = pollService.getById(pollFromDBId);
-        var mapper = PollMapper.INSTANCE;
-        Poll poll = mapper.pollResponseDtoToPoll(pollResponseDtoOptional.get());
-        return poll;
-    }
+	public Poll getPollFromDbById(UUID pollFromDBId) {
+		Optional<PollResponseDto> pollResponseDtoOptional = pollService.getById(pollFromDBId);
+
+		Poll poll = mapperToPoll.pollResponseDtoToPoll(pollResponseDtoOptional.get());
+		return poll;
+	}
 
 }

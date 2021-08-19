@@ -11,7 +11,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PollCreatedEvent extends DomainEvent {
 
-    private final Poll poll;
+	private final Poll poll;
 
 	@Override
 	public void applyEvent(State state) {

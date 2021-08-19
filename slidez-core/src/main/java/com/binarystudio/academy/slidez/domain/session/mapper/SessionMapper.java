@@ -15,11 +15,6 @@ public interface SessionMapper {
 
 	Session mapSessionUpdateDtoToSession(SessionUpdateDto sessionUpdateDto);
 
-	@Mappings({ @Mapping(target = "id", source = "session.id"),
-			@Mapping(target = "presentationId", source = "session.presentation.id"),
-			@Mapping(target = "status", source = "session.status"),
-			@Mapping(target = "createdAt", source = "session.createdAt"),
-			@Mapping(target = "updatedAt", source = "session.updatedAt") })
 	SessionResponseDto mapSessionToSessionResponseDto(Session session);
 
 }
