@@ -1,4 +1,4 @@
 export type MessageTemplate<Type extends string, Data> = {
-    type: Type,
+    type: Type
     data: Data
 }

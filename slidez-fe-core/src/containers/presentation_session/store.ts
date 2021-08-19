@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import * as WebSocketService from '../../services/ws/ws-service'
 import { WsConnectionStatus } from './enums/ws-connection-status'
 import { RootState } from '../../store'
-import { GenericResponse } from '../../services/dto/GenericResponse'
+import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
 
 export interface PresentationSessionState {
     connectionStatus: string

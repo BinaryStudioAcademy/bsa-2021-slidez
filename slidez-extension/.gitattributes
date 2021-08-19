@@ -1,0 +1,5 @@
+# other files will have LF
+* text=lf
+
+*.tsx eol=lf 
+*.ts eol=lf 

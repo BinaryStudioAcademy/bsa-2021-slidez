@@ -18,6 +18,7 @@ import { MOCK_DATA } from './mock-data'
 import { useDetectOutsideClick } from './useDetectOutsideClick'
 import { useAppDispatch } from '../../hooks'
 import { logout } from '../../containers/user/store'
+import table_sort from '../../../src/assets/svgs/table-sort.svg'
 
 const Dashboard = () => {
     const [currentView, setCurrentView] = useState('table')
@@ -70,7 +71,13 @@ const Dashboard = () => {
 
     const renderTableHeader = () => {
         return tableHeader.map((value) => {
-            return <th key={value.id}>{value.header}</th>
+            return value.id === 3 || value.id === 4 ? (
+                <th key={value.id}>
+                    {value.header} <img src={table_sort} alt='sort'></img>
+                </th>
+            ) : (
+                <th key={value.id}>{value.header}</th>
+            )
         })
     }
 
@@ -120,7 +127,7 @@ const Dashboard = () => {
 
     return (
         <div className='dashboard-page'>
-            <SideBar></SideBar>
+            <SideBar />
             <div className='page-content'>
                 <div className='search-and-user'>
                     <div className='search-bar'>
@@ -133,7 +140,7 @@ const Dashboard = () => {
                             type='search'
                             placeholder='Search...'
                             onChange={handleChange}
-                        ></input>
+                        />
                     </div>
                     <div className='user-profile'>
                         <div className='user-avatar'>
@@ -157,7 +164,7 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <hr></hr>
+                                <hr />
                                 <a href=''>
                                     <FontAwesomeIcon
                                         className='user-icon'
@@ -206,7 +213,7 @@ const Dashboard = () => {
                                     />
                                 </label>
                             </div>
-                            <div className='verticalLine'></div>
+                            <div className='verticalLine' />
                             <div>
                                 <label>
                                     <input
@@ -248,7 +255,7 @@ const Dashboard = () => {
                                         <img
                                             className='card-img'
                                             src={md.pictureUrl}
-                                        ></img>
+                                        />
                                         <div className='card-name'>
                                             {md.name}
                                         </div>
