@@ -7,6 +7,7 @@ import { createDefaultAxios } from 'slidez-shared/src/net/http/http-util'
 import { RefreshTokensDto } from './dto/RefreshTokensDto'
 import { RefreshTokensResponseDto } from './dto/RefreshTokensResponseDto'
 import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
+import { ApiGateway } from '../http/api-gateway'
 
 const JWT = 'jwt'
 const refreshJWT = 'refresh_jwt'
@@ -16,7 +17,7 @@ const constructRoute = (endpoint: string) => {
 }
 
 const sendAuthRequest = async (route: string, body: object = {}) => {
-    const axiosInstance = createDefaultAxios()
+    const axiosInstance = createDefaultAxios(ApiGateway.REACT_APP_API_GATEWAY)
     return axiosInstance.request({
         url: route,
         method: 'POST',
