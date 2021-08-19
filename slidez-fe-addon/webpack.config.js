@@ -43,7 +43,7 @@ const devDialogEntry = './dev/index.js';
 // define client entry points and output names
 const clientEntrypoints = [
     {
-        name: 'CLIENT - Dialog Demo Sidebar',
+        name: 'CLIENT - Dialog Slidez addon',
         entry: './src/client/sidebar-add-on/index.tsx',
         filename: 'sidebar-add-on', // we'll add the .html suffix to these
         template: './src/client/sidebar-add-on/index.html',
