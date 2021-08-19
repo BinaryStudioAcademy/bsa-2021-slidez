@@ -22,7 +22,7 @@ class CurrentSlideWatcher {
         const svgContainerElem = this.getSvgContainerElem()
         const gElem = this.getGElem(svgContainerElem!)
         this.currentSlideId = gElem.id
-        this.changeContentIfNeeded()
+        this.changeContentIfNeeded(svgContainerElem!)
 
         this.slideSwitchMutationObserver = new MutationObserver(
             async (mutations) => {
@@ -36,7 +36,7 @@ class CurrentSlideWatcher {
                                 this.getSvgContainerElemWithParent(node)
                             const gElem = this.getGElem(svgContainerElem)
                             this.currentSlideId = gElem.id
-                            this.changeContentIfNeeded()
+                            this.changeContentIfNeeded(svgContainerElem!)
                         }
                     }
                 }
@@ -89,21 +89,20 @@ class CurrentSlideWatcher {
         }
     }
 
-    private changeContentToPoll() {
+    private changeContentToPoll(svgContainer: Element) {
         if (!this.currentSlideId) {
             return
         }
 
-        const svgContainer = this.getSvgContainerElem()!
         while (svgContainer.firstChild) {
             svgContainer.removeChild(svgContainer.firstChild)
         }
         ReactDOM.render(<Poll poll={poll} />, svgContainer)
     }
 
-    private changeContentIfNeeded() {
+    private changeContentIfNeeded(svgContainer: Element) {
         if (this.isInteractiveSlide()) {
-            this.changeContentToPoll()
+            this.changeContentToPoll(svgContainer)
         }
     }
 }
