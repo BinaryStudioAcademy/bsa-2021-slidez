@@ -31,7 +31,7 @@ import java.util.UUID;
 @Service
 public class PresentationSessionService {
 
-	private static final String MOCK_POLL_ID = "ed60e789-ab15-4756-b95e-218b43b6dfcf";
+	private static final String MOCK_DB_POLL_ID = "ed60e789-ab15-4756-b95e-218b43b6dfcf";
 
 	private final LinkService linkService;
 
@@ -59,7 +59,7 @@ public class PresentationSessionService {
 		// 1. Load all interactive elements for presentation
 		// 2. For each such element create event-initiator (like PollCreatedEvt)
 		// Hardcoded sample TO-DO
-		UUID pollFromDBId = UUID.fromString(MOCK_POLL_ID);
+		UUID pollFromDBId = UUID.fromString(MOCK_DB_POLL_ID);
 		Poll poll = getPollFromDbById(pollFromDBId);
 		DomainEvent event = new PollCreatedEvent(poll);
 
