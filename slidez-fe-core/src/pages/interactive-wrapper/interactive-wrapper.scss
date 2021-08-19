@@ -2,14 +2,18 @@
 
 .wrapper {
     display: flex;
-    width: 100%;
-    background-color: $grey-color;
+    height: available;
+    width: available;
+    background-color: #dddddd;
+    margin: 20px;
+    border-radius: 40px;
 }
 
 .wrapped-component {
     flex: 1;
-    margin-right: 15px;
-    margin-left: 10px;
+    padding-left: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
 
 .interactive-wrapper-sidebar{
@@ -28,18 +32,31 @@
     max-width: 80%;
 }
 
-.qr-code-holder{
+.container-with-centered-content {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: $light-color;
-    padding: 5%;
-    border-radius: 20px;
 }
 
 .link-holder{
     font-size: 34px;
     word-wrap: break-word;
-    color: $light-color;
+    color: $black;
     text-align: center;
+}
+
+.link-domain{
+    color: $black;
+    font-weight: bold;
+}
+
+.link-code {
+    color: $main-color;
+    font-weight: bold;
+}
+
+.qr-code-holder{
+    background-color: $light-color;
+    padding: 5%;
+    border-radius: 20px;
 }

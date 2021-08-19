@@ -1,5 +1,5 @@
 export * from './src/events';
-export *  from './src/web/http/http-helper';
+export *  from './src/net/http/http-helper';
 export * from './src/event-bus';
 export * from './src/chrome';
 
