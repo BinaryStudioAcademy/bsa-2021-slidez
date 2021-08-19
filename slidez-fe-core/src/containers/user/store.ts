@@ -13,6 +13,7 @@ import {
 } from '../../services/auth/auth-service'
 import { UserDetailsDto } from './dto/UserDetailsDto'
 import { TokenDto } from '../../services/auth/dto/TokenDto'
+import { CodeDto } from '../../services/auth/dto/CodeDto'
 
 export interface UserState {
     error?: string
@@ -46,14 +47,14 @@ export const loginByToken = createAsyncThunk(
 
 export const loginWithOAuthGoogle = createAsyncThunk(
     'user/login-with-oauth-google',
-    async (dto: TokenDto) => {
+    async (dto: CodeDto) => {
         return performLoginOAuthWithGoogle(dto)
     }
 )
 
 export const registerWithOAuthGoogle = createAsyncThunk(
     'user/register-with-oauth-google',
-    async (dto: TokenDto) => {
+    async (dto: CodeDto) => {
         return performRegisterOAuthWithGoogle(dto)
     }
 )

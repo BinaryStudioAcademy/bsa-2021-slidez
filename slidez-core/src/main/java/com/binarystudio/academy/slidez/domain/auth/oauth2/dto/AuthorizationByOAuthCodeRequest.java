@@ -3,8 +3,8 @@ package com.binarystudio.academy.slidez.domain.auth.oauth2.dto;
 import lombok.Data;
 
 @Data
-public class AuthorizationByOAuthTokenRequest {
+public class AuthorizationByOAuthCodeRequest {
 
-	private String token;
+	private String code;
 
 }
