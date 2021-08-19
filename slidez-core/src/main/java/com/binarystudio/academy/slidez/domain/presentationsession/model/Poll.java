@@ -1,28 +1,35 @@
 package com.binarystudio.academy.slidez.domain.presentationsession.model;
 
 import com.binarystudio.academy.slidez.domain.presentationsession.exception.BadOptionException;
-import lombok.Value;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Value
+@Data
 public class Poll {
+    private UUID id;
 
-	UUID id = UUID.randomUUID();
+    private String name;
 
-	String name;
+    private List<PollOption> options;
 
-	List<String> options;
+    private List<UUID> answers = new ArrayList<>();
 
-	List<Integer> answers = new ArrayList<>();
+    public Poll(UUID id, String name, List<PollOption> options) {
+        this.name = name;
+        this.options = options;
+        if (id != null) {
+            this.id = id;
+        }
+    }
 
-	public void addAnswer(int optionId) throws BadOptionException {
-		if (optionId < 0 || optionId >= options.size()) {
-			throw new BadOptionException(String.format("Option should be in range 0...%d;", options.size()));
-		}
-
+	public void addAnswer(UUID optionId) throws BadOptionException {
+        options.stream()
+            .filter(option -> optionId.equals(option.getId()))
+            .findFirst()
+            .orElseThrow(() -> new BadOptionException(String.format("Option with ID %s not found", optionId)));
 		answers.add(optionId);
 	}
 
