@@ -12,11 +12,11 @@ import './dashboard.scss'
 const UserProfile = () => {
     const JWT = 'jwt'
     const refreshJWT = 'refresh_jwt'
+    const dispatch = useAppDispatch()
+    const dropdownRef = useRef<HTMLInputElement>(null)
     const [token, setToken] = useState('')
     const [userFirstName, setUserFirstName] = useState<string | undefined>('')
-    const dropdownRef = useRef<HTMLInputElement>(null)
     const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
-    const dispatch = useAppDispatch()
     const [userLastName, setUserLastName] = useState<string | undefined>('')
     const [userEmail, setUserEmail] = useState<string | undefined>('')
     const [logo, setLogo] = useState('')
