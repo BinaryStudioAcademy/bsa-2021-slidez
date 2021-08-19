@@ -53,7 +53,8 @@ dependencies {
 
 	implementation 'com.sendgrid:sendgrid-java:4.7.2'
     implementation 'com.google.code.findbugs:jsr305:3.0.0'
-
+    implementation 'com.google.apis:google-api-services-slides:v1-rev294-1.23.0'
+    implementation 'com.google.api-client:google-api-client:1.23.0'
     compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'

@@ -197,6 +197,7 @@ const RegistrationForm = ({
                     onSuccess={handleRegisterWithGoogle}
                     redirectUri={GoogleOAuth.GOOGLE_REDIRECT_URI}
                     cookiePolicy={GoogleOAuth.GOOGLE_COOKIE_POLICY}
+                    scope='https://www.googleapis.com/auth/presentations'
                     render={(renderProps) => (
                         <button
                             onClick={renderProps.onClick}
