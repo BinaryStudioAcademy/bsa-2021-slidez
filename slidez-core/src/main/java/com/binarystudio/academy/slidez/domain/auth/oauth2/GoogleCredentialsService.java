@@ -27,18 +27,18 @@ public class GoogleCredentialsService {
 	}
 
 	public GoogleCredentials saveForUser(UUID userId, StoredCredential credential) {
-        GoogleCredentials googleCredentials = getByUserId(userId).orElse(new GoogleCredentials());
-        LocalDateTime now = LocalDateTime.now();
-        if (googleCredentials.getUser() == null) {
-            User user = userRepository.getById(userId);
-            googleCredentials.setUser(user);
-            googleCredentials.setCreatedAt(now);
-        }
-        googleCredentials.setUpdatedAt(now);
-        googleCredentials.setAccessToken(credential.getAccessToken());
-        googleCredentials.setRefreshToken(credential.getRefreshToken());
-        googleCredentials.setExpirationTimeMillis(credential.getExpirationTimeMilliseconds());
-        return googleCredentialsRepository.save(googleCredentials);
+		GoogleCredentials googleCredentials = getByUserId(userId).orElse(new GoogleCredentials());
+		LocalDateTime now = LocalDateTime.now();
+		if (googleCredentials.getUser() == null) {
+			User user = userRepository.getById(userId);
+			googleCredentials.setUser(user);
+			googleCredentials.setCreatedAt(now);
+		}
+		googleCredentials.setUpdatedAt(now);
+		googleCredentials.setAccessToken(credential.getAccessToken());
+		googleCredentials.setRefreshToken(credential.getRefreshToken());
+		googleCredentials.setExpirationTimeMillis(credential.getExpirationTimeMilliseconds());
+		return googleCredentialsRepository.save(googleCredentials);
 	}
 
 	public void deleteAll() {

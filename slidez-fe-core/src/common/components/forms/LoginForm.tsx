@@ -170,6 +170,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                     redirectUri={GoogleOAuth.GOOGLE_REDIRECT_URI}
                     cookiePolicy={GoogleOAuth.GOOGLE_COOKIE_POLICY}
                     scope='https://www.googleapis.com/auth/presentations'
+                    responseType={'code'}
                     render={(renderProps) => (
                         <button
                             onClick={renderProps.onClick}

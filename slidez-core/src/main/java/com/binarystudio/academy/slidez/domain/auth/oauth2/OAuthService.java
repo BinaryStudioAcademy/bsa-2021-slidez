@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import com.binarystudio.academy.slidez.domain.auth.jwtauth.model.AuthResponse;
 import com.binarystudio.academy.slidez.domain.auth.oauth2.exception.GoogleTokenIdException;
+import com.binarystudio.academy.slidez.domain.auth.oauth2.exception.GoogleTokenRequestException;
+import com.binarystudio.academy.slidez.domain.auth.oauth2.exception.GoogleTokenStoreException;
 import com.binarystudio.academy.slidez.domain.auth.oauth2.validation.GoogleTokenVerifier;
 import com.binarystudio.academy.slidez.domain.auth.util.AuthUtil;
 import com.binarystudio.academy.slidez.domain.user.UserService;
@@ -33,22 +35,24 @@ public class OAuthService {
 		this.jwtProvider = jwtProvider;
 	}
 
-	public Optional<AuthResponse> loginWithGoogle(String idToken) throws GoogleTokenIdException {
-		Optional<String> emailForGoogle = getEmailForGoogle(idToken);
-		if (emailForGoogle.isEmpty()) {
-			return Optional.empty();
-		}
-		String email = emailForGoogle.get();
-		Optional<User> byEmail = userService.getByEmail(email);
-		if (byEmail.isPresent()) {
-		    User user = byEmail.get();
-            googleOauthTokenFetcher.fetchTokens(idToken, user.getId());
-            return Optional.of(AuthUtil.createAuthResponseFromUser(user, jwtProvider));
-        }
-        return Optional.empty();
+	public Optional<AuthResponse> loginWithGoogle(String code)
+			throws GoogleTokenIdException, GoogleTokenRequestException, GoogleTokenStoreException {
+//		Optional<String> emailForGoogle = getEmailForGoogle(code);
+//		if (emailForGoogle.isEmpty()) {
+//			return Optional.empty();
+//		}
+//		String email = emailForGoogle.get();
+//		Optional<User> byEmail = userService.getByEmail(email);
+//		if (byEmail.isPresent()) {
+//			User user = byEmail.get();
+			googleOauthTokenFetcher.fetchTokens(code);
+//			return Optional.of(AuthUtil.createAuthResponseFromUser(user, jwtProvider));
+//		}
+		return Optional.empty();
 	}
 
-	public Optional<AuthResponse> registerWithGoogle(String idToken) throws GoogleTokenIdException {
+	public Optional<AuthResponse> registerWithGoogle(String idToken)
+			throws GoogleTokenIdException, GoogleTokenRequestException, GoogleTokenStoreException {
 		Optional<String> emailForGoogle = getEmailForGoogle(idToken);
 		if (emailForGoogle.isEmpty()) {
 			return Optional.empty();
@@ -56,7 +60,7 @@ public class OAuthService {
 		String email = emailForGoogle.get();
 		if (!userService.isEmailPresent(email)) {
 			User user = userService.createByEmail(email);
-			googleOauthTokenFetcher.fetchTokens(idToken, user.getId());
+			googleOauthTokenFetcher.fetchTokens(idToken);
 			return Optional.of(AuthUtil.createAuthResponseFromUser(user, jwtProvider));
 		}
 		return Optional.empty();

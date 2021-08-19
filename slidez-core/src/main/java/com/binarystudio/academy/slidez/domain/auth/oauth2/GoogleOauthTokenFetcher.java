@@ -25,6 +25,8 @@ public class GoogleOauthTokenFetcher {
 
 	private static final String PRESENTATION_SCOPE = "https://www.googleapis.com/auth/presentations";
 
+	private static final String REDIRECT_URI = "postmessage";
+
 	private final OAuth2Properties oAuth2Properties;
 
 	private final GoogleDataStoreFactory googleDataStoreFactory;
@@ -39,7 +41,7 @@ public class GoogleOauthTokenFetcher {
 		this.googleCredentialsService = googleCredentialsService;
 	}
 
-	public Credential fetchTokens(String tokenId, UUID userId)
+	public Credential fetchTokens(String code)
 			throws GoogleTokenRequestException, GoogleTokenStoreException {
 		final GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(TRANSPORT, JSON_FACTORY,
 				oAuth2Properties.getClientId(), oAuth2Properties.getClientSecret(), List.of(PRESENTATION_SCOPE))
@@ -47,17 +49,22 @@ public class GoogleOauthTokenFetcher {
 						.build();
 		GoogleTokenResponse tokens;
 		try {
-			tokens = flow.newTokenRequest(tokenId).execute();
+			tokens = flow.newTokenRequest(code)
+                .setRedirectUri(REDIRECT_URI)
+                .execute();
 		}
 		catch (IOException e) {
 			throw new GoogleTokenRequestException("Google token request has failed", e);
 		}
-		try {
-			return flow.createAndStoreCredential(tokens, userId.toString());
-		}
-		catch (IOException e) {
-			throw new GoogleTokenStoreException("Storing google token has failed", e);
-		}
+        System.out.println(tokens.getIdToken());
+
+//		try {
+//			return flow.createAndStoreCredential(tokens, userId.toString());
+//		}
+//		catch (IOException e) {
+//			throw new GoogleTokenStoreException("Storing google token has failed", e);
+//		}
+        return null;
 	}
 
 }
