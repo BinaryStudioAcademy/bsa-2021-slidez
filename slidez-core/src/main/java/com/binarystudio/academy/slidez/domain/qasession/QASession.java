@@ -1,8 +1,6 @@
-package com.binarystudio.academy.slidez.domain.presentationiteractiveelement.model;
+package com.binarystudio.academy.slidez.domain.qasession;
 
-import com.binarystudio.academy.slidez.domain.poll.model.Poll;
-import com.binarystudio.academy.slidez.domain.qasession.QASession;
-import com.binarystudio.academy.slidez.domain.quiz.Quiz;
+import com.binarystudio.academy.slidez.domain.presentationiteractiveelement.model.PresentationInteractiveElement;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -25,8 +22,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "presentation_interactive_element")
-public class PresentationInteractiveElement {
+@Table(name = "qa_sessions")
+public class QASession {
 
 	@Id
 	@GeneratedValue(generator = "UUID")
@@ -34,16 +31,14 @@ public class PresentationInteractiveElement {
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 
-	@Column(name = "type")
-	private PresentationInteractiveElementType type;
+	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
+	private PresentationInteractiveElement owner;
 
-	@Column(name = "slide_id")
-	private String slideId;
+	@Column(name = "title")
+	private String title;
 
-	@Column(name = "created_at", columnDefinition = "TIMESTAMP")
-	private LocalDateTime createdAt;
-
-	@Column(name = "updated_at", columnDefinition = "TIMESTAMP")
-	private LocalDateTime updatedAt;
+	@Column(name = "is_moderated")
+	private boolean isModerated;
 
 }
