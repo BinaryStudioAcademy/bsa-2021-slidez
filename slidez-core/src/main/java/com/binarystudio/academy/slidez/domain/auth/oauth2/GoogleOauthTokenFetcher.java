@@ -1,37 +1,63 @@
 package com.binarystudio.academy.slidez.domain.auth.oauth2;
 
-import com.google.api.client.auth.oauth2.StoredCredential;
+import com.binarystudio.academy.slidez.domain.auth.oauth2.exception.GoogleTokenRequestException;
+import com.binarystudio.academy.slidez.domain.auth.oauth2.exception.GoogleTokenStoreException;
+import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.client.util.store.DataStore;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class GoogleOauthTokenFetcher {
-    private static final JsonFactory JSON_FACTORY = new GsonFactory();
-    private static final HttpTransport TRANSPORT = new NetHttpTransport();
-    private static final String PRESENTATION_SCOPE = "https://www.googleapis.com/auth/presentations";
 
-    public void fetchTokens(String tokenId, UUID userId) throws IOException {
-        final var flow = new GoogleAuthorizationCodeFlow.Builder(
-            TRANSPORT,
-            JSON_FACTORY,
-            "cliendId",
-            "clientSecret",
-            List.of("https://www.googleapis.com/auth/presentations")
-        )
-            //replace with real data store
-            .setCredentialDataStore((DataStore<StoredCredential>) new Object())
-            .build();
+	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
 
-        final var tokens = flow.newTokenRequest(tokenId).execute();
-        var creds = flow.createAndStoreCredential(tokens, userId.toString());
-        //todo: return creds if necessary or save them for a user
-    }
+	private static final HttpTransport TRANSPORT = new NetHttpTransport();
+
+	private static final String PRESENTATION_SCOPE = "https://www.googleapis.com/auth/presentations";
+
+	private final OAuth2Properties oAuth2Properties;
+
+	private final GoogleDataStoreFactory googleDataStoreFactory;
+
+	private final GoogleCredentialsService googleCredentialsService;
+
+	@Autowired
+	public GoogleOauthTokenFetcher(OAuth2Properties oAuth2Properties, GoogleDataStoreFactory googleDataStoreFactory,
+			GoogleCredentialsService googleCredentialsService) {
+		this.oAuth2Properties = oAuth2Properties;
+		this.googleDataStoreFactory = googleDataStoreFactory;
+		this.googleCredentialsService = googleCredentialsService;
+	}
+
+	public Credential fetchTokens(String tokenId, UUID userId)
+			throws GoogleTokenRequestException, GoogleTokenStoreException {
+		final GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(TRANSPORT, JSON_FACTORY,
+				oAuth2Properties.getClientId(), oAuth2Properties.getClientSecret(), List.of(PRESENTATION_SCOPE))
+						.setCredentialDataStore(new GoogleDataStore(googleDataStoreFactory, googleCredentialsService))
+						.build();
+		GoogleTokenResponse tokens;
+		try {
+			tokens = flow.newTokenRequest(tokenId).execute();
+		}
+		catch (IOException e) {
+			throw new GoogleTokenRequestException("Google token request has failed", e);
+		}
+		try {
+			return flow.createAndStoreCredential(tokens, userId.toString());
+		}
+		catch (IOException e) {
+			throw new GoogleTokenStoreException("Storing google token has failed", e);
+		}
+	}
+
 }

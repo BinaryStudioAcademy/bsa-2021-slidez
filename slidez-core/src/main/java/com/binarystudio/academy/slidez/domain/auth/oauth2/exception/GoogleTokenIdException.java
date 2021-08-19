@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.auth.oauth2;
+package com.binarystudio.academy.slidez.domain.auth.oauth2.exception;
 
 import com.binarystudio.academy.slidez.domain.exception.DomainException;
 
