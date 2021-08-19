@@ -1,9 +1,5 @@
 package com.binarystudio.academy.slidez.app.user;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 import com.binarystudio.academy.slidez.domain.auth.jwtauth.model.AuthorizationByTokenRequest;
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import com.binarystudio.academy.slidez.domain.user.UserService;
@@ -13,9 +9,12 @@ import com.binarystudio.academy.slidez.domain.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 @RestController
 @RequestMapping("${v1API}/users")
-@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     private final UserService userService;
@@ -44,14 +43,14 @@ public class UserController {
             return new GenericResponse<>(null, UserResponseCodes.NOT_FOUND);
         }
 
-        return new GenericResponse <>(userOptional, null);
+        return new GenericResponse<>(userOptional, null);
     }
 
     //not working
     @GetMapping("userInfo")
     public GenericResponse<UserDetailsDto, UserResponseCodes> getByToken(@RequestParam("token") AuthorizationByTokenRequest authorizationByTokenRequest) {
         Optional<User> userOptional = this.userService.getByToken(authorizationByTokenRequest);
-        if(userOptional.isEmpty()) {
+        if (userOptional.isEmpty()) {
             return new GenericResponse<>(null, UserResponseCodes.NOT_FOUND);
         }
 
