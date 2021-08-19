@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.domain.presentation.model;
 
+import com.binarystudio.academy.slidez.domain.presentationiteractiveelement.model.PresentationInteractiveElement;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import lombok.*;
@@ -48,5 +49,9 @@ public class Presentation {
 	@JoinColumn(name = "user_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "presentation_id")
+	private Set<PresentationInteractiveElement> presentationInteractiveElements;
 
 }
