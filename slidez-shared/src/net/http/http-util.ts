@@ -1,9 +1,8 @@
 import axios from 'axios'
-import { ApiGateway } from './api-gateway'
 
-export const createDefaultAxios = () => {
+export const createDefaultAxios = (baseUrl: string) => {
     return axios.create({
-        baseURL: ApiGateway.REACT_APP_API_GATEWAY,
+        baseURL: baseUrl,
         timeout: 2500,
         headers: {
             'Access-Control-Allow-Origin': '*',
