@@ -245,7 +245,9 @@ const Dashboard = () => {
                                     </tbody>
                                 </table>
                                 <div className='no-found-presentations'>
-                                    {isNotEmptyPresentation()}
+                                    <span className='text-no-found'>
+                                        {isNotEmptyPresentation()}
+                                    </span>
                                 </div>
                             </div>
                         ) : (
@@ -282,7 +284,9 @@ const Dashboard = () => {
                                     </div>
                                 ))}
                                 <div className='no-found-presentations'>
-                                    {isNotEmptyPresentation()}
+                                    <span className='text-no-found'>
+                                        {isNotEmptyPresentation()}
+                                    </span>
                                 </div>
                             </div>
                         )}

@@ -337,12 +337,20 @@
 	}
 }
 .no-found-presentations {
-    display:flex;
+	display: flex;
     justify-content: center;
     align-content: center;
     font-weight: 400;
     font-size: 16px;
-    margin-top: 20px;
+	.text-no-found {
+		top: 50%;
+		position: absolute;
+		left: 0px;
+		right: 0px;
+		overflow-wrap: break-word;
+		word-wrap: break-word;
+		text-align: center;
+	}
 }
 #table-presentation {
 	text-align: center;
