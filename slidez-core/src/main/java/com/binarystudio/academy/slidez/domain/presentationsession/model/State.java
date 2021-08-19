@@ -1,7 +1,7 @@
 package com.binarystudio.academy.slidez.domain.presentationsession.model;
 
+import com.binarystudio.academy.slidez.domain.poll.exception.PollNotFoundException;
 import com.binarystudio.academy.slidez.domain.presentationsession.exception.BadOptionException;
-import com.binarystudio.academy.slidez.domain.presentationsession.exception.PollNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Collections;

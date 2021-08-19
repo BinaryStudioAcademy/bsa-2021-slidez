@@ -1,11 +1,14 @@
 import { CLASS_NAME_PUNCH_PRESENT_IFRAME } from '../dom/dom-constants'
 import { queryElement } from '../dom/dom-helpers'
+import CurrentSlideWatcher from './current-slide-watcher/current-slide-watcher'
 
 class PresentMode {
     private iframe?: HTMLIFrameElement
 
     private presentModeStartMutationObserver?: MutationObserver
     private presentModeEndMutationObserver?: MutationObserver
+
+    private currentSlideWatcher?: CurrentSlideWatcher
 
     get document() {
         return this.iframe?.contentDocument
@@ -41,22 +44,33 @@ class PresentMode {
         )
         this.watchPresentModeEnd()
 
-        // const alreadyLoaded = this.document!.readyState === 'complete' && this.window!.location.href !== 'about:blank';
-        // if (alreadyLoaded) {
-        //     this.onPresentModeLoad();
-        // } else {
-        //     this.iframe.onload = () => this.onPresentModeLoad();
-        // }
-        this.onPresentModeLoad()
+        const alreadyLoaded =
+            this.document!.readyState === 'complete' &&
+            this.window!.location.href !== 'about:blank'
+        if (alreadyLoaded) {
+            this.currentSlideWatcher = new CurrentSlideWatcher(this.document!)
+            this.onPresentModeLoad()
+        } else {
+            this.iframe!.onload = () => {
+                this.currentSlideWatcher = new CurrentSlideWatcher(
+                    this.document!
+                )
+                this.onPresentModeLoad()
+            }
+        }
     }
 
     private onPresentModeLoad() {
-        // check if all content is loaded
-        // throw new Event
-        console.log('Present mode started')
+        ;(async () => {
+            this.injectStyles()
+            // throw new Event
+            console.log('Present mode started')
+            this.currentSlideWatcher!.init()
+        })()
     }
 
     private onPresentModeEnd() {
+        this.currentSlideWatcher!.destroy()
         this.watchPresentModeStart()
         // throw new Event
         console.log('Present mode ended')
@@ -115,6 +129,19 @@ class PresentMode {
             childList: true,
             subtree: true,
         })
+    }
+
+    private injectStyles() {
+        //WARNING: leaving console.log for debug purposes, stylesheets are a bit unstable
+        console.log('Injecting css')
+        const style = document.createElement('link')
+        style.rel = 'stylesheet'
+        style.type = 'text/css'
+        style.href = chrome.extension.getURL('static/css/content_script.css')
+        console.log('Appending style', style)
+        const mount = this.document!.head ?? this.document!.documentElement
+        console.log('Appending to', mount)
+        mount.appendChild(style)
     }
 }
 

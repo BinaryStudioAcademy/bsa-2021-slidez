@@ -17,7 +17,8 @@
         {
             "matches": ["<all_urls>"],
             "js": ["js/vendor.js", "js/content_script.js"],
-            "run_at": "document_end"
+            "run_at": "document_end",
+            "css": ["static/css/content_script.css"]
         }
     ],
     "background": {
@@ -35,6 +36,7 @@
         "storage",
         "notifications"
     ],
+    "web_accessible_resources": ["static/css/content_script.css"]
     "host_permissions": [
         "http://localhost",
         "http://bsa2021slidez-env.eba-b3mmt3yw.eu-west-1.elasticbeanstalk.com/"
