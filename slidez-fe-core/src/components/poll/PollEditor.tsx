@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Formik, Form, Field, FieldArray } from 'formik'
 
 import './PollEditor.scss'
@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import { ApiGateway } from '../../services/http/api-gateway'
+import { PollDto } from '../../containers/presentation_session/dto/PollDto'
 
 const PollEditor = () => {
     const OptionsArray = () => {
@@ -83,19 +84,17 @@ const PollEditor = () => {
         )
     }
 
-    const handleClick = () => {
-        axios
-            .get(`${ApiGateway.REACT_APP_API_GATEWAY}polls`)
-            .then((response) => {
-                console.log(response.data)
-            })
+    const initialValues: PollDto = {
+        id: '',
+        name: '',
+        options: [],
+        answers: [],
     }
 
-    const handleSend = (name: string) => {
-        axios.post('api/v1/polls', name).then((response) => {
-            console.log(name)
-            console.log(response.data)
-        })
+    const [poll, setPoll] = useState<PollDto>(initialValues)
+
+    const handleSend = (values: typeof poll) => {
+        axios.post(`${ApiGateway.REACT_APP_API_GATEWAY}polls`, values)
     }
 
     return (
@@ -105,7 +104,7 @@ const PollEditor = () => {
                 Live poll
             </h2>
             <Formik
-                initialValues={{ name: '' }}
+                initialValues={poll}
                 onSubmit={async (values) => {
                     await new Promise((resolve) => setTimeout(resolve, 500))
                     alert(JSON.stringify(values, null, 2))
@@ -135,7 +134,7 @@ const PollEditor = () => {
                                     type='button'
                                     className='btn-submit'
                                     onClick={() => {
-                                        handleClick()
+                                        handleSend(values)
                                     }}
                                 >
                                     Submit
