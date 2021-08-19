@@ -12,7 +12,6 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,30 +40,32 @@ public class GoogleOauthTokenFetcher {
 		this.googleCredentialsService = googleCredentialsService;
 	}
 
-	public Credential fetchTokens(String code)
-			throws GoogleTokenRequestException, GoogleTokenStoreException {
-		final GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(TRANSPORT, JSON_FACTORY,
-				oAuth2Properties.getClientId(), oAuth2Properties.getClientSecret(), List.of(PRESENTATION_SCOPE))
-						.setCredentialDataStore(new GoogleDataStore(googleDataStoreFactory, googleCredentialsService))
-						.build();
-		GoogleTokenResponse tokens;
+	public GoogleTokenResponse getGoogleTokenResponse(String code) throws GoogleTokenRequestException {
+		GoogleAuthorizationCodeFlow flow = buildFlow();
 		try {
-			tokens = flow.newTokenRequest(code)
-                .setRedirectUri(REDIRECT_URI)
-                .execute();
+			return flow.newTokenRequest(code).setRedirectUri(REDIRECT_URI).execute();
 		}
-		catch (IOException e) {
+		catch (Throwable e) {
 			throw new GoogleTokenRequestException("Google token request has failed", e);
 		}
-        System.out.println(tokens.getIdToken());
+	}
 
-//		try {
-//			return flow.createAndStoreCredential(tokens, userId.toString());
-//		}
-//		catch (IOException e) {
-//			throw new GoogleTokenStoreException("Storing google token has failed", e);
-//		}
-        return null;
+	public Credential createAndStoreCredential(GoogleTokenResponse googleTokenResponse, UUID userId)
+			throws GoogleTokenStoreException {
+		GoogleAuthorizationCodeFlow flow = buildFlow();
+		try {
+			return flow.createAndStoreCredential(googleTokenResponse, userId.toString());
+		}
+		catch (Throwable e) {
+			throw new GoogleTokenStoreException("Storing google token has failed", e);
+		}
+	}
+
+	private GoogleAuthorizationCodeFlow buildFlow() {
+		return new GoogleAuthorizationCodeFlow.Builder(TRANSPORT, JSON_FACTORY, oAuth2Properties.getClientId(),
+				oAuth2Properties.getClientSecret(), List.of(PRESENTATION_SCOPE))
+						.setCredentialDataStore(new GoogleDataStore(googleDataStoreFactory, googleCredentialsService))
+						.build();
 	}
 
 }

@@ -30,7 +30,8 @@ public class OAuthController {
 	public GenericResponse<AuthResponse, AuthResponseCodes> loginWithGoogle(
 			@RequestBody AuthorizationByOAuthCodeRequest authorizationByOAuthCodeRequest) {
 		try {
-			Optional<AuthResponse> authResponse = oAuthService.loginWithGoogle(authorizationByOAuthCodeRequest.getCode());
+			Optional<AuthResponse> authResponse = oAuthService
+					.loginWithGoogle(authorizationByOAuthCodeRequest.getCode());
 			if (authResponse.isEmpty()) {
 				return new GenericResponse<>(null, AuthResponseCodes.UNAUTHORIZED);
 			}
@@ -44,17 +45,17 @@ public class OAuthController {
 	@PostMapping("/register/google")
 	public GenericResponse<AuthResponse, AuthResponseCodes> registerWithGoogle(
 			@RequestBody AuthorizationByOAuthCodeRequest authorizationByOAuthCodeRequest) {
-//		try {
-//			Optional<AuthResponse> authResponse = oAuthService
-//					.registerWithGoogle(authorizationByTokenRequest.getToken());
-//			if (authResponse.isEmpty()) {
-//				return new GenericResponse<>(null, AuthResponseCodes.UNAUTHORIZED);
-//			}
-//			return new GenericResponse<>(authResponse.get());
-//		}
-//		catch (GoogleTokenIdException e) {
+		try {
+			Optional<AuthResponse> authResponse = oAuthService
+					.registerWithGoogle(authorizationByOAuthCodeRequest.getCode());
+			if (authResponse.isEmpty()) {
+				return new GenericResponse<>(null, AuthResponseCodes.UNAUTHORIZED);
+			}
+			return new GenericResponse<>(authResponse.get());
+		}
+		catch (GoogleTokenIdException e) {
 			return new GenericResponse<>(null, AuthResponseCodes.INVALID_TOKEN);
-//		}
+		}
 	}
 
 }
