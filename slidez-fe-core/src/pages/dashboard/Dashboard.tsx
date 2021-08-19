@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faList,
@@ -7,28 +7,20 @@ import {
     faUsers,
     faChalkboard,
     faEllipsisV,
-    faUser,
-    faCog,
-    faSignOutAlt,
     faEllipsisH,
 } from '@fortawesome/free-solid-svg-icons'
 import SideBar from './SideBar'
 import './dashboard.scss'
 import { MOCK_DATA } from './mock-data'
-import { useDetectOutsideClick } from './useDetectOutsideClick'
-import { useAppDispatch } from '../../hooks'
-import { logout } from '../../containers/user/store'
+import UserProfile from './UserProfile'
 import table_sort from '../../../src/assets/svgs/table-sort.svg'
 
 const Dashboard = () => {
     const [currentView, setCurrentView] = useState('table')
     const [activeButton, setActiveButton] = useState(false)
-    const dropdownRef = useRef<HTMLInputElement>(null)
-    const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
     const [searchField, setSearchField] = useState('')
     const [filteredPresentations, setFilteredPresentations] =
         useState(MOCK_DATA)
-    const dispatch = useAppDispatch()
 
     const handleToggleCurrentView = useCallback(() => {
         setCurrentView((view) => (view === 'table' ? 'grid' : 'table'))
@@ -36,14 +28,6 @@ const Dashboard = () => {
 
     const handleClickedButton = () => {
         setActiveButton(!activeButton)
-    }
-
-    const handleDropDown = () => {
-        setIsActive(!isActive)
-    }
-
-    const handleLogout = () => {
-        dispatch(logout())
     }
 
     const tableHeader = [
@@ -142,53 +126,7 @@ const Dashboard = () => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className='user-profile'>
-                        <div className='user-avatar'>
-                            <div onClick={handleDropDown} className='avatar'>
-                                WH
-                            </div>
-                            <div
-                                ref={dropdownRef}
-                                className={`dropdown-content ${
-                                    isActive ? 'active' : 'inactive'
-                                }`}
-                            >
-                                <div className='user-info'>
-                                    <div className='avatar'>WH</div>
-                                    <div>
-                                        <div className='user-name'>
-                                            Wilson Herwitz
-                                        </div>
-                                        <div className='user-email'>
-                                            herwitz@example.com
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr />
-                                <a href=''>
-                                    <FontAwesomeIcon
-                                        className='user-icon'
-                                        icon={faUser}
-                                    />
-                                    Edit profile
-                                </a>
-                                <a href=''>
-                                    <FontAwesomeIcon
-                                        className='user-icon'
-                                        icon={faCog}
-                                    />
-                                    Setting
-                                </a>
-                                <a href='' onClick={handleLogout}>
-                                    <FontAwesomeIcon
-                                        className='user-icon'
-                                        icon={faSignOutAlt}
-                                    />
-                                    Log out
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    <UserProfile />
                 </div>
                 <div className='presentations-section'>
                     <div className='above-section'>
