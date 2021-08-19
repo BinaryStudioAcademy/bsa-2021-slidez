@@ -1,4 +1,4 @@
-create collation case_insensitive
+create collation IF NOT EXISTS case_insensitive
 (
 	provider = icu,
 	locale = 'und-u-ks-level2',
