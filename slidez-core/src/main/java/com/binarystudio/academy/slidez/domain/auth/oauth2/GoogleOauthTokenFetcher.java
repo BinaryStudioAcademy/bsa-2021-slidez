@@ -65,6 +65,7 @@ public class GoogleOauthTokenFetcher {
 		return new GoogleAuthorizationCodeFlow.Builder(TRANSPORT, JSON_FACTORY, oAuth2Properties.getClientId(),
 				oAuth2Properties.getClientSecret(), List.of(PRESENTATION_SCOPE))
 						.setCredentialDataStore(new GoogleDataStore(googleDataStoreFactory, googleCredentialsService))
+                        .setAccessType("offline")
 						.build();
 	}
 
