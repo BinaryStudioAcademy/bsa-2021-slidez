@@ -6,7 +6,11 @@ import {
 import { insertStyles, queryElement } from '../../dom/dom-helpers'
 import './SlideIframe.scss'
 
-function SlideIframe() {
+type SlideIframeProps = {
+    sourceUrl: string
+}
+
+function SlideIframe({ sourceUrl }: SlideIframeProps) {
     useEffect(() => {
         const slideIframeDoc = queryElement<HTMLIFrameElement>(
             document,
@@ -24,7 +28,7 @@ function SlideIframe() {
     return (
         <iframe
             className={CLASS_NAME_INTERACTIVE_SLIDE_IFRAME}
-            src='http://localhost:3000/#/interactive'
+            src={sourceUrl}
             title='Interactive element'
         ></iframe>
     )

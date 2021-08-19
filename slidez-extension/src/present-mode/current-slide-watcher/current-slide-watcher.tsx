@@ -94,7 +94,7 @@ class CurrentSlideWatcher {
             return
         }
 
-        ReactDOM.render(<SlideIframe />, svgContainer)
+        ReactDOM.render(<SlideIframe sourceUrl='http://localhost:3000/#/interactive'/>, svgContainer)
     }
 
     private replaceContentIfNeeded(svgContainer: Element) {
