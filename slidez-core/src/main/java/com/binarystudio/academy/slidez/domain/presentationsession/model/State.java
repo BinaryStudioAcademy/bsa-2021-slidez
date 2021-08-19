@@ -32,7 +32,7 @@ public class State {
         Optional<PollResponseDto> pollResponseDtoOptional = pollService.getById(pollId);
         PollResponseDto pollResponseDto = pollResponseDtoOptional.orElseThrow(() ->
             new PollNotFoundException(String.format("Poll with id %s not found in the DB", pollId)));
-        Poll poll = PollMapper.INSTANCE.PollResponseDtoToPoll(pollResponseDto);
+        Poll poll = PollMapper.INSTANCE.pollResponseDtoToPoll(pollResponseDto);
         polls.add(poll);
     }
 

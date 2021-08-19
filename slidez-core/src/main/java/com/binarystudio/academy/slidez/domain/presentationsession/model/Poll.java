@@ -17,9 +17,8 @@ public class Poll {
 
     private List<UUID> answers = new ArrayList<>();
 
-    public Poll(UUID id, String name, List<PollOption> options) {
+    public Poll(UUID id, String name) {
         this.name = name;
-        this.options = options;
         if (id != null) {
             this.id = id;
         }

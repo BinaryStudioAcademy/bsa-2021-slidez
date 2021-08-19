@@ -9,6 +9,6 @@ public class AnswerPollDto {
 
 	private UUID pollId;
 
-	private int option;
+	private UUID optionId;
 
 }

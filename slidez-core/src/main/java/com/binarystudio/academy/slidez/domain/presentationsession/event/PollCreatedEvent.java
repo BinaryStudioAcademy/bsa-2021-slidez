@@ -15,11 +15,9 @@ public class PollCreatedEvent extends DomainEvent {
 
     private final UUID pollID;
 
-	private final List<PollOption> pollOptions;
-
 	@Override
 	public void applyEvent(State state) {
-		state.addPoll(new Poll(pollID, pollName, pollOptions));
+		state.addPoll(new Poll(pollID, pollName));
 	}
 
 }
