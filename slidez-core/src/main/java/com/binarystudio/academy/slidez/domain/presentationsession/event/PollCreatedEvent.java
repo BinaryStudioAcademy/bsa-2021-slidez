@@ -11,13 +11,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PollCreatedEvent extends DomainEvent {
 
-	private final String pollName;
-
-    private final UUID pollID;
+    private final Poll poll;
 
 	@Override
 	public void applyEvent(State state) {
-		state.addPoll(new Poll(pollID, pollName));
+		state.addPoll(poll);
 	}
 
 }

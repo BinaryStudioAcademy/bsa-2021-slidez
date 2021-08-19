@@ -3,6 +3,8 @@ package com.binarystudio.academy.slidez.domain.presentationsession;
 import com.binarystudio.academy.slidez.domain.link.LinkService;
 import com.binarystudio.academy.slidez.domain.link.exception.IncorrectLeaseDurationException;
 import com.binarystudio.academy.slidez.domain.link.model.Link;
+import com.binarystudio.academy.slidez.domain.poll.PollService;
+import com.binarystudio.academy.slidez.domain.poll.dto.PollResponseDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionRequestDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionResponseDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.AnswerPollDto;
@@ -21,13 +23,13 @@ import com.binarystudio.academy.slidez.domain.session.model.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class PresentationSessionService {
+    private final String MOCK_POLL_ID = "ed60e789-ab15-4756-b95e-218b43b6dfcf";
 
 	private final LinkService linkService;
 
@@ -35,21 +37,27 @@ public class PresentationSessionService {
 
 	private final SessionService sessionService;
 
-	@Autowired
+    private final PollService pollService;
+
+    @Autowired
 	public PresentationSessionService(LinkService linkService,
 			InMemoryPresentationEventStoreRepository inMemoryPresentationEventStoreRepository,
-			SessionService sessionService) {
+			SessionService sessionService, PollService pollService) {
 		this.linkService = linkService;
 		this.inMemoryPresentationEventStoreRepository = inMemoryPresentationEventStoreRepository;
 		this.sessionService = sessionService;
+        this.pollService = pollService;
 	}
 
 	public Optional<CreateSessionResponseDto> createSession(CreateSessionRequestDto dto, int leaseDuration)
 			throws IncorrectLeaseDurationException {
 		// 1. Load all interactive elements for presentation
 		// 2. For each such element create event-initiator (like PollCreatedEvt)
-        String pollIdFromDB = "ed60e789-ab15-4756-b95e-218b43b6dfcf"; // Hardcoded TO-DO
-		DomainEvent event = new PollCreatedEvent("Do you like Java?", UUID.fromString(pollIdFromDB));
+        // Hardcoded sample TO-DO
+        UUID pollFromDBId = UUID.fromString(MOCK_POLL_ID);
+        Poll poll = getPollFromDbById(pollFromDBId);
+		DomainEvent event = new PollCreatedEvent(poll);
+
 		// 3. Create PresentationEventStore
 		PresentationEventStore presentationEventStore = new PresentationEventStore();
 		// 4. For each event call PresentationEventStore.apply(event)
@@ -82,7 +90,8 @@ public class PresentationSessionService {
 		if (eventStore.isEmpty()) {
 			return Optional.empty();
 		}
-		PollCreatedEvent pollCreatedEvent = new PollCreatedEvent(dto.getName(), dto.getId());
+		Poll poll = getPollFromDbById(dto.getId());
+		PollCreatedEvent pollCreatedEvent = new PollCreatedEvent(poll);
 		eventStore.get().applyEvent(pollCreatedEvent);
 		List<Poll> polls = eventStore.get().snapshot().getPolls();
 		Poll last = polls.get(polls.size() - 1);
@@ -100,5 +109,12 @@ public class PresentationSessionService {
 		PollAnsweredDto pollAnsweredDto = new PollAnsweredDto(dto.getPollId(), dto.getOptionId());
 		return Optional.of(pollAnsweredDto);
 	}
+
+	private Poll getPollFromDbById(UUID pollFromDBId) {
+        Optional<PollResponseDto> pollResponseDtoOptional = pollService.getById(pollFromDBId);
+        var mapper = PollMapper.INSTANCE;
+        Poll poll = mapper.pollResponseDtoToPoll(pollResponseDtoOptional.get());
+        return poll;
+    }
 
 }

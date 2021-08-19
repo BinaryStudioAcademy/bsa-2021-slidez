@@ -21,6 +21,7 @@ public class Poll {
         this.name = name;
         if (id != null) {
             this.id = id;
+
         }
     }
 
