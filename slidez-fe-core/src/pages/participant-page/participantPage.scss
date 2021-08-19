@@ -1,0 +1,71 @@
+@import "src/global/global";
+
+.menu {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    right: 15px;
+    top: 47px;
+    font-size: 22px;
+    .menu-icon {
+        color: $accent-color;
+    }
+}
+.title {
+    position: absolute;
+    left: 15px;
+    top: 54px;
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    color: $black;
+}
+.page-content {
+    margin-top: 85px;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    .event-item {
+        width: 100%;
+        height: 56px;
+        background-color: #f6f4f8;
+        margin-bottom: 5px;
+        padding: 13px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 7px;
+        .event-info {
+            display: flex;
+            flex-direction: column;
+            .event-info-name {
+                font-family: Rubik;
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 17px;
+                color: $black;
+            }
+            .event-info-viewsDate {
+                font-family: Rubik;
+                font-size: 12px;
+                color: $grey-color;
+            }
+        }
+        .event-icon {
+            .angle-right {
+                color: $mint;
+            }
+        }
+    }
+}
+
+.event-item:hover {
+    background-color: $light-grey;
+}
+
+@media (min-width: 555px) {
+    .event-item {
+        max-width: 60%;
+    }
+}
