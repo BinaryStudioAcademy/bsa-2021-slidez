@@ -13,6 +13,7 @@ import SideBar from './SideBar'
 import './dashboard.scss'
 import { MOCK_DATA } from './mock-data'
 import UserProfile from './UserProfile'
+import table_sort from '../../../src/assets/svgs/table-sort.svg'
 
 const Dashboard = () => {
     const [currentView, setCurrentView] = useState('table')
@@ -54,7 +55,13 @@ const Dashboard = () => {
 
     const renderTableHeader = () => {
         return tableHeader.map((value) => {
-            return <th key={value.id}>{value.header}</th>
+            return value.id === 3 || value.id === 4 ? (
+                <th key={value.id}>
+                    {value.header} <img src={table_sort} alt='sort'></img>
+                </th>
+            ) : (
+                <th key={value.id}>{value.header}</th>
+            )
         })
     }
 
