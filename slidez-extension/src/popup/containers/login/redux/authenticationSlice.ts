@@ -4,11 +4,16 @@ import { getMessageBusUnsafe } from '../../../hooks'
 import HttpHelper from 'slidez-shared/src/net/http/http-helper'
 import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
 
-//TODO: CHANGE THIS TO ACTUAL FUNCTIONS
+//TODO: CHANGE THIS TO ACTUAL VALUES
 const getAuthHeaderValue = () => ''
 const performRefreshTokens = () => Promise.resolve()
+const apiGateway = ''
 
-const httpHelper = new HttpHelper(getAuthHeaderValue, performRefreshTokens)
+const httpHelper = new HttpHelper(
+    getAuthHeaderValue,
+    performRefreshTokens,
+    apiGateway
+)
 
 export interface AuthenticationState {
     accessToken?: string

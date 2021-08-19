@@ -12,12 +12,61 @@ import { GoogleOAuth } from '../../../services/auth/google-oauth'
 import GoogleLogin from 'react-google-login'
 import { NavLink } from 'react-router-dom'
 import { AppRoute } from '../../routes/app-route'
-import { ErrorMessage, Field, Form, Formik } from 'formik'
+import { Field, Form, Formik, FormikErrors } from 'formik'
 import * as Yup from 'yup'
 
 type RegistrationProps = {
     onRegister: Function
     onRegisterWithGoogle: Function
+}
+
+type RegistrationErorrsProps = {
+    viewErrors: boolean
+    registrationError: string | undefined
+    formikErrors: FormikErrors<{
+        email: string
+        password: string
+        confirmPassword: string
+    }>
+}
+
+const registrationFieldsValidation = Yup.object({
+    email: Yup.string().required('Required').email('Invalid email address'),
+    password: Yup.string()
+        .required('Required')
+        .min(12, 'Too short - 12 symbols minimum')
+        .max(32, 'Too long - 32 symbols maximum')
+        .matches(/^\S*$/, 'Should not contain spaces')
+        .matches(/[a-z]/, 'Should have lowercase letters')
+        .matches(/[A-Z]/, 'Should have uppercase letters')
+        .matches(/[0-9]/, 'Should have digits')
+        .matches(/[^A-Za-z0-9]/, 'Should have symbols'),
+    confirmPassword: Yup.string()
+        .required('Required')
+        .oneOf([Yup.ref('password')], 'Passwords should match'),
+})
+
+const RegistrationErrors = ({
+    viewErrors,
+    registrationError,
+    formikErrors,
+}: RegistrationErorrsProps) => {
+    let errorMessage: string | null = null
+    if (!viewErrors) {
+        errorMessage = null
+    } else if (registrationError) {
+        errorMessage = 'This email is taken'
+    } else if (formikErrors.email) {
+        errorMessage = 'Please provide valid email'
+    } else if (formikErrors.password) {
+        errorMessage =
+            'Password should be 12-32 characters long, and should have: ' +
+            'no spaces, lowercase letter (a-z), uppercase letter (A-Z), digit (0-9) and symbol'
+    } else if (formikErrors.confirmPassword) {
+        errorMessage = 'Please make sure your passwords match'
+    }
+
+    return <div className='error-text'>{errorMessage}</div>
 }
 
 const RegistrationForm = ({
@@ -27,6 +76,7 @@ const RegistrationForm = ({
     const [isPasswordRevealed, setIsPasswordRevealed] = React.useState(false)
     const [isConfirmPasswordRevealed, setIsConfirmPasswordRevealed] =
         React.useState(false)
+    const [viewErrors, setViewErrors] = React.useState(false)
     const registrationError = useAppSelector(selectError)
 
     const onRevealPasswordClick = () => {
@@ -49,23 +99,7 @@ const RegistrationForm = ({
 
             <Formik
                 initialValues={{ email: '', password: '', confirmPassword: '' }}
-                validationSchema={Yup.object({
-                    email: Yup.string()
-                        .required('Required')
-                        .email('Invalid email address'),
-                    password: Yup.string()
-                        .required('Required')
-                        .min(12, 'Too short - 12 symbols minimum')
-                        .max(32, 'Too long - 32 symbols maximum')
-                        .matches(/^\S*$/, 'Must not contain spaces')
-                        .matches(/[a-z]/, 'Must have lowercase letters')
-                        .matches(/[A-Z]/, 'Must have uppercase letters')
-                        .matches(/[0-9]/, 'Must have digits')
-                        .matches(/[^A-Za-z0-9]/, 'Must have symbols'),
-                    confirmPassword: Yup.string()
-                        .required('Required')
-                        .oneOf([Yup.ref('password')], 'Passwords must match'),
-                })}
+                validationSchema={registrationFieldsValidation}
                 onSubmit={(
                     { email, password, confirmPassword },
                     { setSubmitting }
@@ -74,7 +108,7 @@ const RegistrationForm = ({
                     setSubmitting(false)
                 }}
             >
-                {({ errors, touched }) => (
+                {({ errors }) => (
                     <Form>
                         <div className='form-row form-input-holder'>
                             <label htmlFor='email' className='label'>
@@ -84,25 +118,15 @@ const RegistrationForm = ({
                                 name='email'
                                 className={
                                     'form-input' +
-                                    (touched.email && errors.email
+                                    (viewErrors && errors.email
                                         ? ' error-input'
                                         : '')
                                 }
+                                onClick={() => setViewErrors(false)}
                                 type='text'
+                                autoComplete='email'
                                 placeholder='Enter your email'
                             />
-                            <ErrorMessage name='email'>
-                                {(msg) => (
-                                    <div className='error-text'>{msg}</div>
-                                )}
-                            </ErrorMessage>
-                            <div
-                                className={
-                                    registrationError ? 'error-text' : 'hidden'
-                                }
-                            >
-                                This email is taken
-                            </div>
                         </div>
 
                         <div className='form-row form-input-holder'>
@@ -115,11 +139,13 @@ const RegistrationForm = ({
                                     name='password'
                                     className={
                                         'form-input input-with-icon' +
-                                        (touched.password && errors.password
+                                        (viewErrors && errors.password
                                             ? ' error-input'
                                             : '')
                                     }
+                                    onClick={() => setViewErrors(false)}
                                     type='password'
+                                    autoComplete='new-password'
                                     placeholder='Enter your password'
                                 />
                                 <FontAwesomeIcon
@@ -134,11 +160,6 @@ const RegistrationForm = ({
                                     onClick={onRevealPasswordClick}
                                 />
                             </div>
-                            <ErrorMessage name='password'>
-                                {(msg) => (
-                                    <div className='error-text'>{msg}</div>
-                                )}
-                            </ErrorMessage>
                         </div>
 
                         <div className='form-row form-input-holder'>
@@ -151,12 +172,13 @@ const RegistrationForm = ({
                                     name='confirmPassword'
                                     className={
                                         'form-input input-with-icon' +
-                                        (touched.confirmPassword &&
-                                        errors.confirmPassword
+                                        (viewErrors && errors.confirmPassword
                                             ? ' error-input'
                                             : '')
                                     }
+                                    onClick={() => setViewErrors(false)}
                                     type='password'
+                                    autoComplete='new-password'
                                     placeholder='Confirm password'
                                 />
                                 <FontAwesomeIcon
@@ -173,15 +195,20 @@ const RegistrationForm = ({
                                     onClick={onRevealConfirmPasswordClick}
                                 />
                             </div>
-                            <ErrorMessage name='confirmPassword'>
-                                {(msg) => (
-                                    <div className='error-text'>{msg}</div>
-                                )}
-                            </ErrorMessage>
                         </div>
 
+                        <RegistrationErrors
+                            viewErrors={viewErrors}
+                            registrationError={registrationError}
+                            formikErrors={errors}
+                        />
+
                         <div className='form-row buttons-row'>
-                            <button className='form-button login-button'>
+                            <button
+                                className='form-button login-button'
+                                onClick={() => setViewErrors(true)}
+                                type='submit'
+                            >
                                 Sign Up
                             </button>
                         </div>
