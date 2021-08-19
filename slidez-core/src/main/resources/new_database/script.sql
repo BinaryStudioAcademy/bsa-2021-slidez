@@ -1,4 +1,4 @@
-CREATE TABLE "user" (
+CREATE TABLE IF NOT EXISTS "user" (
                         id UUID PRIMARY KEY,
                         email VARCHAR(255) UNIQUE,
                         password VARCHAR(255),
@@ -18,7 +18,7 @@ create collation case_insensitive
 alter table "user"
     alter column email type varchar(255) collate case_insensitive;
 
-CREATE TABLE user_profile (
+CREATE TABLE IF NOT EXISTS user_profile (
                               id UUID PRIMARY KEY,
                               user_id UUID NOT NULL,
                               first_name VARCHAR(255),
@@ -30,7 +30,7 @@ CREATE TABLE user_profile (
 
 -- user_id MUST be unique, because credentials will be bound to it and such index will
 -- make fetch much faster
-CREATE TABLE google_credentials (
+CREATE TABLE IF NOT EXISTS google_credentials (
                                     id UUID PRIMARY KEY,
                                     user_id UUID NOT NULL UNIQUE,
                                     access_token TEXT,
@@ -41,7 +41,7 @@ CREATE TABLE google_credentials (
                                     FOREIGN KEY (user_id) REFERENCES "user"(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE presentation (
+CREATE TABLE IF NOT EXISTS presentation (
                               id UUID PRIMARY KEY,
                               user_id UUID NOT NULL,
                               link VARCHAR(255) NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE presentation (
                               FOREIGN KEY (user_id) REFERENCES "user"(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE link (
+CREATE TABLE IF NOT EXISTS link (
                       id UUID PRIMARY KEY,
                       code VARCHAR(6) NOT NULL,
                       leasedUntil TIMESTAMP NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE link (
                       updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
 
-CREATE TABLE session (
+CREATE TABLE IF NOT EXISTS session (
                          id UUID PRIMARY KEY,
                          presentation_id UUID NOT NULL,
                          link_id UUID NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE session (
                          FOREIGN KEY (link_id) REFERENCES link(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE interactive_element (
+CREATE TABLE IF NOT EXISTS interactive_element (
                                      id UUID PRIMARY KEY,
                                      type VARCHAR(255) NOT NULL,
                                      presentation_id UUID NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE interactive_element (
                                      FOREIGN KEY (presentation_id) REFERENCES presentation(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE poll (
+CREATE TABLE IF NOT EXISTS poll (
                       id UUID PRIMARY KEY,
                       interactive_element_id UUID NOT NULL,
                       title VARCHAR (255) NOT NULL,
@@ -85,7 +85,7 @@ CREATE TABLE poll (
                       FOREIGN KEY (interactive_element_id) REFERENCES interactive_element(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE quiz (
+CREATE TABLE IF NOT EXISTS quiz (
                       id UUID PRIMARY KEY,
                       interactive_element_id UUID NOT NULL,
                       title VARCHAR (255) NOT NULL,
@@ -94,21 +94,21 @@ CREATE TABLE quiz (
                       FOREIGN KEY (interactive_element_id) REFERENCES interactive_element(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE qa_session (
+CREATE TABLE IF NOT EXISTS qa_session (
                             id UUID PRIMARY KEY,
                             interactive_element_id UUID NOT NULL,
                             title VARCHAR (255) NOT NULL,
                             FOREIGN KEY (interactive_element_id) REFERENCES interactive_element(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE poll_answer (
+CREATE TABLE IF NOT EXISTS poll_answer (
                              id UUID PRIMARY KEY,
                              poll_id UUID NOT NULL,
                              title VARCHAR (255) NOT NULL,
                              FOREIGN KEY (poll_id) REFERENCES poll(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE quiz_answer (
+CREATE TABLE IF NOT EXISTS quiz_answer (
                              id UUID PRIMARY KEY,
                              quiz_id UUID NOT NULL,
                              title VARCHAR (255) NOT NULL,
