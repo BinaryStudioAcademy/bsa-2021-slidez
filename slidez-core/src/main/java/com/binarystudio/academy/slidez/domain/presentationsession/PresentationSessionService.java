@@ -51,7 +51,7 @@ public class PresentationSessionService {
 		this.inMemoryPresentationEventStoreRepository = inMemoryPresentationEventStoreRepository;
 		this.sessionService = sessionService;
 		this.pollService = pollService;
-        this.mapperToPoll = mapperToPoll;
+		this.mapperToPoll = mapperToPoll;
 	}
 
 	public Optional<CreateSessionResponseDto> createSession(CreateSessionRequestDto dto, int leaseDuration)

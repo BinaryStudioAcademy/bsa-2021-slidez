@@ -4,8 +4,6 @@ import com.binarystudio.academy.slidez.domain.session.dto.SessionResponseDto;
 import com.binarystudio.academy.slidez.domain.session.dto.SessionUpdateDto;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
