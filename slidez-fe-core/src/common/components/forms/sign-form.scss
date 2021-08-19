@@ -50,7 +50,6 @@
 .form-input-holder {
     display: flex;
     flex-direction: column;
-    min-height: 82px;
 }
 
 .form-input {
@@ -168,10 +167,11 @@
 }
 
 .error-text {
-    display: inline;
-    color: $error;
-    font-size: 14px;
-    font-weight: 500;
+  display: flex;
+  align-items: flex-end;
+  min-height: 30px;
+  color: $error;
+  font-size: 12px;
 }
 
 input::-webkit-input-placeholder {

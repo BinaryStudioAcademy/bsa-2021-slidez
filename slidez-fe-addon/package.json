@@ -1,7 +1,7 @@
 {
-  "name": "react-google-apps-script",
+  "name": "slidez-fe-addon",
   "version": "2.0.0",
-  "description": "Starter project for using React with Google Apps Script",
+  "description": "Google slides addon for Slidez app",
   "repository": {
     "type": "git",
     "url": "https://github.com/enuchi/React-Google-Apps-Script.git"
@@ -9,7 +9,7 @@
   "scripts": {
     "test": "test",
     "login": "clasp login",
-    "setup": "rimraf .clasp.json && clasp create --type slides --title \"My React Project\" --rootDir ./dist",
+    "setup": "rimraf .clasp.json && clasp create --type slides --title \"Slidez\" --rootDir ./dist",
     "open": "clasp open --addon",
     "setup:https": "mkdirp certs && mkcert -key-file ./certs/key.pem -cert-file ./certs/cert.pem localhost 127.0.0.1",
     "build:dev": "cross-env NODE_ENV=development webpack",
@@ -17,7 +17,9 @@
     "deploy:dev": "rimraf dist && npm run build:dev && npx clasp push",
     "deploy": "rimraf dist && npm run build && npx clasp push",
     "serve": "cross-env NODE_ENV=development webpack-dev-server",
-    "start": "npm run deploy:dev && npm run serve"
+    "start": "npm run deploy:dev && npm run serve",
+    "lint": "eslint --fix --ext .ts,.tsx,.js,.jsx src/",
+    "lint-nofix": "eslint --ext .ts,.tsx,.js,.jsx src/"
   },
   "keywords": [
     "react",
@@ -26,7 +28,7 @@
     "script",
     "sheets"
   ],
-  "author": "Elisha Nuchi",
+  "author": "Binary Studio Academy",
   "license": "MIT",
   "engines": {
     "node": ">=10.0.0",
@@ -42,8 +44,8 @@
     "react": "^17.0.2",
     "react-bootstrap": "^1.3.0",
     "react-dom": "^17.0.2",
-    "react-transition-group": "^4.4.1",
     "react-redux": "^7.2.4",
+    "react-transition-group": "^4.4.1",
     "redux": "^4.1.1",
     "redux-toolkit": "^1.1.2",
     "typescript": "^4.3.5"
@@ -58,7 +60,7 @@
     "@babel/polyfill": "^7.10.4",
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
-    "@google/clasp": "^2.4.0",
+    "@google/clasp": "^2.4.1",
     "@types/chrome": "^0.0.154",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",

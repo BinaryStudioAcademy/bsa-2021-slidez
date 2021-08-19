@@ -56,13 +56,13 @@ export const useEventBus = () => {
         ChromeMessageConnector.connect({
             descriptor: 'dhddedmopeoomnnlppiejipdodhkplhb',
         })
-            .then(driver => {
+            .then((driver) => {
                 setState({
                     connected: EventBusConnectionStatus.CONNECTED,
                     eventBus: new BasicMessagingBus(driver),
                 });
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error(error);
                 setState({ connected: EventBusConnectionStatus.FAILED });
             });
