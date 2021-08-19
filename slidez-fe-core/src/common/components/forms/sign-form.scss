@@ -6,6 +6,7 @@
     flex-direction: column;
     width: 45%;
     margin-right: 10px;
+    font-family: 'Rubik', sans-serif;
 }
 
 .form-row {
@@ -25,7 +26,6 @@
     color: $grey;
     margin-right: 5px;
     font-size: 14px;
-    font-family: "Rubik", sans-serif;
     font-weight: 400;
 }
 
@@ -33,7 +33,6 @@
     color: $main-color;
     text-decoration: none;
     font-size: 14px;
-    font-family: "Rubik", sans-serif;
     font-weight: 400;
 }
 
@@ -56,7 +55,6 @@
 
 .form-input {
     font-size: 14px;
-    font-family: 'Rubik', sans-serif;
     border-radius: 50px;
     border: 1px $light-color solid;
     background-color: $light-color;
@@ -76,7 +74,6 @@
 
 .label {
     font-size: 14px;
-    font-family: 'Rubik', sans-serif;
     font-weight: 500;
     margin-bottom: 5px;
 }
@@ -174,7 +171,6 @@
     display: inline;
     color: $error;
     font-size: 14px;
-    font-family: "Rubik", sans-serif;
     font-weight: 500;
 }
 
