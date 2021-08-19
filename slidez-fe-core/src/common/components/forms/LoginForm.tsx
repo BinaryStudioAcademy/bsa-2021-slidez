@@ -11,6 +11,8 @@ import GoogleLogin from 'react-google-login'
 import { GoogleOAuth } from '../../../services/auth/google-oauth'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
+import { handleNotification } from '../../notification/Notification'
+import { NotificationTypes } from '../../notification/notification-types'
 
 type LoginProps = {
     onLogin: Function
@@ -29,6 +31,15 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
     const handleLoginWithGoogle = async (googleData: any) => {
         onLoginWithGoogle(googleData)
     }
+
+    const GoogleLoginFailed = () => {
+        handleNotification('Google Login Failed', 'The provided user account is not registered in the system', NotificationTypes.ERROR)
+    }
+
+    const loginFailed = (email: string | undefined) => {
+        handleNotification('Login Failed', `The user cannot be authenticated with email ​${email} and the provided password`, NotificationTypes.ERROR)
+    }
+
     return (
         <div className='sign-form'>
             <div className='form-row header-row'>Log In</div>
@@ -55,9 +66,9 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                     <Form>
                         <div className='form-row form-input-holder'>
                             <div
-                                className={loginError ? 'error-text' : 'hidden'}
+                                className={loginError ? '' : 'hidden'}
                             >
-                                {"Can't log in: email or password is invalid"}
+                            {() => loginFailed(errors.email)}
                             </div>
                             <label htmlFor='email' className='label'>
                                 Email
@@ -140,6 +151,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                     className='form-button login-with-google-button'
                     clientId={GoogleOAuth.GOOGLE_CLIENT_ID}
                     onSuccess={handleLoginWithGoogle}
+                    onFailure={GoogleLoginFailed}
                     redirectUri={GoogleOAuth.GOOGLE_REDIRECT_URI}
                     cookiePolicy={GoogleOAuth.GOOGLE_COOKIE_POLICY}
                     render={(renderProps) => (

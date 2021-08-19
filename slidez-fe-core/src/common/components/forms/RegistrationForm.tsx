@@ -14,6 +14,8 @@ import { NavLink } from 'react-router-dom'
 import { AppRoute } from '../../routes/app-route'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
+import { handleNotification } from '../../notification/Notification'
+import { NotificationTypes } from '../../notification/notification-types'
 
 type RegistrationProps = {
     onRegister: Function
@@ -41,6 +43,10 @@ const RegistrationForm = ({
 
     const handleRegisterWithGoogle = async (googleData: any) => {
         onRegisterWithGoogle(googleData)
+    }
+
+    const registrationFailed = () => {
+        handleNotification('Registration Failed', 'The account with provided email is already registered', NotificationTypes.ERROR)
     }
 
     return (
@@ -98,10 +104,10 @@ const RegistrationForm = ({
                             </ErrorMessage>
                             <div
                                 className={
-                                    registrationError ? 'error-text' : 'hidden'
+                                    registrationError ? '' : 'hidden'
                                 }
                             >
-                                This email is taken
+                                {registrationFailed}
                             </div>
                         </div>
 
