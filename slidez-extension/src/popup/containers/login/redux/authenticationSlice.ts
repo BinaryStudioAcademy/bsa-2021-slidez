@@ -37,6 +37,7 @@ export const fetchUserFromStorage = createAsyncThunk(
             EventType.AUTH_DETAILS,
             1000
         )
+
         if (!authData.data.success) {
             throw new Error(authData.data.error)
         }
@@ -61,8 +62,8 @@ export const loginUser = createAsyncThunk(
         const { data } = await httpHelper.doPost('auth/login', payload)
         const res: GenericResponse<LoginResponseDto, string> = data
         const authData = {
-            refreshToken: res.data.refreshToken,
-            accessToken: res.data.accessToken,
+            refreshToken: res.data.data.refreshToken,
+            accessToken: res.data.data.accessToken,
         }
 
         getMessageBusUnsafe()!.sendMessageNoCallback({
@@ -70,14 +71,18 @@ export const loginUser = createAsyncThunk(
             data: authData,
         })
 
-        return res.data.accessToken as string
+        return res.data.data.accessToken as string
     }
 )
 
 export const authenticationSlice = createSlice({
     name: 'eventBus',
     initialState,
-    reducers: {},
+    reducers: {
+        setToken: (state, tokenPayload: PayloadAction<string>) => {
+            state.accessToken = tokenPayload.payload
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchUserFromStorage.pending, (state) => {
@@ -100,10 +105,13 @@ export const authenticationSlice = createSlice({
                 state.error = 'Failed to log in :('
             })
             .addCase(loginUser.fulfilled, (state, accessToken) => {
+                console.log('Setting auth token')
                 state.isLoading = false
                 state.accessToken = accessToken.payload
             })
     },
 })
+
+export const { setToken } = authenticationSlice.actions
 
 export default authenticationSlice.reducer

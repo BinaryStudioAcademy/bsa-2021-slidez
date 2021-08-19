@@ -5,6 +5,7 @@ const AppRoute = {
     RESTORE_PASSWORD: '/restore-password',
     EVENT: '/event/:link',
     DASHBOARD: '/dashboard',
+    EDITOR: '/editor',
 }
 
 export { AppRoute }

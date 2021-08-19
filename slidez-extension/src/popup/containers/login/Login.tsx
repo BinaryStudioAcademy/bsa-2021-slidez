@@ -10,14 +10,16 @@ const Login = () => {
     const { isFetchingTokenFromStorage, accessToken } = useSelector(
         (state: RootState) => state.authentication
     )
+    const dispatch = useDispatch()
 
     useEffect(() => {
+        console.log('Access token', accessToken)
         if (accessToken) {
             return
         }
-
-        fetchUserFromStorage()
-    }, [accessToken])
+        console.log('Fetching user from storage')
+        dispatch(fetchUserFromStorage())
+    }, [])
 
     if (isFetchingTokenFromStorage) {
         return <Loader />
