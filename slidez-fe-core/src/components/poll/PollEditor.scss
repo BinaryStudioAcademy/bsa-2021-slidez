@@ -4,8 +4,13 @@
     margin: 2rem;
 }
 
-.text-input, .poll-name {
-  margin-bottom: 20px;
+.text-input,
+.poll-name {
+    margin-bottom: 20px;
+    .check-icon {
+        color: $main-color;
+        margin-right: 5px;
+    }
 }
 
 input {
@@ -18,7 +23,7 @@ input {
 }
 
 .input-options {
-  width: 30%;
+    width: 30%;
 }
 
 input:focus {
@@ -34,8 +39,8 @@ label {
     margin-bottom: 0.5rem;
 }
 
-.options button, 
-.btn-submit, 
+.options button,
+.btn-submit,
 .btn-add-option {
     max-width: 150px;
     margin: 20px 0;
@@ -56,7 +61,7 @@ label {
     display: flex;
     align-items: center;
     .options-btn {
-        width: 20%;
+        width: 30px;
         margin: 10px 3px;
         padding: 5px;
         text-align: center;
