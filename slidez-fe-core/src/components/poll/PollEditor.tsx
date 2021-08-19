@@ -1,17 +1,13 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { Formik, Form, Field, FieldArray } from 'formik'
 
 import './PollEditor.scss'
-import { HttpHelper } from '../../services/http/http-helper'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios'
+import { ApiGateway } from '../../services/http/api-gateway'
 
 const PollEditor = () => {
-    const handleSubmit = (name: string) => {
-        HttpHelper.getInstance()
-        console.log(name)
-    }
-
     const OptionsArray = () => {
         return (
             <div>
@@ -87,11 +83,26 @@ const PollEditor = () => {
         )
     }
 
+    const handleClick = () => {
+        axios
+            .get(`${ApiGateway.REACT_APP_API_GATEWAY}polls`)
+            .then((response) => {
+                console.log(response.data)
+            })
+    }
+
+    const handleSend = (name: string) => {
+        axios.post('api/v1/polls', name).then((response) => {
+            console.log(name)
+            console.log(response.data)
+        })
+    }
+
     return (
         <div className='app'>
             <h2 className='poll-name'>
                 <FontAwesomeIcon className='check-icon' icon={faCheck} />
-                Live Poll
+                Live poll
             </h2>
             <Formik
                 initialValues={{ name: '' }}
@@ -100,7 +111,7 @@ const PollEditor = () => {
                     alert(JSON.stringify(values, null, 2))
                 }}
             >
-                {(values: any, handleChange: any, handleSubmit: any) => {
+                {({ values, handleChange, handleSubmit }) => {
                     return (
                         <Form onSubmit={handleSubmit}>
                             <Form className='mx-auto'>
@@ -120,7 +131,13 @@ const PollEditor = () => {
                                     <label>Options:</label>
                                     <OptionsArray />
                                 </Form>
-                                <button type='submit' className='btn-submit'>
+                                <button
+                                    type='button'
+                                    className='btn-submit'
+                                    onClick={() => {
+                                        handleClick()
+                                    }}
+                                >
                                     Submit
                                 </button>
                             </Form>
