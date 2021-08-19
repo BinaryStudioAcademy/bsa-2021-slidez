@@ -1,5 +1,5 @@
-@import "../../../../slidez-fe-core/src/global/global";
-@import "src/components/poll/Poll";
+@import "../../../../global/global.scss";
+@import "./Poll.scss";
 
 .poll-input {
     &-send {

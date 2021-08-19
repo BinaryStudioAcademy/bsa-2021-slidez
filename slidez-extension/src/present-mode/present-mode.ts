@@ -1,5 +1,5 @@
 import { CLASS_NAME_PUNCH_PRESENT_IFRAME } from '../dom/dom-constants'
-import { queryElement } from '../dom/dom-helpers'
+import { insertStyles, queryElement } from '../dom/dom-helpers'
 import CurrentSlideWatcher from './current-slide-watcher/current-slide-watcher'
 
 class PresentMode {
@@ -62,7 +62,7 @@ class PresentMode {
 
     private onPresentModeLoad() {
         ;(async () => {
-            this.injectStyles()
+            insertStyles(this.document!)
             // throw new Event
             console.log('Present mode started')
             this.currentSlideWatcher!.init()
@@ -129,19 +129,6 @@ class PresentMode {
             childList: true,
             subtree: true,
         })
-    }
-
-    private injectStyles() {
-        //WARNING: leaving console.log for debug purposes, stylesheets are a bit unstable
-        console.log('Injecting css')
-        const style = document.createElement('link')
-        style.rel = 'stylesheet'
-        style.type = 'text/css'
-        style.href = chrome.extension.getURL('static/css/content_script.css')
-        console.log('Appending style', style)
-        const mount = this.document!.head ?? this.document!.documentElement
-        console.log('Appending to', mount)
-        mount.appendChild(style)
     }
 }
 
