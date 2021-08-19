@@ -401,7 +401,30 @@
 		}
 	}
 }
-input[type=search]::-webkit-search-cancel-button{
-    opacity: 0.3;
-    font-size: 15px;
+
+input[type="search"]::-webkit-search-cancel-button {
+	-webkit-appearance: none;
+	margin-right: 2px;
+	height: 30px;
+	width: 2em;
+	border-radius: 50em;
+	background:
+	url(../../assets/svgs/close_black_24dp.svg) no-repeat 50% 50%;
+	background-size: auto;
+	pointer-events: none;
+	cursor: pointer; 
+  }
+  
+  input[type="search"]:focus::-webkit-search-cancel-button {
+	height: 30px;
+	width: 30px;
+	opacity: 0.4;
+	pointer-events: all;
+}
+input[type="search"]:hover::-webkit-search-cancel-button {
+	height: 30px;
+	width: 30px;
+	opacity: 0.4;
+	pointer-events: all;
+	background-color:#c6c8cd;
 }
