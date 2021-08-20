@@ -70,7 +70,7 @@ const ParticipantPage = () => {
     const activePoll = snapshot?.polls.find((poll) => poll)
 
     const body = activePoll ? (
-        <PollInput poll={activePoll as any} />
+        <PollInput poll={activePoll as any} link={link || ''} />
     ) : (
         <>Waiting for an interaction to start...</>
     )

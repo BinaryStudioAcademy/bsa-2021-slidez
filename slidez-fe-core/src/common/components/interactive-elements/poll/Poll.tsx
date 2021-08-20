@@ -1,5 +1,5 @@
 import React from 'react'
-import { PollDto } from './dto/PollDto'
+import { PollDto } from '../../../../containers/presentation_session/dto/PollDto'
 import './Poll.scss'
 
 type PollProps = {

@@ -11,7 +11,9 @@ import com.binarystudio.academy.slidez.domain.link.exception.InvalidCharacterExc
 import com.binarystudio.academy.slidez.domain.link.exception.OverflowException;
 import com.binarystudio.academy.slidez.domain.link.mapper.LinkMapper;
 import com.binarystudio.academy.slidez.domain.link.model.Link;
+import com.binarystudio.academy.slidez.domain.session.model.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.LinkBuilder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -48,7 +50,7 @@ public class LinkService {
 	}
 
 	/**
-	 * [On startup, on corn job] Generate extra links, if there are less than 100
+	 * [On startup, on cron job] Generate extra links, if there are less than 100
 	 * available
 	 */
 	public void generateExtraLinks() {
@@ -61,7 +63,7 @@ public class LinkService {
 		String lastLink = getLastLink();
 		for (int i = 0; i < countLinkForGenerate; i++) {
 			String newLink = generateLink(lastLink);
-			generatingLinks.add(Link.createLink(null, newLink, null));
+			generatingLinks.add(new Link().builder().link(newLink).build());
 			lastLink = newLink;
 		}
 		linkRepository.saveAll(generatingLinks);
@@ -93,26 +95,18 @@ public class LinkService {
 		return nextCode.reverse().toString();
 	}
 
-	/**
-	 * Lease a link. In this case, the caller provides info on how long it would like to
-	 * lease a link. The maximum lease duration is 180 days.
-	 * @param leaseDuration - how long it would like to lease a link;
-	 * @return lease link with expirationDate
-	 * @throws IncorrectLeaseDurationException - when lease duration out of bound duration
-	 * lease
-	 */
-	public String leaseLinkAsString(int leaseDuration) throws IncorrectLeaseDurationException {
-		return leaseLink(leaseDuration).getLink();
-	}
-
-	public Link leaseLink(int leaseDuration) throws IncorrectLeaseDurationException {
+	public Link leaseLink(int leaseDuration, Session session) throws IncorrectLeaseDurationException {
 		checkLeaseDuration(leaseDuration);
-		Link availableLink = linkRepository.getAvailableLink()
-				.orElseGet(() -> linkRepository.save(Link.createLink(null, generateLink(getLastLink()), null)));
 		LocalDateTime expirationDate = LocalDateTime.now().plus(Period.ofDays(leaseDuration));
-		availableLink.setExpirationDate(expirationDate);
-		linkRepository.update(availableLink, availableLink.getLinkId());
-		return availableLink;
+
+		Link resultLink = new Link().builder()
+                .link(generateLink(getLastLink()))
+                .session(session)
+                .expirationDate(expirationDate)
+                .build();
+
+		linkRepository.saveAndFlush(resultLink);
+		return resultLink;
 	}
 
 	private String getLastLink() {

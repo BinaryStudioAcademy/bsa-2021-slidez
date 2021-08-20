@@ -1,11 +1,13 @@
 import { WsHelper } from './ws-helper'
 import { WsEndpoint } from './ws-endpoint'
 import { Message } from 'webstomp-client'
+import { AnswerPollDto } from './dto/AnswerPollDto'
 
 export const connectToAllEvents = (
     sessionLink: string,
-    onConnectionSuccess: Function = () => {},
-    onGetSnapshot: Function = (response: string) => {}
+    onConnectionSuccess: () => void,
+    onGetSnapshot: (response: string) => void,
+    onVoted: () => void
 ) => {
     return WsHelper.getInstance()
         .connect(WsEndpoint.ENDPOINT)
@@ -23,7 +25,8 @@ export const connectToAllEvents = (
         )
         .then(() =>
             WsHelper.getInstance().subscribe(
-                `${WsEndpoint.ANSWERED_POLL_TOPIC}/${sessionLink}`
+                `${WsEndpoint.ANSWERED_POLL_TOPIC}/${sessionLink}`,
+                (message: Message) => onVoted()
             )
         )
         .catch((error: any) => console.log(error))
@@ -35,4 +38,11 @@ export const disconnect = () => {
 
 export const sendSnapshotRequest = (sessionLink: string) => {
     WsHelper.getInstance().send(`${WsEndpoint.SNAPSHOT_QUEUE}/${sessionLink}`)
+}
+
+export const sendAnswerPollRequest = (dto: AnswerPollDto) => {
+    WsHelper.getInstance().send(
+        `${WsEndpoint.ANSWER_POLL_QUEUE}/${dto.link}`,
+        dto
+    )
 }

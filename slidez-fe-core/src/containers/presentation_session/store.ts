@@ -6,6 +6,7 @@ import { RootState } from '../../store'
 import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
 import { CreatePresentationSessionDto } from '../../services/presentation-session/dto/CreatePresentationSessionDto'
 import { createPresentationSession } from '../../services/presentation-session/presentation-session-servise'
+import { AnswerPollDto } from '../../services/ws/dto/AnswerPollDto'
 
 export interface PresentationSessionState {
     connectionStatus: string
@@ -25,6 +26,13 @@ export const createSessionForPresentation = createAsyncThunk(
     'presentationSession/create',
     async (dto: CreatePresentationSessionDto) => {
         return await createPresentationSession(dto)
+    }
+)
+
+export const voteInPoll = createAsyncThunk(
+    'vote/poll',
+    async (dto: AnswerPollDto) => {
+        WebSocketService.sendAnswerPollRequest(dto)
     }
 )
 
@@ -50,10 +58,12 @@ export const initWebSocketSession = createAsyncThunk(
         const onGetSnapshot = (response: string) => {
             dispatch(gotSnapshot(response))
         }
+        const onVoted = () => WebSocketService.sendSnapshotRequest(link)
         await WebSocketService.connectToAllEvents(
             link,
             onConnectionSuccess,
-            onGetSnapshot
+            onGetSnapshot,
+            onVoted
         ).then(() => WebSocketService.sendSnapshotRequest(link))
         return out
     }
