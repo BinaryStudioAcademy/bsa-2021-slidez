@@ -18,7 +18,7 @@ function Poll({ poll, children }: PollProps) {
         .map(([id]) => Number(id))
 
     const mappedOptions = options.map((option, index) => {
-        const currVotes = answers[index].length
+        const currVotes = answers[index]?.length
         const percentage = totalVotes === 0 ? 0 : (currVotes / totalVotes) * 100
         const percentageFormat = String(Math.round(percentage * 10) / 10) + '%'
         const winnerClass = winnerIndexes.includes(index)

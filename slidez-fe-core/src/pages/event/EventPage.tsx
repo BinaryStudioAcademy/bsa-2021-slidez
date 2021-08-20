@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import {
@@ -18,18 +18,25 @@ import { CreatePresentationSessionDto } from '../../services/presentation-sessio
 const EventPage: React.FC = () => {
     // const { link } = useParams<{ link?: string }>()
     const link: string | undefined = useAppSelector(selectLink)
+    const [sentCreateSession, setSentCreateSession] = useState(false)
+    const [sentInitWsSession, setSentInitWsSession] = useState(false)
     const dispatch = useAppDispatch()
-    if (!link) {
+    if (link === undefined && !sentCreateSession) {
         const dto: CreatePresentationSessionDto = {
-            presentationId: '25c387f6-aad3-4a2b-947f-08a9808e10b7',
+            presentationId: 'ed60e789-ab15-4756-b95e-218b43b6dfff',
         }
+        setSentCreateSession(true)
         dispatch(createSessionForPresentation(dto))
     }
-    useEffect(() => {
-        if (link) {
-            dispatch(initWebSocketSession(link))
-        }
-    }, [])
+    if (link !== undefined && !sentInitWsSession) {
+        setSentInitWsSession(true)
+        dispatch(initWebSocketSession(link))
+    }
+    // useEffect(() => {
+    //     if (link) {
+    //         dispatch(initWebSocketSession(link))
+    //     }
+    // }, [])
 
     const connectionStatus = useAppSelector(selectConnectionStatus)
     const snapshot = useAppSelector(selectSnapshot)
