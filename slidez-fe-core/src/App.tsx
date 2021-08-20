@@ -9,6 +9,7 @@ import EventPage from './pages/event/EventPage'
 import Editor from './pages/editor/Editor'
 import ReduxToastr from 'react-redux-toastr'
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
+import ParticipantPage from './pages/participant-page/ParticipantPage'
 
 function App() {
     return (
@@ -27,6 +28,10 @@ function App() {
                     />
                     <PrivateRoute path={AppRoute.EDITOR} component={Editor} />
                     <Route path={AppRoute.EVENT} component={EventPage} />
+                    <Route
+                        path={AppRoute.PARTICIPANT}
+                        component={ParticipantPage}
+                    />
                     <Route exact strict path={AppRoute.ANY}>
                         <Redirect to={AppRoute.LOGIN} />
                     </Route>

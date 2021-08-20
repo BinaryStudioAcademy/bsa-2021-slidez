@@ -51,7 +51,9 @@ const EventPage: React.FC = () => {
     return (
         <div>
             {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
-            <InteractiveWrapper eventCode='aaacce'>{body}</InteractiveWrapper>
+            <InteractiveWrapper eventCode={link || ''}>
+                {body}
+            </InteractiveWrapper>
         </div>
     )
 }
