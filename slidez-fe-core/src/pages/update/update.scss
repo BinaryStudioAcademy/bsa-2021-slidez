@@ -1,0 +1,129 @@
+@import "src/global/global";
+* {
+    font-family: "Work Sans";
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    .avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 43px;
+        height: 43px;
+        top: calc(50% - 45px / 2 - 554px);
+        border-radius: 50%;
+        font-size: 14px;
+        color: $light-color;
+        background: $accent-color;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+
+.edit-profile {
+    z-index: 9;
+    display: flex;
+    margin-left: auto;
+    padding: 20px;
+    justify-content: space-between;
+    align-content: center;
+    width: 70%;
+    margin-top: 80px;
+    margin-right: 12%;
+    background: $light-color;
+    border-radius: 1%;
+    .side-btns {
+        display: flex;
+        flex-direction: column;
+        font-weight: bold;
+        #window-name {
+            font-size: 16pt;
+            margin-bottom: 20px;
+        }
+        button {
+            text-transform: none;
+            margin: 15px;
+            padding: 5px 15px;
+            margin-left: 0;
+            font-size: 12pt;
+            font-weight: bold;
+            background: $hover-color;
+            &:last-child {
+                background: none;
+            }
+            &:last-child:hover {
+                background: $hover-color;
+            }
+        }
+    }
+    .verticalLine {
+        border-left: 1px solid $grey;
+    }
+    .form {
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        margin: 30px;
+        .form-body {
+            padding: 20px;
+            .form-inputs {
+                display: flex;
+                flex-direction: column;
+                h3 {
+                    font-size: 11pt;
+                    margin-bottom: 15px;
+                }
+                input {
+                    background: $white;
+                }
+                .top-input .MuiTextField-root {
+                    width: 100%;
+                }
+                .pwd-input {
+                    margin-bottom: 10px;
+                }
+                .bottom-inputs {
+                    display: flex;
+                    flex-direction: row;
+                    margin: 10px 0;
+                    div {
+                        margin-right: 10px;
+                        &:last-child {
+                            margin-right: 0;
+                        }
+                    }
+                }
+                button {
+                    align-self: flex-end;
+                    text-transform: none;
+                    padding: 3px 25px;
+                    margin: 10px;
+                    color: honeydew;
+                    background: $main-color;
+                    border-radius: 30px;
+                }
+                p {
+                    font-size: small;
+                    margin-bottom: 5px;
+                    font-weight: normal;
+                }
+            }
+        }
+    }
+    .MuiButton-root {
+        padding: 0;
+        min-width: 0;
+    }
+    .close {
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
+        cursor: pointer;
+        .close-icon {
+            color: $black;
+        }
+    }
+}

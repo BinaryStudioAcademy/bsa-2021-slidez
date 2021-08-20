@@ -8,6 +8,7 @@ import SignPage from './pages/sign/SignPage'
 import EventPage from './pages/event/EventPage'
 import ReduxToastr from 'react-redux-toastr'
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
+import UpdatePage from './pages/update/UpdatePage'
 import { log } from 'slidez-shared'
 import InteractiveWrapper from './common/components/interactive-elements/interactive-wrapper/InteractiveWrapper'
 import Poll from './common/components/interactive-elements/poll/Poll'
@@ -30,6 +31,11 @@ function App() {
                         exact
                         path={AppRoute.DASHBOARD}
                         component={Dashboard}
+                    />
+                    <PrivateRoute
+                        exact
+                        path={AppRoute.UPDATE_USER}
+                        component={UpdatePage}
                     />
                     <PublicRoute
                         exact

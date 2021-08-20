@@ -1,12 +1,15 @@
 package com.binarystudio.academy.slidez.domain.user;
 
-import java.util.Optional;
-import java.util.UUID;
-
+import com.binarystudio.academy.slidez.domain.auth.jwtauth.JwtProvider;
+import com.binarystudio.academy.slidez.domain.auth.jwtauth.model.AuthorizationByTokenRequest;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -15,10 +18,13 @@ public class UserService {
 
 	private final UserRepository userRepository;
 
+	private final JwtProvider jwtProvider;
+
 	@Autowired
-	public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+	public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, JwtProvider jwtProvider) {
 		this.passwordEncoder = passwordEncoder;
 		this.userRepository = userRepository;
+		this.jwtProvider = jwtProvider;
 	}
 
 	public boolean isEmailPresent(String email) {
@@ -42,6 +48,20 @@ public class UserService {
 
 	public User createByEmail(String email) {
 		return create(email, "");
+	}
+
+	public List<User> getAll() {
+		return this.userRepository.findAll();
+	}
+
+	public Optional<User> getByToken(AuthorizationByTokenRequest authorizationByTokenRequest) {
+		System.out.println(authorizationByTokenRequest);
+		Optional<String> email = jwtProvider.getLoginFromToken(authorizationByTokenRequest.getToken());
+		System.out.println(email);
+		if (email.isEmpty()) {
+			return Optional.empty();
+		}
+		return getByEmail(email.get());
 	}
 
 }
