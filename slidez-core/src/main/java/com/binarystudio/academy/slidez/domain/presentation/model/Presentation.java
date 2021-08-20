@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.domain.presentation.model;
 
+import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.model.PresentationInteractiveElement;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import lombok.*;
@@ -51,4 +52,9 @@ public class Presentation {
 	@UpdateTimestamp
 	@Column(name = "updated_at", columnDefinition = "TIMESTAMP")
 	private LocalDateTime updatedAt;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "presentation_id")
+	private Set<PresentationInteractiveElement> presentationInteractiveElements;
+
 }

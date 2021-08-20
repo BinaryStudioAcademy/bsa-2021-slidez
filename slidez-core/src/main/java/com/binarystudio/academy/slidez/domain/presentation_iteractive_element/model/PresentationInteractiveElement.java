@@ -1,6 +1,5 @@
 package com.binarystudio.academy.slidez.domain.presentation_iteractive_element.model;
 
-import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +8,12 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -20,7 +24,7 @@ import java.util.UUID;
 @Builder
 @Table(name = "presentation_interactive_element")
 public class PresentationInteractiveElement {
-    private static String SLIDE_ID_PREFIX = "slidez_";
+    private static final String SLIDE_ID_PREFIX = "slidez_";
 	@Id
 	@GeneratedValue(generator = "UUID")
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
