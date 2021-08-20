@@ -11,7 +11,6 @@ import {
 import { WsConnectionStatus } from '../../containers/presentation_session/enums/ws-connection-status'
 import Loader from '../../common/components/loader/Loader'
 import Poll from '../../common/components/interactive-elements/poll/Poll'
-import { poll } from '../../common/components/interactive-elements/poll/dto/pollDtoMock'
 import InteractiveWrapper from '../../common/components/interactive-elements/interactive-wrapper/InteractiveWrapper'
 import { CreatePresentationSessionDto } from '../../services/presentation-session/dto/CreatePresentationSessionDto'
 

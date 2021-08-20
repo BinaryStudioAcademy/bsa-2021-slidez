@@ -1,32 +1,34 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
-import { PollDto } from './dto/PollDto'
+import { PollDto } from '../../../../containers/presentation_session/dto/PollDto'
 import Poll from './Poll'
 import './PollInput.scss'
 import { faCircle, faDotCircle } from '@fortawesome/free-regular-svg-icons'
+import { useAppDispatch } from '../../../../hooks'
+import { voteInPoll } from '../../../../containers/presentation_session/store'
+import { AnswerPollDto } from '../../../../services/ws/dto/AnswerPollDto'
 
 type PollInputProps = {
     poll: PollDto
+    link: string
 }
 
-function PollInput({ poll }: PollInputProps) {
+function PollInput({ poll, link }: PollInputProps) {
     const [voteSubmitted, setVoteSubmitted] = useState(false)
     const [editMode, setEditMode] = useState(false)
-    const [chosenOption, setChosenOption] = useState(-1)
+    const [chosenOptionIndex, setChosenOptionIndex] = useState(-1)
+    const dispatch = useAppDispatch()
 
-    const { name, options, answers } = poll
+    const { id, name, options, answers } = poll
 
-    let totalVotes = 0
-    for (let k in answers) {
-        totalVotes += answers[k].length
-    }
+    let totalVotes = answers.length
 
     const mappedOptions = options.map((option, index) => {
         const chosenClass =
-            index === chosenOption ? ' poll-input-option-chosen' : ''
+            index === chosenOptionIndex ? ' poll-input-option-chosen' : ''
         const circle =
-            index === chosenOption ? (
+            index === chosenOptionIndex ? (
                 <FontAwesomeIcon icon={faDotCircle} />
             ) : (
                 <FontAwesomeIcon icon={faCircle} />
@@ -36,7 +38,7 @@ function PollInput({ poll }: PollInputProps) {
             <div
                 key={index}
                 className={'poll-input-option' + chosenClass}
-                onClick={() => setChosenOption(index)}
+                onClick={() => setChosenOptionIndex(index)}
             >
                 <div className='poll-input-option-circle'>{circle}</div>
                 <div className='poll-input-option-title'>{option.name}</div>
@@ -45,11 +47,17 @@ function PollInput({ poll }: PollInputProps) {
     })
 
     const onSendClick = () => {
-        if (chosenOption === -1) {
+        if (chosenOptionIndex === -1) {
             return
         }
         if (!voteSubmitted) {
             // post to db
+            const dto: AnswerPollDto = {
+                link: link,
+                pollId: id,
+                optionId: options[chosenOptionIndex].id,
+            }
+            dispatch(voteInPoll(dto))
             setVoteSubmitted(true)
         } else {
             // update existing in db

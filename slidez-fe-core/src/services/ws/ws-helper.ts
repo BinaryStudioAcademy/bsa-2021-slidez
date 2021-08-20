@@ -48,7 +48,7 @@ export const WsHelper = (() => {
 
     const subscribe = (
         stompSubscribeDestination: string,
-        onMessage: Function = (message: Message) => {}
+        onMessage: (message: Message) => void
     ) => {
         if (stompClient && stompClient.connected) {
             return stompClient.subscribe(
