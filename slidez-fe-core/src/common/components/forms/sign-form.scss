@@ -1,173 +1,177 @@
 @import "src/global/global";
 
 .sign-form {
-  font-size: 24px;
-  display: flex;
-  flex-direction: column;
-  width: 45%;
-  margin-right: 10px;
+    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    margin-right: 10px;
+    font-family: 'Rubik', sans-serif;
 }
 
 .form-row {
-  display: flex;
-  margin-top: 8px;
-  margin-bottom: 8px;
+    display: flex;
+    margin-top: 8px;
+    margin-bottom: 8px;
 
-  &.buttons-row {
-    margin-top: 20px;
-  }
-  &.header-row {
-    font-weight: 400;
-  }
+    &.buttons-row {
+        margin-top: 20px;
+    }
+    &.header-row {
+        font-weight: 400;
+    }
 }
 
 .no-account {
-  color: $grey;
-  margin-right: 5px;
-  font-size: 14px;
+    color: $grey;
+    margin-right: 5px;
+    font-size: 14px;
+    font-weight: 400;
 }
 
 .link {
-  color: $main-color;
-  text-decoration: none;
-  font-size: 14px;
+    color: $main-color;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
 }
 
 .back-to-login {
-  margin-top: 10px;
-  font-size: 16px;
-  font-weight: 400;
-  align-self: center;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    align-self: center;
 }
 
 .icon-arrow {
-  margin-right: 5px;
+    margin-right: 5px;
 }
 
 .form-input-holder {
-  display: flex;
-  flex-direction: column;
-  min-height: 82px;
+    display: flex;
+    flex-direction: column;
 }
 
 .form-input {
-  font-size: 14px;
-  border-radius: 50px;
-  border: 1px $light-color solid;
-  background-color: $light-color;
-  color: rgba(#1D1D1D, 0.5);
-  padding: 13px 20px;
+    font-size: 14px;
+    border-radius: 50px;
+    border: 1px $light-color solid;
+    background-color: $light-color;
+    color: rgba(#1d1d1d, 0.5);
+    padding: 13px 20px;
 }
 
 .form-input:focus {
-  outline: none;
-  border: 1px $mint solid;
-  background-color: $light-grey;
+    outline: none;
+    border: 1px $mint solid;
+    background-color: $light-grey;
 }
 
 .form-input::placeholder {
-  color: $grey;
+    color: $grey;
 }
 
 .label {
-  font-size: 14px;
-  margin-bottom: 5px;
-  font-weight: 400;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 5px;
 }
 
 .row-with-components-on-opposite-sides {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 
 .form-button {
-  width: 100%;
-  font-size: 16px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-radius: 50px;
-  font-weight: 400;
-  border: 2px transparent solid;
+    width: 100%;
+    font-size: 16px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 50px;
+    font-weight: 400;
+    border: 2px transparent solid;
 }
 
 .form-button:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .login-button {
-  background-color: $main-color;
-  color: $white;
+    background-color: $main-color;
+    color: $white;
 }
 
 .login-with-google-button {
-  border: 2px $main-color solid;
-  color: $main-color;
-  background-color: $white;
+    border: 2px $main-color solid;
+    color: $main-color;
+    background-color: $white;
 }
 
 .button-divider {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  font-size: 18px;
-  color: #E5E5E5;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-size: 18px;
+    color: #e5e5e5;
 }
 
 .button-divider::before,
 .button-divider::after {
-  content: '';
-  flex: 1;
-  border-bottom: 1px solid #E5E5E5;
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .button-divider:not(:empty)::before {
-  margin-right: .25em;
+    margin-right: 0.25em;
 }
 
 .button-divider:not(:empty)::after {
-  margin-left: .25em;
+    margin-left: 0.25em;
 }
 
 .input-with-icon-holder {
-  position: relative;
-  display: flex;
-  flex-direction: column;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .input-with-icon {
-  padding-right: 40px;
+    padding-right: 40px;
 }
 
 .input-icon {
-  position: absolute;
-  top: 13px;
-  right: 11px;
-  width: 20px;
-  height: 20px;
-  color: $grey;
+    position: absolute;
+    top: 13px;
+    right: 11px;
+    width: 20px;
+    height: 20px;
+    color: $grey;
 
-  &.icon-eye {
-    right: 12.5px;
-  }
+    &.icon-eye {
+        right: 12.5px;
+    }
 }
 
 .input-icon:hover {
-  cursor: pointer;
-  color: $black;
+    cursor: pointer;
+    color: $black;
 }
 
 .error-input {
-  border-color: $error;
+    border-color: $error;
 }
 
 .hidden {
-  display: none;
+    display: none;
 }
 
 .error-text {
-  display: inline;
+  display: flex;
+  align-items: flex-end;
+  min-height: 30px;
   color: $error;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 input::-webkit-input-placeholder {

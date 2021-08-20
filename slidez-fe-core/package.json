@@ -13,9 +13,11 @@
     "@sentry/tracing": "^6.10.0",
     "axios": "^0.21.1",
     "formik": "^2.2.9",
+    "moment": "^2.29.1",
     "node-sass": "^6.0.1",
     "password-validator": "^5.1.1",
     "react": "^17.0.2",
+    "react-avatar": "^3.10.0",
     "react-dom": "^17.0.2",
     "react-google-login": "^5.2.2",
     "react-qr-code": "^2.0.1",
@@ -26,10 +28,11 @@
     "redux-toolkit": "^1.1.2",
     "rxjs": "^7.3.0",
     "sockjs-client": "^1.5.1",
+    "uuid": "^8.3.2",
     "validator": "^13.6.0",
     "web-vitals": "^1.0.1",
-    "yup": "^0.32.9",
-    "webstomp-client": "^1.2.6"
+    "webstomp-client": "^1.2.6",
+    "yup": "^0.32.9"
   },
   "scripts": {
     "lint": "eslint --fix --ext .ts,.tsx,.js,.jsx src/",
@@ -69,6 +72,7 @@
     "@types/react-redux-toastr": "^7.6.1",
     "@types/react-router-dom": "^5.1.8",
     "@types/sockjs-client": "^1.5.1",
+    "@types/uuid": "^8.3.1",
     "@types/validator": "^13.6.3",
     "@typescript-eslint/eslint-plugin": "^4.28.3",
     "@typescript-eslint/parser": "^4.28.3",

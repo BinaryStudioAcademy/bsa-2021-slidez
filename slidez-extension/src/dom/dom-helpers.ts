@@ -39,14 +39,20 @@ export function queryElementAsync<T extends Element>(
         // Define observer
         const mutationObserver = new MutationObserver((mutations) => {
             for (const mutation of mutations) {
-                if (parent.querySelector(selector)) {
+                if (
+                    'matches' in mutation.target &&
+                    (mutation.target as Element).matches(selector)
+                ) {
                     destroyObserver()
                     resolve(mutation.target as T)
                     return
                 }
 
                 for (const addedNode of Array.from(mutation.addedNodes)) {
-                    if (parent.querySelector(selector)) {
+                    if (
+                        'matches' in mutation.target &&
+                        (mutation.target as Element).matches(selector)
+                    ) {
                         destroyObserver()
                         resolve(addedNode as T)
                         return
@@ -71,4 +77,17 @@ export function queryElementAsync<T extends Element>(
             subtree: true,
         })
     })
+}
+
+export function insertStyles(doc: Document) {
+    //WARNING: leaving console.log for debug purposes, stylesheets are a bit unstable
+    console.log('Inserting css')
+    const style = document.createElement('link')
+    style.rel = 'stylesheet'
+    style.type = 'text/css'
+    style.href = chrome.extension.getURL('static/css/content_script.css')
+    console.log('Appending style', style)
+    const mount = doc.head ?? doc.documentElement
+    console.log('Appending to', mount)
+    mount.appendChild(style)
 }

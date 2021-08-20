@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ChromeEvents, doPost, log } from 'slidez-shared'
+import { ChromeEvents, log } from 'slidez-shared'
 import './login.css'
 
 const Login = () => {

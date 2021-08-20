@@ -3,19 +3,21 @@ import { RegisterDto } from './dto/RegisterDto'
 import { LogInResult } from './dto/LogInResult'
 import { LogInResponseDto } from './dto/LogInResponseDto'
 import { TokenDto } from './dto/TokenDto'
-import { createDefaultAxios } from '../http/http-util'
+import { createDefaultAxios } from 'slidez-shared/src/net/http/http-util'
 import { RefreshTokensDto } from './dto/RefreshTokensDto'
 import { RefreshTokensResponseDto } from './dto/RefreshTokensResponseDto'
-import { GenericResponse } from '../dto/GenericResponse'
+import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
+import { ApiGateway } from '../http/api-gateway'
 
-export const JWT = 'jwt'
-export const refreshJWT = 'refresh_jwt'
+const JWT = 'jwt'
+const refreshJWT = 'refresh_jwt'
+const bearer = 'Bearer '
 const constructRoute = (endpoint: string) => {
     return `/auth/${endpoint}`
 }
 
 const sendAuthRequest = async (route: string, body: object = {}) => {
-    const axiosInstance = createDefaultAxios()
+    const axiosInstance = createDefaultAxios(ApiGateway.REACT_APP_API_GATEWAY)
     return axiosInstance.request({
         url: route,
         method: 'POST',
@@ -90,4 +92,8 @@ export const isLoggedIn = () => {
 export const performLogout = () => {
     window.localStorage.removeItem(JWT)
     window.localStorage.removeItem(refreshJWT)
+}
+
+export const getAuthHeaderValue = () => {
+    return bearer + window.localStorage.getItem(JWT)
 }
