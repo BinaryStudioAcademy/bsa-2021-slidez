@@ -23,7 +23,8 @@ function Poll({ poll, children }: PollProps) {
             // @ts-ignore
             frequencies.get(e) > frequencies.get(a) ? e : a
         )
-        .pop().id
+        .values()
+        .next().value
 
     const totalVotes = answers.length
     const mappedOptions = options.map((option, index) => {
