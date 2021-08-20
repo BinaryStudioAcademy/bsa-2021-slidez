@@ -26,7 +26,7 @@ function App() {
                         component={Dashboard}
                     />
                     <PrivateRoute path={AppRoute.EDITOR} component={Editor} />
-                    <PublicRoute path={AppRoute.EVENT} component={EventPage} />
+                    <Route path={AppRoute.EVENT} component={EventPage} />
                     <Route exact strict path={AppRoute.ANY}>
                         <Redirect to={AppRoute.LOGIN} />
                     </Route>
