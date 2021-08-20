@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.presentationiteractiveelement.exception;
+package com.binarystudio.academy.slidez.domain.presentation_iteractive_element.exception;
 
 import com.binarystudio.academy.slidez.domain.exception.DomainException;
 

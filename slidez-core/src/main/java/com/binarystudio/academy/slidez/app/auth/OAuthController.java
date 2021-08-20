@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.app.auth;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
@@ -27,8 +28,8 @@ public class OAuthController {
 	// LATER WE WILL RETURN MEANINGFUL MESSAGES IN THESE ENUMS, SO DON'T CHANGE THE CODE
 	// TO MORE CONCISE
 	@PostMapping("/login/google")
-	public GenericResponse<AuthResponse, AuthResponseCodes> loginWithGoogle(
-			@RequestBody AuthorizationByOAuthCodeRequest authorizationByOAuthCodeRequest) {
+	public GenericResponse<AuthResponse, AuthResponseCodes> loginWithGoogle (
+			@RequestBody AuthorizationByOAuthCodeRequest authorizationByOAuthCodeRequest) throws IOException {
 		try {
 			Optional<AuthResponse> authResponse = oAuthService
 					.loginWithGoogle(authorizationByOAuthCodeRequest.getCode());
@@ -44,7 +45,7 @@ public class OAuthController {
 
 	@PostMapping("/register/google")
 	public GenericResponse<AuthResponse, AuthResponseCodes> registerWithGoogle(
-			@RequestBody AuthorizationByOAuthCodeRequest authorizationByOAuthCodeRequest) {
+			@RequestBody AuthorizationByOAuthCodeRequest authorizationByOAuthCodeRequest) throws IOException{
 		try {
 			Optional<AuthResponse> authResponse = oAuthService
 					.registerWithGoogle(authorizationByOAuthCodeRequest.getCode());

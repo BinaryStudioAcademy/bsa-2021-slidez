@@ -12,4 +12,6 @@ public interface GoogleCredentialsRepository extends JpaRepository<GoogleCredent
 	@Query("SELECT gc FROM GoogleCredentials gc WHERE gc.user.id = :userId")
 	Optional<GoogleCredentials> findByUserId(UUID userId);
 
+	Optional<GoogleCredentials> findByAccessToken(String accessToken);
+
 }

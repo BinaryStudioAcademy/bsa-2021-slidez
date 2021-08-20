@@ -1,7 +1,7 @@
-package com.binarystudio.academy.slidez.domain.presentationiteractiveelement.mapper;
+package com.binarystudio.academy.slidez.domain.presentation_iteractive_element.mapper;
 
-import com.binarystudio.academy.slidez.domain.presentationiteractiveelement.dto.PresentationInteractiveElementDto;
-import com.binarystudio.academy.slidez.domain.presentationiteractiveelement.model.PresentationInteractiveElement;
+import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.dto.PresentationInteractiveElementDto;
+import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.model.PresentationInteractiveElement;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

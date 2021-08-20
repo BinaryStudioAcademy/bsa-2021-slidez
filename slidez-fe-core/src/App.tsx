@@ -6,14 +6,9 @@ import PrivateRoute from './common/routes/PrivateRoute'
 import { AppRoute } from './common/routes/app-route'
 import SignPage from './pages/sign/SignPage'
 import EventPage from './pages/event/EventPage'
+import Editor from './pages/editor/Editor'
 import ReduxToastr from 'react-redux-toastr'
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
-import { log } from 'slidez-shared'
-import InteractiveWrapper from './pages/interactive-wrapper/InteractiveWrapper'
-import Poll from './common/components/interactive-elements/poll/Poll'
-import { poll } from './common/components/interactive-elements/poll/dto/pollDtoMock'
-
-log()
 
 function App() {
     return (
@@ -25,21 +20,13 @@ function App() {
                         path={[AppRoute.LOGIN, AppRoute.REGISTRATION]}
                         component={SignPage}
                     />
-                    <Route path={AppRoute.EVENT} component={EventPage} />
                     <PrivateRoute
                         exact
                         path={AppRoute.DASHBOARD}
                         component={Dashboard}
                     />
-                    <PublicRoute
-                        exact
-                        path='/interactive'
-                        component={() => (
-                            <InteractiveWrapper
-                                wrappedComponent={() => <Poll poll={poll} />}
-                            />
-                        )}
-                    />
+                    <PrivateRoute path={AppRoute.EDITOR} component={Editor} />
+                    <PublicRoute path={AppRoute.EVENT} component={EventPage} />
                     <Route exact strict path={AppRoute.ANY}>
                         <Redirect to={AppRoute.LOGIN} />
                     </Route>

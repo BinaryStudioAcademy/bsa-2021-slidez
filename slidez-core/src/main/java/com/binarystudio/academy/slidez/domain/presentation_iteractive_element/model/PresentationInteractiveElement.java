@@ -1,22 +1,15 @@
-package com.binarystudio.academy.slidez.domain.presentationiteractiveelement.model;
+package com.binarystudio.academy.slidez.domain.presentation_iteractive_element.model;
 
-import com.binarystudio.academy.slidez.domain.poll.model.Poll;
-import com.binarystudio.academy.slidez.domain.qasession.QASession;
-import com.binarystudio.academy.slidez.domain.quiz.Quiz;
+import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -27,7 +20,7 @@ import java.util.UUID;
 @Builder
 @Table(name = "presentation_interactive_element")
 public class PresentationInteractiveElement {
-
+    private static String SLIDE_ID_PREFIX = "slidez_";
 	@Id
 	@GeneratedValue(generator = "UUID")
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -40,10 +33,16 @@ public class PresentationInteractiveElement {
 	@Column(name = "slide_id")
 	private String slideId;
 
+	@CreationTimestamp
 	@Column(name = "created_at", columnDefinition = "TIMESTAMP")
 	private LocalDateTime createdAt;
 
+	@UpdateTimestamp
 	@Column(name = "updated_at", columnDefinition = "TIMESTAMP")
 	private LocalDateTime updatedAt;
+
+	public static String generatePresentationSlideId(UUID desiredId){
+        return SLIDE_ID_PREFIX + desiredId.toString();
+    }
 
 }
