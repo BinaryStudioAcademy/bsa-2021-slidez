@@ -17,7 +17,6 @@ class CurrentSlideWatcher {
     private document: Document
     public currentSlideId?: string
     private interactiveSlides: string[]
-    private presentationLink?: string
 
     private slideSwitchMutationObserver?: MutationObserver
 
@@ -26,14 +25,10 @@ class CurrentSlideWatcher {
         const gElem = this.getGElem(svgContainerElem)
         this.currentSlideId = gElem.id
         this.replaceContentIfNeeded(svgContainerElem)
-        const [_, presentationLink] =
-            /docs.google.com\/presentation\/d\/([\d\w\-_]+)\/edit/.exec(
-                document.URL
-            ) ?? []
-        this.presentationLink = presentationLink
+        console.log('present mode started!')
         //fetch interactive slides
-        fetch(
-            `localhost:3000/api/v1/presentation/${presentationLink}/interactions`
+        /*fetch(
+            `http://localhost:3000/api/v1/presentation/${presentationLink}/interactions`
         )
             .then((res) => res.json())
             .then(
@@ -42,7 +37,7 @@ class CurrentSlideWatcher {
                         (element: any) => element.slideId
                     ))
             )
-
+        */
         this.slideSwitchMutationObserver = new MutationObserver(
             async (mutations) => {
                 for (const mutation of mutations) {
@@ -101,6 +96,7 @@ class CurrentSlideWatcher {
     }
 
     private isInteractiveSlide() {
+        console.log(this.currentSlideId, INTERACTIVE_PATTERN)
         if (this.currentSlideId?.match(new RegExp(INTERACTIVE_PATTERN))) {
             return true
         } else {
@@ -113,14 +109,8 @@ class CurrentSlideWatcher {
             return
         }
 
-        if (!this.interactiveSlides.includes(this.currentSlideId)) {
-            return
-        }
-
         ReactDOM.render(
-            <SlideIframe
-                sourceUrl={`http://localhost:3000/#/event/aaaaaa?presentationLink=${this.presentationLink}`}
-            />,
+            <SlideIframe sourceUrl={`http://localhost:3000/#/event/aaaaaa`} />,
             svgContainer
         )
     }

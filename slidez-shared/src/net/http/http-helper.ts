@@ -45,7 +45,6 @@ class HttpHelper {
             }
         )
 
-        debugger
         return axiosInstance.request({
             url: route,
             method: method,

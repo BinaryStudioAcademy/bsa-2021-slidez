@@ -33,8 +33,6 @@ public class PresentationInteractiveElement {
 
 	@Column(name = "slide_id")
 	private String slideId;
-	@OneToOne(mappedBy = "poll")
-	private Poll poll;
 
 	@CreationTimestamp
 	@Column(name = "created_at", columnDefinition = "TIMESTAMP")
