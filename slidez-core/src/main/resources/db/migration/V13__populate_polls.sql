@@ -1,7 +1,7 @@
 INSERT INTO presentations (id, name, link, created_at, updated_at)
 VALUES ('ed60e789-ab15-4756-b95e-218b43b6dfff',
         'The Secret of Java Senior',
-        'link.to/google', '2021-08-19','2021-08-19');
+        'link.to.google', '2021-08-19','2021-08-19');
 
 INSERT INTO polls (id, name, created_at, updated_at,
                    is_multi, is_template)
