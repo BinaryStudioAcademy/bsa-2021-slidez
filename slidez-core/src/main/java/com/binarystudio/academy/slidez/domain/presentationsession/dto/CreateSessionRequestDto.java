@@ -7,6 +7,6 @@ import java.util.UUID;
 @Data
 public class CreateSessionRequestDto {
 
-	private UUID presentationId;
+	private String presentationId;
 
 }

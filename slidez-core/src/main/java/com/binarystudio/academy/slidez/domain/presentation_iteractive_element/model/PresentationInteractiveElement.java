@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.domain.presentation_iteractive_element.model;
 
+import com.binarystudio.academy.slidez.domain.poll.model.Poll;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,11 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -36,6 +33,8 @@ public class PresentationInteractiveElement {
 
 	@Column(name = "slide_id")
 	private String slideId;
+	@OneToOne(mappedBy = "poll")
+	private Poll poll;
 
 	@CreationTimestamp
 	@Column(name = "created_at", columnDefinition = "TIMESTAMP")

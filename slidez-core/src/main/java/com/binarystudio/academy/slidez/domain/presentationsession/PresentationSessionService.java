@@ -5,6 +5,7 @@ import com.binarystudio.academy.slidez.domain.link.exception.IncorrectLeaseDurat
 import com.binarystudio.academy.slidez.domain.link.model.Link;
 import com.binarystudio.academy.slidez.domain.poll.PollService;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollResponseDto;
+import com.binarystudio.academy.slidez.domain.presentation.PresentationRepository;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionRequestDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionResponseDto;
 import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.AnswerPollDto;
@@ -38,6 +39,9 @@ public class PresentationSessionService {
 	private final InMemoryPresentationEventStoreRepository inMemoryPresentationEventStoreRepository;
 
 	private final SessionService sessionService;
+	//TODO: Constructor injection
+	@Autowired
+	private PresentationRepository presentationRepository;
 
 	private final PollService pollService;
 
@@ -59,16 +63,25 @@ public class PresentationSessionService {
 		// 1. Load all interactive elements for presentation
 		// 2. For each such element create event-initiator (like PollCreatedEvt)
 		// Hardcoded sample TO-DO
-		UUID pollFromDBId = UUID.fromString(MOCK_DB_POLL_ID);
-		Poll poll = getPollFromDbById(pollFromDBId);
-		DomainEvent event = new PollCreatedEvent(poll);
+        var presentation = this.presentationRepository.findByLink(dto.getPresentationId()).get();
 
+		//UUID pollFromDBId = UUID.fromString(MOCK_DB_POLL_ID);
+		//Poll poll = getPollFromDbById(pollFromDBId);
+        //TODO: Purge this abomination
+        Poll poll = presentation
+            .getPresentationInteractiveElements()
+            .stream()
+            .filter(element -> element.getPoll() != null)
+            .map(ie -> mapperToPoll.pollResponseDtoToPoll(this.pollService.getById(ie.getPoll().getId()).get()))
+            .findFirst()
+            .get();
+		DomainEvent event = new PollCreatedEvent(poll);
 		// 3. Create PresentationEventStore
 		PresentationEventStore presentationEventStore = new PresentationEventStore();
 		// 4. For each event call PresentationEventStore.apply(event)
 		presentationEventStore = presentationEventStore.applyEvent(event);
 		// 5. Add to repository (eventCode [link], PresentationEventStore )
-		Session session = sessionService.createForPresentation(dto.getPresentationId());
+		Session session = sessionService.createForPresentation(presentation.getId());
 		Link link = linkService.leaseLink(leaseDuration, session);
 		if (inMemoryPresentationEventStoreRepository.add(link.getLink(), presentationEventStore)) {
 			return Optional.of(new CreateSessionResponseDto(link.getLink()));
