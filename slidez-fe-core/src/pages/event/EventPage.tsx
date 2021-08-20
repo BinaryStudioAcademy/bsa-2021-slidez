@@ -26,7 +26,11 @@ const EventPage: React.FC = () => {
 
     const activePoll = snapshot?.polls.find((poll) => poll)
 
-    const body = activePoll ?? <>Waiting for an interaction to start...</>
+    const body = activePoll ? (
+        <Poll poll={activePoll as any} />
+    ) : (
+        <>Waiting for an interaction to start...</>
+    )
     return (
         <div>
             {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
