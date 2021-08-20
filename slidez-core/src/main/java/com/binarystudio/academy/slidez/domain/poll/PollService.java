@@ -39,7 +39,7 @@ public class PollService {
 	@Transactional
 	public Poll create(CreatePollDto pollDto, UUID userId) {
         final var now = now();
-        var pe = peCreator.forPoll(pollDto.getPresentationId(), userId);
+        var pe = peCreator.forPoll(pollDto.getPresentationId(), userId, pollDto.getTitle());
 		var poll = Poll.builder()
             .isMulti(false)
             .isTemplate(false)
