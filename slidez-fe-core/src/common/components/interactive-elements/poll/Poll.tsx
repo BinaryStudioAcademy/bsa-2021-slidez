@@ -9,7 +9,7 @@ type PollProps = {
 
 function Poll({ poll, children }: PollProps) {
     const { name, options, answers } = poll
-
+    console.log(poll)
     const votesCount = Object.values(answers).map((answ) => answ.length)
     const maxVotes = Math.max(...votesCount) ?? 0
     const totalVotes = votesCount.reduce((a, b) => a + b, 0)
@@ -27,7 +27,7 @@ function Poll({ poll, children }: PollProps) {
 
         return (
             <div key={index} className={'poll-option' + winnerClass}>
-                <div className='poll-option-title'>{option.title}</div>
+                <div className='poll-option-title'>{option.name}</div>
                 <div className='poll-option-votes'>
                     <div
                         className='poll-option-bar'

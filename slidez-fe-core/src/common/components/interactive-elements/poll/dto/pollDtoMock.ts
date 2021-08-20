@@ -3,10 +3,10 @@ import { PollDto } from './PollDto'
 export const poll: PollDto = {
     name: 'Are you ok?',
     options: [
-        { title: 'no' },
-        { title: 'yes' },
-        { title: 'maybe' },
-        { title: 'awesome!' },
+        { name: 'no' },
+        { name: 'yes' },
+        { name: 'maybe' },
+        { name: 'awesome!' },
     ],
     answers: {
         0: [{ optionId: 0 }],

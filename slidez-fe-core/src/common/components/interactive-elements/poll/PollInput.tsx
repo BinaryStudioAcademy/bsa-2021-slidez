@@ -39,7 +39,7 @@ function PollInput({ poll }: PollInputProps) {
                 onClick={() => setChosenOption(index)}
             >
                 <div className='poll-input-option-circle'>{circle}</div>
-                <div className='poll-input-option-title'>{option.title}</div>
+                <div className='poll-input-option-title'>{option.name}</div>
             </div>
         )
     })
