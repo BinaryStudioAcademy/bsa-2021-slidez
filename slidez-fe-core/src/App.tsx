@@ -9,7 +9,7 @@ import EventPage from './pages/event/EventPage'
 import ReduxToastr from 'react-redux-toastr'
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
 import { log } from 'slidez-shared'
-import InteractiveWrapper from './pages/interactive-wrapper/InteractiveWrapper'
+import InteractiveWrapper from './common/components/interactive-elements/interactive-wrapper/InteractiveWrapper'
 import Poll from './common/components/interactive-elements/poll/Poll'
 import { poll } from './common/components/interactive-elements/poll/dto/pollDtoMock'
 

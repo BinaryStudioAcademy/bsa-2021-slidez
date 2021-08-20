@@ -4,10 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { logout } from '../../containers/user/store'
 import { useAppDispatch } from '../../hooks'
 import { LogInResponseDto } from '../../services/auth/dto/LogInResponseDto'
-import { GenericResponse } from '../../services/dto/GenericResponse'
-import { createDefaultAxios } from '../../services/http/http-util'
+import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
+import { createDefaultAxios } from 'slidez-shared/src/net/http/http-util'
 import { useDetectOutsideClick } from './useDetectOutsideClick'
 import './dashboard.scss'
+import { ApiGateway } from '../../services/http/api-gateway'
 
 const UserProfile = () => {
     const JWT = 'jwt'
@@ -43,7 +44,9 @@ const UserProfile = () => {
     }
 
     const sendAuthRequest = async (route: string, body: object = {}) => {
-        const axiosInstance = createDefaultAxios()
+        const axiosInstance = createDefaultAxios(
+            ApiGateway.REACT_APP_API_GATEWAY
+        )
 
         return axiosInstance.request({
             url: route,
