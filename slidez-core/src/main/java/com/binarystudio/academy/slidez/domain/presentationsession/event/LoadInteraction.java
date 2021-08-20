@@ -1,17 +1,18 @@
 package com.binarystudio.academy.slidez.domain.presentationsession.event;
 
-import com.binarystudio.academy.slidez.domain.presentationsession.model.Poll;
 import com.binarystudio.academy.slidez.domain.presentationsession.model.State;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
-public class PollCreatedEvent extends DomainEvent {
+import java.util.UUID;
 
-	private final Poll poll;
+@RequiredArgsConstructor
+public class LoadInteraction extends DomainEvent {
+
+	private final UUID pollId;
 
 	@Override
 	public void applyEvent(State state) {
-		state.addPoll(poll);
+		state.loadInteraction(pollId);
 	}
 
 }
