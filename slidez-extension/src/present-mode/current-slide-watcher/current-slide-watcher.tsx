@@ -11,10 +11,13 @@ import SlideIframe from '../../components/slide-iframe/SlideIframe'
 class CurrentSlideWatcher {
     constructor(document: Document) {
         this.document = document
+        this.interactiveSlides = []
     }
 
     private document: Document
     public currentSlideId?: string
+    private interactiveSlides: string[]
+    private presentationLink?: string
 
     private slideSwitchMutationObserver?: MutationObserver
 
@@ -23,6 +26,22 @@ class CurrentSlideWatcher {
         const gElem = this.getGElem(svgContainerElem)
         this.currentSlideId = gElem.id
         this.replaceContentIfNeeded(svgContainerElem)
+        const [_, presentationLink] =
+            /docs.google.com\/presentation\/d\/([\d\w\-_]+)\/edit/.exec(
+                document.URL
+            ) ?? []
+        this.presentationLink = presentationLink
+        //fetch interactive slides
+        fetch(
+            `localhost:3000/api/v1/presentation/${presentationLink}/interactions`
+        )
+            .then((res) => res.json())
+            .then(
+                (slides) =>
+                    (this.interactiveSlides = slides.map(
+                        (element: any) => element.slideId
+                    ))
+            )
 
         this.slideSwitchMutationObserver = new MutationObserver(
             async (mutations) => {
@@ -94,7 +113,16 @@ class CurrentSlideWatcher {
             return
         }
 
-        ReactDOM.render(<SlideIframe sourceUrl='http://localhost:3000/#/interactive'/>, svgContainer)
+        if (!this.interactiveSlides.includes(this.currentSlideId)) {
+            return
+        }
+
+        ReactDOM.render(
+            <SlideIframe
+                sourceUrl={`http://localhost:3000/#/event/aaaaaa?presentationLink=${this.presentationLink}`}
+            />,
+            svgContainer
+        )
     }
 
     private replaceContentIfNeeded(svgContainer: Element) {

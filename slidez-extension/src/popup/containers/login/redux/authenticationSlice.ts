@@ -62,8 +62,8 @@ export const loginUser = createAsyncThunk(
         const { data } = await httpHelper.doPost('auth/login', payload)
         const res: GenericResponse<LoginResponseDto, string> = data
         const authData = {
-            refreshToken: res.data.data.refreshToken,
-            accessToken: res.data.data.accessToken,
+            refreshToken: res.data.refreshToken,
+            accessToken: res.data.accessToken,
         }
 
         getMessageBusUnsafe()!.sendMessageNoCallback({
@@ -71,7 +71,7 @@ export const loginUser = createAsyncThunk(
             data: authData,
         })
 
-        return res.data.data.accessToken as string
+        return res.data.accessToken as string
     }
 )
 
@@ -79,7 +79,7 @@ export const authenticationSlice = createSlice({
     name: 'eventBus',
     initialState,
     reducers: {
-        setToken: (state, tokenPayload: PayloadAction<string>) => {
+        setToken: (state, tokenPayload: any) => {
             state.accessToken = tokenPayload.payload
         },
     },

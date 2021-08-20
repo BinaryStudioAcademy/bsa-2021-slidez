@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import {
     createSessionForPresentation,
@@ -17,13 +17,15 @@ import { CreatePresentationSessionDto } from '../../services/presentation-sessio
 
 const EventPage: React.FC = () => {
     // const { link } = useParams<{ link?: string }>()
+    const query = new URLSearchParams(useLocation().search)
+    const presentationId = query.get('presentationLink') ?? ''
     const link: string | undefined = useAppSelector(selectLink)
     const [sentCreateSession, setSentCreateSession] = useState(false)
     const [sentInitWsSession, setSentInitWsSession] = useState(false)
     const dispatch = useAppDispatch()
     if (link === undefined && !sentCreateSession) {
         const dto: CreatePresentationSessionDto = {
-            presentationId: 'ed60e789-ab15-4756-b95e-218b43b6dfff',
+            presentationId: presentationId, //'ed60e789-ab15-4756-b95e-218b43b6dfff',
         }
         setSentCreateSession(true)
         dispatch(createSessionForPresentation(dto))

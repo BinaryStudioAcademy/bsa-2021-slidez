@@ -43,8 +43,8 @@ public class PresentationService {
 		presentationRepository.deleteById(id);
 	}
 
-	public Collection<PresentationInteractiveElementDto> getInteractiveElements(UUID presentationId) {
-		Presentation presentation = get(presentationId);
+	public Collection<PresentationInteractiveElementDto> getInteractiveElements(String presentationLink) {
+		Presentation presentation = this.presentationRepository.findByLink(presentationLink).get();
 		Set<PresentationInteractiveElement> presentationInteractiveElements = presentation
 				.getPresentationInteractiveElements();
 		PresentationInteractiveElementMapper mapper = PresentationInteractiveElementMapper.INSTANCE;
