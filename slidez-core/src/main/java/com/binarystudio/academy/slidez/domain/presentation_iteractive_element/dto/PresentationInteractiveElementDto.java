@@ -1,7 +1,7 @@
-package com.binarystudio.academy.slidez.domain.presentationiteractiveelement.dto;
+package com.binarystudio.academy.slidez.domain.presentation_iteractive_element.dto;
 
 import com.binarystudio.academy.slidez.domain.poll.model.Poll;
-import com.binarystudio.academy.slidez.domain.presentationiteractiveelement.model.PresentationInteractiveElementType;
+import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.model.PresentationInteractiveElementType;
 import com.binarystudio.academy.slidez.domain.qasession.QASession;
 import com.binarystudio.academy.slidez.domain.quiz.Quiz;
 import lombok.Data;

@@ -1,9 +1,9 @@
-package com.binarystudio.academy.slidez.domain.presentationiteractiveelement;
+package com.binarystudio.academy.slidez.domain.presentation_iteractive_element;
 
-import com.binarystudio.academy.slidez.domain.presentationiteractiveelement.dto.PresentationInteractiveElementDto;
-import com.binarystudio.academy.slidez.domain.presentationiteractiveelement.exception.PresentationInteractiveElementNotFoundException;
-import com.binarystudio.academy.slidez.domain.presentationiteractiveelement.mapper.PresentationInteractiveElementMapper;
-import com.binarystudio.academy.slidez.domain.presentationiteractiveelement.model.PresentationInteractiveElement;
+import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.dto.PresentationInteractiveElementDto;
+import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.exception.PresentationInteractiveElementNotFoundException;
+import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.mapper.PresentationInteractiveElementMapper;
+import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.model.PresentationInteractiveElement;
 import com.binarystudio.academy.slidez.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

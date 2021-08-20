@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.domain.poll.model;
 
+import com.binarystudio.academy.slidez.domain.poll.dto.CreatePollOptionDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,5 +43,9 @@ public class PollOption {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private Poll poll;
+
+	public static PollOption createFromDto(CreatePollOptionDto dto){
+	    return PollOption.builder().name(dto.getTitle()).build();
+    }
 
 }

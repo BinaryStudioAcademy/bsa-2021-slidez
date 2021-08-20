@@ -37,4 +37,8 @@
         "notifications"
     ],
     "web_accessible_resources": ["static/css/content_script.css"]
+    "host_permissions": [
+        "http://localhost",
+        "http://bsa2021slidez-env.eba-b3mmt3yw.eu-west-1.elasticbeanstalk.com/"
+      ]
 }

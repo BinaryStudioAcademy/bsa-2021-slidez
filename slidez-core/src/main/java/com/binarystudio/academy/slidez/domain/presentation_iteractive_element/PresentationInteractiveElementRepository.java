@@ -1,6 +1,6 @@
-package com.binarystudio.academy.slidez.domain.presentationiteractiveelement;
+package com.binarystudio.academy.slidez.domain.presentation_iteractive_element;
 
-import com.binarystudio.academy.slidez.domain.presentationiteractiveelement.model.PresentationInteractiveElement;
+import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.model.PresentationInteractiveElement;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
