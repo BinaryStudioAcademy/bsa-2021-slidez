@@ -80,7 +80,7 @@ public class GoogleOauthTokenManager {
                 REDIRECT_URI
             )
                 .setGrantType("authorization_code")
-                .setScopes(List.of(SlidesScopes.PRESENTATIONS))
+                .setScopes(List.of(SlidesScopes.PRESENTATIONS, SlidesScopes.DRIVE))
                 .set("access_type", "offline")
                 .execute();
 

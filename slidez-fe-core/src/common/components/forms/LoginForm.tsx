@@ -169,7 +169,10 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                     onSuccess={handleLoginWithGoogle}
                     redirectUri={GoogleOAuth.GOOGLE_REDIRECT_URI}
                     cookiePolicy={GoogleOAuth.GOOGLE_COOKIE_POLICY}
-                    scope='https://www.googleapis.com/auth/presentations'
+                    scope={[
+                        'https://www.googleapis.com/auth/presentations',
+                        'https://www.googleapis.com/auth/drive',
+                    ].join(' ')}
                     responseType='code'
                     render={(renderProps) => (
                         <button

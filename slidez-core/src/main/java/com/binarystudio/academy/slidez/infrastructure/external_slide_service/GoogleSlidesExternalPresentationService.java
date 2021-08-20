@@ -25,7 +25,7 @@ public class GoogleSlidesExternalPresentationService {
         this.tokenManager = tokenManager;
     }
 
-    public String createSlide(UUID actorId, String presentationId, String slideId) throws IOException {
+    public String createSlide(UUID actorId, String presentationId, String slideId, String text) throws IOException {
         var tokens = tokenManager.getCredentialPairForUser(actorId)
             .orElseThrow(() -> new RuntimeException("Token pair for user not found"));
 
@@ -51,16 +51,16 @@ public class GoogleSlidesExternalPresentationService {
                             .setTransform(new AffineTransform()
                                 .setScaleX(1.0)
                                 .setScaleY(1.0)
-                                .setTranslateX(350.0)
-                                .setTranslateY(100.0)
+                                .setTranslateX(10.0)
+                                .setTranslateY(30.0)
                                 .setUnit("PT")
                             )
                         )
                     ),
                 new Request()
                     .setInsertText(new InsertTextRequest()
-                        .setText("Test Poll text")
-                        .setObjectId(slideId)
+                        .setText(text)
+                        .setObjectId(textBoxId)
                     )
             )
         );

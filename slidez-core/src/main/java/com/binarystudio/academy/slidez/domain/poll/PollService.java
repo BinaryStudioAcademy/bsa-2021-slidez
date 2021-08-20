@@ -32,14 +32,14 @@ public class PollService {
 
 	@Autowired
 	private UserRepository userRepository;
-
+    
 	@Autowired
     private PresentationInteractiveElementCreator peCreator;
 
 	@Transactional
 	public Poll create(CreatePollDto pollDto, UUID userId) {
         final var now = now();
-        var pe = peCreator.forPoll(pollDto.getPresentationId(), userId);
+        var pe = peCreator.forPoll(pollDto.getPresentationId(), userId, pollDto.getTitle());
 		var poll = Poll.builder()
             .isMulti(false)
             .isTemplate(false)
@@ -49,6 +49,8 @@ public class PollService {
             .createdAt(now)
             .updatedAt(now)
             .build();
+
+		poll.getOptions().forEach(option -> option.setPoll(poll));
 
 		return pollRepository.saveAndFlush(poll);
 	}

@@ -27,10 +27,15 @@ public class PresentationInteractiveElementCreator {
         this.externalPresentationService = externalPresentationService;
     }
 
-    public PresentationInteractiveElement forPoll(String presentationLink, UUID userId){
+    public PresentationInteractiveElement forPoll(String presentationLink, UUID userId, String pollTitle){
         try {
             var presentation = assertPresentationExists(presentationLink);
-            var slideId = this.externalPresentationService.createSlide(userId, presentationLink, PresentationInteractiveElement.generatePresentationSlideId(UUID.randomUUID()));
+            var slideId = this.externalPresentationService.createSlide(
+                userId,
+                presentationLink,
+                PresentationInteractiveElement.generatePresentationSlideId(UUID.randomUUID()),
+                "Poll: " + pollTitle
+            );
             var pe = PresentationInteractiveElement
                 .builder()
                 .type(PresentationInteractiveElementType.POLL)
