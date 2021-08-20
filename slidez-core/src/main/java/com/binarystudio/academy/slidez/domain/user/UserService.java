@@ -44,4 +44,13 @@ public class UserService {
 		return create(email, "");
 	}
 
+    public User createByEmailAndUserData(String email, String firstName, String lastName) {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(this.passwordEncoder.encode(""));
+        user.setFirstName(firstName);
+        user.setEmail(lastName);
+        return this.userRepository.save(user);
+    }
+
 }

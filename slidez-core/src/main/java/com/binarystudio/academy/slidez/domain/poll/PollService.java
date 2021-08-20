@@ -32,7 +32,7 @@ public class PollService {
 
 	@Autowired
 	private UserRepository userRepository;
-
+    
 	@Autowired
     private PresentationInteractiveElementCreator peCreator;
 
@@ -49,6 +49,8 @@ public class PollService {
             .createdAt(now)
             .updatedAt(now)
             .build();
+
+		poll.getOptions().forEach(option -> option.setPoll(poll));
 
 		return pollRepository.saveAndFlush(poll);
 	}
