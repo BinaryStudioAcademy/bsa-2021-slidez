@@ -1,6 +1,7 @@
 package com.binarystudio.academy.slidez.domain.presentation;
 
 import com.binarystudio.academy.slidez.domain.presentation.dto.PresentationUpdateDto;
+import com.binarystudio.academy.slidez.domain.presentation.exception.PresentationNotFoundException;
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
 import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.dto.PresentationInteractiveElementDto;
 import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.mapper.PresentationInteractiveElementMapper;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -30,8 +32,8 @@ public class PresentationService {
 		return presentationRepository.save(presentation);
 	}
 
-	public Presentation get(UUID id) {
-		return presentationRepository.getById(id);
+	public Optional<Presentation> get(UUID id) {
+		return presentationRepository.findById(id);
 	}
 
 	public Presentation update(PresentationUpdateDto dto) {
@@ -44,7 +46,8 @@ public class PresentationService {
 	}
 
 	public Collection<PresentationInteractiveElementDto> getInteractiveElements(UUID presentationId) {
-		Presentation presentation = get(presentationId);
+		Presentation presentation = get(presentationId).orElseThrow(
+            () -> new PresentationNotFoundException(String.format("Not found presentation with id %s" , presentationId)));
 		Set<PresentationInteractiveElement> presentationInteractiveElements = presentation
 				.getPresentationInteractiveElements();
 		PresentationInteractiveElementMapper mapper = PresentationInteractiveElementMapper.INSTANCE;
