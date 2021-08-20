@@ -1,10 +1,9 @@
-package com.binarystudio.academy.slidez.domain.auth.jwtauth;
+package com.binarystudio.academy.slidez.infrastructure.security.jwt;
 
 import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
-import java.util.Optional;
 
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import io.jsonwebtoken.Claims;
@@ -53,24 +52,18 @@ public class JwtProvider {
 		return Jwts.builder().setSubject(user.getEmail()).setExpiration(date).signWith(key()).compact();
 	}
 
-	public String generateRefreshToken(User user) {
-		Date date = Date.from(LocalDateTime.now().plusSeconds(this.jwtProperties.getSecondsToExpireRefresh())
-				.toInstant(ZoneOffset.UTC));
-		return Jwts.builder().setSubject(user.getEmail()).setExpiration(date).signWith(key()).compact();
-	}
-
-	public Optional<String> getLoginFromToken(String token) {
+	public String getLoginFromToken(String token) {
 		Claims claims;
 		try {
 			claims = parseToken(token);
 		}
-		catch (JwtException ex) {
-			return Optional.empty();
+		catch (Exception ex) {
+			return null;
 		}
-		return Optional.ofNullable(claims.getSubject());
+		return claims.getSubject();
 	}
 
-	private Claims parseToken(String token) throws JwtException {
+	private Claims parseToken(String token) {
 		try {
 			return jwtParser().parseClaimsJws(token).getBody();
 		}
