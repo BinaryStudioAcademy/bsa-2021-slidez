@@ -1,4 +1,4 @@
 export type PollAnswerDto = {
-    optionId: number
+    optionId: string,
     userId?: string
 }

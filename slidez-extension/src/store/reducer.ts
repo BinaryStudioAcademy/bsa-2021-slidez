@@ -1,3 +1,6 @@
 import { combineReducers } from 'redux'
+import pollReducer from '../components/poll/redux/reducer'
 
-export default combineReducers({})
+export default combineReducers({
+    poll: pollReducer,
+})

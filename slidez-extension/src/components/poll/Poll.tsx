@@ -1,4 +1,5 @@
 import React from 'react'
+import { useState } from 'react'
 import { PollDto } from './dto/PollDto'
 import './Poll.scss'
 
@@ -9,6 +10,7 @@ type PollProps = {
 
 function Poll({ poll, children }: PollProps) {
     const { name, options, answers } = poll
+    const [width, setWidth] = useState('0')
 
     const votesCount = Object.values(answers).map((answ) => answ.length)
     const maxVotes = Math.max(...votesCount) ?? 0
@@ -21,6 +23,11 @@ function Poll({ poll, children }: PollProps) {
         const currVotes = answers[index].length
         const percentage = totalVotes === 0 ? 0 : (currVotes / totalVotes) * 100
         const percentageFormat = String(Math.round(percentage * 10) / 10) + '%'
+        const animatePercent = () => {
+            requestAnimationFrame(() => {
+                setWidth( (width) => (width = percentageFormat))
+            })
+        }
         const winnerClass = winnerIndexes.includes(index)
             ? ' poll-option-winner'
             : ''
@@ -34,7 +41,7 @@ function Poll({ poll, children }: PollProps) {
                         style={{ width: percentageFormat }}
                     />
                     <div className='poll-option-percent'>
-                        {percentageFormat}
+                        {animatePercent}
                     </div>
                 </div>
             </div>
