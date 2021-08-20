@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import QRCode from 'react-qr-code'
 import './interactive-wrapper.scss'
-import '../../global/styles.scss'
-import { InteractiveLogo } from '../../common/components/logo/logo'
+import '../../../../global/styles.scss'
+import { InteractiveLogo } from '../../logo/logo'
 // @ts-ignore
 // eslint-disable-next-line react/prop-types
 const InteractiveWrapper = ({ wrappedComponent: Component }) => {

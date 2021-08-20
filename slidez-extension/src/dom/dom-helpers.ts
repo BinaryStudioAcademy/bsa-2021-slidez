@@ -78,3 +78,16 @@ export function queryElementAsync<T extends Element>(
         })
     })
 }
+
+export function insertStyles(doc: Document) {
+    //WARNING: leaving console.log for debug purposes, stylesheets are a bit unstable
+    console.log('Inserting css')
+    const style = document.createElement('link')
+    style.rel = 'stylesheet'
+    style.type = 'text/css'
+    style.href = chrome.extension.getURL('static/css/content_script.css')
+    console.log('Appending style', style)
+    const mount = doc.head ?? doc.documentElement
+    console.log('Appending to', mount)
+    mount.appendChild(style)
+}

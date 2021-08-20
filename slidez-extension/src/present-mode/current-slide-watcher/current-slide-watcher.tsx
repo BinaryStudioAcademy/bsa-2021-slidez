@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom'
 import {
     CLASS_NAME_PUNCH_VIEWER_SVGPAGE,
     CLASS_NAME_PUNCH_VIEWER_SVGPAGE_SVGCONTAINER,
+    INTERACTIVE_PATTERN,
 } from '../../dom/dom-constants'
 import { queryElement, queryElementAsync } from '../../dom/dom-helpers'
-import Poll from '../../components/poll/Poll'
-import { poll } from '../../components/poll/dto/pollDtoMock'
+import SlideIframe from '../../components/slide-iframe/SlideIframe'
 
 class CurrentSlideWatcher {
     constructor(document: Document) {
@@ -19,10 +19,10 @@ class CurrentSlideWatcher {
     private slideSwitchMutationObserver?: MutationObserver
 
     init() {
-        const svgContainerElem = this.getSvgContainerElem()
-        const gElem = this.getGElem(svgContainerElem!)
+        const svgContainerElem = this.getSvgContainerElem()!
+        const gElem = this.getGElem(svgContainerElem)
         this.currentSlideId = gElem.id
-        this.changeContentIfNeeded()
+        this.replaceContentIfNeeded(svgContainerElem)
 
         this.slideSwitchMutationObserver = new MutationObserver(
             async (mutations) => {
@@ -36,7 +36,7 @@ class CurrentSlideWatcher {
                                 this.getSvgContainerElemWithParent(node)
                             const gElem = this.getGElem(svgContainerElem)
                             this.currentSlideId = gElem.id
-                            this.changeContentIfNeeded()
+                            this.replaceContentIfNeeded(svgContainerElem)
                         }
                     }
                 }
@@ -82,28 +82,24 @@ class CurrentSlideWatcher {
     }
 
     private isInteractiveSlide() {
-        if (this.currentSlideId?.match(/SLIDES_API/)) {
+        if (this.currentSlideId?.match(new RegExp(INTERACTIVE_PATTERN))) {
             return true
         } else {
             return false
         }
     }
 
-    private changeContentToPoll() {
+    private replaceIneractiveSlide(svgContainer: Element) {
         if (!this.currentSlideId) {
             return
         }
 
-        const svgContainer = this.getSvgContainerElem()!
-        while (svgContainer.firstChild) {
-            svgContainer.removeChild(svgContainer.firstChild)
-        }
-        ReactDOM.render(<Poll poll={poll} />, svgContainer)
+        ReactDOM.render(<SlideIframe sourceUrl='http://localhost:3000/#/interactive'/>, svgContainer)
     }
 
-    private changeContentIfNeeded() {
+    private replaceContentIfNeeded(svgContainer: Element) {
         if (this.isInteractiveSlide()) {
-            this.changeContentToPoll()
+            this.replaceIneractiveSlide(svgContainer)
         }
     }
 }
