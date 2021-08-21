@@ -8,10 +8,10 @@ type PollProps = {
 }
 
 const getFrequencies = (items: any[]) => {
-    return items.reduce(
-        (map: Map<any, number>, e: any) => map.set(e, (map.get(e) || 0) + 1),
-        new Map()
-    )
+    return items.reduce((map: Map<any, number>, e: any) => {
+        map.set(e, (map.get(e) || 0) + 1)
+        return map
+    }, new Map())
 }
 
 function Poll({ poll, children }: PollProps) {
@@ -19,12 +19,14 @@ function Poll({ poll, children }: PollProps) {
     const frequencies: Map<string, number> = getFrequencies(answers)
     // @ts-ignore
     const winnerId: string = [...frequencies.entries()]
-        .reduce((a, e) =>
-            // @ts-ignore
-            frequencies.get(e) > frequencies.get(a) ? e : a
+        .reduce(
+            (a, e) =>
+                // @ts-ignore
+                frequencies.get(e) > frequencies.get(a) ? e : a,
+            undefined
         )
-        .values()
-        .next().value
+        ?.values()
+        .next()?.value
 
     const totalVotes = answers.length
     const mappedOptions = options.map((option, index) => {
