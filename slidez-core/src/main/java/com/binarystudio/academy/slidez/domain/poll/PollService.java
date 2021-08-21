@@ -19,11 +19,11 @@ public class PollService {
 	private final PollRepository pollRepository;
 
 	@Autowired
-    public PollService(PollRepository pollRepository) {
-        this.pollRepository = pollRepository;
-    }
+	public PollService(PollRepository pollRepository) {
+		this.pollRepository = pollRepository;
+	}
 
-    @Transactional
+	@Transactional
 	public Poll create(PollDto pollDto) {
 		Poll poll = PollMapper.INSTANCE.pollDtoToPoll(pollDto);
 		return pollRepository.saveAndFlush(poll);
