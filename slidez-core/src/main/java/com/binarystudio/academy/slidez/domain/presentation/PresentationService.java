@@ -5,7 +5,6 @@ import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -19,8 +18,7 @@ public class PresentationService {
 	}
 
 	public Presentation add(String name) {
-		LocalDateTime now = LocalDateTime.now();
-		Presentation presentation = Presentation.builder().createdAt(now).updatedAt(now).name(name).build();
+		Presentation presentation = new Presentation(name);
 		return presentationRepository.save(presentation);
 	}
 

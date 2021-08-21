@@ -3,13 +3,10 @@ package com.binarystudio.academy.slidez.domain.link;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import com.binarystudio.academy.slidez.domain.link.dto.LinkDto;
 import com.binarystudio.academy.slidez.domain.link.exception.IncorrectLeaseDurationException;
 import com.binarystudio.academy.slidez.domain.link.exception.InvalidCharacterException;
 import com.binarystudio.academy.slidez.domain.link.exception.OverflowException;
-import com.binarystudio.academy.slidez.domain.link.mapper.LinkMapper;
 import com.binarystudio.academy.slidez.domain.link.model.Link;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,21 +55,21 @@ public class LinkService {
 		}
 		List<Link> generatingLinks = new ArrayList<>();
 		int countLinkForGenerate = MAX_COUNT_AVAILABLE_LINKS - countAvailableLinks;
-		String lastLink = getLastLink();
+		String lastLink = getLastCode();
 		for (int i = 0; i < countLinkForGenerate; i++) {
-			String newLink = generateLink(lastLink);
-			generatingLinks.add(Link.createLink(null, newLink, null));
-			lastLink = newLink;
+			String code = generateCode(lastLink);
+			generatingLinks.add(new Link(code));
+			lastLink = code;
 		}
 		linkRepository.saveAll(generatingLinks);
 	}
 
 	/**
 	 * Generate link in order. Example: previewLink - aaaaa1; generated link - aaaaa2.
-	 * @param code - last link in table "Link" database
+	 * @param code - the last code
 	 * @return new link in order
 	 */
-	private String generateLink(String code) throws InvalidCharacterException, OverflowException {
+	private String generateCode(String code) throws InvalidCharacterException, OverflowException {
 		StringBuilder nextCode = new StringBuilder();
 		// convert string to a number in base(powerOf(alphabet)) and add 1 to it;
 		// carry over from previous operation
@@ -102,21 +99,24 @@ public class LinkService {
 	 * lease
 	 */
 	public String leaseLinkAsString(int leaseDuration) throws IncorrectLeaseDurationException {
-		return leaseLink(leaseDuration).getLink();
+		return leaseLink(leaseDuration).getCode();
 	}
 
 	public Link leaseLink(int leaseDuration) throws IncorrectLeaseDurationException {
 		checkLeaseDuration(leaseDuration);
-		Link availableLink = linkRepository.getAvailableLink()
-				.orElseGet(() -> linkRepository.save(Link.createLink(null, generateLink(getLastLink()), null)));
+		Link availableLink = linkRepository.getAvailableLink().orElseGet(() -> {
+			String code = generateCode(getLastCode());
+			return linkRepository.save(new Link(code));
+		});
 		LocalDateTime expirationDate = LocalDateTime.now().plus(Period.ofDays(leaseDuration));
-		availableLink.setExpirationDate(expirationDate);
-		linkRepository.update(availableLink, availableLink.getLinkId());
+		availableLink.setLeasedUntil(expirationDate);
+		linkRepository.update(availableLink, availableLink.getId());
 		return availableLink;
 	}
 
-	private String getLastLink() {
-		return linkRepository.getLastLink().orElse("aaaaaa");
+	private String getLastCode() {
+		String theFirstLik = "aaaaaa";
+		return linkRepository.getLastLink().orElse(linkRepository.save(new Link(theFirstLik))).getCode();
 	}
 
 	private void checkLeaseDuration(int leaseDuration) throws IncorrectLeaseDurationException {
@@ -134,15 +134,9 @@ public class LinkService {
 		LocalDateTime now = LocalDateTime.now();
 		List<Link> expiredLinks = linkRepository.getLinksWithExpiredLeases(now);
 		expiredLinks.forEach(freeingALink -> {
-			freeingALink.setSession(null);
-			freeingALink.setExpirationDate(null);
-			linkRepository.update(freeingALink, freeingALink.getLinkId());
+			freeingALink.setLeasedUntil(null);
+			linkRepository.update(freeingALink, freeingALink.getId());
 		});
-	}
-
-	public List<LinkDto> getLinks() {
-		LinkMapper mapper = LinkMapper.INSTANCE;
-		return linkRepository.findAll().stream().map(mapper::linkToLinkDto).collect(Collectors.toList());
 	}
 
 	public Link update(Link link) {

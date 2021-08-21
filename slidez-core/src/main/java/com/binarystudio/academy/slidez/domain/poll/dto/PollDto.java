@@ -1,7 +1,7 @@
 package com.binarystudio.academy.slidez.domain.poll.dto;
 
 import com.binarystudio.academy.slidez.domain.poll.model.PollOption;
-import com.binarystudio.academy.slidez.domain.presentationiteractiveelement.model.PresentationInteractiveElement;
+import com.binarystudio.academy.slidez.domain.iteractiveelement.model.InteractiveElement;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,6 +31,6 @@ public class PollDto {
 
 	private List<PollOption> options;
 
-	private PresentationInteractiveElement owner;
+	private InteractiveElement owner;
 
 }

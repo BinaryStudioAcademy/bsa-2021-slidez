@@ -51,10 +51,9 @@ public class PresentationSessionService {
 		// 5. Add to repository (eventCode [link], PresentationEventStore )
 		Session session = sessionService.createForPresentation(dto.getPresentationId());
 		Link link = linkService.leaseLink(leaseDuration);
-		link.setSession(session);
 		linkService.update(link);
-		if (inMemoryPresentationEventStoreRepository.add(link.getLink(), presentationEventStore)) {
-			return Optional.of(new CreateSessionResponseDto(link.getLink()));
+		if (inMemoryPresentationEventStoreRepository.add(link.getCode(), presentationEventStore)) {
+			return Optional.of(new CreateSessionResponseDto(link.getCode()));
 		}
 		// return link
 		return Optional.empty();

@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.quiz;
+package com.binarystudio.academy.slidez.domain.iteractiveelement.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,8 +12,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "quiz_answer")
-public class QuizAnswer {
+@Table(name = "interactive_element")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class InteractiveElement {
 
 	@Id
 	@GeneratedValue(generator = "UUID")
@@ -21,10 +22,14 @@ public class QuizAnswer {
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 
-	@Column
-	private String title;
+	@Column(name = "type", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private InteractiveElementType type;
 
-	@Column(name = "is_correct")
-	private Boolean isCorrect;
+	@Column(name = "slide_id", nullable = false)
+	private String slideId;
+
+	@Column(name = "owner_id", nullable = false)
+	private UUID ownerId;
 
 }

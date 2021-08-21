@@ -14,7 +14,6 @@ import com.binarystudio.academy.slidez.domain.session.mapper.SessionMapper;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
 import static java.time.LocalDateTime.now;
 
-import com.binarystudio.academy.slidez.domain.session.model.SessionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,9 +65,8 @@ public class SessionService {
 	}
 
 	public Session createForPresentation(UUID presentationId) {
-		LocalDateTime now = LocalDateTime.now();
 		Presentation presentation = presentationService.get(presentationId);
-		Session session = new Session(null, presentation, SessionStatus.ACTIVE, now, now);
+		Session session = new Session(presentation);
 		return sessionRepository.save(session);
 	}
 
