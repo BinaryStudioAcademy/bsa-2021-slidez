@@ -110,8 +110,7 @@ const UserProfile = () => {
                         <div className='avatar'> {logo} </div>
                         <div>
                             <div className='user-name'>
-                                {userFirstName}&nbsp;
-                                {userLastName}
+                                {userFirstName + ' ' + userLastName}
                             </div>
                             <div className='user-email'> {userEmail} </div>
                         </div>
