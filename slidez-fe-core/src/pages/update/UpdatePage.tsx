@@ -17,7 +17,6 @@ import SideBar from '../dashboard/SideBar'
 import '../dashboard/dashboard.scss'
 import './update.scss'
 import { AppRoute } from '../../common/routes/app-route'
-import { JWT } from '../../services/auth/auth-service'
 
 interface User {
     id: string
@@ -45,23 +44,8 @@ const UpdatePage = () => {
 
     const [userData, setUserData] = useState<User>(initialValues)
 
-    // const currentToken = window.localStorage.getItem(JWT)
-    const userId = 'eb335b4d-4bd9-4bab-bae2-5096daa2e272'
-    useEffect(() => {
-        axios
-            .get(`http://localhost:5000/api/v1/users/${userId}`)
-            .then((response) => {
-                setUserData(response.data.data)
-            })
-    }, [])
-
     const handleInfoSubmit = (values: typeof userData) => {
-        axios
-            //change it
-            .post(`http://localhost:5000/api/v1/users/${userId}`, values)
-            .then((response) => {
-                setUserData(response.data || initialValues)
-            })
+        console.log(values)
     }
 
     const handlePwdSubmit = (values: typeof userData) => {

@@ -12,7 +12,7 @@ public class PollAnsweredEvent extends DomainEvent {
 
 	private final UUID pollId;
 
-	private final int pollOption;
+	private final UUID pollOption;
 
 	@Override
 	public void applyEvent(State state) throws PollNotFoundException, BadOptionException {

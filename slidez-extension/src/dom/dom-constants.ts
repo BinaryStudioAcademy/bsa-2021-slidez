@@ -8,7 +8,7 @@ export const CLASS_NAME_PUNCH_VIEWER_SVGPAGE_SVGCONTAINER =
     'punch-viewer-svgpage-svgcontainer'
 
 // Interactive class id pattern
-export const INTERACTIVE_PATTERN = 'SLIDES_API'
+export const INTERACTIVE_PATTERN = 'slidez_'
 
 // Slidez classes
 export const CLASS_NAME_INTERACTIVE_SLIDE_IFRAME = 'interactive-slide-iframe'

@@ -85,7 +85,7 @@
     right: 10px;
     width: calc(100% - 171px);
     z-index: 1;
-    padding-top: 17px;
+	padding-top: 27px;
     padding-bottom: 17px;
     top: 0;
 	.search-bar {
@@ -95,6 +95,7 @@
 	.user-profile {
 		display: flex;
 		align-items: center;
+		margin-right: 41px;
 		.avatar {
 			display: flex;
 			align-items: center;
@@ -230,8 +231,9 @@
 	}
 	.grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 		grid-auto-rows: auto;
+		gap: 25px 5px;
 	}
 	.table {
 		border-collapse: collapse;
@@ -267,7 +269,6 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	margin: 0 25px 25px 0;
 	border-radius: 7px;
 	.card-img {
 		&:hover {
@@ -338,12 +339,20 @@
 	}
 }
 .no-found-presentations {
-    display:flex;
+	display: flex;
     justify-content: center;
     align-content: center;
     font-weight: 400;
     font-size: 16px;
-    margin-top: 20px;
+	.text-no-found {
+		top: 50%;
+		position: absolute;
+		left: 0px;
+		right: 0px;
+		overflow-wrap: break-word;
+		word-wrap: break-word;
+		text-align: center;
+	}
 }
 #table-presentation {
 	text-align: center;
@@ -402,7 +411,29 @@
 		}
 	}
 }
-input[type=search]::-webkit-search-cancel-button{
-    opacity: 0.3;
-    font-size: 15px;
+
+input[type="search"]::-webkit-search-cancel-button {
+	-webkit-appearance: none;
+	margin-right: 2px;
+	height: 30px;
+	width: 2em;
+	border-radius: 50em;
+	background:
+	url(../../assets/svgs/clear-text-in-search.svg) no-repeat 50% 50% ;
+	
+	background-size: auto;
+	pointer-events: none;
+	cursor: pointer;
+  }
+  
+  input[type="search"]:focus::-webkit-search-cancel-button {
+	height: 30px;
+	width: 30px;
+	pointer-events: all;
+}
+input[type="search"]:hover::-webkit-search-cancel-button {
+	height: 30px;
+	width: 30px;
+	pointer-events: all;
+	background-color:#c6c8cd;
 }

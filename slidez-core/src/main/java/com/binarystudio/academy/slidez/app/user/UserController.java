@@ -17,45 +17,33 @@ import java.util.UUID;
 @RequestMapping("${v1API}/users")
 public class UserController {
 
-    private final UserService userService;
+	private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+	@Autowired
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
 
-    @GetMapping("{id}")
-    public GenericResponse<UserDetailsDto, UserResponseCodes> getById(@PathVariable("id") UUID id) {
-        Optional<User> userOptional = this.userService.getById(id);
-        if (userOptional.isEmpty()) {
-            return new GenericResponse<>(null, UserResponseCodes.NOT_FOUND);
-        }
+	@GetMapping("{id}")
+	public GenericResponse<UserDetailsDto, UserResponseCodes> getById(@PathVariable("id") UUID id) {
+		Optional<User> userOptional = this.userService.getById(id);
+		if (userOptional.isEmpty()) {
+			return new GenericResponse<>(null, UserResponseCodes.NOT_FOUND);
+		}
 
-        User user = userOptional.get();
-        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-        return new GenericResponse<>(userDetailsDto, null);
-    }
+		User user = userOptional.get();
+		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
+		return new GenericResponse<>(userDetailsDto, null);
+	}
 
-    @GetMapping()
-    public GenericResponse<List<User>, UserResponseCodes> getAll() {
-        List<User> userOptional = this.userService.getAll();
-        if (userOptional.isEmpty()) {
-            return new GenericResponse<>(null, UserResponseCodes.NOT_FOUND);
-        }
+	@GetMapping
+	public GenericResponse<List<User>, UserResponseCodes> getAll() {
+		List<User> userOptional = this.userService.getAll();
+		if (userOptional.isEmpty()) {
+			return new GenericResponse<>(null, UserResponseCodes.NOT_FOUND);
+		}
 
-        return new GenericResponse<>(userOptional, null);
-    }
+		return new GenericResponse<>(userOptional, null);
+	}
 
-    //not working
-    @GetMapping("userInfo")
-    public GenericResponse<UserDetailsDto, UserResponseCodes> getByToken(@RequestParam("token") AuthorizationByTokenRequest authorizationByTokenRequest) {
-        Optional<User> userOptional = this.userService.getByToken(authorizationByTokenRequest);
-        if (userOptional.isEmpty()) {
-            return new GenericResponse<>(null, UserResponseCodes.NOT_FOUND);
-        }
-
-        User user = userOptional.get();
-        UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-        return new GenericResponse<>(userDetailsDto, null);
-    }
 }
