@@ -1,5 +1,5 @@
 import React from 'react'
-import { PollDto } from './dto/PollDto'
+import { PollDto } from '../../../../containers/presentation_session/dto/PollDto'
 import './Poll.scss'
 
 type PollProps = {
@@ -7,27 +7,37 @@ type PollProps = {
     children?: JSX.Element
 }
 
+const getFrequencies = (items: any[]) => {
+    return items.reduce((map: Map<any, number>, e: any) => {
+        map.set(e, (map.get(e) || 0) + 1)
+        return map
+    }, new Map())
+}
+
 function Poll({ poll, children }: PollProps) {
     const { name, options, answers } = poll
+    const frequencies: Map<string, number> = getFrequencies(answers)
+    // @ts-ignore
+    const winnerId: string = [...frequencies.entries()]
+        .reduce(
+            (a, e) =>
+                // @ts-ignore
+                frequencies.get(e) > frequencies.get(a) ? e : a,
+            undefined
+        )
+        ?.values()
+        .next()?.value
 
-    const votesCount = Object.values(answers).map((answ) => answ.length)
-    const maxVotes = Math.max(...votesCount) ?? 0
-    const totalVotes = votesCount.reduce((a, b) => a + b, 0)
-    const winnerIndexes = Object.entries(answers)
-        .filter(([id, ans]) => ans.length === maxVotes && ans.length > 0)
-        .map(([id]) => Number(id))
-
+    const totalVotes = answers.length
     const mappedOptions = options.map((option, index) => {
-        const currVotes = answers[index].length
+        const currVotes = frequencies.get(option.id) || 0
         const percentage = totalVotes === 0 ? 0 : (currVotes / totalVotes) * 100
         const percentageFormat = String(Math.round(percentage * 10) / 10) + '%'
-        const winnerClass = winnerIndexes.includes(index)
-            ? ' poll-option-winner'
-            : ''
+        const winnerClass = winnerId === option.id ? ' poll-option-winner' : ''
 
         return (
             <div key={index} className={'poll-option' + winnerClass}>
-                <div className='poll-option-title'>{option.title}</div>
+                <div className='poll-option-title'>{option.name}</div>
                 <div className='poll-option-votes'>
                     <div
                         className='poll-option-bar'

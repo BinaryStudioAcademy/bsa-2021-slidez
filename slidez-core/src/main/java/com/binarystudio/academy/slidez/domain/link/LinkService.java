@@ -45,7 +45,7 @@ public class LinkService {
 	}
 
 	/**
-	 * [On startup, on corn job] Generate extra links, if there are less than 100
+	 * [On startup, on cron job] Generate extra links, if there are less than 100
 	 * available
 	 */
 	public void generateExtraLinks() {

@@ -24,4 +24,8 @@ public class PollOption {
 	@Column(name = "title", nullable = false)
 	private String title;
 
+	public PollOption(String title) {
+		this.title = title;
+	}
+
 }

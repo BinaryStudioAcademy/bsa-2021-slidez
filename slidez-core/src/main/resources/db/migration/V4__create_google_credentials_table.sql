@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS google_credentials
     user_id                UUID                        NOT NULL UNIQUE,
     access_token           TEXT,
     refresh_token          TEXT,
-    expiration_time_millis BIGINT                      NOT NULL,
+    expiration_time_millis BIGINT,
     created_at             TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at             TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE ON UPDATE CASCADE

@@ -1,11 +1,7 @@
 package com.binarystudio.academy.slidez.domain.session;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
+import com.binarystudio.academy.slidez.domain.presentation.exception.PresentationNotFoundException;
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
 import com.binarystudio.academy.slidez.domain.session.dto.SessionResponseDto;
 import com.binarystudio.academy.slidez.domain.session.dto.SessionUpdateDto;
@@ -17,6 +13,11 @@ import static java.time.LocalDateTime.now;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class SessionService {
@@ -44,8 +45,13 @@ public class SessionService {
 
 		Optional.of(dto.getStatus()).ifPresent(session::setStatus);
 
-		Optional<UUID> presentationId = Optional.of(dto.getPresentationId());
-		presentationId.map(presentationService::get).ifPresent(session::setPresentation);
+		UUID presentationId = dto.getPresentationId();
+		if (presentationId == null) {
+			throw new PresentationNotFoundException("Presentation ID is null");
+		}
+		Optional<Presentation> presentation = presentationService.get(presentationId);
+		session.setPresentation(presentation
+				.orElseThrow(() -> (new SessionNotFoundException("Session with id " + dto.getId() + " not found"))));
 
 		sessionRepository.saveAndFlush(session);
 		return session;
@@ -64,9 +70,13 @@ public class SessionService {
 		return sessionRepository.saveAndFlush(session);
 	}
 
-	public Session createForPresentation(UUID presentationId) {
-		Presentation presentation = presentationService.get(presentationId);
-		Session session = new Session(presentation);
+	public Session createForPresentation(UUID presentationId) throws PresentationNotFoundException {
+		Optional<Presentation> presentationOptional = presentationService.get(presentationId);
+		if (presentationOptional.isEmpty()) {
+			throw new PresentationNotFoundException(
+					String.format("Not found presentation with id = %s", presentationId));
+		}
+		Session session = new Session(presentationOptional.get());
 		return sessionRepository.save(session);
 	}
 

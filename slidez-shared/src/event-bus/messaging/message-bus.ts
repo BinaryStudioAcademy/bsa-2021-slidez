@@ -15,6 +15,8 @@ export class BasicMessagingBus {
     }
 
     private handleIncomingMessage(message: ProtocolMessage) {
+        console.log('Received incoming message', message)
+
         //run for all global listeners
         this.globalListeners = this.globalListeners
             .map((listener) => listener(message))
@@ -29,6 +31,7 @@ export class BasicMessagingBus {
     }
 
     public sendMessageNoCallback(message: ProtocolMessage) {
+        console.log('Forwarding message to driver', message)
         this.driver.sendMessage(message)
     }
 

@@ -7,6 +7,9 @@ export const onOpen = (): void => {
 };
 
 export const openSidebar = (): void => {
-    const html = HtmlService.createHtmlOutputFromFile('sidebar-add-on').setTitle('Slidez');
+    const html =
+        HtmlService.createHtmlOutputFromFile('sidebar-add-on').setTitle(
+            'Slidez'
+        );
     SlidesApp.getUi().showSidebar(html);
 };

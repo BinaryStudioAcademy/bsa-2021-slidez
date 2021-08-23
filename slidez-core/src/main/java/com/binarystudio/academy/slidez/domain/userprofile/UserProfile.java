@@ -39,4 +39,12 @@ public class UserProfile {
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
+	public UserProfile(String firstName, String lastName) {
+		LocalDateTime now = LocalDateTime.now();
+		this.createdAt = now;
+		this.updatedAt = now;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
 }

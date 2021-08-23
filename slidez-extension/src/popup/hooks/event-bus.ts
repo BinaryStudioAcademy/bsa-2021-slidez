@@ -51,7 +51,9 @@ export const useEventBus = () => {
             return
         }
         if (!isRunningInChrome()) {
+            messageBusState = { connected: EventBusConnectionStatus.FAILED }
             setState({ connected: EventBusConnectionStatus.FAILED })
+            return
         }
         //connect to own extension => use undefined
         ChromeMessageConnector.connect({
@@ -59,14 +61,16 @@ export const useEventBus = () => {
         })
             .then((driver) => {
                 console.log('Connected to extension successfully')
-                setState({
+                messageBusState = {
                     connected: EventBusConnectionStatus.CONNECTED,
                     eventBus: new BasicMessagingBus(driver),
-                })
+                }
+                setState(messageBusState)
             })
             .catch((error) => {
                 console.error(error)
-                setState({ connected: EventBusConnectionStatus.FAILED })
+                messageBusState = { connected: EventBusConnectionStatus.FAILED }
+                setState(messageBusState)
             })
     }, [])
 

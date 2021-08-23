@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.domain.poll;
 
+import com.binarystudio.academy.slidez.domain.poll.dto.CreatePollDto;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollDto;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollResponseDto;
 import com.binarystudio.academy.slidez.domain.poll.exception.PollNotFoundException;
@@ -23,10 +24,10 @@ public class PollService {
 		this.pollRepository = pollRepository;
 	}
 
+	// todo: fix this
 	@Transactional
-	public Poll create(PollDto pollDto) {
-		Poll poll = PollMapper.INSTANCE.pollDtoToPoll(pollDto);
-		return pollRepository.saveAndFlush(poll);
+	public Poll create(CreatePollDto pollDto, UUID userId) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Transactional

@@ -1,3 +1,4 @@
 export type PollOptionDto = {
-    title: string
+    id: string
+    name: string
 }

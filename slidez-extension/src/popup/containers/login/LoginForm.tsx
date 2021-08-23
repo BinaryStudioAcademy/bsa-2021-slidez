@@ -1,4 +1,5 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { Form, Formik, Field, ErrorMessage } from 'formik'
 import * as yup from 'yup'
 import { loginUser } from './redux/authenticationSlice'
@@ -13,12 +14,13 @@ const validationSchema = yup.object({
 })
 
 const LoginForm = () => {
+    const dispatch = useDispatch()
     return (
         <Formik
             initialValues={{ email: '', password: '' }}
             validationSchema={validationSchema}
             onSubmit={(form) => {
-                loginUser(form)
+                dispatch(loginUser(form))
             }}
         >
             {() => (

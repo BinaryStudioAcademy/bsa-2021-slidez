@@ -1,6 +1,6 @@
 package com.binarystudio.academy.slidez.domain.user.model;
 
-import com.binarystudio.academy.slidez.domain.googlecredentials.GoogleCredentials;
+import com.binarystudio.academy.slidez.domain.auth.oauth2.model.GoogleCredentials;
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
 import com.binarystudio.academy.slidez.domain.userprofile.UserProfile;
 import lombok.AllArgsConstructor;

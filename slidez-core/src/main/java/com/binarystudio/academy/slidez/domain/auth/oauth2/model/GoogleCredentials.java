@@ -1,16 +1,16 @@
-package com.binarystudio.academy.slidez.domain.googlecredentials;
+package com.binarystudio.academy.slidez.domain.auth.oauth2.model;
 
 import com.binarystudio.academy.slidez.domain.user.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -23,8 +23,8 @@ public class GoogleCredentials {
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, updatable = false, unique = true)
 	private User user;
 
 	@Column(name = "access_token")
@@ -33,7 +33,7 @@ public class GoogleCredentials {
 	@Column(name = "refresh_token")
 	private String refreshToken;
 
-	@Column(name = "expiration_time_millis", nullable = false)
+	@Column(name = "expiration_time_millis")
 	private Long expirationTimeMillis;
 
 	@Column(name = "created_at", nullable = false, updatable = false)
