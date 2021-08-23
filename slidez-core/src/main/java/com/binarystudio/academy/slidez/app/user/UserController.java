@@ -1,6 +1,5 @@
 package com.binarystudio.academy.slidez.app.user;
 
-import com.binarystudio.academy.slidez.domain.auth.jwtauth.model.AuthorizationByTokenRequest;
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import com.binarystudio.academy.slidez.domain.user.UserService;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
@@ -36,7 +35,7 @@ public class UserController {
 		return new GenericResponse<>(userDetailsDto, null);
 	}
 
-	@GetMapping()
+	@GetMapping
 	public GenericResponse<List<User>, UserResponseCodes> getAll() {
 		List<User> userOptional = this.userService.getAll();
 		if (userOptional.isEmpty()) {
@@ -44,20 +43,6 @@ public class UserController {
 		}
 
 		return new GenericResponse<>(userOptional, null);
-	}
-
-	// not working
-	@GetMapping("userInfo")
-	public GenericResponse<UserDetailsDto, UserResponseCodes> getByToken(
-			@RequestParam("token") AuthorizationByTokenRequest authorizationByTokenRequest) {
-		Optional<User> userOptional = this.userService.getByToken(authorizationByTokenRequest);
-		if (userOptional.isEmpty()) {
-			return new GenericResponse<>(null, UserResponseCodes.NOT_FOUND);
-		}
-
-		User user = userOptional.get();
-		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-		return new GenericResponse<>(userDetailsDto, null);
 	}
 
 }
