@@ -7,12 +7,7 @@ import java.util.Date;
 import java.util.Optional;
 
 import com.binarystudio.academy.slidez.domain.user.model.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +27,8 @@ public class JwtProvider {
 		this.jwtProperties = jwtProperties;
 		byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecret());
 		this.secretKey = Keys.hmacShaKeyFor(keyBytes);
-		this.jwtParser = Jwts.parserBuilder().setSigningKey(this.secretKey).build();
+		this.jwtParser = Jwts.parserBuilder().setClock(() -> Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)))
+				.setSigningKey(this.secretKey).build();
 	}
 
 	public String generateAccessToken(User user) {
