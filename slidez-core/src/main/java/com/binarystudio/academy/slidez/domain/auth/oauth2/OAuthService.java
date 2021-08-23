@@ -32,8 +32,7 @@ public class OAuthService {
 		this.jwtProvider = jwtProvider;
 	}
 
-	public Optional<AuthResponse> loginWithGoogle(String code)
-			throws IOException {
+	public Optional<AuthResponse> loginWithGoogle(String code) throws IOException {
 		var tokens = this.tokenManager.fetchTokensForUser(code);
 		var emailForGoogle = getEmailForGoogle(tokens);
 		if (emailForGoogle.isEmpty()) {
@@ -49,8 +48,7 @@ public class OAuthService {
 		return Optional.empty();
 	}
 
-	public Optional<AuthResponse> registerWithGoogle(String code)
-			throws IOException {
+	public Optional<AuthResponse> registerWithGoogle(String code) throws IOException {
 
 		var tokens = this.tokenManager.fetchTokensForUser(code);
 		var emailForGoogle = getEmailForGoogle(tokens);

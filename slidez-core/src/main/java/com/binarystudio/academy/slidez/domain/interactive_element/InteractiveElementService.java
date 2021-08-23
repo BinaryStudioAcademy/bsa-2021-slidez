@@ -18,11 +18,11 @@ public class InteractiveElementService {
 	private final InteractiveElementRepository interactiveElementRepository;
 
 	@Autowired
-    public InteractiveElementService(InteractiveElementRepository interactiveElementRepository) {
-        this.interactiveElementRepository = interactiveElementRepository;
-    }
+	public InteractiveElementService(InteractiveElementRepository interactiveElementRepository) {
+		this.interactiveElementRepository = interactiveElementRepository;
+	}
 
-    @Transactional
+	@Transactional
 	public InteractiveElement create(InteractiveElementDto dto) {
 		var mapper = InteractiveElementMapper.INSTANCE;
 		InteractiveElement interactiveElement = mapper.dtoToPresentationInteractiveElement(dto);

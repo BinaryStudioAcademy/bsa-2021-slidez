@@ -30,9 +30,9 @@ public class JwtProvider {
 	@Autowired
 	public JwtProvider(JwtProperties jwtProperties) {
 		this.jwtProperties = jwtProperties;
-        byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecret());
-        this.secretKey = Keys.hmacShaKeyFor(keyBytes);
-        this.jwtParser = Jwts.parserBuilder().setSigningKey(this.secretKey).build();
+		byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecret());
+		this.secretKey = Keys.hmacShaKeyFor(keyBytes);
+		this.jwtParser = Jwts.parserBuilder().setSigningKey(this.secretKey).build();
 	}
 
 	public String generateAccessToken(User user) {

@@ -15,11 +15,12 @@ import javax.annotation.concurrent.ThreadSafe;
 
 @Service
 @ThreadSafe
-/** Class manages all Link-related manipulations, like creating, updating, deleting etc.
- * It is obligated to ensure data integrity - there must be no links with equal short code.
+/**
+ * Class manages all Link-related manipulations, like creating, updating, deleting etc. It
+ * is obligated to ensure data integrity - there must be no links with equal short code.
  * Class is thread safe, all invariants are guarded by field {@link LinkService#lock}.
  * Class does not support external synchronization
- * */
+ */
 public class LinkService {
 
 	private static final int MAX_COUNT_AVAILABLE_LINKS = 100;
@@ -45,21 +46,21 @@ public class LinkService {
 	 * available
 	 */
 	public void generateExtraLinks() {
-	    synchronized (lock) {
-            int countAvailableLinks = linkRepository.getCountAvailableLinks();
-            if (countAvailableLinks >= MAX_COUNT_AVAILABLE_LINKS) {
-                return;
-            }
-            List<Link> generatingLinks = new ArrayList<>();
-            int countLinkForGenerate = MAX_COUNT_AVAILABLE_LINKS - countAvailableLinks;
-            String lastCode = getLastCode();
-            for (int i = 0; i < countLinkForGenerate; i++) {
-                String code = ShortCodeGenerator.generateCode(lastCode);
-                generatingLinks.add(new Link(code));
-                lastCode = code;
-            }
-            linkRepository.saveAll(generatingLinks);
-        }
+		synchronized (lock) {
+			int countAvailableLinks = linkRepository.getCountAvailableLinks();
+			if (countAvailableLinks >= MAX_COUNT_AVAILABLE_LINKS) {
+				return;
+			}
+			List<Link> generatingLinks = new ArrayList<>();
+			int countLinkForGenerate = MAX_COUNT_AVAILABLE_LINKS - countAvailableLinks;
+			String lastCode = getLastCode();
+			for (int i = 0; i < countLinkForGenerate; i++) {
+				String code = ShortCodeGenerator.generateCode(lastCode);
+				generatingLinks.add(new Link(code));
+				lastCode = code;
+			}
+			linkRepository.saveAll(generatingLinks);
+		}
 	}
 
 	/**
@@ -71,22 +72,22 @@ public class LinkService {
 	 */
 	public Link leaseLink(int leaseDuration) throws IncorrectLeaseDurationException {
 		checkLeaseDuration(leaseDuration);
-        LocalDateTime expirationDate = LocalDateTime.now().plus(Period.ofDays(leaseDuration));
-        synchronized (lock) {
-            Link availableLink = linkRepository.getAvailableLink().orElseGet(() -> {
-                String code = ShortCodeGenerator.generateCode(getLastCode());
-                return linkRepository.save(new Link(code));
-            });
-            availableLink.setLeasedUntil(expirationDate);
-            linkRepository.update(availableLink, availableLink.getId());
-            return availableLink;
-        }
+		LocalDateTime expirationDate = LocalDateTime.now().plus(Period.ofDays(leaseDuration));
+		synchronized (lock) {
+			Link availableLink = linkRepository.getAvailableLink().orElseGet(() -> {
+				String code = ShortCodeGenerator.generateCode(getLastCode());
+				return linkRepository.save(new Link(code));
+			});
+			availableLink.setLeasedUntil(expirationDate);
+			linkRepository.update(availableLink, availableLink.getId());
+			return availableLink;
+		}
 	}
 
 	private String getLastCode() {
-	    synchronized (lock) {
-            return linkRepository.getLastLink().orElse(linkRepository.save(new Link(THE_FIRST_CODE))).getCode();
-        }
+		synchronized (lock) {
+			return linkRepository.getLastLink().orElse(linkRepository.save(new Link(THE_FIRST_CODE))).getCode();
+		}
 	}
 
 	private static void checkLeaseDuration(int leaseDuration) throws IncorrectLeaseDurationException {
@@ -103,18 +104,18 @@ public class LinkService {
 	public void cleanExpiredLeases() {
 		LocalDateTime now = LocalDateTime.now();
 		synchronized (lock) {
-            List<Link> expiredLinks = linkRepository.getLinksWithExpiredLeases(now);
-            expiredLinks.forEach(freeingALink -> {
-                freeingALink.setLeasedUntil(null);
-                linkRepository.update(freeingALink, freeingALink.getId());
-            });
-        }
+			List<Link> expiredLinks = linkRepository.getLinksWithExpiredLeases(now);
+			expiredLinks.forEach(freeingALink -> {
+				freeingALink.setLeasedUntil(null);
+				linkRepository.update(freeingALink, freeingALink.getId());
+			});
+		}
 	}
 
 	public Link update(Link link) {
-	    synchronized (lock) {
-            return linkRepository.save(link);
-        }
+		synchronized (lock) {
+			return linkRepository.save(link);
+		}
 	}
 
 }

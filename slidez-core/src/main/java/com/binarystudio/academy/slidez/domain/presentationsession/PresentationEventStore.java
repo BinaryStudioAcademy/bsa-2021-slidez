@@ -45,7 +45,8 @@ public class PresentationEventStore {
 	public Snapshot snapshot(LocalDateTime localDateTime) throws DomainException {
 		State stateForSpecificTime = new State();
 		synchronized (this) {
-			events.stream().filter(e -> e.getEventDate().isBefore(localDateTime)).forEach(e -> e.applyEvent(stateForSpecificTime));
+			events.stream().filter(e -> e.getEventDate().isBefore(localDateTime))
+					.forEach(e -> e.applyEvent(stateForSpecificTime));
 		}
 		return Snapshot.getSimpleSnapshotFromState(stateForSpecificTime);
 	}
