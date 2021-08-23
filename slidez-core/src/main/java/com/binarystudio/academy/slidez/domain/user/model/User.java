@@ -54,6 +54,7 @@ public class User {
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
+        this.role = UserRole.PARTICIPANT;
     }
 
 	public User(String email, String password) {

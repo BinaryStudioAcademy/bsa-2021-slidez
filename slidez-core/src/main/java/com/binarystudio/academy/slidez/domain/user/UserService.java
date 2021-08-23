@@ -34,7 +34,6 @@ public class UserService {
 
 	public User create(String email, String password) {
         User user = new User(email, passwordEncoder.encode(password));
-        user.setRole(UserRole.PARTICIPANT);
 		return this.userRepository.save(user);
 	}
 
@@ -45,7 +44,6 @@ public class UserService {
 	public User createByEmailAndUserData(String email, String firstName, String lastName) {
 		User user = new User(email, passwordEncoder.encode(""));
 		UserProfile userProfile = new UserProfile(firstName, lastName);
-        user.setRole(UserRole.PARTICIPANT);
 		user.setUserProfile(userProfile);
 		return this.userRepository.save(user);
 	}
