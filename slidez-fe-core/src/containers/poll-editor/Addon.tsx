@@ -7,16 +7,21 @@ import PollEditor from './PollEditor'
 
 const Addon = () => {
     const [currentPage, setCurrentPage] = useState<Page>(Page.MENU)
+
+    const updatePage = (page: Page) => {
+        setCurrentPage(page)
+    }
+
     const AddonSwitcher = (currentPage: Page) => {
         switch (currentPage) {
             case Page.MENU:
-                return <Menu onClickPage={setCurrentPage} />
+                return <Menu onClick={updatePage} />
             case Page.POLL:
                 return <PollEditor />
             case Page.QandA:
                 return <QandA />
             default:
-                return <Menu onClick={setCurrentPage} />
+                return <Menu onClick={updatePage} />
         }
     }
     return <div>{AddonSwitcher(currentPage)}</div>

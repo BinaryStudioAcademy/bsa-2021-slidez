@@ -7,7 +7,11 @@ import chat from '../../assets/svgs/chat.svg'
 import { Page } from './enums/addon-routes'
 import './Menu.scss'
 
-const Menu = (onClickPage: any) => {
+interface IProps {
+    onClick: (page: Page) => void
+}
+
+const Menu: React.FC<IProps> = ({ onClick }: IProps) => {
     return (
         <div className='main-page-addon'>
             <div className='addon-menu'>
@@ -17,7 +21,7 @@ const Menu = (onClickPage: any) => {
             <div className='menu-list'>
                 <button
                     className='list-items'
-                    onClick={() => onClickPage(Page.POLL)}
+                    onClick={() => onClick(Page.POLL)}
                 >
                     <img src={check} alt='check' />
                     <div className='text'>Live poll</div>
