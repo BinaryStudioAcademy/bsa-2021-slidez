@@ -1,10 +1,8 @@
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Button } from '@material-ui/core'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import { UserField } from './Field'
-import axios from 'axios'
-import { HttpHelper } from '../../services/http/http-helper'
 import { useDetectOutsideClick } from '../dashboard/useDetectOutsideClick'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
