@@ -32,7 +32,8 @@ public class JwtProvider {
 		this.jwtProperties = jwtProperties;
 		byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecret());
 		this.secretKey = Keys.hmacShaKeyFor(keyBytes);
-		this.jwtParser = Jwts.parserBuilder().setSigningKey(this.secretKey).build();
+		this.jwtParser = Jwts.parserBuilder().setClock(() -> Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)))
+				.setSigningKey(this.secretKey).build();
 	}
 
 	public String generateAccessToken(User user) {
