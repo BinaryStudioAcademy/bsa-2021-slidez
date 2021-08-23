@@ -54,16 +54,6 @@ public class AuthController {
 		return new GenericResponse<>(authResponseOptional.get());
 	}
 
-	@PostMapping("login-by-token")
-	public GenericResponse<AuthResponse, AuthResponseCodes> loginByToken(
-			@RequestBody AuthorizationByTokenRequest authorizationByTokenRequest) {
-		Optional<AuthResponse> authResponseOptional = authService.performLoginByToken(authorizationByTokenRequest);
-		if (authResponseOptional.isEmpty()) {
-			return new GenericResponse<>(null, AuthResponseCodes.UNAUTHORIZED);
-		}
-		return new GenericResponse<>(authResponseOptional.get());
-	}
-
 	@PostMapping("refresh-tokens")
 	public GenericResponse<RefreshTokensResponse, AuthResponseCodes> loginByRefreshToken(
 			@RequestBody RefreshTokensRequest refreshTokensRequest) {

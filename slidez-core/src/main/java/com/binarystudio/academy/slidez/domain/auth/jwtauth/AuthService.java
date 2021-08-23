@@ -26,15 +26,6 @@ public class AuthService {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	public Optional<AuthResponse> performLoginByToken(AuthorizationByTokenRequest authorizationByTokenRequest) {
-		Optional<String> email = jwtProvider.getLoginFromToken(authorizationByTokenRequest.getToken());
-		if (email.isEmpty()) {
-			return Optional.empty();
-		}
-		Optional<User> userOptional = userService.getByEmail(email.get());
-		return userOptional.map(user -> AuthUtil.createAuthResponseFromUser(user, jwtProvider));
-	}
-
 	public Optional<RefreshTokensResponse> getRefreshedTokens(RefreshTokensRequest refreshTokensRequest) {
 		Optional<String> email = jwtProvider.getLoginFromToken(refreshTokensRequest.getRefreshToken());
 		if (email.isEmpty()) {
