@@ -11,7 +11,7 @@ import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
 import ParticipantPage from './pages/participant-page/ParticipantPage'
 import UpdatePage from './pages/update/UpdatePage'
 import { log } from 'slidez-shared'
-import Main from './containers/poll-editor/Main'
+import Addon from './containers/poll-editor/Addon'
 
 log()
 
@@ -30,7 +30,7 @@ function App() {
                         path={AppRoute.DASHBOARD}
                         component={Dashboard}
                     />
-                    <PrivateRoute path={AppRoute.ADDON} component={Main} />
+                    <PrivateRoute path={AppRoute.ADDON} component={Addon} />
                     <Route path={AppRoute.EVENT} component={EventPage} />
                     <Route
                         path={AppRoute.PARTICIPANT}
