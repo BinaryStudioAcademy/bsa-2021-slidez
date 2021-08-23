@@ -5,7 +5,6 @@ import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
 import com.binarystudio.academy.slidez.domain.userprofile.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -14,7 +13,6 @@ import java.util.Set;
 import java.util.UUID;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "\"user\"")
@@ -52,12 +50,16 @@ public class User {
 	@Column(name = "updated_at", nullable = false)
 	private LocalDateTime updatedAt;
 
+	public User() {
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
+
 	public User(String email, String password) {
+	    this();
 		this.email = email;
 		this.password = password;
-		LocalDateTime now = LocalDateTime.now();
-		this.createdAt = now;
-		this.updatedAt = now;
 	}
 
 }
