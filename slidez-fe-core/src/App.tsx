@@ -6,12 +6,12 @@ import PrivateRoute from './common/routes/PrivateRoute'
 import { AppRoute } from './common/routes/app-route'
 import SignPage from './pages/sign/SignPage'
 import EventPage from './pages/event/EventPage'
-import Editor from './pages/editor/Editor'
 import ReduxToastr from 'react-redux-toastr'
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
 import ParticipantPage from './pages/participant-page/ParticipantPage'
 import UpdatePage from './pages/update/UpdatePage'
 import { log } from 'slidez-shared'
+import Main from './containers/poll-editor/Main'
 
 log()
 
@@ -30,7 +30,7 @@ function App() {
                         path={AppRoute.DASHBOARD}
                         component={Dashboard}
                     />
-                    <PrivateRoute path={AppRoute.EDITOR} component={Editor} />
+                    <PrivateRoute path={AppRoute.ADDON} component={Main} />
                     <Route path={AppRoute.EVENT} component={EventPage} />
                     <Route
                         path={AppRoute.PARTICIPANT}
