@@ -2,9 +2,7 @@ package com.binarystudio.academy.slidez.domain.presentation.model;
 
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -15,7 +13,8 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

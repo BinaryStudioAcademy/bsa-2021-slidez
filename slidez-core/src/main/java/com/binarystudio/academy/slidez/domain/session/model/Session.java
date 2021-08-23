@@ -2,16 +2,15 @@ package com.binarystudio.academy.slidez.domain.session.model;
 
 import com.binarystudio.academy.slidez.domain.link.model.Link;
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
