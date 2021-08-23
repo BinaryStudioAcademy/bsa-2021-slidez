@@ -33,7 +33,7 @@ public class UserService {
 	}
 
 	public User create(String email, String password) {
-        User user = new User(email, passwordEncoder.encode(password));
+		User user = new User(email, passwordEncoder.encode(password));
 		return this.userRepository.save(user);
 	}
 
