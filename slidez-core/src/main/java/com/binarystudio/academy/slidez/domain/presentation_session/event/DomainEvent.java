@@ -1,7 +1,7 @@
-package com.binarystudio.academy.slidez.domain.presentationsession.event;
+package com.binarystudio.academy.slidez.domain.presentation_session.event;
 
 import com.binarystudio.academy.slidez.domain.exception.DomainException;
-import com.binarystudio.academy.slidez.domain.presentationsession.model.State;
+import com.binarystudio.academy.slidez.domain.presentation_session.model.State;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

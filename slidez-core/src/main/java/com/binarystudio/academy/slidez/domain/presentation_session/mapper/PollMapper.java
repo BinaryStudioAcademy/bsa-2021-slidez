@@ -1,7 +1,7 @@
-package com.binarystudio.academy.slidez.domain.presentationsession.mapper;
+package com.binarystudio.academy.slidez.domain.presentation_session.mapper;
 
-import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.PollCreatedResponseDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.model.Poll;
+import com.binarystudio.academy.slidez.domain.presentation_session.dto.ws.PollCreatedResponseDto;
+import com.binarystudio.academy.slidez.domain.presentation_session.model.Poll;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

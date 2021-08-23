@@ -1,6 +1,6 @@
-package com.binarystudio.academy.slidez.domain.presentationsession.snapshot;
+package com.binarystudio.academy.slidez.domain.presentation_session.snapshot;
 
-import com.binarystudio.academy.slidez.domain.presentationsession.model.Poll;
+import com.binarystudio.academy.slidez.domain.presentation_session.model.Poll;
 import lombok.Getter;
 
 import java.util.ArrayList;

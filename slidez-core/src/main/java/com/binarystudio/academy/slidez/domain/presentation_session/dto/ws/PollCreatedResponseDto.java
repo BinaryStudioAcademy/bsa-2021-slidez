@@ -1,6 +1,6 @@
-package com.binarystudio.academy.slidez.domain.presentationsession.dto.ws;
+package com.binarystudio.academy.slidez.domain.presentation_session.dto.ws;
 
-import com.binarystudio.academy.slidez.domain.presentationsession.model.PollOption;
+import com.binarystudio.academy.slidez.domain.presentation_session.model.PollOption;
 import lombok.*;
 
 import java.util.List;

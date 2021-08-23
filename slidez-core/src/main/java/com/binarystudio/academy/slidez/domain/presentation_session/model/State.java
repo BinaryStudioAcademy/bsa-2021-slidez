@@ -1,8 +1,8 @@
-package com.binarystudio.academy.slidez.domain.presentationsession.model;
+package com.binarystudio.academy.slidez.domain.presentation_session.model;
 
 import com.binarystudio.academy.slidez.domain.poll.exception.PollNotFoundException;
-import com.binarystudio.academy.slidez.domain.presentationsession.PresentationSessionService;
-import com.binarystudio.academy.slidez.domain.presentationsession.exception.BadOptionException;
+import com.binarystudio.academy.slidez.domain.presentation_session.PresentationSessionService;
+import com.binarystudio.academy.slidez.domain.presentation_session.exception.BadOptionException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;

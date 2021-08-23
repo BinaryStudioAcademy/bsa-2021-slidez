@@ -1,8 +1,8 @@
-package com.binarystudio.academy.slidez.domain.presentationsession.event;
+package com.binarystudio.academy.slidez.domain.presentation_session.event;
 
 import com.binarystudio.academy.slidez.domain.poll.exception.PollNotFoundException;
-import com.binarystudio.academy.slidez.domain.presentationsession.exception.BadOptionException;
-import com.binarystudio.academy.slidez.domain.presentationsession.model.State;
+import com.binarystudio.academy.slidez.domain.presentation_session.exception.BadOptionException;
+import com.binarystudio.academy.slidez.domain.presentation_session.model.State;
 import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;

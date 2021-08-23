@@ -1,8 +1,8 @@
-package com.binarystudio.academy.slidez.domain.presentationsession.mapper;
+package com.binarystudio.academy.slidez.domain.presentation_session.mapper;
 
 import com.binarystudio.academy.slidez.domain.poll.dto.PollResponseDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.model.Poll;
-import com.binarystudio.academy.slidez.domain.presentationsession.model.PollOption;
+import com.binarystudio.academy.slidez.domain.presentation_session.model.Poll;
+import com.binarystudio.academy.slidez.domain.presentation_session.model.PollOption;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

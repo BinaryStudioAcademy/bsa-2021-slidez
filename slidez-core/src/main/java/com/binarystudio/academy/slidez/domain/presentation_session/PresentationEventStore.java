@@ -1,9 +1,9 @@
-package com.binarystudio.academy.slidez.domain.presentationsession;
+package com.binarystudio.academy.slidez.domain.presentation_session;
 
 import com.binarystudio.academy.slidez.domain.exception.DomainException;
-import com.binarystudio.academy.slidez.domain.presentationsession.event.DomainEvent;
-import com.binarystudio.academy.slidez.domain.presentationsession.model.State;
-import com.binarystudio.academy.slidez.domain.presentationsession.snapshot.Snapshot;
+import com.binarystudio.academy.slidez.domain.presentation_session.event.DomainEvent;
+import com.binarystudio.academy.slidez.domain.presentation_session.model.State;
+import com.binarystudio.academy.slidez.domain.presentation_session.snapshot.Snapshot;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.concurrent.GuardedBy;

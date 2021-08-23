@@ -1,9 +1,9 @@
 package com.binarystudio.academy.slidez.app.presentationsession;
 
-import com.binarystudio.academy.slidez.domain.presentationsession.PresentationSessionService;
-import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionRequestDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionResponseDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.*;
+import com.binarystudio.academy.slidez.domain.presentation_session.PresentationSessionService;
+import com.binarystudio.academy.slidez.domain.presentation_session.dto.CreateSessionRequestDto;
+import com.binarystudio.academy.slidez.domain.presentation_session.dto.CreateSessionResponseDto;
+import com.binarystudio.academy.slidez.domain.presentation_session.dto.ws.*;
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;

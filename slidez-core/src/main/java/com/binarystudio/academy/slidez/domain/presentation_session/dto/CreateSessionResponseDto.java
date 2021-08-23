@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.presentationsession.dto;
+package com.binarystudio.academy.slidez.domain.presentation_session.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

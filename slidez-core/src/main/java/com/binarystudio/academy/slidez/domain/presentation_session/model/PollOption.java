@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.presentationsession.model;
+package com.binarystudio.academy.slidez.domain.presentation_session.model;
 
 import com.binarystudio.academy.slidez.domain.poll.model.Poll;
 import lombok.Builder;

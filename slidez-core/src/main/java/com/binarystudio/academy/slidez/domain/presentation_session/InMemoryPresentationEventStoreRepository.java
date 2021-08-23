@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.presentationsession;
+package com.binarystudio.academy.slidez.domain.presentation_session;
 
 import org.springframework.stereotype.Repository;
 

@@ -1,24 +1,24 @@
-package com.binarystudio.academy.slidez.domain.presentationsession;
+package com.binarystudio.academy.slidez.domain.presentation_session;
 
 import com.binarystudio.academy.slidez.domain.link.LinkService;
 import com.binarystudio.academy.slidez.domain.link.exception.IncorrectLeaseDurationException;
 import com.binarystudio.academy.slidez.domain.link.model.Link;
 import com.binarystudio.academy.slidez.domain.poll.PollService;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollResponseDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionRequestDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.dto.CreateSessionResponseDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.AnswerPollDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.CreatePollRequestDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.PollAnsweredDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.PollCreatedResponseDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.dto.ws.SnapshotResponseDto;
-import com.binarystudio.academy.slidez.domain.presentationsession.event.DomainEvent;
-import com.binarystudio.academy.slidez.domain.presentationsession.event.PollAnsweredEvent;
-import com.binarystudio.academy.slidez.domain.presentationsession.event.PollCreatedEvent;
-import com.binarystudio.academy.slidez.domain.presentationsession.mapper.MapperToPoll;
-import com.binarystudio.academy.slidez.domain.presentationsession.mapper.PollMapper;
-import com.binarystudio.academy.slidez.domain.presentationsession.model.Poll;
-import com.binarystudio.academy.slidez.domain.presentationsession.snapshot.Snapshot;
+import com.binarystudio.academy.slidez.domain.presentation_session.dto.CreateSessionRequestDto;
+import com.binarystudio.academy.slidez.domain.presentation_session.dto.CreateSessionResponseDto;
+import com.binarystudio.academy.slidez.domain.presentation_session.dto.ws.AnswerPollDto;
+import com.binarystudio.academy.slidez.domain.presentation_session.dto.ws.CreatePollRequestDto;
+import com.binarystudio.academy.slidez.domain.presentation_session.dto.ws.PollAnsweredDto;
+import com.binarystudio.academy.slidez.domain.presentation_session.dto.ws.PollCreatedResponseDto;
+import com.binarystudio.academy.slidez.domain.presentation_session.dto.ws.SnapshotResponseDto;
+import com.binarystudio.academy.slidez.domain.presentation_session.event.DomainEvent;
+import com.binarystudio.academy.slidez.domain.presentation_session.event.PollAnsweredEvent;
+import com.binarystudio.academy.slidez.domain.presentation_session.event.PollCreatedEvent;
+import com.binarystudio.academy.slidez.domain.presentation_session.mapper.MapperToPoll;
+import com.binarystudio.academy.slidez.domain.presentation_session.mapper.PollMapper;
+import com.binarystudio.academy.slidez.domain.presentation_session.model.Poll;
+import com.binarystudio.academy.slidez.domain.presentation_session.snapshot.Snapshot;
 import com.binarystudio.academy.slidez.domain.session.SessionService;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,7 +118,7 @@ public class PresentationSessionService {
 
 	public Poll getPollFromDbById(UUID pollFromDBId) {
 		Optional<PollResponseDto> pollResponseDtoOptional = pollService.getById(pollFromDBId);
-		return mapperToPoll.pollResponseDtoToPoll(pollResponseDtoOptional.get());
+		return mapperToPoll.pollResponseDtoToPoll(pollResponseDtoOptional.orElse(null));
 	}
 
 }
