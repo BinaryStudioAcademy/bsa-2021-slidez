@@ -2,7 +2,6 @@ import { LogInDto } from './dto/LogInDto'
 import { RegisterDto } from './dto/RegisterDto'
 import { LogInResult } from './dto/LogInResult'
 import { LogInResponseDto } from './dto/LogInResponseDto'
-import { TokenDto } from './dto/TokenDto'
 import { createDefaultAxios } from 'slidez-shared/src/net/http/http-util'
 import { RefreshTokensDto } from './dto/RefreshTokensDto'
 import { RefreshTokensResponseDto } from './dto/RefreshTokensResponseDto'
@@ -28,7 +27,7 @@ const sendAuthRequest = async (route: string, body: object = {}) => {
 
 const performSign = async (
     url: string,
-    dto: LogInDto | RegisterDto | TokenDto | CodeDto
+    dto: LogInDto | RegisterDto | CodeDto
 ) => {
     const { data } = await sendAuthRequest(url, dto)
     const genericResponse: GenericResponse<LogInResponseDto, string> = data
@@ -51,10 +50,6 @@ export const performLogIn = async (dto: LogInDto) => {
 
 export const performRegister = async (dto: RegisterDto) => {
     return performSign(constructRoute('register'), dto)
-}
-
-export const performLoginByToken = async (dto: TokenDto) => {
-    return performSign(constructRoute('login-by-token'), dto)
 }
 
 export const performRefreshTokens = async () => {
