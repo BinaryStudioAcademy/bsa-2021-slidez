@@ -32,23 +32,17 @@ public class PollService {
 
 	@Autowired
 	private UserRepository userRepository;
-    
+
 	@Autowired
-    private PresentationInteractiveElementCreator peCreator;
+	private PresentationInteractiveElementCreator peCreator;
 
 	@Transactional
 	public Poll create(CreatePollDto pollDto, UUID userId) {
-        final var now = now();
-        var pe = peCreator.forPoll(pollDto.getPresentationId(), userId, pollDto.getTitle());
-		var poll = Poll.builder()
-            .isMulti(false)
-            .isTemplate(false)
-            .name(pollDto.getTitle())
-            .options(pollDto.getOptions().stream().map(PollOption::createFromDto).collect(Collectors.toList()))
-            .owner(pe)
-            .createdAt(now)
-            .updatedAt(now)
-            .build();
+		final var now = now();
+		var pe = peCreator.forPoll(pollDto.getPresentationId(), userId, pollDto.getTitle());
+		var poll = Poll.builder().isMulti(false).isTemplate(false).name(pollDto.getTitle())
+				.options(pollDto.getOptions().stream().map(PollOption::createFromDto).collect(Collectors.toList()))
+				.owner(pe).createdAt(now).updatedAt(now).build();
 
 		poll.getOptions().forEach(option -> option.setPoll(poll));
 

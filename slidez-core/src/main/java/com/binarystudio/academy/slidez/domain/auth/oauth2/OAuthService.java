@@ -29,16 +29,15 @@ public class OAuthService {
 	private final JwtProvider jwtProvider;
 
 	@Autowired
-	public OAuthService(GoogleOauthTokenManager tokenManager,
-			UserService userService, JwtProvider jwtProvider) {
+	public OAuthService(GoogleOauthTokenManager tokenManager, UserService userService, JwtProvider jwtProvider) {
 		this.tokenManager = tokenManager;
 		this.userService = userService;
 		this.jwtProvider = jwtProvider;
 	}
 
 	public Optional<AuthResponse> loginWithGoogle(String code)
-        throws GoogleTokenIdException, GoogleTokenRequestException, GoogleTokenStoreException, IOException {
-        var tokens = this.tokenManager.fetchTokensForUser(code);
+			throws GoogleTokenIdException, GoogleTokenRequestException, GoogleTokenStoreException, IOException {
+		var tokens = this.tokenManager.fetchTokensForUser(code);
 		var emailForGoogle = getEmailForGoogle(tokens);
 		if (emailForGoogle.isEmpty()) {
 			return Optional.empty();
@@ -57,11 +56,11 @@ public class OAuthService {
 			throws GoogleTokenIdException, GoogleTokenRequestException, GoogleTokenStoreException, IOException {
 
 		var tokens = this.tokenManager.fetchTokensForUser(code);
-	    var emailForGoogle = getEmailForGoogle(tokens);
+		var emailForGoogle = getEmailForGoogle(tokens);
 		if (emailForGoogle.isEmpty()) {
 			return Optional.empty();
 		}
-        var data = emailForGoogle.get();
+		var data = emailForGoogle.get();
 		if (!userService.isEmailPresent(data.getEmail())) {
 			User user = userService.createByEmailAndUserData(data.getEmail(), data.getName(), data.getFamilyName());
 			tokenManager.saveForUser(user.getId(), tokens);
@@ -71,7 +70,7 @@ public class OAuthService {
 	}
 
 	private Optional<Userinfoplus> getEmailForGoogle(GoogleCredential oauthCreds) throws IOException {
-        var userData = new Oauth2(new NetHttpTransport(), new GsonFactory(), oauthCreds).userinfo().get().execute();
+		var userData = new Oauth2(new NetHttpTransport(), new GsonFactory(), oauthCreds).userinfo().get().execute();
 		return Optional.ofNullable(userData);
 	}
 

@@ -24,8 +24,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(DomainException.class)
 	public ResponseEntity<GenericResponse<Object, String>> domainException(DomainException ex) {
 		String message = ex.getMessage();
-        this.logger.error(ex.getMessage());
-        this.logger.error(ex.getStackTrace());
+		this.logger.error(ex.getMessage());
+		this.logger.error(ex.getStackTrace());
 		GenericResponse<Object, String> out = new GenericResponse<>(null, message);
 		return new ResponseEntity<>(out, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
@@ -34,8 +34,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<GenericResponse<Object, String>> unpredictedException(Throwable ex) {
 		GenericResponse<Object, String> out = new GenericResponse<>(null,
 				exceptionProperties.getUnpredictedExceptionMessage());
-        this.logger.error(ex.getMessage());
-        this.logger.error(ex.getStackTrace());
+		this.logger.error(ex.getMessage());
+		this.logger.error(ex.getStackTrace());
 		return new ResponseEntity<>(out, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 

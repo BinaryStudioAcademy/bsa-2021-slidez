@@ -99,11 +99,8 @@ public class LinkService {
 		checkLeaseDuration(leaseDuration);
 		LocalDateTime expirationDate = LocalDateTime.now().plus(Period.ofDays(leaseDuration));
 
-		Link resultLink = new Link().builder()
-                .link(generateLink(getLastLink()))
-                .session(session)
-                .expirationDate(expirationDate)
-                .build();
+		Link resultLink = new Link().builder().link(generateLink(getLastLink())).session(session)
+				.expirationDate(expirationDate).build();
 
 		linkRepository.saveAndFlush(resultLink);
 		return resultLink;

@@ -12,53 +12,42 @@ import java.util.UUID;
 
 @Service
 public class PresentationInteractiveElementCreator {
-    PresentationRepository presentationRepository;
-    PresentationInteractiveElementRepository ieRepository;
-    GoogleSlidesExternalPresentationService externalPresentationService;
 
-    @Autowired
-    public PresentationInteractiveElementCreator(
-        PresentationRepository presentationRepository,
-        PresentationInteractiveElementRepository ieRepository,
-        GoogleSlidesExternalPresentationService externalPresentationService
-    ){
-        this.ieRepository = ieRepository;
-        this.presentationRepository = presentationRepository;
-        this.externalPresentationService = externalPresentationService;
-    }
+	PresentationRepository presentationRepository;
 
-    public PresentationInteractiveElement forPoll(String presentationLink, UUID userId, String pollTitle){
-        try {
-            var presentation = assertPresentationExists(presentationLink);
-            var slideId = this.externalPresentationService.createSlide(
-                userId,
-                presentationLink,
-                PresentationInteractiveElement.generatePresentationSlideId(UUID.randomUUID()),
-                "Poll: " + pollTitle
-            );
-            var pe = PresentationInteractiveElement
-                .builder()
-                .type(PresentationInteractiveElementType.POLL)
-                //.presentation(presentation)
-                .slideId(slideId).build();
+	PresentationInteractiveElementRepository ieRepository;
 
-            return this.ieRepository.save(pe);
-        } catch(Exception exception){
-            throw new RuntimeException(exception.getMessage());
-        }
-    }
+	GoogleSlidesExternalPresentationService externalPresentationService;
 
-    private Presentation assertPresentationExists(String presentationLink){
-        return this.presentationRepository
-            .findByLink(presentationLink)
-            .orElseGet(() -> this.presentationRepository
-                .save(
-                    Presentation
-                        .builder()
-                        .link(presentationLink)
-                        .name("Test presentation")
-                        .build()
-                )
-        );
-    }
+	@Autowired
+	public PresentationInteractiveElementCreator(PresentationRepository presentationRepository,
+			PresentationInteractiveElementRepository ieRepository,
+			GoogleSlidesExternalPresentationService externalPresentationService) {
+		this.ieRepository = ieRepository;
+		this.presentationRepository = presentationRepository;
+		this.externalPresentationService = externalPresentationService;
+	}
+
+	public PresentationInteractiveElement forPoll(String presentationLink, UUID userId, String pollTitle) {
+		try {
+			var presentation = assertPresentationExists(presentationLink);
+			var slideId = this.externalPresentationService.createSlide(userId, presentationLink,
+					PresentationInteractiveElement.generatePresentationSlideId(UUID.randomUUID()),
+					"Poll: " + pollTitle);
+			var pe = PresentationInteractiveElement.builder().type(PresentationInteractiveElementType.POLL)
+					// .presentation(presentation)
+					.slideId(slideId).build();
+
+			return this.ieRepository.save(pe);
+		}
+		catch (Exception exception) {
+			throw new RuntimeException(exception.getMessage());
+		}
+	}
+
+	private Presentation assertPresentationExists(String presentationLink) {
+		return this.presentationRepository.findByLink(presentationLink).orElseGet(() -> this.presentationRepository
+				.save(Presentation.builder().link(presentationLink).name("Test presentation").build()));
+	}
+
 }

@@ -46,8 +46,10 @@ public class PresentationService {
 	}
 
 	public Collection<PresentationInteractiveElementDto> getInteractiveElements(String presentationLink) {
-		Presentation presentation = this.presentationRepository.findByLink(presentationLink).orElseThrow(
-            () -> new PresentationNotFoundException(String.format("Not found presentation with id %s" , presentationLink)));;
+		Presentation presentation = this.presentationRepository.findByLink(presentationLink)
+				.orElseThrow(() -> new PresentationNotFoundException(
+						String.format("Not found presentation with id %s", presentationLink)));
+		;
 		Set<PresentationInteractiveElement> presentationInteractiveElements = presentation
 				.getPresentationInteractiveElements();
 		PresentationInteractiveElementMapper mapper = PresentationInteractiveElementMapper.INSTANCE;

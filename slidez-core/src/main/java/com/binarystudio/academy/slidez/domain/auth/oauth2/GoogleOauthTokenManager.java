@@ -23,118 +23,114 @@ import java.util.Optional;
 
 @Service
 public class GoogleOauthTokenManager {
-    private static final JsonFactory JSON_FACTORY = new GsonFactory();
-    private static final HttpTransport TRANSPORT = new NetHttpTransport();
-    private static final String REDIRECT_URI = "postmessage";
 
-    private final GoogleCredentialsRepository googleCredentialsRepository;
-    private final UserRepository userRepository;
-    private final OAuth2Properties oAuth2Properties;
+	private static final JsonFactory JSON_FACTORY = new GsonFactory();
 
-    private static class RefreshListener implements CredentialRefreshListener {
-        private final GoogleCredentialsRepository repository;
-        RefreshListener(GoogleCredentialsRepository repository){
-            this.repository = repository;
-        }
+	private static final HttpTransport TRANSPORT = new NetHttpTransport();
 
-        @Override
-        public void onTokenResponse(Credential credential, TokenResponse tokenResponse) throws IOException {
-            var oldTokens = this.repository
-                .findByAccessToken(credential.getAccessToken())
-                .orElseThrow(() -> new RuntimeException("Trying to refresh non-existent token pair"));
+	private static final String REDIRECT_URI = "postmessage";
 
-            oldTokens.setAccessToken(tokenResponse.getAccessToken());
-            oldTokens.setRefreshToken(tokenResponse.getRefreshToken());
-            oldTokens.setExpirationTimeMillis(tokenResponse.getExpiresInSeconds() * 1000);
+	private final GoogleCredentialsRepository googleCredentialsRepository;
 
-            this.repository.save(oldTokens);
-        }
+	private final UserRepository userRepository;
 
-        @Override
-        public void onTokenErrorResponse(Credential credential, TokenErrorResponse tokenErrorResponse) throws IOException {
-            throw new RuntimeException("Token refresh attempt failed");
-        }
-    }
+	private final OAuth2Properties oAuth2Properties;
 
-    @Autowired
-    public GoogleOauthTokenManager(GoogleCredentialsRepository googleCredentialsRepository,
-                                    UserRepository userRepository,
-                                    OAuth2Properties oAuth2Properties) {
-        this.googleCredentialsRepository = googleCredentialsRepository;
-        this.userRepository = userRepository;
-        this.oAuth2Properties = oAuth2Properties;
-    }
+	private static class RefreshListener implements CredentialRefreshListener {
 
-    public Optional<GoogleCredential> getCredentialPairForUser(UUID userId){
-        return this.googleCredentialsRepository.findByUserId(userId).map(this::createFromCredentials);
-    }
+		private final GoogleCredentialsRepository repository;
 
-    public GoogleCredential fetchTokensForUser(String authorizationCode){
-        try{
-            var response = new GoogleAuthorizationCodeTokenRequest(
-                TRANSPORT,
-                JSON_FACTORY,
-                oAuth2Properties.getClientId(),
-                oAuth2Properties.getClientSecret(),
-                authorizationCode,
-                REDIRECT_URI
-            )
-                .setGrantType("authorization_code")
-                .setScopes(List.of(SlidesScopes.PRESENTATIONS, SlidesScopes.DRIVE))
-                .set("access_type", "offline")
-                .execute();
+		RefreshListener(GoogleCredentialsRepository repository) {
+			this.repository = repository;
+		}
 
-            var credential = new GoogleCredential
-                .Builder()
-                .setClock(Clock.SYSTEM)
-                .addRefreshListener(new RefreshListener(this.googleCredentialsRepository))
-                .setJsonFactory(JSON_FACTORY)
-                .setTransport(TRANSPORT).build();
-            credential.setAccessToken(response.getAccessToken());
-            if(response.getRefreshToken() != null) {
-                credential.setRefreshToken(response.getRefreshToken());
-            }
-            credential.setExpirationTimeMilliseconds(response.getExpiresInSeconds() * 1000);
+		@Override
+		public void onTokenResponse(Credential credential, TokenResponse tokenResponse) throws IOException {
+			var oldTokens = this.repository.findByAccessToken(credential.getAccessToken())
+					.orElseThrow(() -> new RuntimeException("Trying to refresh non-existent token pair"));
 
-            return credential;
-        }catch(Exception error){
-            throw new RuntimeException(error.getMessage());
-        }
-    }
+			oldTokens.setAccessToken(tokenResponse.getAccessToken());
+			oldTokens.setRefreshToken(tokenResponse.getRefreshToken());
+			oldTokens.setExpirationTimeMillis(tokenResponse.getExpiresInSeconds() * 1000);
 
-    public GoogleCredentials saveForUser(UUID userId, GoogleCredential response) {
-        GoogleCredentials googleCredentials = getByUserId(userId).orElse(new GoogleCredentials());
-        LocalDateTime now = LocalDateTime.now();
-        if (googleCredentials.getUser() == null) {
-            User user = userRepository.getById(userId);
-            googleCredentials.setUser(user);
-            googleCredentials.setCreatedAt(now);
-        }
-        googleCredentials.setUpdatedAt(now);
-        googleCredentials.setAccessToken(response.getAccessToken());
-        if(response.getRefreshToken() != null) {
-            googleCredentials.setRefreshToken(response.getRefreshToken());
-        }
-        googleCredentials.setExpirationTimeMillis(response.getExpiresInSeconds() * 1000);
+			this.repository.save(oldTokens);
+		}
 
-        return googleCredentialsRepository.save(googleCredentials);
-    }
+		@Override
+		public void onTokenErrorResponse(Credential credential, TokenErrorResponse tokenErrorResponse)
+				throws IOException {
+			throw new RuntimeException("Token refresh attempt failed");
+		}
 
-    private GoogleCredential createFromCredentials(GoogleCredentials credentials){
-        var credential = new GoogleCredential
-            .Builder()
-            .setClock(Clock.SYSTEM)
-            .addRefreshListener(new RefreshListener(this.googleCredentialsRepository))
-            .setJsonFactory(JSON_FACTORY)
-            .setTransport(TRANSPORT).build();
-        credential.setAccessToken(credentials.getAccessToken());
-        credential.setRefreshToken(credentials.getRefreshToken());
-        credential.setExpirationTimeMilliseconds(credentials.getExpirationTimeMillis());
+	}
 
-        return credential;
-    }
+	@Autowired
+	public GoogleOauthTokenManager(GoogleCredentialsRepository googleCredentialsRepository,
+			UserRepository userRepository, OAuth2Properties oAuth2Properties) {
+		this.googleCredentialsRepository = googleCredentialsRepository;
+		this.userRepository = userRepository;
+		this.oAuth2Properties = oAuth2Properties;
+	}
 
-    private Optional<GoogleCredentials> getByUserId(UUID userId) {
-        return googleCredentialsRepository.findByUserId(userId);
-    }
+	public Optional<GoogleCredential> getCredentialPairForUser(UUID userId) {
+		return this.googleCredentialsRepository.findByUserId(userId).map(this::createFromCredentials);
+	}
+
+	public GoogleCredential fetchTokensForUser(String authorizationCode) {
+		try {
+			var response = new GoogleAuthorizationCodeTokenRequest(TRANSPORT, JSON_FACTORY,
+					oAuth2Properties.getClientId(), oAuth2Properties.getClientSecret(), authorizationCode, REDIRECT_URI)
+							.setGrantType("authorization_code")
+							.setScopes(List.of(SlidesScopes.PRESENTATIONS, SlidesScopes.DRIVE))
+							.set("access_type", "offline").execute();
+
+			var credential = new GoogleCredential.Builder().setClock(Clock.SYSTEM)
+					.addRefreshListener(new RefreshListener(this.googleCredentialsRepository))
+					.setJsonFactory(JSON_FACTORY).setTransport(TRANSPORT).build();
+			credential.setAccessToken(response.getAccessToken());
+			if (response.getRefreshToken() != null) {
+				credential.setRefreshToken(response.getRefreshToken());
+			}
+			credential.setExpirationTimeMilliseconds(response.getExpiresInSeconds() * 1000);
+
+			return credential;
+		}
+		catch (Exception error) {
+			throw new RuntimeException(error.getMessage());
+		}
+	}
+
+	public GoogleCredentials saveForUser(UUID userId, GoogleCredential response) {
+		GoogleCredentials googleCredentials = getByUserId(userId).orElse(new GoogleCredentials());
+		LocalDateTime now = LocalDateTime.now();
+		if (googleCredentials.getUser() == null) {
+			User user = userRepository.getById(userId);
+			googleCredentials.setUser(user);
+			googleCredentials.setCreatedAt(now);
+		}
+		googleCredentials.setUpdatedAt(now);
+		googleCredentials.setAccessToken(response.getAccessToken());
+		if (response.getRefreshToken() != null) {
+			googleCredentials.setRefreshToken(response.getRefreshToken());
+		}
+		googleCredentials.setExpirationTimeMillis(response.getExpiresInSeconds() * 1000);
+
+		return googleCredentialsRepository.save(googleCredentials);
+	}
+
+	private GoogleCredential createFromCredentials(GoogleCredentials credentials) {
+		var credential = new GoogleCredential.Builder().setClock(Clock.SYSTEM)
+				.addRefreshListener(new RefreshListener(this.googleCredentialsRepository)).setJsonFactory(JSON_FACTORY)
+				.setTransport(TRANSPORT).build();
+		credential.setAccessToken(credentials.getAccessToken());
+		credential.setRefreshToken(credentials.getRefreshToken());
+		credential.setExpirationTimeMilliseconds(credentials.getExpirationTimeMillis());
+
+		return credential;
+	}
+
+	private Optional<GoogleCredentials> getByUserId(UUID userId) {
+		return googleCredentialsRepository.findByUserId(userId);
+	}
+
 }

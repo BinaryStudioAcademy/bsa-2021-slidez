@@ -12,7 +12,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreatePollDto {
-    private String presentationId;
-    private String title;
-    private List<CreatePollOptionDto> options;
+
+	private String presentationId;
+
+	private String title;
+
+	private List<CreatePollOptionDto> options;
+
 }

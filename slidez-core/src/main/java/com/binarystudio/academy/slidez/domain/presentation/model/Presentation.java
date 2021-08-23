@@ -37,13 +37,13 @@ public class Presentation {
 	@Column
 	private String link;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "presentation", cascade = CascadeType.ALL)
-    private Set<Session> sessions = new HashSet<>();
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "presentation", cascade = CascadeType.ALL)
+	private Set<Session> sessions = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private User user;
 
 	@CreationTimestamp
 	@Column(name = "created_at", columnDefinition = "TIMESTAMP")

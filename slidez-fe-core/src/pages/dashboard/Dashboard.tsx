@@ -12,6 +12,10 @@ import {
 import SideBar from './SideBar'
 import './dashboard.scss'
 import { MOCK_DATA } from './mock-data'
+import { useDetectOutsideClick } from './useDetectOutsideClick'
+import { useAppDispatch } from '../../hooks'
+import { logout } from '../../containers/user/store'
+import { AppRoute } from '../../common/routes/app-route'
 import UserProfile from './UserProfile'
 import table_sort from '../../../src/assets/svgs/table-sort.svg'
 
@@ -183,7 +187,9 @@ const Dashboard = () => {
                                     </tbody>
                                 </table>
                                 <div className='no-found-presentations'>
-                                    {isNotEmptyPresentation()}
+                                    <span className='text-no-found'>
+                                        {isNotEmptyPresentation()}
+                                    </span>
                                 </div>
                             </div>
                         ) : (
@@ -220,7 +226,9 @@ const Dashboard = () => {
                                     </div>
                                 ))}
                                 <div className='no-found-presentations'>
-                                    {isNotEmptyPresentation()}
+                                    <span className='text-no-found'>
+                                        {isNotEmptyPresentation()}
+                                    </span>
                                 </div>
                             </div>
                         )}

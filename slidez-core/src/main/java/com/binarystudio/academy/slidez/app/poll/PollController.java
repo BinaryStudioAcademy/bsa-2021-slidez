@@ -56,8 +56,8 @@ public class PollController {
 	@PostMapping
 	public GenericResponse<UUID, PollResponseCodes> create(@RequestBody CreatePollDto pollDto, Principal principal) {
 		var actor = ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
-        var actorId = ((User)actor).getId();
-	    Poll poll = pollService.create(pollDto, actorId);
+		var actorId = ((User) actor).getId();
+		Poll poll = pollService.create(pollDto, actorId);
 		return new GenericResponse<>(poll.getId());
 	}
 

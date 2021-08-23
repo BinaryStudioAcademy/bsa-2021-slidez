@@ -7,6 +7,7 @@ const AppRoute = {
     PARTICIPANT: '/participant/:link',
     DASHBOARD: '/dashboard',
     EDITOR: '/editor',
+    UPDATE_USER: '/update-user',
 }
 
 export { AppRoute }

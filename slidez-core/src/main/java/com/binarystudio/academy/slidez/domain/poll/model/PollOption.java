@@ -44,8 +44,8 @@ public class PollOption {
 	@JsonIgnore
 	private Poll poll;
 
-	public static PollOption createFromDto(CreatePollOptionDto dto){
-	    return PollOption.builder().name(dto.getTitle()).build();
-    }
+	public static PollOption createFromDto(CreatePollOptionDto dto) {
+		return PollOption.builder().name(dto.getTitle()).build();
+	}
 
 }

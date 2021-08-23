@@ -48,11 +48,11 @@ public class SessionService {
 
 		UUID presentationId = dto.getPresentationId();
 		if (presentationId == null) {
-		    throw new PresentationNotFoundException("Presentation ID is null");
-        }
+			throw new PresentationNotFoundException("Presentation ID is null");
+		}
 		Optional<Presentation> presentation = presentationService.get(presentationId);
-        session.setPresentation(presentation.orElseThrow(
-            () -> (new SessionNotFoundException("Session with id " + dto.getId() + " not found"))));
+		session.setPresentation(presentation
+				.orElseThrow(() -> (new SessionNotFoundException("Session with id " + dto.getId() + " not found"))));
 
 		sessionRepository.saveAndFlush(session);
 		return session;
@@ -73,7 +73,7 @@ public class SessionService {
 
 	public Session createForPresentation(UUID presentationId) {
 		LocalDateTime now = LocalDateTime.now();
-        Optional<Presentation> presentation = presentationService.get(presentationId);
+		Optional<Presentation> presentation = presentationService.get(presentationId);
 		Session session = new Session(null, presentation.get(), SessionStatus.ACTIVE, now, now);
 		return sessionRepository.save(session);
 	}

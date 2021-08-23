@@ -28,7 +28,7 @@ public class OAuthController {
 	// LATER WE WILL RETURN MEANINGFUL MESSAGES IN THESE ENUMS, SO DON'T CHANGE THE CODE
 	// TO MORE CONCISE
 	@PostMapping("/login/google")
-	public GenericResponse<AuthResponse, AuthResponseCodes> loginWithGoogle (
+	public GenericResponse<AuthResponse, AuthResponseCodes> loginWithGoogle(
 			@RequestBody AuthorizationByOAuthCodeRequest authorizationByOAuthCodeRequest) throws IOException {
 		try {
 			Optional<AuthResponse> authResponse = oAuthService
@@ -45,7 +45,7 @@ public class OAuthController {
 
 	@PostMapping("/register/google")
 	public GenericResponse<AuthResponse, AuthResponseCodes> registerWithGoogle(
-			@RequestBody AuthorizationByOAuthCodeRequest authorizationByOAuthCodeRequest) throws IOException{
+			@RequestBody AuthorizationByOAuthCodeRequest authorizationByOAuthCodeRequest) throws IOException {
 		try {
 			Optional<AuthResponse> authResponse = oAuthService
 					.registerWithGoogle(authorizationByOAuthCodeRequest.getCode());

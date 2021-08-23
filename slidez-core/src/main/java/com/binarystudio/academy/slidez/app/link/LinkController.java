@@ -36,7 +36,7 @@ public class LinkController {
 
 	@PostMapping("/lease/{duration}")
 	public GenericResponse<String, LinkResponseCodes> leaseALink(@PathVariable int duration) {
-	    Link link = linkService.leaseLink(duration, null);
+		Link link = linkService.leaseLink(duration, null);
 		return new GenericResponse<>(link.getLink(), LinkResponseCodes.LINK_LEASED);
 	}
 

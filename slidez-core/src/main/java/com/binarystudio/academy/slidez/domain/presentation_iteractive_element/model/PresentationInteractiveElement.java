@@ -21,7 +21,9 @@ import java.util.UUID;
 @Builder
 @Table(name = "presentation_interactive_element")
 public class PresentationInteractiveElement {
-    private static final String SLIDE_ID_PREFIX = "slidez_";
+
+	private static final String SLIDE_ID_PREFIX = "slidez_";
+
 	@Id
 	@GeneratedValue(generator = "UUID")
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -42,8 +44,8 @@ public class PresentationInteractiveElement {
 	@Column(name = "updated_at", columnDefinition = "TIMESTAMP")
 	private LocalDateTime updatedAt;
 
-	public static String generatePresentationSlideId(UUID desiredId){
-        return SLIDE_ID_PREFIX + desiredId.toString();
-    }
+	public static String generatePresentationSlideId(UUID desiredId) {
+		return SLIDE_ID_PREFIX + desiredId.toString();
+	}
 
 }
