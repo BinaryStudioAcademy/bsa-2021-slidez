@@ -4,25 +4,18 @@ import { Formik, Form, Field, FieldArray } from 'formik'
 import './PollEditor.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
-import axios from 'axios'
-import { ApiGateway } from '../../services/http/api-gateway'
 import { CreatePollDto } from './dto'
 import httpHelper from '../../services/http/http-helper'
 import { handleNotification } from '../../common/notification/Notification'
 
-export type PollEditorProps = {
-    presentationId: string
-}
-
 // eslint-disable-next-line react/prop-types
-const PollEditor: React.FC<PollEditorProps> = ({ presentationId }) => {
-    const initialValues: CreatePollDto = {
-        presentationId: presentationId,
+const PollEditor = () => {
+    const initialValues = {
         title: '',
         options: [],
     }
 
-    const handleSubmit = (values: CreatePollDto) => {
+    const handleSubmit = (values: any) => {
         httpHelper
             .doPost('polls', values)
             .then(() =>

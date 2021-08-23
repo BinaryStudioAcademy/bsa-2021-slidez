@@ -1,5 +1,5 @@
 export enum Page {
-    MAIN = 'MAIN',
+    MENU = 'MENU',
     POLL = 'POLL',
     QandA = 'QandA',
     REACTIONS = 'REACTIONS',
