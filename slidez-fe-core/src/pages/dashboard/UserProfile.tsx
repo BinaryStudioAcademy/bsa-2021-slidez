@@ -7,6 +7,8 @@ import {
     faTrashAlt,
     faTrashRestore,
     faTrashRestoreAlt,
+    faEye,
+    faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { logout } from '../../containers/user/store'
@@ -30,7 +32,9 @@ import ListItemText from '@material-ui/core/ListItemText'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import { UserField } from '../update/Field'
+// import { revealPassword } from '../../common/components/forms/form-utils'
 import { MuiThemeProvider } from '@material-ui/core/styles'
+import { revealPassword } from '../../common/components/forms/form-utils'
 
 interface User {
     id: string
@@ -52,6 +56,7 @@ const UserProfile = () => {
     const [userEmail, setUserEmail] = useState<string | undefined>('')
     const [logo, setLogo] = useState('')
     const [openEditProfile, setOpenEditProfile] = useState(false)
+    const [isPasswordRevealed, setIsPasswordRevealed] = React.useState(false)
 
     const handleClickOpen = () => {
         setOpenEditProfile(true)
@@ -155,6 +160,11 @@ const UserProfile = () => {
         console.log(values)
     }
 
+    const onRevealClick = () => {
+        setIsPasswordRevealed(!isPasswordRevealed)
+        revealPassword('sign-in-password-input')
+    }
+
     return (
         <div className='user-profile'>
             <div className='user-avatar'>
@@ -226,7 +236,7 @@ const UserProfile = () => {
                             </DialogContent>
                             <div className='verticalLine' />
                             <DialogContent className='right-content'>
-                                <Button className='close'>
+                                <Button className='close' onClick={handleClose}>
                                     <FontAwesomeIcon
                                         className='close-icon'
                                         icon={faTimes}
@@ -302,6 +312,7 @@ const UserProfile = () => {
                                                     <Button
                                                         className='user-btn'
                                                         type='submit'
+                                                        onClick={handleClose}
                                                     >
                                                         Save
                                                     </Button>
@@ -319,10 +330,21 @@ const UserProfile = () => {
                                         {({ values }) => (
                                             <Form className='form-body'>
                                                 <div className='form-inputs'>
-                                                    <h3>Change password</h3>
-                                                    <div className='top-input pwd-input'>
+                                                    <span className='title-change-password'>
+                                                        Change password
+                                                    </span>
+                                                    <div className='input-item'>
                                                         <p>New password</p>
                                                         <Field
+                                                            id='sign-in-password-input'
+                                                            // className={
+                                                            //     'form-input input-with-icon' +
+                                                            //     (viewErrors && errors.password
+                                                            //         ? ' error-input'
+                                                            //         : '')
+                                                            // }
+                                                            type='password'
+                                                            autoComplete='current-password'
                                                             name='password'
                                                             component={
                                                                 UserField
@@ -331,8 +353,23 @@ const UserProfile = () => {
                                                                 values.password
                                                             }
                                                         />
+                                                        {/* <FontAwesomeIcon
+                                                            className={`input-icon ${
+                                                                isPasswordRevealed
+                                                                    ? 'icon-eye'
+                                                                    : 'icon-eye-slash'
+                                                            }`}
+                                                            icon={
+                                                                isPasswordRevealed
+                                                                    ? faEye
+                                                                    : faEyeSlash
+                                                            }
+                                                            onClick={
+                                                                onRevealClick
+                                                            }
+                                                        /> */}
                                                     </div>
-                                                    <div className='top-input pwd-input'>
+                                                    <div className='input-item'>
                                                         <p>Confirm password</p>
                                                         <Field
                                                             name='confirmedPassword'
@@ -369,14 +406,14 @@ const UserProfile = () => {
                             /> */}
                             </DialogContent>
                         </div>
-                        <DialogActions>
+                        {/* <DialogActions>
                             <Button onClick={handleClose} color='primary'>
                                 Cancel
                             </Button>
                             <Button onClick={handleClose} color='primary'>
                                 Subscribe
                             </Button>
-                        </DialogActions>
+                        </DialogActions> */}
                     </Dialog>
                     <div
                         className='user-profile-menu'

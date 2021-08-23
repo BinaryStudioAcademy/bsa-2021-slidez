@@ -25,6 +25,12 @@
 .edit-profile-wrapper {
     max-width: 874px;
 }
+.MuiDialog-paper {
+    margin: 32px;
+    position: relative;
+    overflow-y: auto;
+    border-radius: 15px;
+}
 .edit-profile {
     /* z-index: 9; */
     display: flex;
@@ -36,7 +42,8 @@
     /* margin-right: 12%; */
     /* background: #F6F4F8; */
     /* border-radius: 1%;*/
-    max-width: 874px;
+    max-width: 875px;
+    border-radius: 15px;
     .side-btns {
         display: flex;
         flex-direction: column;
@@ -165,6 +172,18 @@
                 .input-item .MuiTextField-root {
                     width: 100%;
                 }
+                .input-icon {
+                    position: absolute;
+                    top: 13px;
+                    right: 11px;
+                    width: 20px;
+                    height: 20px;
+                    color: $grey;
+                
+                    &.icon-eye {
+                        right: 12.5px;
+                    }
+                }
                 .pwd-input {
                     margin-bottom: 10px;
                 }
@@ -180,13 +199,22 @@
                     }
                 }
                 button {
-                    align-self: flex-end;
-                    text-transform: none;
-                    padding: 3px 25px;
-                    margin: 10px;
-                    color: honeydew;
+                    color: rgb(255, 255, 255);
                     background: $main-color;
-                    border-radius: 30px;
+                    align-self: flex-start;
+                    text-transform: none;
+                    /* padding: 3px 25px; */
+                    margin-bottom: 35px;
+                    border-radius: 50px;
+                    width: 116px;
+                    height: 45px;
+                }
+                .title-change-password {
+                    font-family: Rubik;
+                    font-style: normal;
+                    font-weight: bold;
+                    font-size: 16px;
+                    margin-bottom: 20px;
                 }
                 p {
                     font-size: small;
