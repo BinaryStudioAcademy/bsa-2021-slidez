@@ -36,7 +36,7 @@ public class UserController {
 		return new GenericResponse<>(userDetailsDto, null);
 	}
 
-	@GetMapping()
+	@GetMapping
 	public GenericResponse<List<User>, UserResponseCodes> getAll() {
 		List<User> userOptional = this.userService.getAll();
 		if (userOptional.isEmpty()) {
@@ -44,20 +44,6 @@ public class UserController {
 		}
 
 		return new GenericResponse<>(userOptional, null);
-	}
-
-	// not working
-	@GetMapping("userInfo")
-	public GenericResponse<UserDetailsDto, UserResponseCodes> getByToken(
-			@RequestParam("token") AuthorizationByTokenRequest authorizationByTokenRequest) {
-		Optional<User> userOptional = this.userService.getByToken(authorizationByTokenRequest);
-		if (userOptional.isEmpty()) {
-			return new GenericResponse<>(null, UserResponseCodes.NOT_FOUND);
-		}
-
-		User user = userOptional.get();
-		UserDetailsDto userDetailsDto = UserMapper.INSTANCE.mapUserToUserDetailsDto(user);
-		return new GenericResponse<>(userDetailsDto, null);
 	}
 
 }

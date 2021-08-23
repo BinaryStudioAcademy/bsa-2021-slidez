@@ -15,8 +15,7 @@ public class SecurityProperties {
 
 	private static final List<String> INFRASTRUCTURE_PATHS = List.of("/", "/health");
 
-	private static final List<String> PUBLIC_URLS_THAT_REQUIRE_PREFIX_AND_ALLOW_EVERYTHING_AFTER = List.of("/auth/",
-			"/users/");
+	private static final List<String> PUBLIC_URLS_THAT_REQUIRE_PREFIX_AND_ALLOW_EVERYTHING_AFTER = List.of("/auth/");
 
 	private static final List<String> PUBLIC_URLS_THAT_ALLOW_EVERYTHING_AFTER = List.of("/ws/", "/swagger-ui/",
 			"/api-docs/");

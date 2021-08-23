@@ -6,7 +6,6 @@ import RegistrationForm from '../../common/components/forms/RegistrationForm'
 import styles from './styles.module.scss'
 import { useAppDispatch } from '../../hooks'
 import { LogInDto } from '../../services/auth/dto/LogInDto'
-import { TokenDto } from '../../services/auth/dto/TokenDto'
 import { RegisterDto } from '../../services/auth/dto/RegisterDto'
 import { Logo } from '../../common/components/logo/logo'
 
@@ -16,6 +15,7 @@ import {
     register,
     registerWithOAuthGoogle,
 } from '../../containers/user/store'
+import { CodeDto } from '../../services/auth/dto/CodeDto'
 
 const SignPage = () => {
     const { pathname } = useLocation()
@@ -30,8 +30,8 @@ const SignPage = () => {
     }
 
     const handleLoginWithGoogle = async (googleData: any) => {
-        const dto: TokenDto = {
-            token: googleData.tokenId,
+        const dto: CodeDto = {
+            code: googleData.code,
         }
         dispatch(loginWithOAuthGoogle(dto))
     }
@@ -50,8 +50,8 @@ const SignPage = () => {
     }
 
     const handleRegisterWithGoogle = async (googleData: any) => {
-        const dto: TokenDto = {
-            token: googleData.tokenId,
+        const dto: CodeDto = {
+            code: googleData.code,
         }
         dispatch(registerWithOAuthGoogle(dto))
     }

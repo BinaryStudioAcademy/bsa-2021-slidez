@@ -1,13 +1,15 @@
 package com.binarystudio.academy.slidez.domain.presentation.model;
 
+import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.model.PresentationInteractiveElement;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -35,12 +37,6 @@ public class Presentation {
 	@Column
 	private String link;
 
-	@Column(name = "created_at", columnDefinition = "TIMESTAMP")
-	private LocalDateTime createdAt;
-
-	@Column(name = "updated_at", columnDefinition = "TIMESTAMP")
-	private LocalDateTime updatedAt;
-
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "presentation", cascade = CascadeType.ALL)
 	private Set<Session> sessions = new HashSet<>();
 
@@ -48,5 +44,17 @@ public class Presentation {
 	@JoinColumn(name = "user_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
+
+	@CreationTimestamp
+	@Column(name = "created_at", columnDefinition = "TIMESTAMP")
+	private LocalDateTime createdAt;
+
+	@UpdateTimestamp
+	@Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+	private LocalDateTime updatedAt;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "presentation_id")
+	private Set<PresentationInteractiveElement> presentationInteractiveElements;
 
 }

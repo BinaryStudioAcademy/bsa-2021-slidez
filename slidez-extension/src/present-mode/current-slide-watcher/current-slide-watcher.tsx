@@ -11,10 +11,12 @@ import SlideIframe from '../../components/slide-iframe/SlideIframe'
 class CurrentSlideWatcher {
     constructor(document: Document) {
         this.document = document
+        this.interactiveSlides = []
     }
 
     private document: Document
     public currentSlideId?: string
+    private interactiveSlides: string[]
 
     private slideSwitchMutationObserver?: MutationObserver
 
@@ -23,7 +25,19 @@ class CurrentSlideWatcher {
         const gElem = this.getGElem(svgContainerElem)
         this.currentSlideId = gElem.id
         this.replaceContentIfNeeded(svgContainerElem)
-
+        console.log('present mode started!')
+        //fetch interactive slides
+        /*fetch(
+            `http://localhost:3000/api/v1/presentation/${presentationLink}/interactions`
+        )
+            .then((res) => res.json())
+            .then(
+                (slides) =>
+                    (this.interactiveSlides = slides.map(
+                        (element: any) => element.slideId
+                    ))
+            )
+        */
         this.slideSwitchMutationObserver = new MutationObserver(
             async (mutations) => {
                 for (const mutation of mutations) {
@@ -82,6 +96,7 @@ class CurrentSlideWatcher {
     }
 
     private isInteractiveSlide() {
+        console.log(this.currentSlideId, INTERACTIVE_PATTERN)
         if (this.currentSlideId?.match(new RegExp(INTERACTIVE_PATTERN))) {
             return true
         } else {
@@ -94,7 +109,10 @@ class CurrentSlideWatcher {
             return
         }
 
-        ReactDOM.render(<SlideIframe sourceUrl='http://localhost:3000/#/interactive'/>, svgContainer)
+        ReactDOM.render(
+            <SlideIframe sourceUrl={`http://localhost:3000/#/event/aaaaaa`} />,
+            svgContainer
+        )
     }
 
     private replaceContentIfNeeded(svgContainer: Element) {

@@ -13,6 +13,6 @@ public class PollAnsweredDto {
 
 	private UUID pollId;
 
-	private int option;
+	private UUID optionId;
 
 }

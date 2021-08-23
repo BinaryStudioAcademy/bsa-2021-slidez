@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 import com.binarystudio.academy.slidez.domain.session.model.Session;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -13,6 +14,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "link")
 public class Link {
@@ -31,9 +33,5 @@ public class Link {
 
 	@Column(name = "expiration_date")
 	private LocalDateTime expirationDate;
-
-	public static Link createLink(Session session, String link, LocalDateTime expirationDate) {
-		return new Link(null, session, link, expirationDate);
-	}
 
 }

@@ -4,18 +4,37 @@ import * as WebSocketService from '../../services/ws/ws-service'
 import { WsConnectionStatus } from './enums/ws-connection-status'
 import { RootState } from '../../store'
 import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
+import { CreatePresentationSessionDto } from '../../services/presentation-session/dto/CreatePresentationSessionDto'
+import { createPresentationSession } from '../../services/presentation-session/presentation-session-servise'
+import { AnswerPollDto } from '../../services/ws/dto/AnswerPollDto'
 
 export interface PresentationSessionState {
     connectionStatus: string
     error: string | undefined
+    link: string | undefined
     snapshot: SnapshotDto | undefined
 }
 
 const initialState: PresentationSessionState = {
     connectionStatus: WsConnectionStatus.ESTABLISHING,
     error: undefined,
+    link: undefined,
     snapshot: undefined,
 }
+
+export const createSessionForPresentation = createAsyncThunk(
+    'presentationSession/create',
+    async (dto: CreatePresentationSessionDto) => {
+        return await createPresentationSession(dto)
+    }
+)
+
+export const voteInPoll = createAsyncThunk(
+    'vote/poll',
+    async (dto: AnswerPollDto) => {
+        WebSocketService.sendAnswerPollRequest(dto)
+    }
+)
 
 const gotSnapshot = createAsyncThunk(
     'presentationSession/gotSnapshot',
@@ -39,10 +58,12 @@ export const initWebSocketSession = createAsyncThunk(
         const onGetSnapshot = (response: string) => {
             dispatch(gotSnapshot(response))
         }
+        const onVoted = () => WebSocketService.sendSnapshotRequest(link)
         await WebSocketService.connectToAllEvents(
             link,
             onConnectionSuccess,
-            onGetSnapshot
+            onGetSnapshot,
+            onVoted
         ).then(() => WebSocketService.sendSnapshotRequest(link))
         return out
     }
@@ -61,6 +82,12 @@ export const presentationSessionSlice = createSlice({
                 state.error = action.payload.error
                 state.snapshot = action.payload.snapshot
             })
+            .addCase(
+                createSessionForPresentation.fulfilled,
+                (state, action) => {
+                    state.link = action.payload.link
+                }
+            )
     },
 })
 
@@ -69,5 +96,7 @@ export const selectConnectionStatus = (state: RootState) =>
 
 export const selectSnapshot = (state: RootState) =>
     state.presentationSession.snapshot
+
+export const selectLink = (state: RootState) => state.presentationSession.link
 
 export default presentationSessionSlice.reducer

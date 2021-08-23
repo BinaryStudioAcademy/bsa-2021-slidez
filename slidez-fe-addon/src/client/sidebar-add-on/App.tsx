@@ -5,9 +5,25 @@ import Main from './components/Main';
 
 const App = () => {
     return (
-        <Provider store={store}>
-            <Main />
-        </Provider>
+        <div
+            style={{
+                display: 'flex',
+                width: '100%',
+                height: '100%',
+                overflow: 'hidden',
+            }}
+        >
+            <iframe
+                style={{
+                    flexGrow: 1,
+                    border: 'none',
+                    margin: 0,
+                    padding: 0,
+                    minHeight: '600px',
+                }}
+                src='http://localhost:3000/#/editor'
+            ></iframe>
+        </div>
     );
 };
 
