@@ -11,12 +11,8 @@ public interface PollMapper {
 
 	PollMapper INSTANCE = Mappers.getMapper(PollMapper.class);
 
-	PollDto pollToPollDto(Poll poll);
-
 	Poll pollDtoToPoll(PollDto pollDto);
 
 	PollResponseDto pollToPollResponseDto(Poll poll);
-
-	Poll pollResponseDtoToPoll(PollResponseDto pollResponseDto);
 
 }

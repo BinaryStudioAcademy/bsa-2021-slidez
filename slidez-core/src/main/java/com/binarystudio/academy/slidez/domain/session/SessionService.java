@@ -8,7 +8,8 @@ import com.binarystudio.academy.slidez.domain.session.dto.SessionUpdateDto;
 import com.binarystudio.academy.slidez.domain.session.exception.SessionNotFoundException;
 import com.binarystudio.academy.slidez.domain.session.mapper.SessionMapper;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
-import com.binarystudio.academy.slidez.domain.session.model.SessionStatus;
+import static java.time.LocalDateTime.now;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +18,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import static java.time.LocalDateTime.now;
 
 @Service
 public class SessionService {
@@ -71,10 +70,13 @@ public class SessionService {
 		return sessionRepository.saveAndFlush(session);
 	}
 
-	public Session createForPresentation(UUID presentationId) {
-		LocalDateTime now = LocalDateTime.now();
-		Optional<Presentation> presentation = presentationService.get(presentationId);
-		Session session = new Session(null, presentation.get(), SessionStatus.ACTIVE, now, now);
+	public Session createForPresentation(UUID presentationId) throws PresentationNotFoundException {
+		Optional<Presentation> presentationOptional = presentationService.get(presentationId);
+		if (presentationOptional.isEmpty()) {
+			throw new PresentationNotFoundException(
+					String.format("Not found presentation with id = %s", presentationId));
+		}
+		Session session = new Session(presentationOptional.get());
 		return sessionRepository.save(session);
 	}
 

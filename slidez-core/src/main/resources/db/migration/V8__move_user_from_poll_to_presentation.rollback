@@ -1,2 +1,0 @@
-ALTER TABLE polls ADD user_id uuid;
-ALTER TABLE presentations DROP user_id;

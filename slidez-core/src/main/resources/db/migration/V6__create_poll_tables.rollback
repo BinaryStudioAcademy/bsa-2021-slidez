@@ -1,2 +1,0 @@
-DROP TABLE if exists polls;
-DROP TABLE if exists poll_options;

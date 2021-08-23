@@ -28,6 +28,7 @@ public class GoogleSlidesExternalPresentationService {
 		this.tokenManager = tokenManager;
 	}
 
+	@SuppressWarnings("checkstyle:MagicNumber")
 	public String createSlide(UUID actorId, String presentationId, String slideId, String text) throws IOException {
 		var tokens = tokenManager.getCredentialPairForUser(actorId)
 				.orElseThrow(() -> new RuntimeException("Token pair for user not found"));

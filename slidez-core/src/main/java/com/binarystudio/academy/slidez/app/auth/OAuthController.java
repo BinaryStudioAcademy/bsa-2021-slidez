@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import com.binarystudio.academy.slidez.domain.auth.jwtauth.model.AuthResponse;
-import com.binarystudio.academy.slidez.domain.auth.oauth2.exception.GoogleTokenIdException;
 import com.binarystudio.academy.slidez.domain.auth.oauth2.OAuthService;
 import com.binarystudio.academy.slidez.domain.auth.oauth2.dto.AuthorizationByOAuthCodeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,7 @@ public class OAuthController {
 			}
 			return new GenericResponse<>(authResponse.get());
 		}
-		catch (GoogleTokenIdException e) {
+		catch (Throwable e) {
 			return new GenericResponse<>(null, AuthResponseCodes.INVALID_TOKEN);
 		}
 	}
@@ -54,7 +53,7 @@ public class OAuthController {
 			}
 			return new GenericResponse<>(authResponse.get());
 		}
-		catch (GoogleTokenIdException e) {
+		catch (Throwable e) {
 			return new GenericResponse<>(null, AuthResponseCodes.INVALID_TOKEN);
 		}
 	}

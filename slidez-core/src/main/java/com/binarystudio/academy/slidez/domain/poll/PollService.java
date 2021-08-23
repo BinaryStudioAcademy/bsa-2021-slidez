@@ -6,13 +6,6 @@ import com.binarystudio.academy.slidez.domain.poll.dto.PollResponseDto;
 import com.binarystudio.academy.slidez.domain.poll.exception.PollNotFoundException;
 import com.binarystudio.academy.slidez.domain.poll.mapper.PollMapper;
 import com.binarystudio.academy.slidez.domain.poll.model.Poll;
-import com.binarystudio.academy.slidez.domain.poll.model.PollOption;
-import com.binarystudio.academy.slidez.domain.presentation.PresentationRepository;
-import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.PresentationInteractiveElementCreator;
-import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.PresentationInteractiveElementRepository;
-import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.model.PresentationInteractiveElement;
-import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.model.PresentationInteractiveElementType;
-import com.binarystudio.academy.slidez.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,33 +13,21 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
-
-import static java.time.LocalDateTime.now;
 
 @Service
 public class PollService {
 
-	@Autowired
-	private PollRepository pollRepository;
+	private final PollRepository pollRepository;
 
 	@Autowired
-	private UserRepository userRepository;
+	public PollService(PollRepository pollRepository) {
+		this.pollRepository = pollRepository;
+	}
 
-	@Autowired
-	private PresentationInteractiveElementCreator peCreator;
-
+	// todo: fix this
 	@Transactional
 	public Poll create(CreatePollDto pollDto, UUID userId) {
-		final var now = now();
-		var pe = peCreator.forPoll(pollDto.getPresentationId(), userId, pollDto.getTitle());
-		var poll = Poll.builder().isMulti(false).isTemplate(false).name(pollDto.getTitle())
-				.options(pollDto.getOptions().stream().map(PollOption::createFromDto).collect(Collectors.toList()))
-				.owner(pe).createdAt(now).updatedAt(now).build();
-
-		poll.getOptions().forEach(option -> option.setPoll(poll));
-
-		return pollRepository.saveAndFlush(poll);
+		throw new UnsupportedOperationException();
 	}
 
 	@Transactional
@@ -55,7 +36,6 @@ public class PollService {
 			throw new PollNotFoundException("Poll with such Id not found.");
 		}
 		Poll poll = PollMapper.INSTANCE.pollDtoToPoll(pollDto);
-		poll.setUpdatedAt(now());
 		pollRepository.saveAndFlush(poll);
 		return poll;
 	}

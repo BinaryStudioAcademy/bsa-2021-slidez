@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS poll_answer
+(
+    id      UUID PRIMARY KEY,
+    poll_id UUID         NOT NULL,
+    title   VARCHAR(255) NOT NULL,
+    FOREIGN KEY (poll_id) REFERENCES poll (id) ON DELETE CASCADE ON UPDATE CASCADE
+);

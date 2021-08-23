@@ -1,28 +1,25 @@
 package com.binarystudio.academy.slidez.domain.presentation.model;
 
-import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.model.PresentationInteractiveElement;
+import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
-import com.binarystudio.academy.slidez.domain.user.model.User;
-import lombok.*;
-import org.hibernate.annotations.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
 @AllArgsConstructor
-@EqualsAndHashCode
-@Builder
 @Entity
-@Table(name = "presentations")
+@Table(name = "presentation")
 public class Presentation {
 
 	@Id
@@ -31,30 +28,30 @@ public class Presentation {
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 
-	@Column
+	@Column(name = "name")
 	private String name;
 
-	@Column
+	@Column(name = "link", nullable = false, unique = true)
 	private String link;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "presentation", cascade = CascadeType.ALL)
-	private Set<Session> sessions = new HashSet<>();
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "presentation_id", nullable = false)
+	private Set<InteractiveElement> interactiveElements;
 
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private User user;
+	@OneToMany(mappedBy = "presentation")
+	private Set<Session> sessions;
 
-	@CreationTimestamp
-	@Column(name = "created_at", columnDefinition = "TIMESTAMP")
+	@Column(name = "created_at", nullable = false, updatable = false)
 	private LocalDateTime createdAt;
 
-	@UpdateTimestamp
-	@Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+	@Column(name = "updated_at", nullable = false)
 	private LocalDateTime updatedAt;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "presentation_id")
-	private Set<PresentationInteractiveElement> presentationInteractiveElements;
+	public Presentation(String name) {
+		this.name = name;
+		LocalDateTime now = LocalDateTime.now();
+		this.createdAt = now;
+		this.updatedAt = now;
+	}
 
 }

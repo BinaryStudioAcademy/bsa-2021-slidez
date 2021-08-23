@@ -1,26 +1,23 @@
 package com.binarystudio.academy.slidez.domain.user.model;
 
+import com.binarystudio.academy.slidez.domain.auth.oauth2.model.GoogleCredentials;
+import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
+import com.binarystudio.academy.slidez.domain.userprofile.UserProfile;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Table(name = "users")
+@Entity
+@Table(name = "\"user\"")
 public class User {
 
 	@Id
@@ -29,24 +26,38 @@ public class User {
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 
-	@Column(name = "email", unique = true)
+	@Column(name = "email", unique = true, nullable = false)
 	private String email;
 
-	@Column
-	private String firstName;
-
-	@Column
-	private String lastName;
-
-	@Column
+	@Column(name = "password", nullable = false)
 	private String password;
 
-	@Column(unique = true)
+	@Column(name = "role", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private UserRole role;
 
-	public boolean isAdmin() {
-		return role == UserRole.ADMIN;
+	@OneToOne(mappedBy = "user")
+	private UserProfile userProfile;
+
+	@OneToOne(mappedBy = "user")
+	private GoogleCredentials googleCredentials;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private Set<Presentation> presentations;
+
+	@Column(name = "created_at", nullable = false, updatable = false)
+	private LocalDateTime createdAt;
+
+	@Column(name = "updated_at", nullable = false)
+	private LocalDateTime updatedAt;
+
+	public User(String email, String password) {
+		this.email = email;
+		this.password = password;
+		LocalDateTime now = LocalDateTime.now();
+		this.createdAt = now;
+		this.updatedAt = now;
 	}
 
 }

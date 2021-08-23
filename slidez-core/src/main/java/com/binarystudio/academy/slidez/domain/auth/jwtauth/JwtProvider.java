@@ -23,40 +23,28 @@ public class JwtProvider {
 
 	private final JwtProperties jwtProperties;
 
-	private Key secretKey;
+	private final Key secretKey;
 
-	private JwtParser jwtParser;
+	private final JwtParser jwtParser;
 
 	@Autowired
 	public JwtProvider(JwtProperties jwtProperties) {
 		this.jwtProperties = jwtProperties;
-	}
-
-	private Key key() {
-		if (this.secretKey == null) {
-			byte[] keyBytes = Decoders.BASE64.decode(this.jwtProperties.getSecret());
-			this.secretKey = Keys.hmacShaKeyFor(keyBytes);
-		}
-		return this.secretKey;
-	}
-
-	private JwtParser jwtParser() {
-		if (this.jwtParser == null) {
-			this.jwtParser = Jwts.parserBuilder().setSigningKey(key()).build();
-		}
-		return this.jwtParser;
+		byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecret());
+		this.secretKey = Keys.hmacShaKeyFor(keyBytes);
+		this.jwtParser = Jwts.parserBuilder().setSigningKey(this.secretKey).build();
 	}
 
 	public String generateAccessToken(User user) {
 		Date date = Date.from(LocalDateTime.now().plusSeconds(this.jwtProperties.getSecondsToExpireAccess())
 				.toInstant(ZoneOffset.UTC));
-		return Jwts.builder().setSubject(user.getEmail()).setExpiration(date).signWith(key()).compact();
+		return Jwts.builder().setSubject(user.getEmail()).setExpiration(date).signWith(secretKey).compact();
 	}
 
 	public String generateRefreshToken(User user) {
 		Date date = Date.from(LocalDateTime.now().plusSeconds(this.jwtProperties.getSecondsToExpireRefresh())
 				.toInstant(ZoneOffset.UTC));
-		return Jwts.builder().setSubject(user.getEmail()).setExpiration(date).signWith(key()).compact();
+		return Jwts.builder().setSubject(user.getEmail()).setExpiration(date).signWith(secretKey).compact();
 	}
 
 	public Optional<String> getLoginFromToken(String token) {
@@ -72,7 +60,7 @@ public class JwtProvider {
 
 	private Claims parseToken(String token) throws JwtException {
 		try {
-			return jwtParser().parseClaimsJws(token).getBody();
+			return jwtParser.parseClaimsJws(token).getBody();
 		}
 		catch (ExpiredJwtException expEx) {
 			throw new JwtException("Token expired", "jwt-expired");

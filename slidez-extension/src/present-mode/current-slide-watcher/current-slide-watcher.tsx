@@ -5,7 +5,7 @@ import {
     CLASS_NAME_PUNCH_VIEWER_SVGPAGE_SVGCONTAINER,
     INTERACTIVE_PATTERN,
 } from '../../dom/dom-constants'
-import { queryElement, queryElementAsync } from '../../dom/dom-helpers'
+import { queryElement } from '../../dom/dom-helpers'
 import SlideIframe from '../../components/slide-iframe/SlideIframe'
 
 class CurrentSlideWatcher {
@@ -25,19 +25,6 @@ class CurrentSlideWatcher {
         const gElem = this.getGElem(svgContainerElem)
         this.currentSlideId = gElem.id
         this.replaceContentIfNeeded(svgContainerElem)
-        console.log('present mode started!')
-        //fetch interactive slides
-        /*fetch(
-            `http://localhost:3000/api/v1/presentation/${presentationLink}/interactions`
-        )
-            .then((res) => res.json())
-            .then(
-                (slides) =>
-                    (this.interactiveSlides = slides.map(
-                        (element: any) => element.slideId
-                    ))
-            )
-        */
         this.slideSwitchMutationObserver = new MutationObserver(
             async (mutations) => {
                 for (const mutation of mutations) {
@@ -90,18 +77,13 @@ class CurrentSlideWatcher {
 
     private getGElem(svgContainerElem: Element) {
         const svgElem = svgContainerElem.firstChild
-        const gElem = svgElem?.firstChild?.nextSibling as Element
-
-        return gElem
+        return svgElem?.firstChild?.nextSibling as Element
     }
 
     private isInteractiveSlide() {
-        console.log(this.currentSlideId, INTERACTIVE_PATTERN)
-        if (this.currentSlideId?.match(new RegExp(INTERACTIVE_PATTERN))) {
-            return true
-        } else {
-            return false
-        }
+        return Boolean(
+            this.currentSlideId?.match(new RegExp(INTERACTIVE_PATTERN))
+        )
     }
 
     private replaceIneractiveSlide(svgContainer: Element) {
