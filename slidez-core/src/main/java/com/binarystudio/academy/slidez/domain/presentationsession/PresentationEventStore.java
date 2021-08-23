@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,10 +42,10 @@ public class PresentationEventStore {
 		return Snapshot.getSimpleSnapshotFromState(state);
 	}
 
-	public Snapshot snapshot(Date date) throws DomainException {
+	public Snapshot snapshot(LocalDateTime localDateTime) throws DomainException {
 		State stateForSpecificTime = new State();
 		synchronized (this) {
-			events.stream().filter(e -> e.getEventDate().before(date)).forEach(e -> e.applyEvent(stateForSpecificTime));
+			events.stream().filter(e -> e.getEventDate().isBefore(localDateTime)).forEach(e -> e.applyEvent(stateForSpecificTime));
 		}
 		return Snapshot.getSimpleSnapshotFromState(stateForSpecificTime);
 	}

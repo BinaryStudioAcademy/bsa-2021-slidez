@@ -27,7 +27,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		this.logger.error(ex.getMessage());
 		this.logger.error(ex.getStackTrace());
 		GenericResponse<Object, String> out = new GenericResponse<>(null, message);
-		return new ResponseEntity<>(out, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(out, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(Throwable.class)

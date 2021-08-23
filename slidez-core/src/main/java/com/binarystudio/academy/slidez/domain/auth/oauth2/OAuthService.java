@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.util.Optional;
 
 import com.binarystudio.academy.slidez.domain.auth.jwtauth.model.AuthResponse;
-import com.binarystudio.academy.slidez.domain.auth.oauth2.exception.GoogleTokenIdException;
-import com.binarystudio.academy.slidez.domain.auth.oauth2.exception.GoogleTokenRequestException;
-import com.binarystudio.academy.slidez.domain.auth.oauth2.exception.GoogleTokenStoreException;
 import com.binarystudio.academy.slidez.domain.auth.util.AuthUtil;
 import com.binarystudio.academy.slidez.domain.user.UserService;
 import com.binarystudio.academy.slidez.domain.user.model.User;
@@ -36,7 +33,7 @@ public class OAuthService {
 	}
 
 	public Optional<AuthResponse> loginWithGoogle(String code)
-			throws GoogleTokenIdException, GoogleTokenRequestException, GoogleTokenStoreException, IOException {
+			throws IOException {
 		var tokens = this.tokenManager.fetchTokensForUser(code);
 		var emailForGoogle = getEmailForGoogle(tokens);
 		if (emailForGoogle.isEmpty()) {
@@ -53,7 +50,7 @@ public class OAuthService {
 	}
 
 	public Optional<AuthResponse> registerWithGoogle(String code)
-			throws GoogleTokenIdException, GoogleTokenRequestException, GoogleTokenStoreException, IOException {
+			throws IOException {
 
 		var tokens = this.tokenManager.fetchTokensForUser(code);
 		var emailForGoogle = getEmailForGoogle(tokens);

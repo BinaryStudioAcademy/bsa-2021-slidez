@@ -1,10 +1,9 @@
-package com.binarystudio.academy.slidez.domain.iteractiveelement;
+package com.binarystudio.academy.slidez.domain.interactive_element;
 
-import com.binarystudio.academy.slidez.domain.iteractiveelement.dto.InteractiveElementDto;
-import com.binarystudio.academy.slidez.domain.iteractiveelement.exception.InteractiveElementNotFoundException;
-import com.binarystudio.academy.slidez.domain.iteractiveelement.mapper.InteractiveElementMapper;
-import com.binarystudio.academy.slidez.domain.iteractiveelement.model.InteractiveElement;
-import com.binarystudio.academy.slidez.domain.user.UserRepository;
+import com.binarystudio.academy.slidez.domain.interactive_element.dto.InteractiveElementDto;
+import com.binarystudio.academy.slidez.domain.interactive_element.exception.InteractiveElementNotFoundException;
+import com.binarystudio.academy.slidez.domain.interactive_element.mapper.InteractiveElementMapper;
+import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,13 +15,14 @@ import java.util.UUID;
 @Service
 public class InteractiveElementService {
 
-	@Autowired
-	private InteractiveElementRepository interactiveElementRepository;
+	private final InteractiveElementRepository interactiveElementRepository;
 
 	@Autowired
-	private UserRepository userRepository;
+    public InteractiveElementService(InteractiveElementRepository interactiveElementRepository) {
+        this.interactiveElementRepository = interactiveElementRepository;
+    }
 
-	@Transactional
+    @Transactional
 	public InteractiveElement create(InteractiveElementDto dto) {
 		var mapper = InteractiveElementMapper.INSTANCE;
 		InteractiveElement interactiveElement = mapper.dtoToPresentationInteractiveElement(dto);

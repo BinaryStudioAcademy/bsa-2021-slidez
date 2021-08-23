@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.iteractiveelement.model;
+package com.binarystudio.academy.slidez.domain.interactive_element.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

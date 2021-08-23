@@ -1,6 +1,6 @@
 package com.binarystudio.academy.slidez.app.presentation;
 
-import com.binarystudio.academy.slidez.domain.iteractiveelement.dto.InteractiveElementDto;
+import com.binarystudio.academy.slidez.domain.interactive_element.dto.InteractiveElementDto;
 import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;

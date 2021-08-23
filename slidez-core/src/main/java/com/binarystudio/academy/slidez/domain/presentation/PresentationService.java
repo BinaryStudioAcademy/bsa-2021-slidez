@@ -1,8 +1,8 @@
 package com.binarystudio.academy.slidez.domain.presentation;
 
-import com.binarystudio.academy.slidez.domain.iteractiveelement.dto.InteractiveElementDto;
-import com.binarystudio.academy.slidez.domain.iteractiveelement.mapper.InteractiveElementMapper;
-import com.binarystudio.academy.slidez.domain.iteractiveelement.model.InteractiveElement;
+import com.binarystudio.academy.slidez.domain.interactive_element.dto.InteractiveElementDto;
+import com.binarystudio.academy.slidez.domain.interactive_element.mapper.InteractiveElementMapper;
+import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import com.binarystudio.academy.slidez.domain.presentation.dto.PresentationUpdateDto;
 import com.binarystudio.academy.slidez.domain.presentation.exception.PresentationNotFoundException;
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;

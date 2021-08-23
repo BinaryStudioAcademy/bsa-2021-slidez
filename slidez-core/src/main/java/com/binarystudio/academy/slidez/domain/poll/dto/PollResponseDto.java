@@ -1,6 +1,6 @@
 package com.binarystudio.academy.slidez.domain.poll.dto;
 
-import com.binarystudio.academy.slidez.domain.iteractiveelement.model.InteractiveElement;
+import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import com.binarystudio.academy.slidez.domain.poll.model.PollOption;
 import lombok.Data;
 

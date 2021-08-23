@@ -60,16 +60,4 @@ public class User {
 		this.updatedAt = now;
 	}
 
-	public static User createUser(String email, String password) {
-		User user = new User(email, password);
-		user.setRole(UserRole.USER);
-		return user;
-	}
-
-	public static User createAdmin(String email, String password) {
-		User user = new User(email, password);
-		user.setRole(UserRole.ADMIN);
-		return user;
-	}
-
 }

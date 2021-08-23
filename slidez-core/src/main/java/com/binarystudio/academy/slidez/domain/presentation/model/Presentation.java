@@ -1,6 +1,6 @@
 package com.binarystudio.academy.slidez.domain.presentation.model;
 
-import com.binarystudio.academy.slidez.domain.iteractiveelement.model.InteractiveElement;
+import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
 import lombok.AllArgsConstructor;
 import lombok.Data;

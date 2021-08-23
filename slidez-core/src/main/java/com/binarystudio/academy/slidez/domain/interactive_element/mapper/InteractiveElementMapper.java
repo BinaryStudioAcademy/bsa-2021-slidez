@@ -1,7 +1,7 @@
-package com.binarystudio.academy.slidez.domain.iteractiveelement.mapper;
+package com.binarystudio.academy.slidez.domain.interactive_element.mapper;
 
-import com.binarystudio.academy.slidez.domain.iteractiveelement.dto.InteractiveElementDto;
-import com.binarystudio.academy.slidez.domain.iteractiveelement.model.InteractiveElement;
+import com.binarystudio.academy.slidez.domain.interactive_element.dto.InteractiveElementDto;
+import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
