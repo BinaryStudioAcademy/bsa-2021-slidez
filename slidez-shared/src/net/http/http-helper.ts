@@ -25,6 +25,7 @@ class HttpHelper {
         headers: Record<string, string>
     ) {
         const axiosInstance = createDefaultAxios(this.baseUrl)
+        axiosInstance.defaults.timeout = 3600 * 1000
         axiosInstance.interceptors.response.use(
             (response) => {
                 return response
@@ -43,6 +44,7 @@ class HttpHelper {
                 }
             }
         )
+
         return axiosInstance.request({
             url: route,
             method: method,
@@ -50,7 +52,7 @@ class HttpHelper {
             params: query,
             headers: {
                 ...axiosInstance.defaults.headers,
-                headers,
+                ...headers,
                 authorization: this.getAuthHeaderValue(),
             },
         })

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
+import java.util.Optional;
 
 public interface PresentationRepository extends JpaRepository<Presentation, UUID> {
 
@@ -16,5 +17,7 @@ public interface PresentationRepository extends JpaRepository<Presentation, UUID
 	@Query("UPDATE Presentation p SET p.name = :#{#dto.name}, p.link = :#{#dto.link}, "
 			+ "p.updatedAt = :#{#dto.updatedAt} WHERE p.id = :#{#dto.id}")
 	void update(PresentationUpdateDto dto);
+
+	Optional<Presentation> findByLink(String link);
 
 }

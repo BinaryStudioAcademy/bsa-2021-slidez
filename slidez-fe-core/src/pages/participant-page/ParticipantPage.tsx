@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleRight, faBars } from '@fortawesome/free-solid-svg-icons'
 import './participantPage.scss'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import { MOCK_DATA } from './mock-data'
-import Header from './Header'
 import moment from 'moment'
+import Header from './Header'
 
 const ParticipantPage = () => {
     const [listQuestions, setListQuestions] = useState(MOCK_DATA)
     const [title, setTitle] = useState('Select event')
 
-    const createEndpoint = (id: number) => '/event/' + id
+    const createEndpoint = (id: number) => '/#/event/' + id
 
     const lastViewsDate = (date: string) => {
         const diffDate = moment(date, 'YYYY-MM-DD HH:mm:ss').fromNow()
@@ -19,7 +20,7 @@ const ParticipantPage = () => {
 
     return (
         <div className='participant-page'>
-            <Header></Header>
+            <Header />
             {/* <div className='menu'>
                 <FontAwesomeIcon className='menu-icon' icon={faBars} />
             </div> */}

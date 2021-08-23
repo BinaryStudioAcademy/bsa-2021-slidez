@@ -5,6 +5,8 @@
   "repository": "git@github.com:BinaryStudioAcademy/bsa-2021-slidez.git",
   "author": "Kirill Lesohorskyi <lesogor.kirill@gmail.com>",
   "license": "MIT",
-  "workspaces": ["./*"],
+  "workspaces": [
+    "./*"
+  ],
   "private": true
 }

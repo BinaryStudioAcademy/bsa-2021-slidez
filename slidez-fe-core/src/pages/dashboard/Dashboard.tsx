@@ -148,7 +148,7 @@ const Dashboard = () => {
                                     <FontAwesomeIcon
                                         icon={faList}
                                         className={
-                                            activeButton
+                                            currentView === 'grid'
                                                 ? 'view-btn-active'
                                                 : 'view-btn'
                                         }
@@ -168,7 +168,7 @@ const Dashboard = () => {
                                     <FontAwesomeIcon
                                         icon={faThLarge}
                                         className={
-                                            !activeButton
+                                            currentView === 'table'
                                                 ? 'view-btn-active'
                                                 : 'view-btn'
                                         }

@@ -13,6 +13,8 @@ public class SessionResponseDto {
 
 	private UUID presentationId;
 
+	private String code;
+
 	private SessionStatus status;
 
 	private LocalDateTime createdAt;

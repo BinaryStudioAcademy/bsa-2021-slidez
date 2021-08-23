@@ -37,6 +37,7 @@ export const fetchUserFromStorage = createAsyncThunk(
             EventType.AUTH_DETAILS,
             1000
         )
+
         if (!authData.data.success) {
             throw new Error(authData.data.error)
         }
@@ -77,7 +78,11 @@ export const loginUser = createAsyncThunk(
 export const authenticationSlice = createSlice({
     name: 'eventBus',
     initialState,
-    reducers: {},
+    reducers: {
+        setToken: (state, tokenPayload: any) => {
+            state.accessToken = tokenPayload.payload
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchUserFromStorage.pending, (state) => {
@@ -105,5 +110,7 @@ export const authenticationSlice = createSlice({
             })
     },
 })
+
+export const { setToken } = authenticationSlice.actions
 
 export default authenticationSlice.reducer

@@ -8,6 +8,7 @@ import { RefreshTokensDto } from './dto/RefreshTokensDto'
 import { RefreshTokensResponseDto } from './dto/RefreshTokensResponseDto'
 import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
 import { ApiGateway } from '../http/api-gateway'
+import { CodeDto } from './dto/CodeDto'
 
 const JWT = 'jwt'
 const refreshJWT = 'refresh_jwt'
@@ -27,7 +28,7 @@ const sendAuthRequest = async (route: string, body: object = {}) => {
 
 const performSign = async (
     url: string,
-    dto: LogInDto | RegisterDto | TokenDto
+    dto: LogInDto | RegisterDto | TokenDto | CodeDto
 ) => {
     const { data } = await sendAuthRequest(url, dto)
     const genericResponse: GenericResponse<LogInResponseDto, string> = data
@@ -74,11 +75,11 @@ export const performRefreshTokens = async () => {
     }
 }
 
-export const performLoginOAuthWithGoogle = async (dto: TokenDto) => {
+export const performLoginOAuthWithGoogle = async (dto: CodeDto) => {
     return performSign(constructRoute('login/google'), dto)
 }
 
-export const performRegisterOAuthWithGoogle = async (dto: TokenDto) => {
+export const performRegisterOAuthWithGoogle = async (dto: CodeDto) => {
     return performSign(constructRoute('register/google'), dto)
 }
 

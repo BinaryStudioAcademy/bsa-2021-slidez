@@ -5,16 +5,18 @@ import {
     CLASS_NAME_PUNCH_VIEWER_SVGPAGE_SVGCONTAINER,
     INTERACTIVE_PATTERN,
 } from '../../dom/dom-constants'
-import { queryElement, queryElementAsync } from '../../dom/dom-helpers'
+import { queryElement } from '../../dom/dom-helpers'
 import SlideIframe from '../../components/slide-iframe/SlideIframe'
 
 class CurrentSlideWatcher {
     constructor(document: Document) {
         this.document = document
+        this.interactiveSlides = []
     }
 
     private document: Document
     public currentSlideId?: string
+    private interactiveSlides: string[]
 
     private slideSwitchMutationObserver?: MutationObserver
 
@@ -23,7 +25,6 @@ class CurrentSlideWatcher {
         const gElem = this.getGElem(svgContainerElem)
         this.currentSlideId = gElem.id
         this.replaceContentIfNeeded(svgContainerElem)
-
         this.slideSwitchMutationObserver = new MutationObserver(
             async (mutations) => {
                 for (const mutation of mutations) {
@@ -76,17 +77,13 @@ class CurrentSlideWatcher {
 
     private getGElem(svgContainerElem: Element) {
         const svgElem = svgContainerElem.firstChild
-        const gElem = svgElem?.firstChild?.nextSibling as Element
-
-        return gElem
+        return svgElem?.firstChild?.nextSibling as Element
     }
 
     private isInteractiveSlide() {
-        if (this.currentSlideId?.match(new RegExp(INTERACTIVE_PATTERN))) {
-            return true
-        } else {
-            return false
-        }
+        return Boolean(
+            this.currentSlideId?.match(new RegExp(INTERACTIVE_PATTERN))
+        )
     }
 
     private replaceIneractiveSlide(svgContainer: Element) {
@@ -94,7 +91,10 @@ class CurrentSlideWatcher {
             return
         }
 
-        ReactDOM.render(<SlideIframe sourceUrl='http://localhost:3000/#/interactive'/>, svgContainer)
+        ReactDOM.render(
+            <SlideIframe sourceUrl={`http://localhost:3000/#/event/aaaaaa`} />,
+            svgContainer
+        )
     }
 
     private replaceContentIfNeeded(svgContainer: Element) {
