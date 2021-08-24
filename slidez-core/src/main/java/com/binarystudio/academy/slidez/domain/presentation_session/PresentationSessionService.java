@@ -29,7 +29,8 @@ public class PresentationSessionService {
 			DefaultEventHandler defaultEventHandler, CreatePollHandler createPollHandler) {
 		this.inMemoryPresentationEventStoreRepository = inMemoryPresentationEventStoreRepository;
 		this.sessionService = sessionService;
-		this.eventHandler = snapshotRequestHandler.setNext(createPollHandler).setNext(defaultEventHandler);
+		snapshotRequestHandler.setNext(createPollHandler).setNext(defaultEventHandler);
+		this.eventHandler = snapshotRequestHandler;
 	}
 
 	public GenericResponse<Object, PresentationSessionResponseCodes> handleEvent(String link, DomainEvent domainEvent) {
