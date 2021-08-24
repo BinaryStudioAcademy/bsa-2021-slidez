@@ -10,10 +10,7 @@ import ReduxToastr from 'react-redux-toastr'
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
 import ParticipantPage from './pages/participant-page/ParticipantPage'
 import UpdatePage from './pages/update/UpdatePage'
-import { log } from 'slidez-shared'
 import Addon from './containers/poll-editor/Addon'
-
-log()
 
 function App() {
     return (
