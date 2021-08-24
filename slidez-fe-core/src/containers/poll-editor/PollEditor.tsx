@@ -8,10 +8,14 @@ import { CreatePollDto } from './dto'
 import httpHelper from '../../services/http/http-helper'
 import { handleNotification } from '../../common/notification/Notification'
 
+export type PollEditorProps = {
+    pollId?: string | null
+}
+
 // eslint-disable-next-line react/prop-types
-const PollEditor: React.FC<CreatePollDto> = () => {
+const PollEditor: React.FC<PollEditorProps> = ({pollId}) => {
     const initialValues: CreatePollDto = {
-        pollId: '',
+        presentationId: '',
         title: '',
         options: [],
     }
