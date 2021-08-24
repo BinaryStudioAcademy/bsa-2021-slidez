@@ -16,7 +16,7 @@ public class DefaultEventHandler extends AbstractDomainEventHandler {
 	public GenericResponse<Object, PresentationSessionResponseCodes> handle(DomainEvent domainEvent,
 			PresentationEventStore presentationEventStore) {
 		presentationEventStore.applyEvent(domainEvent);
-		return null;
+		return super.handle(domainEvent, presentationEventStore);
 	}
 
 }
