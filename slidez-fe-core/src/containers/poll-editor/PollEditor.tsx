@@ -13,7 +13,7 @@ export type PollEditorProps = {
 }
 
 // eslint-disable-next-line react/prop-types
-const PollEditor: React.FC<PollEditorProps> = ({pollId}) => {
+const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
     const initialValues: CreatePollDto = {
         presentationId: '',
         title: '',
