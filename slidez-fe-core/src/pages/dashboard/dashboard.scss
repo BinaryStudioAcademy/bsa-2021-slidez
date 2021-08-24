@@ -207,7 +207,7 @@
 
 .presentations-section {
 	position: absolute;
-	margin-top: 105px;
+	margin-top: 29px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -245,6 +245,9 @@
 }
 .table-grid-toggler {
 	padding: 10px;
+	input {
+		display: none;
+	}
 	.verticalLine {
 		border-left: 1px solid $grey-color;
 		height: 25px;

@@ -105,7 +105,6 @@ export const authenticationSlice = createSlice({
                 state.error = 'Failed to log in :('
             })
             .addCase(loginUser.fulfilled, (state, accessToken) => {
-                console.log('Setting auth token')
                 state.isLoading = false
                 state.accessToken = accessToken.payload
             })

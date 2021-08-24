@@ -17,7 +17,6 @@ const Login = () => {
         if (accessToken) {
             return
         }
-        console.log('Fetching user from storage')
         dispatch(fetchUserFromStorage())
     }, [])
 

@@ -12,25 +12,25 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+@SuppressWarnings("checkstyle:AnnotationUseStyle")
 @Repository
 public interface LinkRepository extends JpaRepository<Link, UUID> {
 
-	@Query("select count(l) from Link l where l.expirationDate is null")
+	@Query("select count(l) from Link l where l.leasedUntil is null")
 	int getCountAvailableLinks();
 
-	@Query(value = "SELECT link FROM Link ORDER BY link_id DESC LIMIT 1", nativeQuery = true)
-	Optional<String> getLastLink();
+	@Query(value = "SELECT * FROM link ORDER BY code DESC LIMIT 1", nativeQuery = true)
+	Optional<Link> getLastLink();
 
 	@Transactional
 	@Modifying
-	@Query("update Link u set u = :availableLink where u.linkId = :id")
-	void update(Link availableLink, Long id);
+	@Query("update Link u set u = :availableLink where u.id = :id")
+	void update(Link availableLink, UUID id);
 
-	@Query(value = "SELECT * FROM Link WHERE link.expiration_date IS NULL ORDER BY link_id ASC LIMIT 1",
-			nativeQuery = true)
+	@Query(value = "SELECT * FROM link WHERE leased_until IS NULL ORDER BY code LIMIT 1", nativeQuery = true)
 	Optional<Link> getAvailableLink();
 
-	@Query(value = "select * from Link where expiration_date <= :now", nativeQuery = true)
+	@Query(value = "select l from Link l where l.leasedUntil <= :now")
 	List<Link> getLinksWithExpiredLeases(LocalDateTime now);
 
 }

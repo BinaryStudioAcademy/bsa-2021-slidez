@@ -1,4 +1,0 @@
-ALTER TABLE polls DROP is_multi;
-ALTER TABLE polls DROP is_template;
-ALTER TABLE polls DROP presentation_interactive_element_id;
-

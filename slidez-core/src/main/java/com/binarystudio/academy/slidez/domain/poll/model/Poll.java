@@ -1,33 +1,23 @@
 package com.binarystudio.academy.slidez.domain.poll.model;
 
-import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.model.PresentationInteractiveElement;
+import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import java.time.LocalDateTime;
+import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Table(name = "polls")
-public class Poll {
+@Entity
+@Table(name = "poll")
+public class Poll extends InteractiveElement {
 
 	@Id
 	@GeneratedValue(generator = "UUID")
@@ -35,26 +25,17 @@ public class Poll {
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 
-	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "presentation_interactive_element_id", referencedColumnName = "id")
-	private PresentationInteractiveElement owner;
+	@Column(name = "title", nullable = false)
+	private String title;
 
-	@Column
-	private String name;
+	@Column(name = "is_multi", nullable = false)
+	private Boolean isMulti;
 
-	@Column(name = "is_multi")
-	private boolean isMulti;
+	@Column(name = "is_template", nullable = false)
+	private Boolean isTemplate;
 
-	@Column(name = "is_template")
-	private boolean isTemplate;
-
-	@Column(name = "created_at", columnDefinition = "TIMESTAMP")
-	private LocalDateTime createdAt;
-
-	@Column(name = "updated_at", columnDefinition = "TIMESTAMP")
-	private LocalDateTime updatedAt;
-
-	@OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@JoinColumn(name = "poll_id", referencedColumnName = "id", nullable = false)
 	private List<PollOption> options;
 
 }

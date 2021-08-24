@@ -1,9 +1,0 @@
-ALTER TABLE IF EXISTS presentation_interactive_element
-   DROP COLUMN created_at,
-   DROP COLUMN updated_at,
-   DROP COLUMN slide_id;
-
-ALTER TABLE IF EXISTS quiz_answers
-   DROP COLUMN is_correct;
-
-

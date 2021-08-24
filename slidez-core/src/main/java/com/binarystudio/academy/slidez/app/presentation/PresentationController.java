@@ -1,7 +1,7 @@
 package com.binarystudio.academy.slidez.app.presentation;
 
+import com.binarystudio.academy.slidez.domain.interactive_element.dto.InteractiveElementDto;
 import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
-import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.dto.PresentationInteractiveElementDto;
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("${v1API}/presentation")
@@ -25,10 +24,9 @@ public class PresentationController {
 	}
 
 	@GetMapping("/{link}/interactions")
-	public GenericResponse<Collection<PresentationInteractiveElementDto>, String> getInteractiveElements(
+	public GenericResponse<Collection<InteractiveElementDto>, String> getInteractiveElements(
 			@PathVariable("link") String id) throws EntityNotFoundException {
-		Collection<PresentationInteractiveElementDto> interactiveElements = presentationService
-				.getInteractiveElements(id);
+		Collection<InteractiveElementDto> interactiveElements = presentationService.getInteractiveElements(id);
 		return new GenericResponse<>(interactiveElements);
 	}
 

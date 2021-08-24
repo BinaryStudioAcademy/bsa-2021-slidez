@@ -1,6 +1,5 @@
 package com.binarystudio.academy.slidez.app.user;
 
-import com.binarystudio.academy.slidez.domain.auth.jwtauth.model.AuthorizationByTokenRequest;
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import com.binarystudio.academy.slidez.domain.user.UserService;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;

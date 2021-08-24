@@ -36,34 +36,6 @@ public class GoogleOauthTokenManager {
 
 	private final OAuth2Properties oAuth2Properties;
 
-	private static class RefreshListener implements CredentialRefreshListener {
-
-		private final GoogleCredentialsRepository repository;
-
-		RefreshListener(GoogleCredentialsRepository repository) {
-			this.repository = repository;
-		}
-
-		@Override
-		public void onTokenResponse(Credential credential, TokenResponse tokenResponse) throws IOException {
-			var oldTokens = this.repository.findByAccessToken(credential.getAccessToken())
-					.orElseThrow(() -> new RuntimeException("Trying to refresh non-existent token pair"));
-
-			oldTokens.setAccessToken(tokenResponse.getAccessToken());
-			oldTokens.setRefreshToken(tokenResponse.getRefreshToken());
-			oldTokens.setExpirationTimeMillis(tokenResponse.getExpiresInSeconds() * 1000);
-
-			this.repository.save(oldTokens);
-		}
-
-		@Override
-		public void onTokenErrorResponse(Credential credential, TokenErrorResponse tokenErrorResponse)
-				throws IOException {
-			throw new RuntimeException("Token refresh attempt failed");
-		}
-
-	}
-
 	@Autowired
 	public GoogleOauthTokenManager(GoogleCredentialsRepository googleCredentialsRepository,
 			UserRepository userRepository, OAuth2Properties oAuth2Properties) {
@@ -113,7 +85,8 @@ public class GoogleOauthTokenManager {
 		if (response.getRefreshToken() != null) {
 			googleCredentials.setRefreshToken(response.getRefreshToken());
 		}
-		googleCredentials.setExpirationTimeMillis(response.getExpiresInSeconds() * 1000);
+		final int secondsToMillFactor = 1000;
+		googleCredentials.setExpirationTimeMillis(response.getExpiresInSeconds() * secondsToMillFactor);
 
 		return googleCredentialsRepository.save(googleCredentials);
 	}
@@ -131,6 +104,35 @@ public class GoogleOauthTokenManager {
 
 	private Optional<GoogleCredentials> getByUserId(UUID userId) {
 		return googleCredentialsRepository.findByUserId(userId);
+	}
+
+	private static class RefreshListener implements CredentialRefreshListener {
+
+		private final GoogleCredentialsRepository repository;
+
+		RefreshListener(GoogleCredentialsRepository repository) {
+			this.repository = repository;
+		}
+
+		@Override
+		public void onTokenResponse(Credential credential, TokenResponse tokenResponse) throws IOException {
+			var oldTokens = this.repository.findByAccessToken(credential.getAccessToken())
+					.orElseThrow(() -> new RuntimeException("Trying to refresh non-existent token pair"));
+
+			oldTokens.setAccessToken(tokenResponse.getAccessToken());
+			oldTokens.setRefreshToken(tokenResponse.getRefreshToken());
+			final int secondsToMillFactor = 1000;
+			oldTokens.setExpirationTimeMillis(tokenResponse.getExpiresInSeconds() * secondsToMillFactor);
+
+			this.repository.save(oldTokens);
+		}
+
+		@Override
+		public void onTokenErrorResponse(Credential credential, TokenErrorResponse tokenErrorResponse)
+				throws IOException, RuntimeException {
+			throw new RuntimeException("Token refresh attempt failed");
+		}
+
 	}
 
 }

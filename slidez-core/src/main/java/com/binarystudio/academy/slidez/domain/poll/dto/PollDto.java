@@ -1,9 +1,8 @@
 package com.binarystudio.academy.slidez.domain.poll.dto;
 
 import com.binarystudio.academy.slidez.domain.poll.model.PollOption;
-import com.binarystudio.academy.slidez.domain.presentation_iteractive_element.model.PresentationInteractiveElement;
+import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +11,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class PollDto {
@@ -31,6 +29,6 @@ public class PollDto {
 
 	private List<PollOption> options;
 
-	private PresentationInteractiveElement owner;
+	private InteractiveElement owner;
 
 }

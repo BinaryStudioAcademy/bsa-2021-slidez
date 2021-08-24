@@ -30,9 +30,9 @@ export class BasicMessagingBus {
             .filter((x) => x !== null) as MessageListener.MessageListener<any>[]
     }
 
-    public sendMessageNoCallback(message: ProtocolMessage){
-        console.log('Forwarding message to driver', message);
-        this.driver.sendMessage(message);
+    public sendMessageNoCallback(message: ProtocolMessage) {
+        console.log('Forwarding message to driver', message)
+        this.driver.sendMessage(message)
     }
 
     public listenForMessage<T extends ProtocolMessage>(

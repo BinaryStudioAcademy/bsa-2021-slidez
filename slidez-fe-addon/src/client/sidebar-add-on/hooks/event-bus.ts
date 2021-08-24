@@ -53,21 +53,23 @@ export const useEventBus = () => {
         if (!isRunningInChrome()) {
             messageBusState = { connected: EventBusConnectionStatus.FAILED };
             setState(messageBusState);
-            return
+            return;
         }
         ChromeMessageConnector.connect({
             descriptor: 'dhddedmopeoomnnlppiejipdodhkplhb',
         })
-            .then(driver => {
+            .then((driver) => {
                 messageBusState = {
                     connected: EventBusConnectionStatus.CONNECTED,
                     eventBus: new BasicMessagingBus(driver),
-                }
+                };
                 setState(messageBusState);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('Caught message bus init error', error);
-                messageBusState = { connected: EventBusConnectionStatus.FAILED }
+                messageBusState = {
+                    connected: EventBusConnectionStatus.FAILED,
+                };
                 setState(messageBusState);
             });
     }, []);
