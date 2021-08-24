@@ -4,6 +4,6 @@ export type CreatePollOptionDto = {
 
 export type CreatePollDto = {
     title: string
-    presentationId: string,
+    presentationId: string
     options: CreatePollOptionDto[]
 }
