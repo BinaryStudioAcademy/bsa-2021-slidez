@@ -33,16 +33,12 @@ public class CreatePollHandler extends AbstractDomainEventHandler {
 			if (pollOptional.isEmpty()) {
 				return new GenericResponse<>(null, PresentationSessionResponseCodes.COULD_NOT_START_POLL);
 			}
+//  TODO: MAPPING IS NOT COMPLETE
 			Poll poll = pollOptional.get();
 			SessionPoll sessionPoll = new SessionPoll(poll.getId(), poll.getTitle());
 			event.setSessionPoll(sessionPoll);
 			eventStore.applyEvent(event);
 
-			// List<SessionInteractiveElement> interactiveElements =
-			// eventStore.snapshot().getSessionInteractiveElements();
-			// SessionPoll last = interactiveElements.get(interactiveElements.size() - 1);
-			// StartPollResponseDto pollCreatedResponseDto =
-			// PollMapper.INSTANCE.sessionPollToPollCreatedDtoMapper(last);
 		}
 		return super.handle(domainEvent, eventStore);
 	}

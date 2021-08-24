@@ -7,6 +7,8 @@ import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import org.springframework.stereotype.Component;
 
 @Component
+/** Class only adds given event to the event store
+ * */
 public class DefaultEventHandler extends AbstractDomainEventHandler {
 
 	@Override
