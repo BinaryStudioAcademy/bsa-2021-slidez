@@ -11,12 +11,22 @@ public abstract class AbstractDomainEventHandler implements DomainEventHandler {
 
 	private volatile DomainEventHandler next;
 
+	/**
+	 * Method is designed to chain event handlers
+	 * @param next - Handler that will be next in chain
+	 * @return {@link DomainEventHandler} next element in chain
+	 */
 	@Override
 	public DomainEventHandler setNext(DomainEventHandler next) {
 		this.next = next;
 		return next;
 	}
 
+	/**
+	 * Method delegates handling event to next handler in chain or returns null
+	 * @return result of handling by next event handler or null if
+	 * {@link AbstractDomainEventHandler#next} is null
+	 */
 	@Override
 	@OverridingMethodsMustInvokeSuper
 	public GenericResponse<Object, PresentationSessionResponseCodes> handle(DomainEvent domainEvent,

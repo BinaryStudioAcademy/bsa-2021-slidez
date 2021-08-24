@@ -16,20 +16,20 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Component
-public class CreatePollHandler extends AbstractDomainEventHandler {
+public class StartPollHandler extends AbstractDomainEventHandler {
 
 	private final PollService pollService;
 
 	@Autowired
-	public CreatePollHandler(PollService pollService) {
+	public StartPollHandler(PollService pollService) {
 		this.pollService = pollService;
 	}
 
-    /**
-     * @returns {@link GenericResponse<SessionPoll, PresentationSessionResponseCodes>}
-     * */
-    @Override
-    public GenericResponse<Object, PresentationSessionResponseCodes> handle(DomainEvent domainEvent,
+	/**
+	 * @returns {@link GenericResponse<SessionPoll, PresentationSessionResponseCodes>}
+	 */
+	@Override
+	public GenericResponse<Object, PresentationSessionResponseCodes> handle(DomainEvent domainEvent,
 			PresentationEventStore eventStore) {
 		if (Objects.equals(domainEvent.getClass(), StartPollEvent.class)) {
 			StartPollEvent event = (StartPollEvent) domainEvent;
@@ -37,8 +37,8 @@ public class CreatePollHandler extends AbstractDomainEventHandler {
 			if (pollOptional.isEmpty()) {
 				return new GenericResponse<>(null, PresentationSessionResponseCodes.COULD_NOT_START_POLL);
 			}
-            Poll poll = pollOptional.get();
-            SessionInteractiveElementMapper mapper = SessionInteractiveElementMapper.INSTANCE;
+			Poll poll = pollOptional.get();
+			SessionInteractiveElementMapper mapper = SessionInteractiveElementMapper.INSTANCE;
 			SessionPoll sessionPoll = mapper.mapPollToSessionPoll(poll);
 			event.setSessionPoll(sessionPoll);
 			eventStore.applyEvent(event);

@@ -25,12 +25,10 @@ public class PresentationSessionService {
 
 	@Autowired
 	public PresentationSessionService(InMemoryPresentationEventStoreRepository inMemoryPresentationEventStoreRepository,
-			SessionService sessionService, SnapshotRequestHandler snapshotRequestHandler,
-			DefaultEventHandler defaultEventHandler, CreatePollHandler createPollHandler) {
+			SessionService sessionService, AbstractDomainEventHandler eventHandler) {
 		this.inMemoryPresentationEventStoreRepository = inMemoryPresentationEventStoreRepository;
 		this.sessionService = sessionService;
-		snapshotRequestHandler.setNext(createPollHandler).setNext(defaultEventHandler);
-		this.eventHandler = snapshotRequestHandler;
+		this.eventHandler = eventHandler;
 	}
 
 	public GenericResponse<Object, PresentationSessionResponseCodes> handleEvent(String link, DomainEvent domainEvent) {
