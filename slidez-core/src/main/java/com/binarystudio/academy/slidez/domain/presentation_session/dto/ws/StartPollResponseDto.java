@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PollCreatedResponseDto {
+public class StartPollResponseDto {
 
 	private String name;
 

@@ -1,10 +1,6 @@
 package com.binarystudio.academy.slidez.domain.poll.model;
 
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
-import com.binarystudio.academy.slidez.domain.presentation_session.PresentationEventStore;
-import com.binarystudio.academy.slidez.domain.presentation_session.event.DomainEvent;
-import com.binarystudio.academy.slidez.domain.presentation_session.event.PollCreatedEvent;
-import com.binarystudio.academy.slidez.domain.presentation_session.model.SessionPoll;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,12 +37,5 @@ public class Poll extends InteractiveElement {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "poll_id", referencedColumnName = "id", nullable = false)
 	private List<PollOption> options;
-
-	@Override
-	public void supplyEvent(PresentationEventStore store) {
-		SessionPoll sessionPoll = new SessionPoll(id, title);
-		DomainEvent domainEvent = new PollCreatedEvent(sessionPoll);
-		store.applyEvent(domainEvent);
-	}
 
 }

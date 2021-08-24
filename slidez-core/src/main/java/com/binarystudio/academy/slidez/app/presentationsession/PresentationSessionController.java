@@ -48,34 +48,41 @@ public class PresentationSessionController {
 		return new GenericResponse<>(snapshotOptional.get());
 	}
 
-    @MessageMapping("/event/{link}")
-    @SendTo("/topic/event/{link}")
-    public GenericResponse<Object, PresentationSessionResponseCodes> handleEvent(
-        @DestinationVariable String link, DomainEvent domainEvent) {
-        return null;
-    }
+	@MessageMapping("/event/{link}")
+	@SendTo("/topic/event/{link}")
+	public GenericResponse<Object, PresentationSessionResponseCodes> handleEvent(@DestinationVariable String link,
+			DomainEvent domainEvent) {
+		return null;
+	}
 
-//	@MessageMapping("/create/poll/{link}")
-//	@SendTo("/topic/created/poll/{link}")
-//	public GenericResponse<PollCreatedResponseDto, PresentationSessionResponseCodes> createPoll(
-//			@DestinationVariable String link, @Payload CreatePollRequestDto createPollRequestDto) {
-//		Optional<PollCreatedResponseDto> pollOptional = presentationSessionService.createPoll(link,
-//				createPollRequestDto);
-//		if (pollOptional.isEmpty()) {
-//			return new GenericResponse<>(null, PresentationSessionResponseCodes.COULD_NOT_CREATE_POLL);
-//		}
-//		return new GenericResponse<>(pollOptional.get());
-//	}
-//
-//	@MessageMapping("/answer/poll/{link}")
-//	@SendTo("/topic/answered/poll/{link}")
-//	public GenericResponse<PollAnsweredDto, PresentationSessionResponseCodes> answerPoll(
-//			@DestinationVariable String link, @Payload AnswerPollDto answerPollDto) {
-//		Optional<PollAnsweredDto> pollAnsweredOptional = presentationSessionService.answerPoll(link, answerPollDto);
-//		if (pollAnsweredOptional.isEmpty()) {
-//			return new GenericResponse<>(null, PresentationSessionResponseCodes.COULD_NOT_ANSWER_POLL);
-//		}
-//		return new GenericResponse<>(pollAnsweredOptional.get());
-//	}
+	// @MessageMapping("/create/poll/{link}")
+	// @SendTo("/topic/created/poll/{link}")
+	// public GenericResponse<PollCreatedResponseDto, PresentationSessionResponseCodes>
+	// createPoll(
+	// @DestinationVariable String link, @Payload CreatePollRequestDto
+	// createPollRequestDto) {
+	// Optional<PollCreatedResponseDto> pollOptional =
+	// presentationSessionService.createPoll(link,
+	// createPollRequestDto);
+	// if (pollOptional.isEmpty()) {
+	// return new GenericResponse<>(null,
+	// PresentationSessionResponseCodes.COULD_NOT_CREATE_POLL);
+	// }
+	// return new GenericResponse<>(pollOptional.get());
+	// }
+	//
+	// @MessageMapping("/answer/poll/{link}")
+	// @SendTo("/topic/answered/poll/{link}")
+	// public GenericResponse<PollAnsweredDto, PresentationSessionResponseCodes>
+	// answerPoll(
+	// @DestinationVariable String link, @Payload AnswerPollDto answerPollDto) {
+	// Optional<PollAnsweredDto> pollAnsweredOptional =
+	// presentationSessionService.answerPoll(link, answerPollDto);
+	// if (pollAnsweredOptional.isEmpty()) {
+	// return new GenericResponse<>(null,
+	// PresentationSessionResponseCodes.COULD_NOT_ANSWER_POLL);
+	// }
+	// return new GenericResponse<>(pollAnsweredOptional.get());
+	// }
 
 }

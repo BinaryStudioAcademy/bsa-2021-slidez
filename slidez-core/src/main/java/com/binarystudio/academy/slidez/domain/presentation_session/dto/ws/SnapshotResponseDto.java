@@ -1,6 +1,6 @@
 package com.binarystudio.academy.slidez.domain.presentation_session.dto.ws;
 
-import com.binarystudio.academy.slidez.domain.presentation_session.model.SessionPoll;
+import com.binarystudio.academy.slidez.domain.presentation_session.model.SessionInteractiveElement;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class SnapshotResponseDto {
 
-	private List<SessionPoll> sessionPolls = new ArrayList<>();
+	private List<SessionInteractiveElement> sessionInteractiveElements = new ArrayList<>();
 
 }
