@@ -1,0 +1,53 @@
+@import "src/global/global";
+
+.sidebar {
+    height: 100vh;
+    width: 100%;
+    padding-top: 24px;
+    background-color: $dark-color;
+    text-align: center;
+    .logo {
+        a {
+            img {
+                width: 65.03px;
+                height: 44px;
+            }
+        }
+    }
+}
+
+.navigation {
+	margin-top: 50px;
+
+	span {
+		a {
+			display: flex;
+			color: $white;
+			font-size: 16px;
+			position: relative;
+			text-align: center;
+			margin-bottom: 43px;
+			flex-direction: column;
+			align-items: center;
+			.icon {
+				color: $white;
+				font-size: 21px;
+				display: inline-block;
+			}
+		}
+	}
+
+    .addIcon, .bookIcon {
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .bookIcon {
+        color: $main-color;
+        background-color: rgba(89, 208, 165, 0.2);
+    }
+}
