@@ -12,7 +12,7 @@ import java.util.UUID;
 @Data
 public class StartPollEvent extends DomainEvent {
 
-	private UUID id;
+	private UUID pollId;
 
 	private SessionPoll sessionPoll;
 

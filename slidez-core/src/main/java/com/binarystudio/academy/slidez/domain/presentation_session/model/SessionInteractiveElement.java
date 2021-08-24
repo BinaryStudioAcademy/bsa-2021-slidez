@@ -14,4 +14,6 @@ public class SessionInteractiveElement {
 
 	private String slideId;
 
+    private UUID ownerId;
+
 }

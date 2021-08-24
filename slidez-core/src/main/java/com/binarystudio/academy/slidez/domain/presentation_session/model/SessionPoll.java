@@ -1,8 +1,10 @@
 package com.binarystudio.academy.slidez.domain.presentation_session.model;
 
 import com.binarystudio.academy.slidez.domain.presentation_session.exception.BadOptionException;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SessionPoll extends SessionInteractiveElement {
 
 	private String title;
@@ -25,9 +29,7 @@ public class SessionPoll extends SessionInteractiveElement {
 
 	public SessionPoll(UUID id, String title) {
 		this.title = title;
-		if (id != null) {
-			super.setId(id);
-		}
+		super.setId(id);
 	}
 
 	public void addAnswer(UUID optionId) throws BadOptionException {
