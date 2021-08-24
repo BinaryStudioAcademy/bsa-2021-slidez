@@ -12,7 +12,7 @@ public abstract class AbstractDomainEventHandler implements DomainEventHandler {
 	@Override
 	public DomainEventHandler setNext(DomainEventHandler next) {
 		this.next = next;
-		return this;
+		return next;
 	}
 
 	@Override

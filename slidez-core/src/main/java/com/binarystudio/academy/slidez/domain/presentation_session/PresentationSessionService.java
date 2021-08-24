@@ -5,10 +5,7 @@ import com.binarystudio.academy.slidez.domain.link.exception.IncorrectLeaseDurat
 import com.binarystudio.academy.slidez.domain.presentation_session.dto.CreateSessionRequestDto;
 import com.binarystudio.academy.slidez.domain.presentation_session.dto.CreateSessionResponseDto;
 import com.binarystudio.academy.slidez.domain.presentation_session.event.DomainEvent;
-import com.binarystudio.academy.slidez.domain.presentation_session.handler.AbstractDomainEventHandler;
-import com.binarystudio.academy.slidez.domain.presentation_session.handler.CreatePollHandler;
-import com.binarystudio.academy.slidez.domain.presentation_session.handler.DefaultEventHandler;
-import com.binarystudio.academy.slidez.domain.presentation_session.handler.SnapshotRequestHandler;
+import com.binarystudio.academy.slidez.domain.presentation_session.handler.*;
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import com.binarystudio.academy.slidez.domain.session.SessionService;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
@@ -24,17 +21,15 @@ public class PresentationSessionService {
 
 	private final SessionService sessionService;
 
-	private final AbstractDomainEventHandler eventHandler;
+	private final DomainEventHandler eventHandler;
 
 	@Autowired
 	public PresentationSessionService(InMemoryPresentationEventStoreRepository inMemoryPresentationEventStoreRepository,
-                                      SessionService sessionService, SnapshotRequestHandler snapshotRequestHandler,
-                                      DefaultEventHandler defaultEventHandler, CreatePollHandler createPollHandler) {
+			SessionService sessionService, SnapshotRequestHandler snapshotRequestHandler,
+			DefaultEventHandler defaultEventHandler, CreatePollHandler createPollHandler) {
 		this.inMemoryPresentationEventStoreRepository = inMemoryPresentationEventStoreRepository;
 		this.sessionService = sessionService;
-		this.eventHandler = snapshotRequestHandler;
-		snapshotRequestHandler.setNext(createPollHandler);
-		createPollHandler.setNext(defaultEventHandler);
+		this.eventHandler = snapshotRequestHandler.setNext(createPollHandler).setNext(defaultEventHandler);
 	}
 
 	public GenericResponse<Object, PresentationSessionResponseCodes> handleEvent(String link, DomainEvent domainEvent) {
