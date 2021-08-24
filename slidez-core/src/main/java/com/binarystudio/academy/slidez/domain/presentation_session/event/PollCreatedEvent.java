@@ -11,7 +11,7 @@ public class PollCreatedEvent extends DomainEvent {
 
 	@Override
 	public void applyEvent(State state) {
-		state.addPoll(sessionPoll);
+		state.addInteractiveElement(sessionPoll);
 	}
 
 }

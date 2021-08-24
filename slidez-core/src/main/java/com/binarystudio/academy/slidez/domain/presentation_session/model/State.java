@@ -3,25 +3,25 @@ package com.binarystudio.academy.slidez.domain.presentation_session.model;
 import com.binarystudio.academy.slidez.domain.poll.exception.PollNotFoundException;
 import com.binarystudio.academy.slidez.domain.presentation_session.exception.BadOptionException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class State {
 
-	private final List<SessionPoll> sessionPolls = new ArrayList<>();
+	private final List<SessionInteractiveElement> sessionInteractiveElements = new ArrayList<>();
 
-	public List<SessionPoll> getPolls() {
-		return Collections.unmodifiableList(sessionPolls);
+	public List<SessionInteractiveElement> getSessionInteractiveElements() {
+		return Collections.unmodifiableList(sessionInteractiveElements);
 	}
 
-	public void addPoll(SessionPoll sessionPoll) {
-		sessionPolls.add(sessionPoll);
+	public void addInteractiveElement(SessionInteractiveElement sessionInteractiveElement) {
+		sessionInteractiveElements.add(sessionInteractiveElement);
 	}
 
 	public void addAnswerToThePoll(UUID pollId, UUID answerId) throws PollNotFoundException, BadOptionException {
-		sessionPolls.stream().filter(poll -> poll.getId().equals(pollId)).findFirst()
+		sessionInteractiveElements.stream()
+				.filter(element -> Objects.equals(element.getClass(), SessionPoll.class)
+						&& Objects.equals(element.getId(), pollId))
+				.map(element -> (SessionPoll) element).findFirst()
 				.orElseThrow(() -> new PollNotFoundException(String.format("Poll with id %s not found", pollId)))
 				.addAnswer(answerId);
 	}

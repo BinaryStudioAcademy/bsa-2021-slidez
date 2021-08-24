@@ -5,10 +5,10 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class AnswerPollDto {
+public class StartPollRequestDto {
 
-	private UUID pollId;
+	private String name;
 
-	private UUID optionId;
+	private UUID id;
 
 }

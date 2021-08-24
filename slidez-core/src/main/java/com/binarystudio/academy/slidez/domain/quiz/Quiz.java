@@ -1,7 +1,6 @@
 package com.binarystudio.academy.slidez.domain.quiz;
 
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
-import com.binarystudio.academy.slidez.domain.presentation_session.PresentationEventStore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,10 +37,5 @@ public class Quiz extends InteractiveElement {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "quiz_id", referencedColumnName = "id", nullable = false)
 	private List<QuizAnswer> quizAnswers;
-
-	@Override
-	public void supplyEvent(PresentationEventStore store) {
-		throw new UnsupportedOperationException();
-	}
 
 }

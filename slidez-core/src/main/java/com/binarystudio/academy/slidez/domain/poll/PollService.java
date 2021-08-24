@@ -50,8 +50,8 @@ public class PollService {
 	}
 
 	public Optional<Poll> getById(UUID id) {
-	    return pollRepository.findById(id);
-    }
+		return pollRepository.findById(id);
+	}
 
 	public Optional<PollResponseDto> getPollDtoById(UUID id) {
 		Optional<Poll> pollOptional = pollRepository.findById(id);

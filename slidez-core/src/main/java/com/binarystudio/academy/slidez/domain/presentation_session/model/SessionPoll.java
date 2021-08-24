@@ -2,28 +2,31 @@ package com.binarystudio.academy.slidez.domain.presentation_session.model;
 
 import com.binarystudio.academy.slidez.domain.presentation_session.exception.BadOptionException;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class SessionPoll {
+public class SessionPoll extends SessionInteractiveElement {
 
-	private UUID id;
+	private String title;
 
-	private String name;
+	private Boolean isMulti;
+
+	private Boolean isTemplate;
 
 	private List<SessionPollOption> options = new ArrayList<>();
 
 	private List<UUID> answers = new ArrayList<>();
 
-	public SessionPoll(UUID id, String name) {
-		this.name = name;
+	public SessionPoll(UUID id, String title) {
+		this.title = title;
 		if (id != null) {
-			this.id = id;
-
+			super.setId(id);
 		}
 	}
 
