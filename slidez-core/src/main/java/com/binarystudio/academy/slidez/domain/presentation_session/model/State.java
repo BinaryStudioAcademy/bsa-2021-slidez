@@ -17,13 +17,13 @@ public class State {
 		sessionInteractiveElements.add(sessionInteractiveElement);
 	}
 
-	public void addAnswerToThePoll(UUID pollId, UUID answerId) throws PollNotFoundException, BadOptionException {
+	public void addAnswerToThePoll(SessionPollAnswer pollAnswer) throws PollNotFoundException, BadOptionException {
 		sessionInteractiveElements.stream()
 				.filter(element -> Objects.equals(element.getClass(), SessionPoll.class)
-						&& Objects.equals(element.getId(), pollId))
-				.map(element -> (SessionPoll) element).findFirst()
-				.orElseThrow(() -> new PollNotFoundException(String.format("Poll with id %s not found", pollId)))
-				.addAnswer(answerId);
+						&& Objects.equals(element.getId(), pollAnswer.getPollID()))
+				.map(element -> (SessionPoll) element).findFirst().orElseThrow(() -> new PollNotFoundException(
+						String.format("Poll with id %s not found", pollAnswer.getPollID())))
+				.addAnswer(pollAnswer);
 	}
 
 }

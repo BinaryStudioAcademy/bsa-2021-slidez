@@ -25,17 +25,18 @@ public class SessionPoll extends SessionInteractiveElement {
 
 	private List<SessionPollOption> options = new ArrayList<>();
 
-	private List<UUID> answers = new ArrayList<>();
+	private List<SessionPollAnswer> answers = new ArrayList<>();
 
 	public SessionPoll(UUID id, String title) {
 		this.title = title;
 		super.setId(id);
 	}
 
-	public void addAnswer(UUID optionId) throws BadOptionException {
-		options.stream().filter(option -> Objects.equals(optionId, option.getId())).findFirst()
-				.orElseThrow(() -> new BadOptionException(String.format("Option with ID %s not found", optionId)));
-		answers.add(optionId);
+	public void addAnswer(SessionPollAnswer pollAnswer) throws BadOptionException {
+		options.stream().filter(option -> Objects.equals(pollAnswer.getOptionId(), option.getId())).findFirst()
+				.orElseThrow(() -> new BadOptionException(
+						String.format("Option with ID %s not found", pollAnswer.getOptionId())));
+		answers.add(pollAnswer);
 	}
 
 }
