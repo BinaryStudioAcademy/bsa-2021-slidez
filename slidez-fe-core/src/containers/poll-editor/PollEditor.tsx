@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Formik, Form, Field, FieldArray } from 'formik'
 
 import './PollEditor.scss'
@@ -9,13 +9,14 @@ import httpHelper from '../../services/http/http-helper'
 import { handleNotification } from '../../common/notification/Notification'
 
 // eslint-disable-next-line react/prop-types
-const PollEditor = () => {
-    const initialValues = {
+const PollEditor: React.FC<CreatePollDto> = () => {
+    const initialValues: CreatePollDto = {
+        pollId: '',
         title: '',
         options: [],
     }
 
-    const handleSubmit = (values: any) => {
+    const handleSubmit = (values: CreatePollDto) => {
         httpHelper
             .doPost('polls', values)
             .then(() =>
