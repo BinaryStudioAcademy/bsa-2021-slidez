@@ -6,12 +6,11 @@ import java.util.UUID;
 import javax.persistence.*;
 
 import com.binarystudio.academy.slidez.domain.session.model.Session;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

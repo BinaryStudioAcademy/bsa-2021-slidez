@@ -104,8 +104,7 @@ const UserMenu: React.FC = () => {
                         <div className={styles.avatar}> {logo} </div>
                         <div>
                             <div className={styles.userName}>
-                                {userFirstName}&nbsp;
-                                {userLastName}
+                                {`${userFirstName} ${userLastName}`}
                             </div>
                             <div className={styles.email}> {userEmail} </div>
                         </div>
