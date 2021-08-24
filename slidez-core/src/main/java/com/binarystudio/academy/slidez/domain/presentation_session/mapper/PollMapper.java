@@ -1,7 +1,7 @@
 package com.binarystudio.academy.slidez.domain.presentation_session.mapper;
 
 import com.binarystudio.academy.slidez.domain.presentation_session.dto.ws.PollCreatedResponseDto;
-import com.binarystudio.academy.slidez.domain.presentation_session.model.Poll;
+import com.binarystudio.academy.slidez.domain.presentation_session.model.SessionPoll;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -12,9 +12,10 @@ public interface PollMapper {
 
 	PollMapper INSTANCE = Mappers.getMapper(PollMapper.class);
 
-	@Mappings({ @Mapping(source = "poll.id", target = "id"), @Mapping(source = "poll.name", target = "name"),
-			@Mapping(source = "poll.options", target = "options"),
-			@Mapping(source = "poll.answers", target = "answers") })
-	PollCreatedResponseDto pollToPollCreatedDtoMapper(Poll poll);
+	@Mappings({ @Mapping(source = "sessionPoll.id", target = "id"),
+			@Mapping(source = "sessionPoll.name", target = "name"),
+			@Mapping(source = "sessionPoll.options", target = "options"),
+			@Mapping(source = "sessionPoll.answers", target = "answers") })
+	PollCreatedResponseDto sessionPollToPollCreatedDtoMapper(SessionPoll sessionPoll);
 
 }

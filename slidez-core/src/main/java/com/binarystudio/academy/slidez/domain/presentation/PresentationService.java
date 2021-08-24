@@ -43,10 +43,16 @@ public class PresentationService {
 		presentationRepository.deleteById(id);
 	}
 
+	public Set<InteractiveElement> getInteractiveElements(UUID presentationId) throws PresentationNotFoundException {
+		Presentation presentation = get(presentationId).orElseThrow(
+				() -> new PresentationNotFoundException(String.format("No presentation with id = %s", presentationId)));
+		return presentation.getInteractiveElements();
+	}
+
 	public Collection<InteractiveElementDto> getInteractiveElements(String presentationLink) {
 		Presentation presentation = this.presentationRepository.findByLink(presentationLink)
 				.orElseThrow(() -> new PresentationNotFoundException(
-						String.format("Not found presentation with id %s", presentationLink)));
+						String.format("Not found presentation with link %s", presentationLink)));
 		Set<InteractiveElement> presentationInteractiveElements = presentation.getInteractiveElements();
 		InteractiveElementMapper mapper = InteractiveElementMapper.INSTANCE;
 		return presentationInteractiveElements.stream().map(mapper::presentationInteractiveElementToDto)

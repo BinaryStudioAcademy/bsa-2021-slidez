@@ -12,6 +12,4 @@ public interface InteractiveElementMapper {
 
 	InteractiveElementDto presentationInteractiveElementToDto(InteractiveElement interactiveElement);
 
-	InteractiveElement dtoToPresentationInteractiveElement(InteractiveElementDto interactiveElementDto);
-
 }

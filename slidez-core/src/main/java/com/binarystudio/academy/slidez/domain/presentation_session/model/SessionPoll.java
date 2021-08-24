@@ -9,17 +9,17 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Data
-public class Poll {
+public class SessionPoll {
 
 	private UUID id;
 
 	private String name;
 
-	private List<PollOption> options = new ArrayList<>();
+	private List<SessionPollOption> options = new ArrayList<>();
 
 	private List<UUID> answers = new ArrayList<>();
 
-	public Poll(UUID id, String name) {
+	public SessionPoll(UUID id, String name) {
 		this.name = name;
 		if (id != null) {
 			this.id = id;

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Getter
 @Builder
-public class PollOption {
+public class SessionPollOption {
 
 	private UUID id;
 

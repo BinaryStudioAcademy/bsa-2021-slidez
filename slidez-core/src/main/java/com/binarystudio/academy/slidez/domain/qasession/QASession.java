@@ -1,6 +1,7 @@
 package com.binarystudio.academy.slidez.domain.qasession;
 
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
+import com.binarystudio.academy.slidez.domain.presentation_session.PresentationEventStore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +27,10 @@ public class QASession extends InteractiveElement {
 
 	@Column(name = "title")
 	private String title;
+
+	@Override
+	public void supplyEvent(PresentationEventStore store) {
+		throw new UnsupportedOperationException();
+	}
 
 }

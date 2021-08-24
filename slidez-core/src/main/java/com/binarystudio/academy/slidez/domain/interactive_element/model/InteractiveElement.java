@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.domain.interactive_element.model;
 
+import com.binarystudio.academy.slidez.domain.presentation_session.PresentationSessionEventSupplier;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "interactive_element")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class InteractiveElement {
+public abstract class InteractiveElement implements PresentationSessionEventSupplier {
 
 	@Id
 	@GeneratedValue(generator = "UUID")

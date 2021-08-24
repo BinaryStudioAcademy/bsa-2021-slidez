@@ -49,7 +49,11 @@ public class PollService {
 		return pollRepository.findAll();
 	}
 
-	public Optional<PollResponseDto> getById(UUID id) {
+	public Optional<Poll> getById(UUID id) {
+	    return pollRepository.findById(id);
+    }
+
+	public Optional<PollResponseDto> getPollDtoById(UUID id) {
 		Optional<Poll> pollOptional = pollRepository.findById(id);
 		if (pollOptional.isEmpty()) {
 			return Optional.empty();

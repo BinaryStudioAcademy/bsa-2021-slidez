@@ -1,6 +1,6 @@
 package com.binarystudio.academy.slidez.domain.presentation_session.dto.ws;
 
-import com.binarystudio.academy.slidez.domain.presentation_session.model.PollOption;
+import com.binarystudio.academy.slidez.domain.presentation_session.model.SessionPollOption;
 import lombok.*;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public class PollCreatedResponseDto {
 
 	private String name;
 
-	private List<PollOption> options;
+	private List<SessionPollOption> options;
 
 	private UUID id;
 
