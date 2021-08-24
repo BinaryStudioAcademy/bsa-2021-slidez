@@ -12,10 +12,10 @@ const UserMenu: React.FC = () => {
     const dispatch = useAppDispatch()
     const dropdownRef = useRef<HTMLInputElement>(null)
     const [token, setToken] = useState('')
-    const [userFirstName] = useState<string | undefined>('asd')
+    const [userFirstName] = useState<string | undefined>('')
     const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
-    const [userLastName] = useState<string | undefined>('asd')
-    const [userEmail] = useState<string | undefined>('aSd@aasdasdasdsd.com')
+    const [userLastName] = useState<string | undefined>('')
+    const [userEmail] = useState<string | undefined>('')
     const [logo, setLogo] = useState('')
 
     useEffect(() => {
