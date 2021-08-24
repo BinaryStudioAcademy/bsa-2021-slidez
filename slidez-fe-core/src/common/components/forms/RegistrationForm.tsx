@@ -46,7 +46,11 @@ const RegistrationForm = ({
     }
 
     const registrationFailed = () => {
-        handleNotification('Registration Failed', 'The account with provided email is already registered', NotificationTypes.ERROR)
+        handleNotification(
+            'Registration Failed',
+            'The account with provided email is already registered',
+            NotificationTypes.ERROR
+        )
     }
 
     return (
@@ -102,11 +106,7 @@ const RegistrationForm = ({
                                     <div className='error-text'>{msg}</div>
                                 )}
                             </ErrorMessage>
-                            <div
-                                className={
-                                    registrationError ? '' : 'hidden'
-                                }
-                            >
+                            <div className={registrationError ? '' : 'hidden'}>
                                 {registrationFailed}
                             </div>
                         </div>

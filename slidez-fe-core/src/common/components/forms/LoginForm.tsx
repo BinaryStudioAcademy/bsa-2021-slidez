@@ -32,12 +32,20 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
         onLoginWithGoogle(googleData)
     }
 
-    const GoogleLoginFailed = () => {
-        handleNotification('Google Login Failed', 'The provided user account is not registered in the system', NotificationTypes.ERROR)
+    const googleLoginFailed = () => {
+        handleNotification(
+            'Google Login Failed',
+            'The provided user account is not registered in the system',
+            NotificationTypes.ERROR
+        )
     }
 
     const loginFailed = (email: string | undefined) => {
-        handleNotification('Login Failed', `The user cannot be authenticated with email ​${email} and the provided password`, NotificationTypes.ERROR)
+        handleNotification(
+            'Login Failed',
+            `The user cannot be authenticated with email ​${email} and the provided password`,
+            NotificationTypes.ERROR
+        )
     }
 
     return (
@@ -65,10 +73,8 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                 {({ errors, touched }) => (
                     <Form>
                         <div className='form-row form-input-holder'>
-                            <div
-                                className={loginError ? '' : 'hidden'}
-                            >
-                            {() => loginFailed(errors.email)}
+                            <div className={loginError ? '' : 'hidden'}>
+                                {() => loginFailed(errors.email)}
                             </div>
                             <label htmlFor='email' className='label'>
                                 Email
@@ -151,7 +157,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                     className='form-button login-with-google-button'
                     clientId={GoogleOAuth.GOOGLE_CLIENT_ID}
                     onSuccess={handleLoginWithGoogle}
-                    onFailure={GoogleLoginFailed}
+                    onFailure={googleLoginFailed}
                     redirectUri={GoogleOAuth.GOOGLE_REDIRECT_URI}
                     cookiePolicy={GoogleOAuth.GOOGLE_COOKIE_POLICY}
                     render={(renderProps) => (
