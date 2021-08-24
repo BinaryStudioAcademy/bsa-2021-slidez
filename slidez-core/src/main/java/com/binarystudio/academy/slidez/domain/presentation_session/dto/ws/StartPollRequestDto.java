@@ -7,8 +7,6 @@ import java.util.UUID;
 @Data
 public class StartPollRequestDto {
 
-	private String name;
-
 	private UUID id;
 
 }

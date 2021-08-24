@@ -1,11 +1,15 @@
 package com.binarystudio.academy.slidez.domain.presentation_session;
 
+import com.binarystudio.academy.slidez.app.presentationsession.PresentationSessionResponseCodes;
 import com.binarystudio.academy.slidez.domain.link.exception.IncorrectLeaseDurationException;
-import com.binarystudio.academy.slidez.domain.poll.PollService;
 import com.binarystudio.academy.slidez.domain.presentation_session.dto.CreateSessionRequestDto;
 import com.binarystudio.academy.slidez.domain.presentation_session.dto.CreateSessionResponseDto;
-import com.binarystudio.academy.slidez.domain.presentation_session.dto.ws.SnapshotResponseDto;
-import com.binarystudio.academy.slidez.domain.presentation_session.snapshot.Snapshot;
+import com.binarystudio.academy.slidez.domain.presentation_session.event.DomainEvent;
+import com.binarystudio.academy.slidez.domain.presentation_session.handler.AbstractDomainEventHandler;
+import com.binarystudio.academy.slidez.domain.presentation_session.handler.CreatePollHandler;
+import com.binarystudio.academy.slidez.domain.presentation_session.handler.DefaultEventHandler;
+import com.binarystudio.academy.slidez.domain.presentation_session.handler.SnapshotRequestHandler;
+import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import com.binarystudio.academy.slidez.domain.session.SessionService;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +24,25 @@ public class PresentationSessionService {
 
 	private final SessionService sessionService;
 
-	private final PollService pollService;
+	private final AbstractDomainEventHandler eventHandler;
 
 	@Autowired
 	public PresentationSessionService(InMemoryPresentationEventStoreRepository inMemoryPresentationEventStoreRepository,
-			SessionService sessionService, PollService pollService) {
+                                      SessionService sessionService, SnapshotRequestHandler snapshotRequestHandler,
+                                      DefaultEventHandler defaultEventHandler, CreatePollHandler createPollHandler) {
 		this.inMemoryPresentationEventStoreRepository = inMemoryPresentationEventStoreRepository;
 		this.sessionService = sessionService;
-		this.pollService = pollService;
+		this.eventHandler = snapshotRequestHandler;
+		snapshotRequestHandler.setNext(createPollHandler);
+		createPollHandler.setNext(defaultEventHandler);
+	}
+
+	public GenericResponse<Object, PresentationSessionResponseCodes> handleEvent(String link, DomainEvent domainEvent) {
+		Optional<PresentationEventStore> eventStore = inMemoryPresentationEventStoreRepository.get(link);
+		if (eventStore.isEmpty()) {
+			return new GenericResponse<>(null, PresentationSessionResponseCodes.NO_SESSION_WITH_SUCH_LINK);
+		}
+		return eventHandler.handle(domainEvent, eventStore.get());
 	}
 
 	public Optional<CreateSessionResponseDto> createSession(CreateSessionRequestDto dto, int leaseDuration)
@@ -40,49 +55,5 @@ public class PresentationSessionService {
 		}
 		return Optional.empty();
 	}
-
-	public Optional<SnapshotResponseDto> getSnapshot(String link) {
-		Optional<PresentationEventStore> eventStore = inMemoryPresentationEventStoreRepository.get(link);
-		if (eventStore.isEmpty()) {
-			return Optional.empty();
-		}
-		Snapshot snapshot = eventStore.get().snapshot();
-		SnapshotResponseDto snapshotResponseDto = new SnapshotResponseDto();
-		snapshotResponseDto.setSessionInteractiveElements(snapshot.getSessionInteractiveElements());
-		return Optional.of(snapshotResponseDto);
-	}
-
-	// public Optional<PollCreatedResponseDto> createPoll(String link,
-	// CreatePollRequestDto dto) {
-	// Optional<PresentationEventStore> eventStore =
-	// inMemoryPresentationEventStoreRepository.get(link);
-	// if (eventStore.isEmpty()) {
-	// return Optional.empty();
-	// }
-	// Optional<Poll> pollOptional = pollService.getById(dto.getId());
-	// if (pollOptional.isEmpty()) {
-	// return Optional.empty();
-	// }
-	// pollOptional.get().supplyEvent(eventStore.get());
-	// List<SessionPoll> sessionPolls = eventStore.get().snapshot().getSessionPolls();
-	// SessionPoll last = sessionPolls.get(sessionPolls.size() - 1);
-	// PollCreatedResponseDto pollCreatedResponseDto =
-	// PollMapper.INSTANCE.sessionPollToPollCreatedDtoMapper(last);
-	// return Optional.of(pollCreatedResponseDto);
-	// }
-	//
-	// public Optional<PollAnsweredDto> answerPoll(String link, AnswerPollDto dto) {
-	// Optional<PresentationEventStore> eventStore =
-	// inMemoryPresentationEventStoreRepository.get(link);
-	// if (eventStore.isEmpty()) {
-	// return Optional.empty();
-	// }
-	// PollAnsweredEvent pollAnsweredEvent = new PollAnsweredEvent(dto.getPollId(),
-	// dto.getOptionId());
-	// eventStore.get().applyEvent(pollAnsweredEvent);
-	// PollAnsweredDto pollAnsweredDto = new PollAnsweredDto(dto.getPollId(),
-	// dto.getOptionId());
-	// return Optional.of(pollAnsweredDto);
-	// }
 
 }
