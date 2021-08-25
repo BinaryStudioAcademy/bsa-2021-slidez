@@ -1,6 +1,27 @@
 @import "src/global/global";
-* {
-    font-family: "Rubik";
+
+.participant-header {
+    // background-color: $dark-color;
+    position: fixed;
+    top: 5px;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    .logo {
+        a {
+            img {
+                width: 65.03px;
+                height: 44px;
+            }
+        }
+    }
+    .event-name {
+        font-weight: 700;
+        color: $black;
+        font-size: 16px;
+        margin-bottom: 8px;
+        margin-left: 20px;
+    }
 }
 
 .participant-page {
@@ -16,8 +37,11 @@
         }
         .code-input,
         .btn-code {
+            font-family: "Rubik";
+            width: 100%;
             height: 45px;
             border: none;
+            border-radius: 25px;
         }
         .code-input {
             background-color: $light-color;
@@ -26,11 +50,9 @@
             margin-bottom: 15px;
         }
         .btn-code {
-            width: 100%;
             background-color: $main-color;
             color: $white;
             font-size: 16px;
-            border-radius: 25px;
         }
     }
     .title {
@@ -61,7 +83,7 @@
                     .event-info-name {
                         margin-right: 5px;
                         font-weight: 500;
-                        width: 200px;
+                        max-width: 200px;
                         text-overflow: ellipsis;
                         overflow: hidden;
                         white-space: nowrap;

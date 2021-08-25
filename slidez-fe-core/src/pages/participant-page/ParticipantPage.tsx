@@ -18,7 +18,7 @@ const ParticipantPage = () => {
 
     return (
         <div className='participant-page'>
-            <Header />
+            <Header eventName='' />
             <div className='input-block'>
                 <div>Enter code</div>
                 <input
@@ -28,7 +28,7 @@ const ParticipantPage = () => {
                 ></input>
                 <button className='btn btn-code'>Join</button>
             </div>
-            <div className='title'>Select event </div>
+            <div className='title'>Select event</div>
             <div className='page-content'>
                 {listQuestions.map((event) => (
                     <div className='event-item' key={event.id}>
