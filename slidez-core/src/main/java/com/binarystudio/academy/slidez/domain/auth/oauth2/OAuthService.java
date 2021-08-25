@@ -6,7 +6,6 @@ import java.util.Optional;
 import com.binarystudio.academy.slidez.domain.auth.jwtauth.model.AuthResponse;
 import com.binarystudio.academy.slidez.domain.auth.util.AuthUtil;
 import com.binarystudio.academy.slidez.domain.user.UserService;
-import com.binarystudio.academy.slidez.domain.user.model.User;
 import com.binarystudio.academy.slidez.domain.auth.jwtauth.JwtProvider;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -32,7 +31,7 @@ public class OAuthService {
 		this.jwtProvider = jwtProvider;
 	}
 
-	//Legacy method
+	// Legacy method
 	public Optional<AuthResponse> loginWithGoogle(String code) throws IOException {
 		return registerWithGoogle(code);
 	}
@@ -46,10 +45,10 @@ public class OAuthService {
 		}
 		var data = emailForGoogle.get();
 		var user = userService.getByEmail(data.getEmail()).orElseGet(() -> {
-            var newUser = userService.createByEmailAndUserData(data.getEmail(), data.getName(), data.getFamilyName());
-            return newUser;
-        });
-        tokenManager.saveForUser(user.getId(), tokens);
+			var newUser = userService.createByEmailAndUserData(data.getEmail(), data.getName(), data.getFamilyName());
+			return newUser;
+		});
+		tokenManager.saveForUser(user.getId(), tokens);
 
 		return Optional.of(AuthUtil.createAuthResponseFromUser(user, jwtProvider));
 	}

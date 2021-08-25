@@ -1,7 +1,6 @@
 package com.binarystudio.academy.slidez.domain.user;
 
 import com.binarystudio.academy.slidez.domain.user.model.User;
-import com.binarystudio.academy.slidez.domain.user.model.UserRole;
 import com.binarystudio.academy.slidez.domain.userprofile.UserProfile;
 import com.binarystudio.academy.slidez.domain.userprofile.UserProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +17,12 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 
 	private final UserRepository userRepository;
+
 	private final UserProfileRepository profileRepository;
 
 	@Autowired
-	public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, UserProfileRepository profileRepository) {
+	public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository,
+			UserProfileRepository profileRepository) {
 		this.passwordEncoder = passwordEncoder;
 		this.userRepository = userRepository;
 		this.profileRepository = profileRepository;
@@ -46,8 +47,8 @@ public class UserService {
 
 	public User createByEmailAndUserData(String email, String firstName, String lastName) {
 		User user = new User(email, passwordEncoder.encode(""));
-        this.userRepository.save(user);
-        //Attach profile
+		this.userRepository.save(user);
+		// Attach profile
 
 		UserProfile userProfile = new UserProfile(firstName, lastName);
 

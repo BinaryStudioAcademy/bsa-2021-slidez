@@ -41,7 +41,7 @@ const App = () => {
                     padding: 0,
                     minHeight: '600px',
                 }}
-                src='http://localhost:3000/#/addon?presentationId=${presentationId}&extensionId=${EXTENSION_ID}'
+                src={`http://localhost:3000/#/addon?presentationId=${presentationId}&extensionId=${EXTENSION_ID}`}
             ></iframe>
         </div>
     );
