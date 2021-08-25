@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 import httpHelper from '../../services/http/http-helper'
-import { UserDetailsDto } from '../../containers/user/dto/UserDetailsDto'
+import { UserDetailsDto } from '../user/dto/UserDetailsDto'
 import { handleNotification } from '../../common/notification/Notification'
 import { Redirect } from 'react-router-dom'
 

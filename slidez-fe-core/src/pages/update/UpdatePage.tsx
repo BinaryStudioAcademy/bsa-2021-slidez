@@ -15,7 +15,7 @@ import SideBar from '../../containers/sideBar/SideBar'
 // import '../dashboard/dashboard.scss'
 import './update.scss'
 import { AppRoute } from '../../common/routes/app-route'
-import DeleteAccount from '../delete-account/DeleteAccount'
+import DeleteAccount from '../../containers/delete-account/DeleteAccount'
 
 interface User {
     id: string
