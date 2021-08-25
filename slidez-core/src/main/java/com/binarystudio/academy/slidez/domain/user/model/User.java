@@ -42,8 +42,7 @@ public class User {
 	@OneToOne(mappedBy = "user")
 	private GoogleCredentials googleCredentials;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	@OneToMany(mappedBy = "user")
 	private Set<Presentation> presentations;
 
 	@Column(name = "created_at", nullable = false, updatable = false)

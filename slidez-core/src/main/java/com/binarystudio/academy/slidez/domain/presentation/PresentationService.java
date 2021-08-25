@@ -7,6 +7,9 @@ import com.binarystudio.academy.slidez.domain.interactive_element.model.Interact
 import com.binarystudio.academy.slidez.domain.presentation.dto.PresentationUpdateDto;
 import com.binarystudio.academy.slidez.domain.presentation.exception.PresentationNotFoundException;
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
+import com.binarystudio.academy.slidez.domain.user.UserService;
+import com.binarystudio.academy.slidez.domain.user.exception.NoSuchUserException;
+import com.binarystudio.academy.slidez.domain.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,15 +22,35 @@ import java.util.stream.Collectors;
 @Service
 public class PresentationService {
 
+    private final UserService userService;
+
 	private final PresentationRepository presentationRepository;
 
 	@Autowired
-	public PresentationService(PresentationRepository presentationRepository) {
-		this.presentationRepository = presentationRepository;
+	public PresentationService(UserService userService, PresentationRepository presentationRepository) {
+        this.userService = userService;
+        this.presentationRepository = presentationRepository;
 	}
 
-	public Presentation add(String name) {
+	/**
+	 * Creates new Presentation with random link
+	 */
+	public Presentation add(String name, UUID userId) throws NoSuchUserException {
 		Presentation presentation = new Presentation(name);
+		presentation.setLink(UUID.randomUUID().toString());
+        User byId = userService.getById(userId)
+            .orElseThrow(() -> new NoSuchUserException(String.format("No such user with id = %s", userId.toString())));
+        presentation.setUser(byId);
+        return presentationRepository.save(presentation);
+	}
+
+	/**
+	 * Fetches presentation with specified id or creates new presentation with random name
+	 * if it does not exist and adds interactive element to it
+	 */
+	public Presentation addInteractiveElement(UUID presentationId, InteractiveElement interactiveElement, UUID userId) {
+		Presentation presentation = get(presentationId).orElse(add(UUID.randomUUID().toString(), userId));
+		presentation.getInteractiveElements().add(interactiveElement);
 		return presentationRepository.save(presentation);
 	}
 
@@ -44,13 +67,7 @@ public class PresentationService {
 		presentationRepository.deleteById(id);
 	}
 
-	public Set<InteractiveElement> getInteractiveElements(UUID presentationId) throws PresentationNotFoundException {
-		Presentation presentation = get(presentationId).orElseThrow(
-				() -> new PresentationNotFoundException(String.format("No presentation with id = %s", presentationId)));
-		return presentation.getInteractiveElements();
-	}
-
-	public Collection<InteractiveElementDto> getInteractiveElements(String presentationLink)
+	public Collection<InteractiveElementDto> getInteractiveElementDtos(String presentationLink)
 			throws IllegalElementTypeException {
 		Presentation presentation = this.presentationRepository.findByLink(presentationLink)
 				.orElseThrow(() -> new PresentationNotFoundException(

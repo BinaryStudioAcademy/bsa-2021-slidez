@@ -26,7 +26,7 @@ public class StartPollHandler extends AbstractDomainEventHandler {
 	}
 
 	/**
-	 * @returns {@link GenericResponse<SessionPoll, SessionResponseCodes >}
+	 * @returns {@link GenericResponse<SessionPoll, SessionResponseCodes>}
 	 */
 	@Override
 	public GenericResponse<Object, SessionResponseCodes> handle(DomainEvent domainEvent,

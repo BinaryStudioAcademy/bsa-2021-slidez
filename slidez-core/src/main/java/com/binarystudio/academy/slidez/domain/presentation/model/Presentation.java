@@ -2,6 +2,7 @@ package com.binarystudio.academy.slidez.domain.presentation.model;
 
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
+import com.binarystudio.academy.slidez.domain.user.model.User;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -32,6 +33,10 @@ public class Presentation {
 
 	@Column(name = "link", nullable = false, unique = true)
 	private String link;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "presentation_id", nullable = false)
