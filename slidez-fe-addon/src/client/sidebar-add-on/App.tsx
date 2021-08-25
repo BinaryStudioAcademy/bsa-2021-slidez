@@ -21,7 +21,7 @@ const App = () => {
                     padding: 0,
                     minHeight: '600px',
                 }}
-                src='http://localhost:3000/#/editor'
+                src='http://localhost:3000/#/addon'
             ></iframe>
         </div>
     );
