@@ -1,17 +1,17 @@
 @import "src/global/global";
 
-.header {
+.participant-header {
     background-color: $dark-color;
     position: fixed;
-    top: 0px;
+    top: 5px;
     width: 100%;
-    .header-title {
-        color: $light-color;
-        text-align: center;
-        font-family: Rubik;
-        font-size: 20px;
-        padding-top: 5px;
-        padding-bottom: 8px;
-    }
+    .logo {
+		a {
+			img {
+				width: 65.03px;
+				height: 44px;
+			}
+		}
+	}
 }
 
