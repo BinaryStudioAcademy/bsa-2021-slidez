@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -27,7 +28,7 @@ public class Quiz extends InteractiveElement {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "quiz_id", referencedColumnName = "id", nullable = false)
-	private List<QuizAnswer> quizAnswers;
+	private List<QuizAnswer> quizAnswers = new ArrayList<>();
 
 	public Quiz() {
 		super(null, InteractiveElementType.QUIZ, null, null);
