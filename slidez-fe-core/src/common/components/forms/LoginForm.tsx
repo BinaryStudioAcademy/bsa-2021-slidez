@@ -77,14 +77,6 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
         )
     }
 
-    const loginFailed = (email: string | undefined) => {
-        handleNotification(
-            'Login Failed',
-            `The user cannot be authenticated with email ​${email} and the provided password`,
-            NotificationTypes.ERROR
-        )
-    }
-
     return (
         <div className='sign-form'>
             <div className='form-row header-row'>Log In</div>

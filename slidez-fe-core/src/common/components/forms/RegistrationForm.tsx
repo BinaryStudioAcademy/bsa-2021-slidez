@@ -99,13 +99,6 @@ const RegistrationForm = ({
         onRegisterWithGoogle(googleData)
     }
 
-    const registrationFailed = () => {
-        handleNotification(
-            'Registration Failed',
-            'The account with provided email is already registered',
-            NotificationTypes.ERROR
-        )
-    }
 
     return (
         <div className='sign-form'>
