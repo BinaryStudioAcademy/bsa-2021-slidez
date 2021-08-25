@@ -50,7 +50,8 @@ public class PresentationService {
 		return presentation.getInteractiveElements();
 	}
 
-	public Collection<InteractiveElementDto> getInteractiveElements(String presentationLink) throws IllegalElementTypeException {
+	public Collection<InteractiveElementDto> getInteractiveElements(String presentationLink)
+			throws IllegalElementTypeException {
 		Presentation presentation = this.presentationRepository.findByLink(presentationLink)
 				.orElseThrow(() -> new PresentationNotFoundException(
 						String.format("Not found presentation with link %s", presentationLink)));

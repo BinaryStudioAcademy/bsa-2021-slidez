@@ -28,9 +28,9 @@ public interface InteractiveElementMapper {
 		else if (element instanceof Quiz) {
 			return QuizMapper.INSTANCE.quizToQuizDto((Quiz) element);
 		}
-        else if (element instanceof QASession) {
-            return QASessionMapper.INSTANCE.qaSessionToDto((QASession) element);
-        }
+		else if (element instanceof QASession) {
+			return QASessionMapper.INSTANCE.qaSessionToDto((QASession) element);
+		}
 		throw new IllegalElementTypeException(
 				String.format("Invalid type of element: %s", element.getClass().getName()));
 	}
