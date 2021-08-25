@@ -39,7 +39,11 @@ const LoginErrors = ({
     if (!viewErrors) {
         errorMessage = null
     } else if (loginError) {
-        errorMessage = "Can't log in: email or password is invalid"
+        handleNotification(
+            'Login Failed',
+            "Can't log in: email or password is invalid",
+            NotificationTypes.ERROR
+        )
     } else if (formikErrors.email && formikErrors.password) {
         errorMessage = 'Please provide email and password'
     } else if (formikErrors.email) {

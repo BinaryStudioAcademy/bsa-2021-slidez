@@ -57,7 +57,11 @@ const RegistrationErrors = ({
     if (!viewErrors) {
         errorMessage = null
     } else if (registrationError) {
-        errorMessage = 'This email is taken'
+        handleNotification(
+            'Registration Failed',
+            'This email is taken',
+            NotificationTypes.ERROR
+        )
     } else if (formikErrors.email) {
         errorMessage = 'Please provide valid email'
     } else if (formikErrors.password) {
