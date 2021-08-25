@@ -1,10 +1,16 @@
 import React from 'react'
 import PollEditor from '../../containers/poll-editor/PollEditor'
+import { EventBusConnectionStatus, useEventBus } from '../../hooks/event-bus'
 
 const Editor = () => {
-    return (
-        <PollEditor presentationId='1fHw7RztzdXq3xo3aqQmklazaAR9rZ8kds0yrjQMH8Oo' />
-    )
+    const eventBus = useEventBus()
+    if (eventBus.connected === EventBusConnectionStatus.FAILED) {
+        return 'Failed to connect to extension, please install extension first'
+    }
+    if (eventBus.connected !== EventBusConnectionStatus.CONNECTED) {
+        return 'Connecting to extension, please wait...'
+    }
+    return <PollEditor />
 }
 
 export default Editor

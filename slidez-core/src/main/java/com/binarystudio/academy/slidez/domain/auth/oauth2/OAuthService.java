@@ -32,20 +32,9 @@ public class OAuthService {
 		this.jwtProvider = jwtProvider;
 	}
 
+	//Legacy method
 	public Optional<AuthResponse> loginWithGoogle(String code) throws IOException {
-		var tokens = this.tokenManager.fetchTokensForUser(code);
-		var emailForGoogle = getEmailForGoogle(tokens);
-		if (emailForGoogle.isEmpty()) {
-			return Optional.empty();
-		}
-		String email = emailForGoogle.get().getEmail();
-		Optional<User> byEmail = userService.getByEmail(email);
-		if (byEmail.isPresent()) {
-			User user = byEmail.get();
-			tokenManager.saveForUser(user.getId(), tokens);
-			return Optional.of(AuthUtil.createAuthResponseFromUser(user, jwtProvider));
-		}
-		return Optional.empty();
+		return registerWithGoogle(code);
 	}
 
 	public Optional<AuthResponse> registerWithGoogle(String code) throws IOException {
@@ -56,12 +45,13 @@ public class OAuthService {
 			return Optional.empty();
 		}
 		var data = emailForGoogle.get();
-		if (!userService.isEmailPresent(data.getEmail())) {
-			User user = userService.createByEmailAndUserData(data.getEmail(), data.getName(), data.getFamilyName());
-			tokenManager.saveForUser(user.getId(), tokens);
-			return Optional.of(AuthUtil.createAuthResponseFromUser(user, jwtProvider));
-		}
-		return Optional.empty();
+		var user = userService.getByEmail(data.getEmail()).orElseGet(() -> {
+            var newUser = userService.createByEmailAndUserData(data.getEmail(), data.getName(), data.getFamilyName());
+            return newUser;
+        });
+        tokenManager.saveForUser(user.getId(), tokens);
+
+		return Optional.of(AuthUtil.createAuthResponseFromUser(user, jwtProvider));
 	}
 
 	private Optional<Userinfoplus> getEmailForGoogle(GoogleCredential oauthCreds) throws IOException {

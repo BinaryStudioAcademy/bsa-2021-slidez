@@ -4,41 +4,39 @@ import { Formik, Form, Field, FieldArray } from 'formik'
 import './PollEditor.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
-import axios from 'axios'
-import { ApiGateway } from '../../services/http/api-gateway'
 import { CreatePollDto } from './dto'
 import httpHelper from '../../services/http/http-helper'
 import { handleNotification } from '../../common/notification/Notification'
+import { getMessageBusUnsafe } from '../../hooks/event-bus'
+import { EventType, InsertSlideSuccess } from 'slidez-shared'
 
 export type PollEditorProps = {
     presentationId: string
 }
 
 // eslint-disable-next-line react/prop-types
-const PollEditor: React.FC<PollEditorProps> = ({ presentationId }) => {
+const PollEditor: React.FC = () => {
     const initialValues: CreatePollDto = {
-        presentationId: presentationId,
+        presentationId: '',
         title: '',
         options: [],
     }
 
-    const handleSubmit = (values: CreatePollDto) => {
-        httpHelper
-            .doPost('polls', values)
-            .then(() =>
-                handleNotification(
-                    'Saved',
-                    'Poll created successfully',
-                    'success'
-                )
+    const handleSubmit = async (values: CreatePollDto) => {
+        const data =
+            await getMessageBusUnsafe()?.sendMessageAndListen<InsertSlideSuccess>(
+                {
+                    type: EventType.INSERT_SLIDE,
+                    data: {
+                        id: 'slidez_test_id_lol_' + new Date().getTime(),
+                        title: `Poll: ${values.title}`,
+                    },
+                },
+                EventType.INSERT_SLIDE_SUCCESS,
+                5000
             )
-            .catch(() =>
-                handleNotification(
-                    'Failed',
-                    'Failed to save a poll :(',
-                    'error'
-                )
-            )
+
+        console.log('Created poll slide successfully, returned data: ', data)
     }
 
     return (
