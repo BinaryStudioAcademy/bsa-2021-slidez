@@ -9,7 +9,7 @@ import { useAppSelector } from '../../../hooks'
 import { selectError } from '../../../containers/user/store'
 import GoogleLogin from 'react-google-login'
 import { GoogleOAuth } from '../../../services/auth/google-oauth'
-import { ErrorMessage, Field, Form, Formik } from 'formik'
+import { Field, Form, Formik, FormikErrors } from 'formik'
 import * as Yup from 'yup'
 import { handleNotification } from '../../notification/Notification'
 import { NotificationTypes } from '../../notification/notification-types'
@@ -19,8 +19,41 @@ type LoginProps = {
     onLoginWithGoogle: Function
 }
 
+type LoginErorrsProps = {
+    viewErrors: boolean
+    loginError: string | undefined
+    formikErrors: FormikErrors<{ email: string; password: string }>
+}
+
+const loginFieldsValidation = Yup.object({
+    email: Yup.string().required('Required'),
+    password: Yup.string().required('Required'),
+})
+
+const LoginErrors = ({
+    viewErrors,
+    loginError,
+    formikErrors,
+}: LoginErorrsProps) => {
+    let errorMessage: string | null = null
+    if (!viewErrors) {
+        errorMessage = null
+    } else if (loginError) {
+        errorMessage = "Can't log in: email or password is invalid"
+    } else if (formikErrors.email && formikErrors.password) {
+        errorMessage = 'Please provide email and password'
+    } else if (formikErrors.email) {
+        errorMessage = 'Email is missing'
+    } else if (formikErrors.password) {
+        errorMessage = 'Password is missing'
+    }
+
+    return <div className='error-text'>{errorMessage}</div>
+}
+
 const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
     const [isPasswordRevealed, setIsPasswordRevealed] = React.useState(false)
+    const [viewErrors, setViewErrors] = React.useState(false)
     const loginError = useAppSelector(selectError)
 
     const onRevealClick = () => {
@@ -59,23 +92,15 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
             </div>
             <Formik
                 initialValues={{ email: '', password: '' }}
-                validationSchema={Yup.object({
-                    email: Yup.string()
-                        .required('Required')
-                        .email('Invalid email address'),
-                    password: Yup.string().required('Required'),
-                })}
+                validationSchema={loginFieldsValidation}
                 onSubmit={({ email, password }, { setSubmitting }) => {
                     onLogin(email, password)
                     setSubmitting(false)
                 }}
             >
-                {({ errors, touched }) => (
+                {({ errors }) => (
                     <Form>
                         <div className='form-row form-input-holder'>
-                            <div className={loginError ? '' : 'hidden'}>
-                                {() => loginFailed(errors.email)}
-                            </div>
                             <label htmlFor='email' className='label'>
                                 Email
                             </label>
@@ -83,18 +108,15 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                                 name='email'
                                 className={
                                     'form-input' +
-                                    (touched.email && errors.email
+                                    (viewErrors && errors.email
                                         ? ' error-input'
                                         : '')
                                 }
+                                onClick={() => setViewErrors(false)}
                                 type='text'
+                                autoComplete='email'
                                 placeholder='Enter your email'
                             />
-                            <ErrorMessage name='email'>
-                                {(msg) => (
-                                    <div className='error-text'>{msg}</div>
-                                )}
-                            </ErrorMessage>
                         </div>
 
                         <div className='form-row form-input-holder'>
@@ -116,11 +138,13 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                                     name='password'
                                     className={
                                         'form-input input-with-icon' +
-                                        (touched.password && errors.password
+                                        (viewErrors && errors.password
                                             ? ' error-input'
                                             : '')
                                     }
+                                    onClick={() => setViewErrors(false)}
                                     type='password'
+                                    autoComplete='current-password'
                                     placeholder='Enter your password'
                                 />
                                 <FontAwesomeIcon
@@ -135,15 +159,20 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                                     onClick={onRevealClick}
                                 />
                             </div>
-                            <ErrorMessage name='password'>
-                                {(msg) => (
-                                    <div className='error-text'>{msg}</div>
-                                )}
-                            </ErrorMessage>
                         </div>
 
+                        <LoginErrors
+                            viewErrors={viewErrors}
+                            loginError={loginError}
+                            formikErrors={errors}
+                        />
+
                         <div className='form-row buttons-row'>
-                            <button className='form-button login-button'>
+                            <button
+                                className='form-button login-button'
+                                onClick={() => setViewErrors(true)}
+                                type='submit'
+                            >
                                 Log In
                             </button>
                         </div>
@@ -160,6 +189,11 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                     onFailure={googleLoginFailed}
                     redirectUri={GoogleOAuth.GOOGLE_REDIRECT_URI}
                     cookiePolicy={GoogleOAuth.GOOGLE_COOKIE_POLICY}
+                    scope={[
+                        'https://www.googleapis.com/auth/presentations',
+                        'https://www.googleapis.com/auth/drive',
+                    ].join(' ')}
+                    responseType='code'
                     render={(renderProps) => (
                         <button
                             onClick={renderProps.onClick}

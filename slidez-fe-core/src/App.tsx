@@ -8,9 +8,9 @@ import SignPage from './pages/sign/SignPage'
 import EventPage from './pages/event/EventPage'
 import ReduxToastr from 'react-redux-toastr'
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
-import { ChromeEvents, log } from 'slidez-shared'
-
-log()
+import ParticipantPage from './pages/participant-page/ParticipantPage'
+import UpdatePage from './pages/update/UpdatePage'
+import Addon from './containers/poll-editor/Addon'
 
 function App() {
     return (
@@ -22,11 +22,21 @@ function App() {
                         path={[AppRoute.LOGIN, AppRoute.REGISTRATION]}
                         component={SignPage}
                     />
-                    <Route path={AppRoute.EVENT} component={EventPage} />
                     <PrivateRoute
                         exact
                         path={AppRoute.DASHBOARD}
                         component={Dashboard}
+                    />
+                    <PrivateRoute path={AppRoute.ADDON} component={Addon} />
+                    <Route path={AppRoute.EVENT} component={EventPage} />
+                    <Route
+                        path={AppRoute.PARTICIPANT}
+                        component={ParticipantPage}
+                    />
+                    <PrivateRoute
+                        exact
+                        path={AppRoute.UPDATE_USER}
+                        component={UpdatePage}
                     />
                     <Route exact strict path={AppRoute.ANY}>
                         <Redirect to={AppRoute.LOGIN} />

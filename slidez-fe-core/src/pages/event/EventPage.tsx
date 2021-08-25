@@ -1,48 +1,58 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import {
+    createSessionForPresentation,
     initWebSocketSession,
     selectConnectionStatus,
+    selectLink,
     selectSnapshot,
 } from '../../containers/presentation_session/store'
 import { WsConnectionStatus } from '../../containers/presentation_session/enums/ws-connection-status'
+import Loader from '../../common/components/loader/Loader'
+import Poll from '../../common/components/interactive-elements/poll/Poll'
+import InteractiveWrapper from '../../common/components/interactive-elements/interactive-wrapper/InteractiveWrapper'
+import { CreatePresentationSessionDto } from '../../services/presentation-session/dto/CreatePresentationSessionDto'
 
-// @ts-ignore
-const EventPage = () => {
-    const [sentConnectionRequest, setSentConnectionRequest] = useState(false)
-    // @ts-ignore
-    const { link } = useParams()
+const EventPage: React.FC = () => {
+    // const { link } = useParams<{ link?: string }>()
+    const link: string | undefined = useAppSelector(selectLink)
+    const [sentCreateSession, setSentCreateSession] = useState(false)
+    const [sentInitWsSession, setSentInitWsSession] = useState(false)
     const dispatch = useAppDispatch()
-    if (!sentConnectionRequest) {
-        setSentConnectionRequest(true)
+    if (link === undefined && !sentCreateSession) {
+        const dto: CreatePresentationSessionDto = {
+            presentationId: 'ed60e789-ab15-4756-b95e-218b43b6dfff',
+        }
+        setSentCreateSession(true)
+        dispatch(createSessionForPresentation(dto))
+    }
+    if (link !== undefined && !sentInitWsSession) {
+        setSentInitWsSession(true)
         dispatch(initWebSocketSession(link))
     }
+    // useEffect(() => {
+    //     if (link) {
+    //         dispatch(initWebSocketSession(link))
+    //     }
+    // }, [])
+
     const connectionStatus = useAppSelector(selectConnectionStatus)
     const snapshot = useAppSelector(selectSnapshot)
 
-    const getHeader = () => {
-        return (
-            <h1>
-                {connectionStatus === WsConnectionStatus.CONNECTED
-                    ? 'Connected :D'
-                    : 'Disconnected :('}
-            </h1>
-        )
-    }
+    const activePoll = snapshot?.polls.find((poll) => poll)
 
-    const getBody = () => {
-        if (snapshot === undefined) {
-            return null
-        }
-        return <div>{JSON.stringify(snapshot)}</div>
-    }
-
+    const body = activePoll ? (
+        <Poll poll={activePoll as any} />
+    ) : (
+        <>Waiting for an interaction to start...</>
+    )
     return (
         <div>
-            {getHeader()}
-            <br />
-            {getBody()}
+            {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
+            <InteractiveWrapper eventCode={link || ''}>
+                {body}
+            </InteractiveWrapper>
         </div>
     )
 }

@@ -52,7 +52,11 @@ dependencies {
 			"io.jsonwebtoken:jjwt-jackson:${jjwt}"
 
 	implementation 'com.sendgrid:sendgrid-java:4.7.2'
-	compileOnly 'org.projectlombok:lombok'
+    implementation 'com.google.code.findbugs:jsr305:3.0.0'
+    implementation 'com.google.apis:google-api-services-slides:v1-rev294-1.23.0'
+    implementation 'com.google.api-client:google-api-client:1.32.1'
+    implementation 'com.google.apis:google-api-services-oauth2:v2-rev65-1.17.0-rc'
+    compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'

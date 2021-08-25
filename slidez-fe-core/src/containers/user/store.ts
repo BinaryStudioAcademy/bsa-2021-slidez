@@ -5,14 +5,13 @@ import { RegisterDto } from '../../services/auth/dto/RegisterDto'
 import {
     isLoggedIn,
     performLogIn,
-    performLoginByToken,
     performLoginOAuthWithGoogle,
     performLogout,
     performRegister,
     performRegisterOAuthWithGoogle,
 } from '../../services/auth/auth-service'
 import { UserDetailsDto } from './dto/UserDetailsDto'
-import { TokenDto } from '../../services/auth/dto/TokenDto'
+import { CodeDto } from '../../services/auth/dto/CodeDto'
 
 export interface UserState {
     error?: string
@@ -37,23 +36,16 @@ export const register = createAsyncThunk(
     }
 )
 
-export const loginByToken = createAsyncThunk(
-    'user/login-by-token',
-    async (dto: TokenDto) => {
-        return performLoginByToken(dto)
-    }
-)
-
 export const loginWithOAuthGoogle = createAsyncThunk(
     'user/login-with-oauth-google',
-    async (dto: TokenDto) => {
+    async (dto: CodeDto) => {
         return performLoginOAuthWithGoogle(dto)
     }
 )
 
 export const registerWithOAuthGoogle = createAsyncThunk(
     'user/register-with-oauth-google',
-    async (dto: TokenDto) => {
+    async (dto: CodeDto) => {
         return performRegisterOAuthWithGoogle(dto)
     }
 )
@@ -76,13 +68,6 @@ export const userSlice = createSlice({
                 }
             })
             .addCase(register.fulfilled, (state, action) => {
-                state.error = action.payload.error
-                if (action.payload.userDetailsDto) {
-                    state.user = action.payload.userDetailsDto
-                    state.isLoggedIn = isLoggedIn()
-                }
-            })
-            .addCase(loginByToken.fulfilled, (state, action) => {
                 state.error = action.payload.error
                 if (action.payload.userDetailsDto) {
                     state.user = action.payload.userDetailsDto

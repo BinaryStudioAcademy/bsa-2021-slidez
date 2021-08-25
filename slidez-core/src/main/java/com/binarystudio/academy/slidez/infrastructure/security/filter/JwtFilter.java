@@ -54,15 +54,15 @@ public class JwtFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		String token = getTokenFromRequest(request);
-		if (token != null) {
-			Optional<String> loginFromToken = jwtProvider.getLoginFromToken(token);
+		Optional<String> token = getTokenFromRequest(request);
+		if (token.isPresent()) {
+			Optional<String> loginFromToken = jwtProvider.getLoginFromToken(token.get());
 			if (loginFromToken.isPresent()) {
 				Optional<User> user = userService.getByEmail(loginFromToken.get());
 				if (user.isPresent()) {
 					UserRole role = user.get().getRole();
 					List<UserRole> roles = (role == null) ? Collections.emptyList() : List.of(role);
-					UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null,
+					UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user.get(), null,
 							roles);
 					SecurityContextHolder.getContext().setAuthentication(auth);
 				}
@@ -72,13 +72,13 @@ public class JwtFilter extends OncePerRequestFilter {
 	}
 
 	@Nullable
-	private String getTokenFromRequest(HttpServletRequest request) {
+	private Optional<String> getTokenFromRequest(HttpServletRequest request) {
 		String bearer = request.getHeader("authorization");
 		if (bearer != null && bearer.startsWith("Bearer ")) {
 			final int prefixLength = 7;
-			return bearer.substring(prefixLength);
+			return Optional.of(bearer.substring(prefixLength));
 		}
-		return null;
+		return Optional.empty();
 	}
 
 }

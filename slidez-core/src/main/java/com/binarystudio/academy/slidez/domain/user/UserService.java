@@ -1,12 +1,15 @@
 package com.binarystudio.academy.slidez.domain.user;
 
-import java.util.Optional;
-import java.util.UUID;
-
 import com.binarystudio.academy.slidez.domain.user.model.User;
+import com.binarystudio.academy.slidez.domain.user.model.UserRole;
+import com.binarystudio.academy.slidez.domain.userprofile.UserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -30,9 +33,7 @@ public class UserService {
 	}
 
 	public User create(String email, String password) {
-		User user = new User();
-		user.setEmail(email);
-		user.setPassword(this.passwordEncoder.encode(password));
+		User user = new User(email, passwordEncoder.encode(password));
 		return this.userRepository.save(user);
 	}
 
@@ -40,8 +41,15 @@ public class UserService {
 		return this.userRepository.findById(id);
 	}
 
-	public User createByEmail(String email) {
-		return create(email, "");
+	public User createByEmailAndUserData(String email, String firstName, String lastName) {
+		User user = new User(email, passwordEncoder.encode(""));
+		UserProfile userProfile = new UserProfile(firstName, lastName);
+		user.setUserProfile(userProfile);
+		return this.userRepository.save(user);
+	}
+
+	public List<User> getAll() {
+		return this.userRepository.findAll();
 	}
 
 }

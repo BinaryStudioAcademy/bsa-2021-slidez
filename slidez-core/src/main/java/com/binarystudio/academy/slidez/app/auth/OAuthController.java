@@ -1,12 +1,12 @@
 package com.binarystudio.academy.slidez.app.auth;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import com.binarystudio.academy.slidez.domain.auth.jwtauth.model.AuthResponse;
-import com.binarystudio.academy.slidez.domain.auth.oauth2.GoogleTokenIdException;
 import com.binarystudio.academy.slidez.domain.auth.oauth2.OAuthService;
-import com.binarystudio.academy.slidez.domain.auth.oauth2.dto.AuthorizationByOAuthTokenRequest;
+import com.binarystudio.academy.slidez.domain.auth.oauth2.dto.AuthorizationByOAuthCodeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,31 +28,32 @@ public class OAuthController {
 	// TO MORE CONCISE
 	@PostMapping("/login/google")
 	public GenericResponse<AuthResponse, AuthResponseCodes> loginWithGoogle(
-			@RequestBody AuthorizationByOAuthTokenRequest authorizationByTokenRequest) {
+			@RequestBody AuthorizationByOAuthCodeRequest authorizationByOAuthCodeRequest) throws IOException {
 		try {
-			Optional<AuthResponse> authResponse = oAuthService.loginWithGoogle(authorizationByTokenRequest.getToken());
+			Optional<AuthResponse> authResponse = oAuthService
+					.loginWithGoogle(authorizationByOAuthCodeRequest.getCode());
 			if (authResponse.isEmpty()) {
 				return new GenericResponse<>(null, AuthResponseCodes.UNAUTHORIZED);
 			}
 			return new GenericResponse<>(authResponse.get());
 		}
-		catch (GoogleTokenIdException e) {
+		catch (Throwable e) {
 			return new GenericResponse<>(null, AuthResponseCodes.INVALID_TOKEN);
 		}
 	}
 
 	@PostMapping("/register/google")
 	public GenericResponse<AuthResponse, AuthResponseCodes> registerWithGoogle(
-			@RequestBody AuthorizationByOAuthTokenRequest authorizationByTokenRequest) {
+			@RequestBody AuthorizationByOAuthCodeRequest authorizationByOAuthCodeRequest) throws IOException {
 		try {
 			Optional<AuthResponse> authResponse = oAuthService
-					.registerWithGoogle(authorizationByTokenRequest.getToken());
+					.registerWithGoogle(authorizationByOAuthCodeRequest.getCode());
 			if (authResponse.isEmpty()) {
 				return new GenericResponse<>(null, AuthResponseCodes.UNAUTHORIZED);
 			}
 			return new GenericResponse<>(authResponse.get());
 		}
-		catch (GoogleTokenIdException e) {
+		catch (Throwable e) {
 			return new GenericResponse<>(null, AuthResponseCodes.INVALID_TOKEN);
 		}
 	}

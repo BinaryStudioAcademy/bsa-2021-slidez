@@ -1,16 +1,16 @@
 package com.binarystudio.academy.slidez.domain.link.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import javax.persistence.*;
 
 import com.binarystudio.academy.slidez.domain.session.model.Session;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -18,22 +18,31 @@ import org.hibernate.annotations.GenericGenerator;
 public class Link {
 
 	@Id
-	@GeneratedValue(generator = "increment")
-	@GenericGenerator(name = "increment", strategy = "increment")
-	private Long linkId;
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(name = "id", unique = true)
+	private UUID id;
 
-	@OneToOne
-	@JoinColumn(name = "session_id", referencedColumnName = "id")
+	@Column(name = "code")
+	private String code;
+
+	@Column(name = "leased_until")
+	private LocalDateTime leasedUntil;
+
+	@OneToOne(mappedBy = "link")
 	private Session session;
 
-	@Column(name = "link")
-	private String link;
+	@Column(name = "created_at", nullable = false, updatable = false)
+	private LocalDateTime createdAt;
 
-	@Column(name = "expiration_date")
-	private LocalDateTime expirationDate;
+	@Column(name = "updated_at", nullable = false)
+	private LocalDateTime updatedAt;
 
-	public static Link createLink(Session session, String link, LocalDateTime expirationDate) {
-		return new Link(null, session, link, expirationDate);
+	public Link(String code) {
+		LocalDateTime now = LocalDateTime.now();
+		this.code = code;
+		this.createdAt = now;
+		this.updatedAt = now;
 	}
 
 }

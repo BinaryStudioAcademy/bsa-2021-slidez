@@ -1,0 +1,62 @@
+@import "src/global/global";
+
+.wrapper {
+    display: flex;
+    height: available;
+    width: available;
+    background-color: #dddddd;
+    margin: 20px;
+    border-radius: 40px;
+}
+
+.wrapped-component {
+    flex: 1;
+    padding-left: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.interactive-wrapper-sidebar{
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    min-width: 380px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.interactive-wrapper-sidebar > div {
+    width: 80%;
+    max-width: 80%;
+}
+
+.container-with-centered-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.link-holder{
+    font-size: 34px;
+    word-wrap: break-word;
+    color: $black;
+    text-align: center;
+}
+
+.link-domain{
+    color: $black;
+    font-weight: bold;
+}
+
+.link-code {
+    color: $main-color;
+    font-weight: bold;
+}
+
+.qr-code-holder{
+    background-color: $light-color;
+    padding: 5%;
+    border-radius: 20px;
+}

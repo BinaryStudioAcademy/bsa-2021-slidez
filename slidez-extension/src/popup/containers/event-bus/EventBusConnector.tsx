@@ -1,7 +1,9 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import { AuthenticationDetails, EventType, of } from 'slidez-shared'
 import { EventBusConnectionStatus, useEventBus } from '../../hooks/event-bus'
+import { setToken } from '../login/redux/authenticationSlice'
 import { connect } from './redux/eventBusSlice'
 
 const Loader = () => <span>Loader...</span>
@@ -12,6 +14,14 @@ const EventBusConnector: React.FC<{}> = () => {
     const eventBus = useEventBus()
     useEffect(() => {
         if (eventBus.connected === EventBusConnectionStatus.CONNECTED) {
+            eventBus.eventBus.registerEventHandler(
+                EventType.AUTH_DETAILS,
+                of((authData: AuthenticationDetails) => {
+                    if (authData.data.success) {
+                        setToken(authData.data.accessToken)
+                    }
+                })
+            )
             dispatch(connect())
         }
     }, [eventBus.connected])
