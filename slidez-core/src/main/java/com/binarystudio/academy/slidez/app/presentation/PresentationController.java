@@ -1,6 +1,7 @@
 package com.binarystudio.academy.slidez.app.presentation;
 
 import com.binarystudio.academy.slidez.domain.interactive_element.dto.InteractiveElementDto;
+import com.binarystudio.academy.slidez.domain.interactive_element.exception.IllegalElementTypeException;
 import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class PresentationController {
 
 	@GetMapping("/{link}/interactions")
 	public GenericResponse<Collection<InteractiveElementDto>, String> getInteractiveElements(
-			@PathVariable("link") String link) throws EntityNotFoundException {
+			@PathVariable("link") String link) throws EntityNotFoundException, IllegalElementTypeException {
 		Collection<InteractiveElementDto> interactiveElements = presentationService.getInteractiveElements(link);
 		return new GenericResponse<>(interactiveElements);
 	}
