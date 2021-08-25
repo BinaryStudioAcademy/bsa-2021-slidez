@@ -92,7 +92,7 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
                                         type='text'
                                         name='title'
                                         className='input title-input'
-                                        placeholder='What would you like ask?'
+                                        placeholder='What would you like to ask?'
                                     />
                                 </div>
                             </div>
