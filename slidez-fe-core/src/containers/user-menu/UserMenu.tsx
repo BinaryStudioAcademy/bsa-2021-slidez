@@ -1,27 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { faUser, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { logout } from '../../containers/user/store'
+import { logout } from '../user/store'
 import { useAppDispatch } from '../../hooks'
-import { LogInResponseDto } from '../../services/auth/dto/LogInResponseDto'
 
-import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
-import { createDefaultAxios } from 'slidez-shared/src/net/http/http-util'
+import { useDetectOutsideClick } from '../../pages/dashboard/useDetectOutsideClick'
+import styles from './styles.module.scss'
 
-import { useDetectOutsideClick } from './useDetectOutsideClick'
-import './dashboard.scss'
-import { ApiGateway } from '../../services/http/api-gateway'
-
-const UserProfile = () => {
+const UserMenu: React.FC = () => {
     const JWT = 'jwt'
-    const refreshJWT = 'refresh_jwt'
     const dispatch = useAppDispatch()
     const dropdownRef = useRef<HTMLInputElement>(null)
     const [token, setToken] = useState('')
-    const [userFirstName, setUserFirstName] = useState<string | undefined>('')
+    const [userFirstName] = useState<string | undefined>('')
     const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
-    const [userLastName, setUserLastName] = useState<string | undefined>('')
-    const [userEmail, setUserEmail] = useState<string | undefined>('')
+    const [userLastName] = useState<string | undefined>('')
+    const [userEmail] = useState<string | undefined>('')
     const [logo, setLogo] = useState('')
 
     useEffect(() => {
@@ -95,34 +89,37 @@ const UserProfile = () => {
     }
 
     return (
-        <div className='user-profile'>
-            <div className='user-avatar'>
-                <div onClick={handleDropDown} className='avatar'>
+        <div className={styles.userProfile}>
+            <div className={styles.userAvatar}>
+                <div onClick={handleDropDown} className={styles.avatar}>
                     {logo}
                 </div>
                 <div
                     ref={dropdownRef}
-                    className={`dropdown-content ${
-                        isActive ? 'active' : 'inactive'
+                    className={`${styles.dropdownContent} ${
+                        isActive ? styles.active : styles.inactive
                     }`}
                 >
-                    <div className='user-info'>
-                        <div className='avatar'> {logo} </div>
+                    <div className={styles.userInfo}>
+                        <div className={styles.avatar}> {logo} </div>
                         <div>
-                            <div className='user-name'>
+                            <div className={styles.userName}>
                                 {`${userFirstName} ${userLastName}`}
                             </div>
-                            <div className='user-email'> {userEmail} </div>
+                            <div className={styles.email}> {userEmail} </div>
                         </div>
                     </div>
                     <hr />
                     <a href=''>
-                        <FontAwesomeIcon className='user-icon' icon={faUser} />
+                        <FontAwesomeIcon
+                            className={styles.userIcon}
+                            icon={faUser}
+                        />
                         Edit profile
                     </a>
                     <a href='' onClick={handleLogout}>
                         <FontAwesomeIcon
-                            className='user-icon'
+                            className={styles.userIcon}
                             icon={faSignOutAlt}
                         />
                         Log out
@@ -132,4 +129,4 @@ const UserProfile = () => {
         </div>
     )
 }
-export default UserProfile
+export default UserMenu

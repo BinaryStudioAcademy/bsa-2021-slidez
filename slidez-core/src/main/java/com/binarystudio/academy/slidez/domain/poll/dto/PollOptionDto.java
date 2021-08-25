@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.presentation_session.dto.ws;
+package com.binarystudio.academy.slidez.domain.poll.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,10 +9,10 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PollAnsweredDto {
+public class PollOptionDto {
 
-	private UUID pollId;
+	private UUID id;
 
-	private UUID optionId;
+	private String title;
 
 }

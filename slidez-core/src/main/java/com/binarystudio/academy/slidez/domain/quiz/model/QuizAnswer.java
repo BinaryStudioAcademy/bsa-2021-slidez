@@ -1,10 +1,6 @@
-package com.binarystudio.academy.slidez.domain.qasession;
+package com.binarystudio.academy.slidez.domain.quiz.model;
 
-import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -15,8 +11,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "qa_session")
-public class QASession extends InteractiveElement {
+@Table(name = "quiz_answer")
+public class QuizAnswer {
 
 	@Id
 	@GeneratedValue(generator = "UUID")
@@ -24,7 +20,10 @@ public class QASession extends InteractiveElement {
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 
-	@Column(name = "title")
+	@Column
 	private String title;
+
+	@Column(name = "is_correct")
+	private Boolean isCorrect;
 
 }

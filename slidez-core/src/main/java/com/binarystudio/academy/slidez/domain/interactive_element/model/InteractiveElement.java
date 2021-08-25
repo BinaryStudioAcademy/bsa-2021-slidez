@@ -13,7 +13,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "interactive_element")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class InteractiveElement {
+public abstract class InteractiveElement {
 
 	@Id
 	@GeneratedValue(generator = "UUID")

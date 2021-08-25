@@ -44,7 +44,7 @@ public class PollController {
 		if (id == null) {
 			return new GenericResponse<>(null, PollResponseCodes.ID_NOT_FOUND);
 		}
-		Optional<PollResponseDto> pollOptional = pollService.getById(id);
+		Optional<PollResponseDto> pollOptional = pollService.getPollDtoById(id);
 
 		if (pollOptional.isEmpty()) {
 			return new GenericResponse<>(null, PollResponseCodes.NOT_FOUND);

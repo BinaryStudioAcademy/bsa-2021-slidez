@@ -1,47 +1,29 @@
 package com.binarystudio.academy.slidez.domain.presentation_session.model;
 
 import com.binarystudio.academy.slidez.domain.poll.exception.PollNotFoundException;
-import com.binarystudio.academy.slidez.domain.presentation_session.PresentationSessionService;
 import com.binarystudio.academy.slidez.domain.presentation_session.exception.BadOptionException;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class State {
 
-	private PresentationSessionService presentationSessionService;
+	private final List<SessionInteractiveElement> sessionInteractiveElements = new ArrayList<>();
 
-	@Autowired
-	public void setPollService(PresentationSessionService presentationSessionService) {
-		this.presentationSessionService = presentationSessionService;
+	public List<SessionInteractiveElement> getSessionInteractiveElements() {
+		return Collections.unmodifiableList(sessionInteractiveElements);
 	}
 
-	private final List<Poll> polls = new ArrayList<>();
-
-	public List<Poll> getPolls() {
-		return Collections.unmodifiableList(polls);
+	public void addInteractiveElement(SessionInteractiveElement sessionInteractiveElement) {
+		sessionInteractiveElements.add(sessionInteractiveElement);
 	}
 
-	public void loadInteraction(UUID pollId) {
-		Poll poll = presentationSessionService.getPollFromDbById(pollId);
-		if (poll == null) {
-			throw new PollNotFoundException(String.format("Poll with id %s not found in the DB", pollId));
-		}
-
-		polls.add(poll);
-	}
-
-	public void addPoll(Poll poll) {
-		polls.add(poll);
-	}
-
-	public void addAnswerToThePoll(UUID pollId, UUID answerId) throws PollNotFoundException, BadOptionException {
-		polls.stream().filter(poll -> poll.getId().equals(pollId)).findFirst()
-				.orElseThrow(() -> new PollNotFoundException(String.format("Poll with id %s not found", pollId)))
-				.addAnswer(answerId);
+	public void addAnswerToThePoll(SessionPollAnswer pollAnswer) throws PollNotFoundException, BadOptionException {
+		sessionInteractiveElements.stream()
+				.filter(element -> Objects.equals(element.getClass(), SessionPoll.class)
+						&& Objects.equals(element.getId(), pollAnswer.getPollID()))
+				.map(element -> (SessionPoll) element).findFirst().orElseThrow(() -> new PollNotFoundException(
+						String.format("Poll with id %s not found", pollAnswer.getPollID())))
+				.addAnswer(pollAnswer);
 	}
 
 }
