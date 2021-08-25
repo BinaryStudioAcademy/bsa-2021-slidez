@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import store from './store';
 import { EventBusConnectionStatus, useEventBus } from './hooks';
-import { IFRAME_HOST } from './env';
+import { EXTENSION_ID, IFRAME_HOST } from './env';
 import { runGoogleScript } from './helpers';
 
 const App = () => {
@@ -41,7 +41,7 @@ const App = () => {
                     padding: 0,
                     minHeight: '600px',
                 }}
-                src={`${IFRAME_HOST}/#/editor/${presentationId}`}
+                src={`${IFRAME_HOST}/#/editor?presentationId=${presentationId}&extensionId=${EXTENSION_ID}`}
             ></iframe>
         </div>
     );

@@ -33,7 +33,7 @@ export const getMessageBusUnsafe: () => BasicMessagingBus | undefined = () =>
 /**
  * WARNING: this effect works with module-level state, which is not reactive. Make sure that single entry point waits for proper event bus connection setup with either success or fail before other
  */
-export const useEventBus = () => {
+export const useEventBus = (extensionId: string) => {
     const [state, setState] = useState<EventBusState>(messageBusState)
 
     useEffect(() => {
@@ -56,7 +56,7 @@ export const useEventBus = () => {
             return
         }
         ChromeMessageConnector.connect({
-            descriptor: process.env.REACT_APP_EXTENSION_ID,
+            descriptor: extensionId,
         })
             .then((driver) => {
                 messageBusState = {
