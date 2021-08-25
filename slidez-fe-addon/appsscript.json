@@ -1,10 +1,19 @@
 {
   "timeZone": "America/New_York",
-  "dependencies": {},
+  "dependencies": {
+    "enabledAdvancedServices": [
+      {
+        "userSymbol": "Slides",
+        "version": "v1",
+        "serviceId": "slides"
+      }
+    ]
+  },
   "exceptionLogging": "STACKDRIVER",
   "oauthScopes": [
     "https://www.googleapis.com/auth/script.container.ui",
-    "https://www.googleapis.com/auth/presentations"
+    "https://www.googleapis.com/auth/presentations",
+    "https://www.googleapis.com/auth/drive"
   ],
   "runtimeVersion": "V8"
 }

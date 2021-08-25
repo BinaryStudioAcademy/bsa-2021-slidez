@@ -5,3 +5,5 @@ import * as publicSlidesFunctions from './slides';
 (global as any).onOpen = publicUiFunctions.onOpen;
 (global as any).insertText = publicSlidesFunctions.insertText;
 (global as any).openSidebar = publicUiFunctions.openSidebar;
+(global as any).insertSlide = publicSlidesFunctions.insertSlide;
+(global as any).getPresentationId = publicSlidesFunctions.getPresentationId;
