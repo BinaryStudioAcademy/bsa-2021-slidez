@@ -16,10 +16,11 @@ import drop_down_icon from '../../assets/svgs/drop_down_icon.svg'
 
 export type PollEditorProps = {
     pollId?: string | null
+    presentationId: string
 }
 
 // eslint-disable-next-line react/prop-types
-const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
+const PollEditor: React.FC<PollEditorProps> = ({ pollId, presentationId }) => {
     const initialValues: CreatePollDto = {
         presentationId: '',
         title: '',
@@ -41,6 +42,8 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
             )
 
         console.log('Created poll slide successfully, returned data: ', data)
+        //  TODO: SEND REQUEST TO BACKEND TO SAVE POLL.
+        // handleNotification() if error
     }
 
     const toggleRemoveClick = (index: number, arrayHelpers: any) => {

@@ -13,6 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "qa_session")
+@PrimaryKeyJoinColumn(name = "interactive_element_id")
 public class QASession extends InteractiveElement {
 
 	@Column(name = "title")

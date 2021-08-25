@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -40,10 +41,10 @@ public class Presentation {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "presentation_id", nullable = false)
-	private Set<InteractiveElement> interactiveElements;
+	private Set<InteractiveElement> interactiveElements = new HashSet<>();
 
 	@OneToMany(mappedBy = "presentation")
-	private Set<Session> sessions;
+	private Set<Session> sessions = new HashSet<>();
 
 	@Column(name = "created_at", nullable = false, updatable = false)
 	private LocalDateTime createdAt;

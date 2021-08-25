@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -14,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "poll")
+@PrimaryKeyJoinColumn(name = "interactive_element_id")
 public class Poll extends InteractiveElement {
 
 	@Column(name = "title", nullable = false)
@@ -27,7 +29,7 @@ public class Poll extends InteractiveElement {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "poll_id", referencedColumnName = "id", nullable = false)
-	private List<PollOption> options;
+	private List<PollOption> options = new ArrayList<>();
 
 	public Poll() {
 		super(null, InteractiveElementType.POLL, null, null);
