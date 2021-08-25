@@ -2,11 +2,12 @@
 
 .app {
     margin: 0.5rem 1rem 1rem 1rem;
+    font-family: "Rubik";
+    font-weight: 500;
+    font-style: normal;
 }
 
 .text-input {
-    font-family: "Rubik";
-    font-weight: 500;
     font-size: 14px;
     margin: 0 0 5px 0;
     .check-icon {
@@ -15,15 +16,12 @@
     }
 }
 .poll-name {
-    font-family: "Rubik";
-    font-weight: 500;
     font-size: 14px;
     margin:0 10px;
     width: 100%;
 }
 
 .label {
-    font-family: "Rubik";
     font-weight: 400;
     font-size: 12px;
     display: block;
@@ -47,7 +45,6 @@
 
 .input {
     font-size: 14px;
-    font-family: "Rubik";
     border-radius: 50px;
     border: 1px $light-color solid;
     background-color: $light-color;
@@ -76,7 +73,7 @@
     border: 2px $main-color solid;
     color: $white;
     background-color: $main-color;
-    font-family: "Rubik";
+
     font-weight: 500;
 }
 
@@ -100,8 +97,6 @@
     padding: 0px 0px;
     border-style: none;
     background-color: $white;
-    font-family: "Rubik";
-    font-style: normal;
     font-size: 14px;
     font-weight: 500;
     color: rgba(102, 102, 102, 0.7);
