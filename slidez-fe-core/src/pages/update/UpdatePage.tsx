@@ -11,8 +11,8 @@ import {
     faSignOutAlt,
     faTimes,
 } from '@fortawesome/free-solid-svg-icons'
-import SideBar from '../dashboard/SideBar'
-import '../dashboard/dashboard.scss'
+import SideBar from '../../containers/sideBar/SideBar'
+// import '../dashboard/dashboard.scss'
 import './update.scss'
 import { AppRoute } from '../../common/routes/app-route'
 

@@ -1,5 +1,7 @@
 package com.binarystudio.academy.slidez.domain.session;
 
+import com.binarystudio.academy.slidez.domain.link.LinkService;
+import com.binarystudio.academy.slidez.domain.link.model.Link;
 import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
 import com.binarystudio.academy.slidez.domain.presentation.exception.PresentationNotFoundException;
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
@@ -26,10 +28,14 @@ public class SessionService {
 
 	private final PresentationService presentationService;
 
+	private final LinkService linkService;
+
 	@Autowired
-	public SessionService(SessionRepository sessionRepository, PresentationService presentationService) {
+	public SessionService(SessionRepository sessionRepository, PresentationService presentationService,
+			LinkService linkService) {
 		this.sessionRepository = sessionRepository;
 		this.presentationService = presentationService;
+		this.linkService = linkService;
 	}
 
 	public Session get(UUID id) {
@@ -70,13 +76,18 @@ public class SessionService {
 		return sessionRepository.saveAndFlush(session);
 	}
 
-	public Session createForPresentation(UUID presentationId) throws PresentationNotFoundException {
+	public Session createForPresentation(UUID presentationId, int linkLeaseDuration)
+			throws PresentationNotFoundException {
 		Optional<Presentation> presentationOptional = presentationService.get(presentationId);
 		if (presentationOptional.isEmpty()) {
 			throw new PresentationNotFoundException(
 					String.format("Not found presentation with id = %s", presentationId));
 		}
 		Session session = new Session(presentationOptional.get());
+		Link link = linkService.leaseLink(linkLeaseDuration);
+		link.setSession(session);
+		session.setLink(link);
+		linkService.update(link);
 		return sessionRepository.save(session);
 	}
 

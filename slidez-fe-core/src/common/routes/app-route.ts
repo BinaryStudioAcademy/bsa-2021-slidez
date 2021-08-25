@@ -6,7 +6,7 @@ const AppRoute = {
     EVENT: '/event/:link',
     PARTICIPANT: '/participant/:link',
     DASHBOARD: '/dashboard',
-    EDITOR: '/editor',
+    ADDON: '/addon',
     UPDATE_USER: '/update-user',
 }
 
