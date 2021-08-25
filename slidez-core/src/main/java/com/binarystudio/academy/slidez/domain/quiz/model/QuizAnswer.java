@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.quiz;
+package com.binarystudio.academy.slidez.domain.quiz.model;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;

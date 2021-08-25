@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.quiz;
+package com.binarystudio.academy.slidez.domain.quiz.model;
 
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import lombok.AllArgsConstructor;

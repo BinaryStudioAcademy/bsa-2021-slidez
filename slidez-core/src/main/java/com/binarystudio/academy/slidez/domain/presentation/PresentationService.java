@@ -55,7 +55,7 @@ public class PresentationService {
 						String.format("Not found presentation with link %s", presentationLink)));
 		Set<InteractiveElement> presentationInteractiveElements = presentation.getInteractiveElements();
 		InteractiveElementMapper mapper = InteractiveElementMapper.INSTANCE;
-		return presentationInteractiveElements.stream().map(mapper::presentationInteractiveElementToDto)
+		return presentationInteractiveElements.stream().map(mapper::interactiveElementToTypeRelatedDto)
 				.collect(Collectors.toList());
 	}
 

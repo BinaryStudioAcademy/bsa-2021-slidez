@@ -25,8 +25,8 @@ public class PresentationController {
 
 	@GetMapping("/{link}/interactions")
 	public GenericResponse<Collection<InteractiveElementDto>, String> getInteractiveElements(
-			@PathVariable("link") String id) throws EntityNotFoundException {
-		Collection<InteractiveElementDto> interactiveElements = presentationService.getInteractiveElements(id);
+			@PathVariable("link") String link) throws EntityNotFoundException {
+		Collection<InteractiveElementDto> interactiveElements = presentationService.getInteractiveElements(link);
 		return new GenericResponse<>(interactiveElements);
 	}
 
