@@ -15,6 +15,7 @@ import SideBar from '../../containers/sideBar/SideBar'
 // import '../dashboard/dashboard.scss'
 import './update.scss'
 import { AppRoute } from '../../common/routes/app-route'
+import DeleteAccount from '../delete-account/DeleteAccount'
 
 interface User {
     id: string
@@ -27,6 +28,7 @@ interface User {
 const UpdatePage = () => {
     const dropdownRef = useRef<HTMLInputElement>(null)
     const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
+    const [showModal, setShowModal] = useState(false)
 
     const handleDropDown = () => {
         setIsActive(!isActive)
@@ -48,6 +50,12 @@ const UpdatePage = () => {
 
     const handlePwdSubmit = (values: typeof userData) => {
         console.log(values)
+    }
+    const hideDeleteAccountModal = () => {
+        setShowModal(false)
+    }
+    const showDeleteAccountModal = () => {
+        setShowModal(true)
     }
     return (
         <div className='dashboard-page'>
@@ -107,7 +115,13 @@ const UpdatePage = () => {
                 <div className='side-btns'>
                     <h2 id='window-name'>Edit profile</h2>
                     <Button>Profile</Button>
-                    <Button>Delete account</Button>
+                    <DeleteAccount
+                        show={showModal}
+                        handleClose={hideDeleteAccountModal}
+                    ></DeleteAccount>
+                    <Button onClick={() => showDeleteAccountModal()}>
+                        Delete account
+                    </Button>
                 </div>
                 <div className='verticalLine' />
                 <div className='form'>
