@@ -26,7 +26,6 @@ public class PollService {
 	}
 
 	@Transactional
-	@Deprecated
 	public PollDto create(CreatePollDto pollDto, UUID userId) {
 		Poll poll = PollMapper.INSTANCE.pollFromCreatePollDto(pollDto);
 		poll.setOwnerId(userId);
