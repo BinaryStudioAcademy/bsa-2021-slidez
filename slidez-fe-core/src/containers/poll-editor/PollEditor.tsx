@@ -8,6 +8,8 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { CreatePollDto } from './dto'
 import httpHelper from '../../services/http/http-helper'
 import { handleNotification } from '../../common/notification/Notification'
+import { getMessageBusUnsafe } from '../../hooks/event-bus'
+import { EventType, InsertSlideSuccess } from 'slidez-shared'
 import back_button_icon from '../../assets/svgs/back_button_icon.svg'
 import checked_icon from '../../assets/svgs/checked_icon.svg'
 import drop_down_icon from '../../assets/svgs/drop_down_icon.svg'
@@ -24,23 +26,21 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
         options: [],
     }
 
-    const handleSubmit = (values: CreatePollDto) => {
-        httpHelper
-            .doPost('polls', values)
-            .then(() =>
-                handleNotification(
-                    'Saved',
-                    'Poll created successfully',
-                    'success'
-                )
+    const handleSubmit = async (values: CreatePollDto) => {
+        const data =
+            await getMessageBusUnsafe()?.sendMessageAndListen<InsertSlideSuccess>(
+                {
+                    type: EventType.INSERT_SLIDE,
+                    data: {
+                        id: 'slidez_test_id_lol_' + new Date().getTime(),
+                        title: `Poll: ${values.title}`,
+                    },
+                },
+                EventType.INSERT_SLIDE_SUCCESS,
+                5000
             )
-            .catch(() =>
-                handleNotification(
-                    'Failed',
-                    'Failed to save a poll :(',
-                    'error'
-                )
-            )
+
+        console.log('Created poll slide successfully, returned data: ', data)
     }
 
     const toggleRemoveClick = (index: number, arrayHelpers: any) => {
