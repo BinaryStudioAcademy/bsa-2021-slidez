@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Dialog,
     DialogTitle,
@@ -10,6 +10,10 @@ import {
     Typography,
 } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
+import httpHelper from '../../services/http/http-helper'
+import { UserDetailsDto } from '../../containers/user/dto/UserDetailsDto'
+import { handleNotification } from '../../common/notification/Notification'
+import { Redirect } from 'react-router-dom'
 
 type DeleteAccountProps = {
     handleClose: () => void
@@ -17,6 +21,49 @@ type DeleteAccountProps = {
     children?: never[]
 }
 const DeleteAccount = ({ handleClose, show, children }: DeleteAccountProps) => {
+    const JWT = 'jwt'
+    const [token, setToken] = useState('')
+    const [userId, setUserId] = useState('')
+    const [userEmail, setUserEmail] = useState('')
+    useEffect(() => {
+        if (token.length > 0) {
+            performLoginByToken()
+            return
+        }
+        getAccessToken()
+    })
+
+    const performLoginByToken = async () => {
+        const dto = {
+            token: token,
+        }
+        return performDataRequest('/auth/login-by-token', dto)
+    }
+
+    const getAccessToken = () => {
+        setToken(window.localStorage.getItem(JWT) || '{}')
+        console.log(token)
+    }
+
+    const performDataRequest = async (url: string, dto: object) => {
+        return null
+    }
+
+    const handleDeleteAccount = (values: UserDetailsDto) => {
+        httpHelper
+            .doDelete('user', values)
+            .then(() => {
+                return <Redirect to='/login' />
+            })
+            .catch(() =>
+                handleNotification(
+                    'Failed',
+                    'Failed to delete account',
+                    'error'
+                )
+            )
+    }
+
     return (
         <Dialog open={show} maxWidth='sm' fullWidth>
             <DialogTitle>Confirm the action</DialogTitle>
@@ -35,14 +82,18 @@ const DeleteAccount = ({ handleClose, show, children }: DeleteAccountProps) => {
                 </Typography>
             </DialogContent>
             <DialogActions>
-                <Button
-                    color='primary'
-                    variant='contained'
-                    onClick={handleClose}
-                >
+                <Button variant='contained' onClick={handleClose}>
                     Cancel
                 </Button>
-                <Button color='secondary' variant='contained'>
+                <Button
+                    style={{
+                        backgroundColor: '#C85250',
+                    }}
+                    variant='contained'
+                    onClick={() =>
+                        handleDeleteAccount({ id: userId, email: userEmail })
+                    }
+                >
                     Confirm
                 </Button>
             </DialogActions>
