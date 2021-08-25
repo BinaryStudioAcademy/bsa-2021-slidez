@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.poll.dto;
+package com.binarystudio.academy.slidez.domain.quiz.dto;
 
 import com.binarystudio.academy.slidez.domain.interactive_element.dto.InteractiveElementDto;
 import lombok.AllArgsConstructor;
@@ -10,16 +10,16 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class PollDto extends InteractiveElementDto {
+@NoArgsConstructor
+public class QuizDto extends InteractiveElementDto {
 
 	private String title;
 
-	private Boolean isTemplate;
-
 	private Boolean isMulti;
 
-	private List<PollOptionDto> pollOptions;
+	private Boolean isTemplate;
+
+	private List<QuizAnswerDto> quizAnswers;
 
 }
