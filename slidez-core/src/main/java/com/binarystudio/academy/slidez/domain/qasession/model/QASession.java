@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.qasession;
+package com.binarystudio.academy.slidez.domain.qasession.model;
 
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import lombok.AllArgsConstructor;
