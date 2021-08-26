@@ -1,16 +1,16 @@
-import { SnapshotDto } from './dto/SnapshotDto'
+import { SnapshotDto } from '../dto/SnapshotDto'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import * as WebSocketService from '../../services/ws/ws-service'
-import { WsConnectionStatus } from './enums/ws-connection-status'
-import { RootState } from '../../store'
+import * as WebSocketService from '../../../services/ws/ws-service'
+import { WsConnectionStatus } from '../enums/ws-connection-status'
 import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
-import { CreatePresentationSessionDto } from '../../services/presentation-session/dto/CreatePresentationSessionDto'
-import { createPresentationSession } from '../../services/presentation-session/presentation-session-servise'
+import { CreatePresentationSessionDto } from '../../../services/presentation-session/dto/CreatePresentationSessionDto'
+import { createPresentationSession } from '../../../services/presentation-session/presentation-session-servise'
 import {
     AnswerPollEvent,
     SnapshotRequestEvent,
     StartPollEvent,
-} from './event/DomainEvent'
+} from '../event/DomainEvent'
+import { eventHandler } from './eventHandler'
 
 export interface PresentationSessionState {
     connectionStatus: string
@@ -55,9 +55,12 @@ export const initWebSocketSession = createAsyncThunk(
         const onConnectionSuccess = () => {
             out.connectionStatus = WsConnectionStatus.CONNECTED
         }
+        const onEvent = eventHandler(dispatch)
+
         await WebSocketService.connectToInteractiveEvents(
             link,
-            onConnectionSuccess
+            onConnectionSuccess,
+            onEvent
         )
 
         return out
@@ -84,13 +87,5 @@ export const presentationSessionSlice = createSlice({
             .addCase(answerPoll.fulfilled, (state, action) => {})
     },
 })
-
-export const selectConnectionStatus = (state: RootState) =>
-    state.presentationSession.connectionStatus
-
-export const selectSnapshot = (state: RootState) =>
-    state.presentationSession.snapshot
-
-export const selectLink = (state: RootState) => state.presentationSession.link
 
 export default presentationSessionSlice.reducer

@@ -10,7 +10,7 @@ import {
     AnswerPollEvent,
     DomainEventType,
 } from '../../../../containers/presentation_session/event/DomainEvent'
-import { answerPoll } from '../../../../containers/presentation_session/store'
+import { answerPoll } from '../../../../containers/presentation_session/store/store'
 
 type PollInputProps = {
     poll: PollDto

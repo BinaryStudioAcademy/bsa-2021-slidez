@@ -5,16 +5,11 @@ import {
     DomainEvent,
     DomainEventType,
 } from '../../containers/presentation_session/event/DomainEvent'
-import { store } from '../../store'
-import {
-    answerPoll,
-    requestSnapshot,
-    startPoll,
-} from '../../containers/presentation_session/store'
 
 export const connectToInteractiveEvents = (
     sessionLink: string,
-    onConnectionSuccess: () => void
+    onConnectionSuccess: () => void,
+    onEvent: (sessionLink: string, event: DomainEvent) => void
 ) => {
     return WsHelper.getInstance()
         .connect(WsEndpoint.ENDPOINT)
@@ -35,24 +30,4 @@ export const disconnect = () => {
 
 export const sendRequest = (link: string, event: DomainEvent) => {
     WsHelper.getInstance().send(`${WsEndpoint.QUEUE_EVENT}/${link}`, event)
-}
-
-function throwBadEvent(ev: never): never {
-    throw new Error("Didn't expect to get here")
-}
-
-const onEvent = (sessionLink: string, event: DomainEvent) => {
-    switch (event.type) {
-        case DomainEventType.startPollEvent:
-            store.dispatch(startPoll(event))
-            break
-        case DomainEventType.snapshotRequestEvent:
-            store.dispatch(requestSnapshot(event))
-            break
-        case DomainEventType.answerPollEvent:
-            store.dispatch(answerPoll(event))
-            break
-        default:
-            throwBadEvent(event)
-    }
 }
