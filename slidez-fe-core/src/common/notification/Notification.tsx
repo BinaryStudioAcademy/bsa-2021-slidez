@@ -8,11 +8,14 @@ export const handleNotification = (
     type: string
 ) => {
     let toastrOptions = {
-        timeOut: 0,
+        timeOut: 3000,
         showCloseButton: true,
+        newestOnTop: true,
         progressBar: false,
         closeOnToastrClick: false,
     }
+    toastr.removeByType('error')
+    toastr.removeByType('warning')
     switch (type) {
         case NotificationTypes.WARNING: {
             toastr.warning(title, message, toastrOptions)
