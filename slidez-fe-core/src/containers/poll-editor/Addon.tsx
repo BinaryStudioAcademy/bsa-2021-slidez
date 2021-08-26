@@ -1,11 +1,14 @@
-import { current } from '@reduxjs/toolkit'
-import React, { useState } from 'react'
+import React from 'react'
+import { useEffect } from 'react'
+import { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { QandA } from '../../common/components/interactive-elements/q-and-a/QandA'
 import { EventBusConnectionStatus, useEventBus } from '../../hooks/event-bus'
-import { Page } from './enums/addon-routes'
+import { RootState } from '../../store'
 import Menu from './Menu'
 import PollEditor from './PollEditor'
+import { EditorTab, preloadState } from './store'
 
 const useEditorParams = () => {
     const params = new URLSearchParams(useLocation().search)
@@ -17,12 +20,15 @@ const useEditorParams = () => {
 }
 
 const Addon = () => {
-    const [currentPage, setCurrentPage] = useState<Page>(Page.MENU)
+    const dispatch = useDispatch()
+    const { activeTab } = useSelector((state: RootState) => state.editor)
 
-    const updatePage = (page: Page) => {
-        setCurrentPage(page)
-    }
     const { extensionId, presentationId } = useEditorParams()
+
+    useEffect(() => {
+        dispatch(preloadState(presentationId))
+    }, [])
+
     const eventBus = useEventBus(extensionId)
     if (eventBus.connected === EventBusConnectionStatus.FAILED) {
         return 'Failed to connect to extension, please install extension first'
@@ -31,19 +37,22 @@ const Addon = () => {
         return 'Connecting to extension, please wait...'
     }
 
-    const AddonSwitcher = (currentPage: Page) => {
-        switch (currentPage) {
-            case Page.MENU:
-                return <Menu onClick={updatePage} />
-            case Page.POLL:
-                return <PollEditor presentationId={presentationId} />
-            case Page.QandA:
-                return <QandA />
-            default:
-                return <Menu onClick={updatePage} />
-        }
+    let tab: JSX.Element
+    switch (activeTab) {
+        case null:
+            tab = <Menu />
+            break
+        case EditorTab.POLL:
+            tab = <PollEditor />
+            break
+        case EditorTab.QA:
+            tab = <QandA />
+            break
+        case EditorTab.QUIZ:
+            tab = <>Not supported yet</>
+            break
     }
-    return <div>{AddonSwitcher(currentPage)}</div>
+    return <div>{tab}</div>
 }
 
 export default Addon
