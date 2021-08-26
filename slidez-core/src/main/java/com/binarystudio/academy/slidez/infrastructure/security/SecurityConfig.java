@@ -35,8 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// Set session management to stateless
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-		applyRouteRestrictions(http);
-		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+		// applyRouteRestrictions(http);
+		// http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 
 }

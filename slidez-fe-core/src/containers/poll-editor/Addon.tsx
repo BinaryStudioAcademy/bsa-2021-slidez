@@ -36,7 +36,7 @@ const Addon = () => {
             case Page.MENU:
                 return <Menu onClick={updatePage} />
             case Page.POLL:
-                return <PollEditor />
+                return <PollEditor presentationId={presentationId} />
             case Page.QandA:
                 return <QandA />
             default:
