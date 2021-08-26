@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
-import './participantPage.scss'
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
-import { MOCK_DATA } from './mock-data'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import moment from 'moment'
+import React, { useState } from 'react'
 import Header from './Header'
+import { MOCK_DATA } from './mock-data'
+import './participantPage.scss'
 
 const ParticipantPage = () => {
     const [listQuestions, setListQuestions] = useState(MOCK_DATA)

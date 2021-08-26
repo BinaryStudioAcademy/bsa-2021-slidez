@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import './styles.scss'
+import '../participant-page/participantPage.scss'
 import Header from '../participant-page/Header'
 import {
     FormControl,
@@ -9,13 +10,12 @@ import {
     RadioGroup,
 } from '@material-ui/core'
 
-const Event = () => {
+const ParticipantView = () => {
     const text =
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas nibh placerat fermentum?'
     const [question, setQuestion] = useState(text)
     return (
         <div className='events-page'>
-            <Header eventName='Event name' />
             <div className='page-content'>
                 <FormControl component='fieldset'>
                     <FormLabel className='question' component='legend'>
@@ -59,4 +59,4 @@ const Event = () => {
     )
 }
 
-export default Event
+export default ParticipantView

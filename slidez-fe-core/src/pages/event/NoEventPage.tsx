@@ -5,7 +5,6 @@ import Header from '../participant-page/Header'
 const NoEvent = () => {
     return (
         <div className='events-page'>
-            <Header eventName='Event name' />
             <div className='error-content'>
                 Please wait for the presenter to show the next slide.
             </div>

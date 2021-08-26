@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import {
     createSessionForPresentation,
@@ -13,6 +13,9 @@ import Loader from '../../common/components/loader/Loader'
 import Poll from '../../common/components/interactive-elements/poll/Poll'
 import InteractiveWrapper from '../../common/components/interactive-elements/interactive-wrapper/InteractiveWrapper'
 import { CreatePresentationSessionDto } from '../../services/presentation-session/dto/CreatePresentationSessionDto'
+import ParticipantView from './ParticipantView'
+import NoEvent from './NoEventPage'
+import Header from '../participant-page/Header'
 
 const EventPage: React.FC = () => {
     // const { link } = useParams<{ link?: string }>()
@@ -40,19 +43,30 @@ const EventPage: React.FC = () => {
     const connectionStatus = useAppSelector(selectConnectionStatus)
     const snapshot = useAppSelector(selectSnapshot)
 
-    const activePoll = snapshot?.polls.find((poll) => poll)
+    // const activePoll = snapshot?.polls.find((poll) => poll)
+    const activePoll = true
+    const eventName = 'Animate'
 
     const body = activePoll ? (
-        <Poll poll={activePoll as any} />
+        //deprecated module
+        // <Poll poll={activePoll as any} />
+        <div className='content'>
+            <Header eventName={eventName} />
+            <ParticipantView />
+        </div>
     ) : (
-        <>Waiting for an interaction to start...</>
+        <div>
+            <Header eventName='' />
+            <NoEvent />
+        </div>
     )
     return (
         <div>
             {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
-            <InteractiveWrapper eventCode={link || ''}>
-                {body}
-            </InteractiveWrapper>
+            {/* deprecated */}
+            {/* <InteractiveWrapper eventCode={link || ''}> */}
+            {body}
+            {/* </InteractiveWrapper> */}
         </div>
     )
 }
