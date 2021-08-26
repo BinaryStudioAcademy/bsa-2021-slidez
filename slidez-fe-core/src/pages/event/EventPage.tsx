@@ -18,6 +18,7 @@ import {
 
 const EventPage: React.FC = () => {
     // const { link } = useParams<{ link?: string }>()
+    //TODO: SESSION MUST NOT BE CREATED HERE
     const link: string | undefined = useAppSelector(selectLink)
     const [sentCreateSession, setSentCreateSession] = useState(false)
     const [sentInitWsSession, setSentInitWsSession] = useState(false)
