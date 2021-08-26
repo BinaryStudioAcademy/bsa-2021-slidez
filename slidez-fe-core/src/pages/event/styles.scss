@@ -1,7 +1,9 @@
 @import "src/global/global";
 
-.events-page {
+.content {
     margin: 30px;
+}
+.events-page {
     margin-top: 80px;
     .page-content {
         .MuiFormControl-root {
@@ -81,5 +83,8 @@
     .events-page {
         margin: 15px;
         margin-top: 80px;
+    }
+    .content{
+        margin: 15px;
     }
 }

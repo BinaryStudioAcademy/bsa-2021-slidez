@@ -1,7 +1,6 @@
 @import "src/global/global";
 
 .participant-header {
-    // background-color: $dark-color;
     position: fixed;
     top: 5px;
     width: 100%;
@@ -99,6 +98,7 @@
                 }
             }
             .event-icon {
+                padding: 10px;
                 .angle-right {
                     color: $mint;
                 }
