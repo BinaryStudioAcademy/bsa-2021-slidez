@@ -29,7 +29,7 @@ public class Link {
 	@Column(name = "leased_until")
 	private LocalDateTime leasedUntil;
 
-	@OneToOne(mappedBy = "link")
+	@OneToOne(mappedBy = "link", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Session session;
 
 	@Column(name = "created_at", nullable = false, updatable = false)

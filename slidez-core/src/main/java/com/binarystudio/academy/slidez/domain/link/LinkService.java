@@ -86,7 +86,7 @@ public class LinkService {
 
 	private String getLastCode() {
 		synchronized (lock) {
-			return linkRepository.getLastLink().orElse(linkRepository.save(new Link(THE_FIRST_CODE))).getCode();
+			return linkRepository.getLastLink().map(Link::getCode).orElse(THE_FIRST_CODE);
 		}
 	}
 

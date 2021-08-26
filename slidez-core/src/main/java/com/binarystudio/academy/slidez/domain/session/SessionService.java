@@ -85,9 +85,7 @@ public class SessionService {
 		}
 		Session session = new Session(presentationOptional.get());
 		Link link = linkService.leaseLink(linkLeaseDuration);
-		link.setSession(session);
 		session.setLink(link);
-		linkService.update(link);
 		return sessionRepository.save(session);
 	}
 

@@ -4,6 +4,8 @@ import com.binarystudio.academy.slidez.app.presentationsession.PresentationSessi
 import com.binarystudio.academy.slidez.domain.poll.PollService;
 import com.binarystudio.academy.slidez.domain.poll.model.Poll;
 import com.binarystudio.academy.slidez.domain.presentation_session.PresentationEventStore;
+import com.binarystudio.academy.slidez.domain.presentation_session.dto.SessionResponse;
+import com.binarystudio.academy.slidez.domain.presentation_session.enums.ResponseType;
 import com.binarystudio.academy.slidez.domain.presentation_session.event.DomainEvent;
 import com.binarystudio.academy.slidez.domain.presentation_session.event.StartPollEvent;
 import com.binarystudio.academy.slidez.domain.presentation_session.mapper.SessionInteractiveElementMapper;
@@ -29,7 +31,7 @@ public class StartPollHandler extends AbstractDomainEventHandler {
 	 * @returns {@link GenericResponse<SessionPoll, PresentationSessionResponseCodes>}
 	 */
 	@Override
-	public GenericResponse<Object, PresentationSessionResponseCodes> handle(DomainEvent domainEvent,
+	public GenericResponse<SessionResponse, PresentationSessionResponseCodes> handle(DomainEvent domainEvent,
 			PresentationEventStore eventStore) {
 		if (Objects.equals(domainEvent.getClass(), StartPollEvent.class)) {
 			StartPollEvent event = (StartPollEvent) domainEvent;
@@ -41,8 +43,9 @@ public class StartPollHandler extends AbstractDomainEventHandler {
 			SessionInteractiveElementMapper mapper = SessionInteractiveElementMapper.INSTANCE;
 			SessionPoll sessionPoll = mapper.mapPollToSessionPoll(poll);
 			event.setSessionPoll(sessionPoll);
-			eventStore.applyEvent(event);
-			return new GenericResponse<>(sessionPoll);
+			super.handle(domainEvent, eventStore);
+			SessionResponse out = new SessionResponse(ResponseType.STARTED_POLL, sessionPoll);
+			return new GenericResponse<>(out);
 		}
 		return super.handle(domainEvent, eventStore);
 	}

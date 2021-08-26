@@ -4,6 +4,7 @@ import com.binarystudio.academy.slidez.app.presentationsession.PresentationSessi
 import com.binarystudio.academy.slidez.domain.link.exception.IncorrectLeaseDurationException;
 import com.binarystudio.academy.slidez.domain.presentation_session.dto.CreateSessionRequestDto;
 import com.binarystudio.academy.slidez.domain.presentation_session.dto.CreateSessionResponseDto;
+import com.binarystudio.academy.slidez.domain.presentation_session.dto.SessionResponse;
 import com.binarystudio.academy.slidez.domain.presentation_session.event.DomainEvent;
 import com.binarystudio.academy.slidez.domain.presentation_session.handler.*;
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
@@ -31,7 +32,8 @@ public class PresentationSessionService {
 		this.eventHandler = eventHandler;
 	}
 
-	public GenericResponse<Object, PresentationSessionResponseCodes> handleEvent(String link, DomainEvent domainEvent) {
+	public GenericResponse<SessionResponse, PresentationSessionResponseCodes> handleEvent(String link,
+			DomainEvent domainEvent) {
 		Optional<PresentationEventStore> eventStore = inMemoryPresentationEventStoreRepository.get(link);
 		if (eventStore.isEmpty()) {
 			return new GenericResponse<>(null, PresentationSessionResponseCodes.NO_SESSION_WITH_SUCH_LINK);

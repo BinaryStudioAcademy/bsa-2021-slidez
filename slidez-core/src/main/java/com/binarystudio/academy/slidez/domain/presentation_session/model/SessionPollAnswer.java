@@ -11,7 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class SessionPollAnswer {
 
-	private UUID pollID;
+	private UUID pollId;
 
 	private UUID optionId;
 

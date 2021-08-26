@@ -1,6 +1,5 @@
-import { PollDto } from './PollDto'
+import { InteractiveElement } from './InteractiveElement'
 
 export interface SnapshotDto {
-    status: string
-    polls: PollDto[]
+    sessionInteractiveElements: InteractiveElement[]
 }
