@@ -6,7 +6,11 @@ import { RootState } from '../../store'
 import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
 import { CreatePresentationSessionDto } from '../../services/presentation-session/dto/CreatePresentationSessionDto'
 import { createPresentationSession } from '../../services/presentation-session/presentation-session-servise'
-import { AnswerPollDto } from '../../services/ws/dto/AnswerPollDto'
+import {
+    AnswerPollEvent,
+    SnapshotRequestEvent,
+    StartPollEvent,
+} from './event/DomainEvent'
 
 export interface PresentationSessionState {
     connectionStatus: string
@@ -29,23 +33,19 @@ export const createSessionForPresentation = createAsyncThunk(
     }
 )
 
-export const voteInPoll = createAsyncThunk(
-    'vote/poll',
-    async (dto: AnswerPollDto) => {
-        WebSocketService.sendAnswerPollRequest(dto)
-    }
+export const startPoll = createAsyncThunk(
+    'poll/start',
+    async (event: StartPollEvent) => {}
 )
 
-const gotSnapshot = createAsyncThunk(
-    'presentationSession/gotSnapshot',
-    async (response: string) => {
-        const genericResponse: GenericResponse<SnapshotDto, string> =
-            JSON.parse(response)
-        const out: PresentationSessionState = { ...initialState }
-        out.snapshot = genericResponse.data
-        out.error = genericResponse.error
-        return out
-    }
+export const requestSnapshot = createAsyncThunk(
+    'snapshot/get',
+    async (event: SnapshotRequestEvent) => {}
+)
+
+export const answerPoll = createAsyncThunk(
+    'poll/answer',
+    async (event: AnswerPollEvent) => {}
 )
 
 export const initWebSocketSession = createAsyncThunk(
@@ -55,16 +55,11 @@ export const initWebSocketSession = createAsyncThunk(
         const onConnectionSuccess = () => {
             out.connectionStatus = WsConnectionStatus.CONNECTED
         }
-        const onGetSnapshot = (response: string) => {
-            dispatch(gotSnapshot(response))
-        }
-        const onVoted = () => WebSocketService.sendSnapshotRequest(link)
-        await WebSocketService.connectToAllEvents(
+        await WebSocketService.connectToInteractiveEvents(
             link,
-            onConnectionSuccess,
-            onGetSnapshot,
-            onVoted
-        ).then(() => WebSocketService.sendSnapshotRequest(link))
+            onConnectionSuccess
+        )
+
         return out
     }
 )
@@ -78,16 +73,15 @@ export const presentationSessionSlice = createSlice({
             .addCase(initWebSocketSession.fulfilled, (state, action) => {
                 state.connectionStatus = action.payload.connectionStatus
             })
-            .addCase(gotSnapshot.fulfilled, (state, action) => {
-                state.error = action.payload.error
-                state.snapshot = action.payload.snapshot
-            })
             .addCase(
                 createSessionForPresentation.fulfilled,
                 (state, action) => {
                     state.link = action.payload.link
                 }
             )
+            .addCase(startPoll.fulfilled, (state, action) => {})
+            .addCase(requestSnapshot.fulfilled, (state, action) => {})
+            .addCase(answerPoll.fulfilled, (state, action) => {})
     },
 })
 

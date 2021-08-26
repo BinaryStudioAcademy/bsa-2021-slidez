@@ -6,8 +6,11 @@ import Poll from './Poll'
 import './PollInput.scss'
 import { faCircle, faDotCircle } from '@fortawesome/free-regular-svg-icons'
 import { useAppDispatch } from '../../../../hooks'
-import { voteInPoll } from '../../../../containers/presentation_session/store'
-import { AnswerPollDto } from '../../../../services/ws/dto/AnswerPollDto'
+import {
+    AnswerPollEvent,
+    DomainEventType,
+} from '../../../../containers/presentation_session/event/DomainEvent'
+import { answerPoll } from '../../../../containers/presentation_session/store'
 
 type PollInputProps = {
     poll: PollDto
@@ -52,12 +55,14 @@ function PollInput({ poll, link }: PollInputProps) {
         }
         if (!voteSubmitted) {
             // post to db
-            const dto: AnswerPollDto = {
-                link: link,
-                pollId: id,
-                optionId: options[chosenOptionIndex].id,
+            const answerPollEvent: AnswerPollEvent = {
+                type: DomainEventType.answerPollEvent,
+                pollAnswer: {
+                    pollId: id,
+                    optionId: options[chosenOptionIndex].id,
+                },
             }
-            dispatch(voteInPoll(dto))
+            dispatch(answerPoll(answerPollEvent))
             setVoteSubmitted(true)
         } else {
             // update existing in db

@@ -25,8 +25,7 @@ export const WsHelper = (() => {
         stompClient = Stomp.over(socket)
         stompClient.debug = () => {}
         return new Promise((resolve, reject) => {
-            // @ts-ignore
-            stompClient.connect(
+            stompClient!.connect(
                 {},
                 (frame) => {
                     if (stompClient && stompClient.connected) {
