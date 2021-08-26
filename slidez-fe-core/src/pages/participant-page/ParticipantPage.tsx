@@ -8,7 +8,7 @@ import './participantPage.scss'
 
 const ParticipantPage = () => {
     const [listQuestions, setListQuestions] = useState(MOCK_DATA)
-    const createEndpoint = (id: number) => '/#/event/' + id
+    const createEndpoint = (id: number) => '/#/events/' + id
 
     const lastViewsDate = (date: string) => {
         const diffDate = moment(date, 'YYYY-MM-DD HH:mm:ss').fromNow()

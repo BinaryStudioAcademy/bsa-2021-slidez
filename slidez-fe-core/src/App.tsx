@@ -28,7 +28,11 @@ function App() {
                         component={Dashboard}
                     />
                     <PrivateRoute path={AppRoute.ADDON} component={Addon} />
-                    <Route path={AppRoute.EVENTS} component={ParticipantPage} />
+                    <Route
+                        exact
+                        path={AppRoute.EVENTS}
+                        component={ParticipantPage}
+                    />
                     <Route path={AppRoute.EVENT} component={EventPage} />
                     <PrivateRoute
                         exact

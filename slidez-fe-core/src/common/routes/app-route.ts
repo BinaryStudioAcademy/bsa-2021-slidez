@@ -4,7 +4,7 @@ const AppRoute = {
     REGISTRATION: '/registration',
     RESTORE_PASSWORD: '/restore-password',
     EVENTS: '/events',
-    EVENT: '/event/:link',
+    EVENT: '/events/:link',
     DASHBOARD: '/dashboard',
     ADDON: '/addon',
     UPDATE_USER: '/update-user',

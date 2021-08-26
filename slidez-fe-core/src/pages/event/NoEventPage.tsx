@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './styles.scss'
-import Header from '../participant-page/Header'
 
 const NoEvent = () => {
     return (
