@@ -99,7 +99,6 @@ const RegistrationForm = ({
         onRegisterWithGoogle(googleData)
     }
 
-
     return (
         <div className='sign-form'>
             <div className='form-row header-row'>Sign Up</div>
