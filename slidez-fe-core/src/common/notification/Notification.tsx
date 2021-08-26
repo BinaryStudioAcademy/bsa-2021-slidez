@@ -14,8 +14,6 @@ export const handleNotification = (
         progressBar: false,
         closeOnToastrClick: false,
     }
-    toastr.removeByType('error')
-    toastr.removeByType('warning')
     switch (type) {
         case NotificationTypes.WARNING: {
             toastr.warning(title, message, toastrOptions)
