@@ -4,15 +4,17 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import {
     createSessionForPresentation,
     initWebSocketSession,
-    selectConnectionStatus,
-    selectLink,
-    selectSnapshot,
-} from '../../containers/presentation_session/store'
+} from '../../containers/presentation_session/store/store'
 import { WsConnectionStatus } from '../../containers/presentation_session/enums/ws-connection-status'
 import Loader from '../../common/components/loader/Loader'
 import Poll from '../../common/components/interactive-elements/poll/Poll'
 import InteractiveWrapper from '../../common/components/interactive-elements/interactive-wrapper/InteractiveWrapper'
 import { CreatePresentationSessionDto } from '../../services/presentation-session/dto/CreatePresentationSessionDto'
+import {
+    selectLink,
+    selectConnectionStatus,
+    selectSnapshot,
+} from '../../containers/presentation_session/store/selectors'
 
 const EventPage: React.FC = () => {
     // const { link } = useParams<{ link?: string }>()
