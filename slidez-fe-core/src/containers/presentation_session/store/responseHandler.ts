@@ -9,6 +9,7 @@ function throwBadType(type: string): never {
 
 export const responseHandler =
     (dispatch: any) => (response: SessionResponse) => {
+        console.log(typeof response)
         switch (response.type) {
             case SessionResponseType.snapshot:
                 const snapshot: SnapshotDto = <SnapshotDto>response.data

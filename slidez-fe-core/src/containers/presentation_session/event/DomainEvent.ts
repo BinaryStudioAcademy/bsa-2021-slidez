@@ -2,9 +2,9 @@ import { SessionPoll } from '../model/SessionPoll'
 import { SessionPollAnswer } from '../model/SessionPollAnswer'
 
 export enum DomainEventType {
-    startPollEvent = 'startPollEvent',
-    snapshotRequestEvent = 'snapshotRequestEvent',
-    answerPollEvent = 'answerPollEvent',
+    startPollEvent = 'StartPollEvent',
+    snapshotRequestEvent = 'SnapshotRequestedEvent',
+    answerPollEvent = 'AnswerPollEvent',
 }
 
 export type StartPollEvent = {

@@ -62,6 +62,7 @@ export const receiveSnapshot = createAsyncThunk(
     async (snapshot: SnapshotDto) => {
         const out: PresentationSessionState = { ...initialState }
         out.snapshot = snapshot
+        return out
     }
 )
 
@@ -106,7 +107,9 @@ export const presentationSessionSlice = createSlice({
                 (state, action) => {}
             )
             .addCase(startPoll.fulfilled, (state, action) => {})
-            .addCase(requestSnapshot.fulfilled, (state, action) => {})
+            .addCase(receiveSnapshot.fulfilled, (state, action) => {
+                state.snapshot = action.payload.snapshot
+            })
             .addCase(answerPoll.fulfilled, (state, action) => {})
     },
 })

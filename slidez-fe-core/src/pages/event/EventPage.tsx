@@ -39,7 +39,7 @@ const EventPage: React.FC = () => {
     const activePoll = snapshot?.sessionInteractiveElements.find(
         (sessionInteractiveElements) => sessionInteractiveElements
     )
-
+    console.log(snapshot)
     const body = activePoll ? (
         <Poll poll={activePoll as any} />
     ) : (
