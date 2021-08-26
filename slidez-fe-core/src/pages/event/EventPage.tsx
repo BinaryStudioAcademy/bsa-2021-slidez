@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import {
+    createRequestStartPollParams,
     createSessionForPresentation,
     initWebSocketSession,
+    requestStartPoll,
+    RequestStartPollParams,
 } from '../../containers/presentation_session/store/store'
 import { WsConnectionStatus } from '../../containers/presentation_session/enums/ws-connection-status'
 import Loader from '../../common/components/loader/Loader'
@@ -30,6 +33,11 @@ const EventPage: React.FC = () => {
                 presentationId: 'ed60e789-ab15-4756-b95e-218b43b6dfff',
             }
             dispatch(createSessionForPresentation(dto))
+            const params: RequestStartPollParams = createRequestStartPollParams(
+                link,
+                'lol_poll_id'
+            )
+            setTimeout(() => dispatch(requestStartPoll(params)), 2000)
         }
     }, [])
 

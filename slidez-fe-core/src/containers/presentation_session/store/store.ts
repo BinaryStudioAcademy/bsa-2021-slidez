@@ -11,17 +11,20 @@ import {
     StartPollEvent,
 } from '../event/DomainEvent'
 import { responseHandler } from './responseHandler'
+import { InteractiveElement, PollDto } from '../dto/InteractiveElement'
 
 export interface PresentationSessionState {
     connectionStatus: string
     error: string | undefined
     snapshot: SnapshotDto | undefined
+    currentInteractiveElement: InteractiveElement | undefined
 }
 
 const initialState: PresentationSessionState = {
     connectionStatus: WsConnectionStatus.ESTABLISHING,
     error: undefined,
     snapshot: undefined,
+    currentInteractiveElement: undefined,
 }
 
 export const createSessionForPresentation = createAsyncThunk(
@@ -31,9 +34,39 @@ export const createSessionForPresentation = createAsyncThunk(
     }
 )
 
-export const startPoll = createAsyncThunk(
+export type RequestStartPollParams = {
+    link: string
+    event: StartPollEvent
+}
+
+export const createRequestStartPollParams = (
+    link: string,
+    slideId: string
+): RequestStartPollParams => {
+    return {
+        link: link,
+        event: {
+            type: DomainEventType.startPollEvent,
+            slideId: slideId,
+        },
+    }
+}
+
+export const requestStartPoll = createAsyncThunk(
     'poll/start',
-    async (event: StartPollEvent) => {}
+    async (params: RequestStartPollParams) => {
+        WebSocketService.sendRequest(params.link, params.event)
+    }
+)
+
+export const receiveStartPoll = createAsyncThunk(
+    'poll/received',
+    async (poll: PollDto) => {
+        const out: PresentationSessionState = { ...initialState }
+        out.snapshot?.sessionInteractiveElements.push(poll)
+        out.currentInteractiveElement = poll
+        return out
+    }
 )
 
 type RequestSnapshotParams = {
@@ -106,7 +139,13 @@ export const presentationSessionSlice = createSlice({
                 createSessionForPresentation.fulfilled,
                 (state, action) => {}
             )
-            .addCase(startPoll.fulfilled, (state, action) => {})
+            .addCase(receiveStartPoll.fulfilled, (state, action) => {
+                state.snapshot = action.payload.snapshot
+                state.currentInteractiveElement =
+                    action.payload.currentInteractiveElement
+                console.log(state.snapshot)
+                console.log(state.currentInteractiveElement)
+            })
             .addCase(receiveSnapshot.fulfilled, (state, action) => {
                 state.snapshot = action.payload.snapshot
             })

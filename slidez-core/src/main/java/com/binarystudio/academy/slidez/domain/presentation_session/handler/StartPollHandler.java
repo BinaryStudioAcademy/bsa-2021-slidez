@@ -35,7 +35,7 @@ public class StartPollHandler extends AbstractDomainEventHandler {
 			PresentationEventStore eventStore) {
 		if (Objects.equals(domainEvent.getClass(), StartPollEvent.class)) {
 			StartPollEvent event = (StartPollEvent) domainEvent;
-			Optional<Poll> pollOptional = pollService.getById(event.getPollId());
+            Optional<Poll> pollOptional = pollService.getBySlideId(event.getSlideId());
 			if (pollOptional.isEmpty()) {
 				return new GenericResponse<>(null, PresentationSessionResponseCodes.COULD_NOT_START_POLL);
 			}
@@ -45,6 +45,8 @@ public class StartPollHandler extends AbstractDomainEventHandler {
 			event.setSessionPoll(sessionPoll);
 			super.handle(domainEvent, eventStore);
 			SessionResponse out = new SessionResponse(ResponseType.STARTED_POLL, sessionPoll);
+            System.out.println(out);
+            System.out.println(poll.getId());
 			return new GenericResponse<>(out);
 		}
 		return super.handle(domainEvent, eventStore);

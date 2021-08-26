@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Getter
@@ -12,7 +13,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "poll_answer")
-public class PollOption {
+public class PollOption implements Serializable {
+
+    private static final long serialVersionUID = 637849887541003L;
 
 	@Id
 	@GeneratedValue(generator = "UUID")

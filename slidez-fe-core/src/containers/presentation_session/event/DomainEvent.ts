@@ -1,4 +1,3 @@
-import { SessionPoll } from '../model/SessionPoll'
 import { SessionPollAnswer } from '../model/SessionPollAnswer'
 
 export enum DomainEventType {
@@ -9,8 +8,7 @@ export enum DomainEventType {
 
 export type StartPollEvent = {
     type: DomainEventType.startPollEvent
-    pollId: string
-    sessionPoll: SessionPoll
+    slideId: string
 }
 
 export type SnapshotRequestEvent = {

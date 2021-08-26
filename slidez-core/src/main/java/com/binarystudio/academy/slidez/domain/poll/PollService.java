@@ -53,6 +53,10 @@ public class PollService {
 		return pollRepository.findById(id);
 	}
 
+    public Optional<Poll> getBySlideId(String slideId) {
+        return pollRepository.findBySlideIdIs(slideId);
+    }
+
 	public Optional<PollResponseDto> getPollDtoById(UUID id) {
 		Optional<Poll> pollOptional = pollRepository.findById(id);
 		if (pollOptional.isEmpty()) {

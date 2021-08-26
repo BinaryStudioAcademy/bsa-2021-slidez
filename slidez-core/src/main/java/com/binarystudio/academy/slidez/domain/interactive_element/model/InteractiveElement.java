@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Getter
@@ -13,7 +14,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "interactive_element")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class InteractiveElement {
+public abstract class InteractiveElement implements Serializable {
+
+    private static final long serialVersionUID = -9030801668124685221L;
 
 	@Id
 	@GeneratedValue(generator = "UUID")
