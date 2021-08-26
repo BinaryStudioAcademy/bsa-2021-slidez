@@ -3,11 +3,12 @@ import { WsEndpoint } from './ws-endpoint'
 import { Message } from 'webstomp-client'
 import { DomainEvent } from '../../containers/presentation_session/event/DomainEvent'
 import { SessionResponse } from '../../containers/presentation_session/dto/SessionResponse'
+import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
 
 export const connectToInteractiveEvents = (
     sessionLink: string,
     onConnectionSuccess: () => void,
-    onResponse: (response: SessionResponse) => void
+    onResponse: (response: GenericResponse<SessionResponse, string>) => void
 ) => {
     return WsHelper.getInstance()
         .connect(WsEndpoint.ENDPOINT)
