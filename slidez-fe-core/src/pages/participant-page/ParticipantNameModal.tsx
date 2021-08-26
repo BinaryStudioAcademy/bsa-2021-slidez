@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import * as Yup from 'yup'
 import { Field, Form, Formik, FormikErrors } from 'formik'
+import { handleNotification } from '../../common/notification/Notification'
+import { NotificationTypes } from '../../common/notification/notification-types'
 
 type ParticipantNameErorrsProps = {
     viewErrors: boolean
@@ -30,11 +32,18 @@ const ParticipantNameErrors = ({
 }
 
 const ParticipantNameDialog = () => {
-    const [viewErrors, setViewErrors] = React.useState(false)
+    const [viewErrors, setViewErrors] = useState(false)
+    const [openModal, setOpenModal] = useState(true)
 
     const handleUserData = (firstName: string, lastName: string) => {
         window.localStorage.setItem('firstName', firstName)
         window.localStorage.setItem('lastName', lastName)
+        handleNotification(
+            'Success',
+            'First name and last name were saved successfully',
+            NotificationTypes.SUCCESS
+        )
+        setOpenModal(false)
     }
 
     const particpantNameFieldsValidation = Yup.object({
@@ -44,11 +53,7 @@ const ParticipantNameDialog = () => {
         lastName: Yup.string().required('Required').min(2, '2 symbols minimum'),
     })
     return (
-        <Dialog
-            open={true}
-            // onClose={handleClose}
-            aria-labelledby='form-dialog-title'
-        >
+        <Dialog open={openModal} aria-labelledby='form-dialog-title'>
             <DialogTitle id='form-dialog-title'>How to name you?</DialogTitle>
             <DialogContent>
                 <Formik
