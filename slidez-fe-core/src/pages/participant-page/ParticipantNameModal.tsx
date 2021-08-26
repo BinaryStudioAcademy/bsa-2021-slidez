@@ -4,8 +4,6 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import * as Yup from 'yup'
 import { Field, Form, Formik, FormikErrors } from 'formik'
-import { handleNotification } from '../../common/notification/Notification'
-import { NotificationTypes } from '../../common/notification/notification-types'
 
 type ParticipantNameErorrsProps = {
     viewErrors: boolean
@@ -38,11 +36,6 @@ const ParticipantNameDialog = () => {
     const handleUserData = (firstName: string, lastName: string) => {
         window.localStorage.setItem('firstName', firstName)
         window.localStorage.setItem('lastName', lastName)
-        handleNotification(
-            'Success',
-            'First name and last name were saved successfully',
-            NotificationTypes.SUCCESS
-        )
         setOpenModal(false)
     }
 
