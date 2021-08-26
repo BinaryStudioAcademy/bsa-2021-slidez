@@ -6,8 +6,8 @@ env:
   DEPLOY_PACKAGE_NAME: "slidez-app-build.zip"
   AWS_REGION_NAME: "eu-west-1"
   AWS_SPA_S3_BUCKET: "bsa.slidez-fe-spa"
-  REACT_APP_API_GATEWAY: "http://bsa2021slidez-env.eba-b3mmt3yw.eu-west-1.elasticbeanstalk.com/api/v1/"
-  REACT_APP_WEB_SOCKET_ENDPOINT: "http://bsa2021slidez-env.eba-b3mmt3yw.eu-west-1.elasticbeanstalk.com/ws"
+  REACT_APP_API_GATEWAY: "https://bsa2021slidez-env.eba-b3mmt3yw.eu-west-1.elasticbeanstalk.com/api/v1/"
+  REACT_APP_WEB_SOCKET_ENDPOINT: "https://bsa2021slidez-env.eba-b3mmt3yw.eu-west-1.elasticbeanstalk.com/ws"
   REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}
 
 on:
