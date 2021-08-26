@@ -1,15 +1,13 @@
 import { WsHelper } from './ws-helper'
 import { WsEndpoint } from './ws-endpoint'
 import { Message } from 'webstomp-client'
-import {
-    DomainEvent,
-    DomainEventType,
-} from '../../containers/presentation_session/event/DomainEvent'
+import { DomainEvent } from '../../containers/presentation_session/event/DomainEvent'
+import { SessionResponse } from '../../containers/presentation_session/dto/SessionResponse'
 
 export const connectToInteractiveEvents = (
     sessionLink: string,
     onConnectionSuccess: () => void,
-    onEvent: (event: DomainEvent) => void
+    onResponse: (response: SessionResponse) => void
 ) => {
     return WsHelper.getInstance()
         .connect(WsEndpoint.ENDPOINT)
@@ -17,7 +15,7 @@ export const connectToInteractiveEvents = (
         .then(() =>
             WsHelper.getInstance().subscribe(
                 `${WsEndpoint.TOPIC_EVENT}/${sessionLink}`,
-                (message: Message) => onEvent(JSON.parse(message.body))
+                (message: Message) => onResponse(JSON.parse(message.body))
             )
         )
         .catch((error: any) => console.log(error))

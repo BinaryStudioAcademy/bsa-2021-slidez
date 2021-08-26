@@ -10,7 +10,7 @@ import {
     SnapshotRequestEvent,
     StartPollEvent,
 } from '../event/DomainEvent'
-import { eventHandler } from './eventHandler'
+import { responseHandler } from './responseHandler'
 
 export interface PresentationSessionState {
     connectionStatus: string
@@ -57,6 +57,11 @@ export const requestSnapshot = createAsyncThunk(
     }
 )
 
+export const receiveSnapshot = createAsyncThunk(
+    'snapshot/received',
+    async (snapshot: SnapshotDto) => {  }
+)
+
 export const answerPoll = createAsyncThunk(
     'poll/answer',
     async (event: AnswerPollEvent) => {}
@@ -72,12 +77,12 @@ export const initWebSocketSession = createAsyncThunk(
                 createSnapshotRequestParams(link)
             dispatch(requestSnapshot(snapshotRequestParams))
         }
-        const onEvent = eventHandler(dispatch)
+        const onResponse = responseHandler(dispatch)
 
         await WebSocketService.connectToInteractiveEvents(
             link,
             onConnectionSuccess,
-            onEvent
+            onResponse
         )
 
         return out
