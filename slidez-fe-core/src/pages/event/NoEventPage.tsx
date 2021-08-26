@@ -8,7 +8,6 @@ const NoEvent = () => {
             <div className='error-content'>
                 Please wait for the presenter to show the next slide.
             </div>
-            {/* create button q&a*/}
         </div>
     )
 }

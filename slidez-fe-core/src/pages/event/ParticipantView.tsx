@@ -10,6 +10,13 @@ import {
     RadioGroup,
 } from '@material-ui/core'
 
+const pollOptions = [
+    'Integer egestas',
+    'Consectetur',
+    'Faucibus eu quisque',
+    'Duis elementum egestas',
+]
+
 const ParticipantView = () => {
     const text =
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas nibh placerat fermentum?'
@@ -26,34 +33,18 @@ const ParticipantView = () => {
                         aria-label='question'
                         name='gender1'
                     >
-                        <FormControlLabel
-                            className='radio-item'
-                            label='Integer egestas'
-                            control={<Radio />}
-                            value='option1'
-                        />
-                        <FormControlLabel
-                            className='radio-item'
-                            label='Consectetur'
-                            control={<Radio />}
-                            value='option2'
-                        />
-                        <FormControlLabel
-                            className='radio-item'
-                            label='Faucibus eu quisque'
-                            control={<Radio />}
-                            value='option3'
-                        />
-                        <FormControlLabel
-                            className='radio-item'
-                            label='Duis elementum egestas '
-                            control={<Radio />}
-                            value='option4'
-                        />
+                        {pollOptions.map((option, index) => (
+                            <FormControlLabel
+                                className='radio-item'
+                                key={index}
+                                label={option}
+                                control={<Radio />}
+                                value={option}
+                            />
+                        ))}
                     </RadioGroup>
                 </FormControl>
                 <button className='btn-submit'>Submit</button>
-                {/* create button q&a*/}
             </div>
         </div>
     )
