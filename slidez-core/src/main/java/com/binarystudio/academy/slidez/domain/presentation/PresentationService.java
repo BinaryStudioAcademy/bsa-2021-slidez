@@ -49,7 +49,7 @@ public class PresentationService {
 	 * if it does not exist and adds interactive element to it
 	 */
 	public Presentation addInteractiveElement(UUID presentationId, InteractiveElement interactiveElement, UUID userId) {
-		Presentation presentation = get(presentationId).orElse(add(UUID.randomUUID().toString(), userId));
+		Presentation presentation = get(presentationId).orElseGet(() -> add(UUID.randomUUID().toString(), userId));
 		presentation.getInteractiveElements().add(interactiveElement);
 		return presentationRepository.save(presentation);
 	}

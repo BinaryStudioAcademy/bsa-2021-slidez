@@ -36,7 +36,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 				exceptionProperties.getUnpredictedExceptionMessage());
 		this.logger.error(ex.getMessage());
 		this.logger.error(ex.getStackTrace());
-        ex.printStackTrace();
+		ex.printStackTrace();
 		return new ResponseEntity<>(out, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
