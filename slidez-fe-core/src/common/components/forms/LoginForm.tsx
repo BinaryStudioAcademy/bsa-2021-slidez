@@ -11,6 +11,8 @@ import GoogleLogin from 'react-google-login'
 import { GoogleOAuth } from '../../../services/auth/google-oauth'
 import { Field, Form, Formik, FormikErrors } from 'formik'
 import * as Yup from 'yup'
+import { handleNotification } from '../../notification/Notification'
+import { NotificationTypes } from '../../notification/notification-types'
 
 type LoginProps = {
     onLogin: Function
@@ -37,7 +39,11 @@ const LoginErrors = ({
     if (!viewErrors) {
         errorMessage = null
     } else if (loginError) {
-        errorMessage = "Can't log in: email or password is invalid"
+        handleNotification(
+            'Login Failed',
+            "Can't log in: email or password is invalid",
+            NotificationTypes.ERROR
+        )
     } else if (formikErrors.email && formikErrors.password) {
         errorMessage = 'Please provide email and password'
     } else if (formikErrors.email) {
@@ -62,6 +68,15 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
     const handleLoginWithGoogle = async (googleData: any) => {
         onLoginWithGoogle(googleData)
     }
+
+    const googleLoginFailed = () => {
+        handleNotification(
+            'Google Login Failed',
+            'The provided user account is not registered in the system',
+            NotificationTypes.ERROR
+        )
+    }
+
     return (
         <div className='sign-form'>
             <div className='form-row header-row'>Log In</div>
@@ -167,6 +182,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                     className='form-button login-with-google-button'
                     clientId={GoogleOAuth.GOOGLE_CLIENT_ID}
                     onSuccess={handleLoginWithGoogle}
+                    onFailure={googleLoginFailed}
                     redirectUri={GoogleOAuth.GOOGLE_REDIRECT_URI}
                     cookiePolicy={GoogleOAuth.GOOGLE_COOKIE_POLICY}
                     scope={[

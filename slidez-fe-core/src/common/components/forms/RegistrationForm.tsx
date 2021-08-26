@@ -14,6 +14,8 @@ import { NavLink } from 'react-router-dom'
 import { AppRoute } from '../../routes/app-route'
 import { Field, Form, Formik, FormikErrors } from 'formik'
 import * as Yup from 'yup'
+import { handleNotification } from '../../notification/Notification'
+import { NotificationTypes } from '../../notification/notification-types'
 
 type RegistrationProps = {
     onRegister: Function
@@ -55,7 +57,11 @@ const RegistrationErrors = ({
     if (!viewErrors) {
         errorMessage = null
     } else if (registrationError) {
-        errorMessage = 'This email is taken'
+        handleNotification(
+            'Registration Failed',
+            'This email is taken',
+            NotificationTypes.ERROR
+        )
     } else if (formikErrors.email) {
         errorMessage = 'Please provide valid email'
     } else if (formikErrors.password) {
