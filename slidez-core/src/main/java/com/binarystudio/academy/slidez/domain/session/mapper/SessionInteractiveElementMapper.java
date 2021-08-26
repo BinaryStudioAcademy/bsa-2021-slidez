@@ -16,9 +16,9 @@ public interface SessionInteractiveElementMapper {
 
 	SessionInteractiveElementMapper INSTANCE = Mappers.getMapper(SessionInteractiveElementMapper.class);
 
-	@Mappings({ @Mapping(source = "poll.id", target = "id"), @Mapping(source = "poll.type", target = "type"),
-			@Mapping(source = "poll.slideId", target = "slideId"),
-			@Mapping(source = "poll.ownerId", target = "ownerId"), @Mapping(source = "poll.title", target = "title"),
+	@Mappings({ @Mapping(source = "poll.id", target = "id"), @Mapping(source = "poll.interactiveElement.type", target = "type"),
+			@Mapping(source = "poll.interactiveElement.slideId", target = "slideId"),
+			@Mapping(source = "poll.title", target = "title"),
 			@Mapping(source = "poll.isMulti", target = "isMulti"),
 			@Mapping(source = "poll.isTemplate", target = "isTemplate"),
 			@Mapping(target = "options", expression = "java(mapPollOptionsToSessionPollOptions(poll.getOptions()))") })

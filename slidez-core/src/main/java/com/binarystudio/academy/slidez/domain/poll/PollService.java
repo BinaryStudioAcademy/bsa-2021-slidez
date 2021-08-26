@@ -1,17 +1,21 @@
 package com.binarystudio.academy.slidez.domain.poll;
 
+import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
+import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElementType;
 import com.binarystudio.academy.slidez.domain.poll.dto.CreatePollDto;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollDto;
 import com.binarystudio.academy.slidez.domain.poll.mapper.PollMapper;
 import com.binarystudio.academy.slidez.domain.poll.model.Poll;
+import com.binarystudio.academy.slidez.domain.poll.model.PollOption;
 import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
-import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
+import com.binarystudio.academy.slidez.domain.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class PollService {
@@ -27,10 +31,30 @@ public class PollService {
 	}
 
 	@Transactional
-	public PollDto create(CreatePollDto pollDto, UUID userId) {
-		Poll poll = PollMapper.INSTANCE.pollFromCreatePollDto(pollDto);
-		poll.setOwnerId(userId);
-		presentationService.addInteractiveElement(pollDto.getPresentationId(), poll, userId);
+	public PollDto create(CreatePollDto pollDto, User actor) {
+		var presentation = presentationService.assertPresentationExists(pollDto.getPresentationId(), actor);
+
+		var ie = new InteractiveElement();
+		ie.setPresentation(presentation);
+		ie.setType(InteractiveElementType.POLL);
+		ie.setSlideId(pollDto.getSlideId());
+
+		var poll = new Poll();
+		poll.setTitle(pollDto.getTitle());
+		poll.setIsMulti(false);
+		poll.setIsTemplate(false);
+		poll.setOptions(
+		    pollDto
+                .getOptions()
+                .stream()
+                .map(option -> new PollOption(option.getTitle()))
+                .collect(Collectors.toList())
+        );
+
+		poll.setInteractiveElement(ie);
+        poll.setOwner(actor);
+
+		pollRepository.save(poll);
 		return PollMapper.INSTANCE.pollToPollDto(poll);
 	}
 

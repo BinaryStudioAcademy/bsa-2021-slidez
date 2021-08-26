@@ -8,7 +8,6 @@ import com.binarystudio.academy.slidez.domain.presentation.dto.PresentationUpdat
 import com.binarystudio.academy.slidez.domain.presentation.exception.PresentationNotFoundException;
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
 import com.binarystudio.academy.slidez.domain.user.UserService;
-import com.binarystudio.academy.slidez.domain.user.exception.NoSuchUserException;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,26 +32,18 @@ public class PresentationService {
 	}
 
 	/**
-	 * Creates new Presentation with random link
-	 */
-	public Presentation add(String name, UUID userId) throws NoSuchUserException {
-		Presentation presentation = new Presentation(name);
-		presentation.setLink(UUID.randomUUID().toString());
-        User byId = userService.getById(userId)
-            .orElseThrow(() -> new NoSuchUserException(String.format("No such user with id = %s", userId.toString())));
-        presentation.setUser(byId);
-        return presentationRepository.save(presentation);
-	}
+     * Fetches presentation or creates a new presentation if it doesn't exists
+     * */
 
-	/**
-	 * Fetches presentation with specified id or creates new presentation with random name
-	 * if it does not exist and adds interactive element to it
-	 */
-	public Presentation addInteractiveElement(UUID presentationId, InteractiveElement interactiveElement, UUID userId) {
-		Presentation presentation = get(presentationId).orElseGet(() -> add(UUID.randomUUID().toString(), userId));
-		presentation.getInteractiveElements().add(interactiveElement);
-		return presentationRepository.save(presentation);
-	}
+	public Presentation assertPresentationExists(String presentationLink, User owner){
+	    return this.presentationRepository.findByLink(presentationLink).orElseGet(() -> {
+           var newPresentation = new Presentation();
+           newPresentation.setLink(presentationLink);
+           newPresentation.setName("Unnamed presentation");
+           newPresentation.setUser(owner);
+	       return  presentationRepository.save(newPresentation);
+        });
+    }
 
 	public Optional<Presentation> get(UUID id) {
 		return presentationRepository.findById(id);

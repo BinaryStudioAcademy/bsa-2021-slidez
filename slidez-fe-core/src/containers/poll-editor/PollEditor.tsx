@@ -22,18 +22,18 @@ export type PollEditorProps = {
 // eslint-disable-next-line react/prop-types
 const PollEditor: React.FC<PollEditorProps> = ({ pollId, presentationId }) => {
     const initialValues: CreatePollDto = {
-        presentationId: '',
+        presentationId: presentationId,
         title: '',
         options: [],
     }
 
     const handleSubmit = async (values: CreatePollDto) => {
         const data =
-            await getMessageBusUnsafe()?.sendMessageAndListen<InsertSlideSuccess>(
+            await getMessageBusUnsafe()!.sendMessageAndListen<InsertSlideSuccess>(
                 {
                     type: EventType.INSERT_SLIDE,
                     data: {
-                        id: 'slidez_test_id_lol_' + new Date().getTime(),
+                        id: 'slidez_' + new Date().getTime(),
                         title: `Poll: ${values.title}`,
                     },
                 },
@@ -44,6 +44,11 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId, presentationId }) => {
         console.log('Created poll slide successfully, returned data: ', data)
         //  TODO: SEND REQUEST TO BACKEND TO SAVE POLL.
         // handleNotification() if error
+
+        await httpHelper.doPost('/polls', {
+            slideId: data?.data.insertedId,
+            ...values,
+        })
     }
 
     const toggleRemoveClick = (index: number, arrayHelpers: any) => {

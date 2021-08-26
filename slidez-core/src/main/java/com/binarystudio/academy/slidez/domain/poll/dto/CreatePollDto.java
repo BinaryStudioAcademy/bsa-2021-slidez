@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CreatePollDto {
 
-	private UUID presentationId;
+	private String presentationId;
 
 	private String slideId;
 

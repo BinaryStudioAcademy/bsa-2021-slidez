@@ -4,11 +4,8 @@ import com.binarystudio.academy.slidez.domain.interactive_element.dto.Interactiv
 import com.binarystudio.academy.slidez.domain.interactive_element.exception.IllegalElementTypeException;
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import com.binarystudio.academy.slidez.domain.poll.mapper.PollMapper;
-import com.binarystudio.academy.slidez.domain.poll.model.Poll;
 import com.binarystudio.academy.slidez.domain.qasession.mapper.QASessionMapper;
-import com.binarystudio.academy.slidez.domain.qasession.model.QASession;
 import com.binarystudio.academy.slidez.domain.quiz.mapper.QuizMapper;
-import com.binarystudio.academy.slidez.domain.quiz.model.Quiz;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -22,17 +19,19 @@ public interface InteractiveElementMapper {
 	 */
 	default InteractiveElementDto interactiveElementToTypeRelatedDto(InteractiveElement element)
 			throws IllegalElementTypeException {
-		if (element instanceof Poll) {
-			return PollMapper.INSTANCE.pollToPollDto((Poll) element);
-		}
-		else if (element instanceof Quiz) {
-			return QuizMapper.INSTANCE.quizToQuizDto((Quiz) element);
-		}
-		else if (element instanceof QASession) {
-			return QASessionMapper.INSTANCE.qaSessionToDto((QASession) element);
-		}
-		throw new IllegalElementTypeException(
-				String.format("Invalid type of element: %s", element.getClass().getName()));
+	    switch(element.getType()){
+            case POLL:
+                return PollMapper.INSTANCE.pollToPollDto(element.getPoll());
+            case QUIZ:
+                return QuizMapper.INSTANCE.quizToQuizDto(element.getQuiz());
+            case QASession:
+                return  QASessionMapper.INSTANCE.qaSessionToDto(element.getQaSession());
+            default:
+                    throw new IllegalElementTypeException(
+                    String.format("Invalid type of element: %s", element.getClass().getName())
+                );
+
+        }
 	}
 
 }
