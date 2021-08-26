@@ -1,11 +1,14 @@
 import SockJS from 'sockjs-client'
-import Stomp, { Client, Message } from 'webstomp-client'
+import Stomp, { Client, Message, Subscription } from 'webstomp-client'
 
 export interface WsHelper {
-    send: Function
-    connect: Function
-    disconnect: Function
-    subscribe: Function
+    send: (stompSendDestination: string, message: object) => void
+    connect: (url: string) => Promise<any>
+    disconnect: () => void
+    subscribe: (
+        stompSubscribeDestination: string,
+        onMessage: (message: Message) => void
+    ) => Subscription | undefined
 }
 
 export const WsHelper = (() => {

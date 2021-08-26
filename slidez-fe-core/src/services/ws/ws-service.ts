@@ -9,7 +9,7 @@ import {
 export const connectToInteractiveEvents = (
     sessionLink: string,
     onConnectionSuccess: () => void,
-    onEvent: (sessionLink: string, event: DomainEvent) => void
+    onEvent: (event: DomainEvent) => void
 ) => {
     return WsHelper.getInstance()
         .connect(WsEndpoint.ENDPOINT)
@@ -17,8 +17,7 @@ export const connectToInteractiveEvents = (
         .then(() =>
             WsHelper.getInstance().subscribe(
                 `${WsEndpoint.TOPIC_EVENT}/${sessionLink}`,
-                (message: Message) =>
-                    onEvent(sessionLink, JSON.parse(message.body))
+                (message: Message) => onEvent(JSON.parse(message.body))
             )
         )
         .catch((error: any) => console.log(error))

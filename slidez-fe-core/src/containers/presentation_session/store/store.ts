@@ -2,11 +2,11 @@ import { SnapshotDto } from '../dto/SnapshotDto'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import * as WebSocketService from '../../../services/ws/ws-service'
 import { WsConnectionStatus } from '../enums/ws-connection-status'
-import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
 import { CreatePresentationSessionDto } from '../../../services/presentation-session/dto/CreatePresentationSessionDto'
 import { createPresentationSession } from '../../../services/presentation-session/presentation-session-servise'
 import {
     AnswerPollEvent,
+    DomainEventType,
     SnapshotRequestEvent,
     StartPollEvent,
 } from '../event/DomainEvent'
@@ -15,14 +15,12 @@ import { eventHandler } from './eventHandler'
 export interface PresentationSessionState {
     connectionStatus: string
     error: string | undefined
-    link: string | undefined
     snapshot: SnapshotDto | undefined
 }
 
 const initialState: PresentationSessionState = {
     connectionStatus: WsConnectionStatus.ESTABLISHING,
     error: undefined,
-    link: undefined,
     snapshot: undefined,
 }
 
@@ -38,9 +36,25 @@ export const startPoll = createAsyncThunk(
     async (event: StartPollEvent) => {}
 )
 
+type RequestSnapshotParams = {
+    link: string
+    event: SnapshotRequestEvent
+}
+
+const createSnapshotRequestParams = (link: string): RequestSnapshotParams => {
+    return {
+        link: link,
+        event: {
+            type: DomainEventType.snapshotRequestEvent,
+        },
+    }
+}
+
 export const requestSnapshot = createAsyncThunk(
     'snapshot/get',
-    async (event: SnapshotRequestEvent) => {}
+    async (params: RequestSnapshotParams) => {
+        WebSocketService.sendRequest(params.link, params.event)
+    }
 )
 
 export const answerPoll = createAsyncThunk(
@@ -54,6 +68,9 @@ export const initWebSocketSession = createAsyncThunk(
         const out: PresentationSessionState = { ...initialState }
         const onConnectionSuccess = () => {
             out.connectionStatus = WsConnectionStatus.CONNECTED
+            const snapshotRequestParams: RequestSnapshotParams =
+                createSnapshotRequestParams(link)
+            dispatch(requestSnapshot(snapshotRequestParams))
         }
         const onEvent = eventHandler(dispatch)
 
@@ -78,9 +95,7 @@ export const presentationSessionSlice = createSlice({
             })
             .addCase(
                 createSessionForPresentation.fulfilled,
-                (state, action) => {
-                    state.link = action.payload.link
-                }
+                (state, action) => {}
             )
             .addCase(startPoll.fulfilled, (state, action) => {})
             .addCase(requestSnapshot.fulfilled, (state, action) => {})

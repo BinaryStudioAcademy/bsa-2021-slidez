@@ -3,6 +3,7 @@ package com.binarystudio.academy.slidez.app.presentationsession;
 import com.binarystudio.academy.slidez.domain.presentation_session.PresentationSessionService;
 import com.binarystudio.academy.slidez.domain.presentation_session.dto.CreateSessionRequestDto;
 import com.binarystudio.academy.slidez.domain.presentation_session.dto.CreateSessionResponseDto;
+import com.binarystudio.academy.slidez.domain.presentation_session.dto.SessionResponse;
 import com.binarystudio.academy.slidez.domain.presentation_session.event.DomainEvent;
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,8 @@ public class PresentationSessionController {
 
 	@MessageMapping("/event/{link}")
 	@SendTo("/topic/event/{link}")
-	public GenericResponse<Object, PresentationSessionResponseCodes> handleEvent(@DestinationVariable String link,
-			DomainEvent domainEvent) {
+	public GenericResponse<SessionResponse, PresentationSessionResponseCodes> handleEvent(
+			@DestinationVariable String link, DomainEvent domainEvent) {
 		return presentationSessionService.handleEvent(link, domainEvent);
 	}
 

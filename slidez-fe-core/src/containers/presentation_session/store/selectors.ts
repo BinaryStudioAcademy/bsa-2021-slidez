@@ -5,5 +5,3 @@ export const selectConnectionStatus = (state: RootState) =>
 
 export const selectSnapshot = (state: RootState) =>
     state.presentationSession.snapshot
-
-export const selectLink = (state: RootState) => state.presentationSession.link

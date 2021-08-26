@@ -5,19 +5,18 @@ function throwBadEvent(ev: never): never {
     throw new Error("Didn't expect to get here")
 }
 
-export const eventHandler =
-    (dispatch: any) => (sessionLink: string, event: DomainEvent) => {
-        switch (event.type) {
-            case DomainEventType.startPollEvent:
-                dispatch(startPoll(event))
-                break
-            case DomainEventType.snapshotRequestEvent:
-                dispatch(requestSnapshot(event))
-                break
-            case DomainEventType.answerPollEvent:
-                dispatch(answerPoll(event))
-                break
-            default:
-                throwBadEvent(event)
-        }
+export const eventHandler = (dispatch: any) => (event: DomainEvent) => {
+    switch (event.type) {
+        case DomainEventType.startPollEvent:
+            dispatch(startPoll(event))
+            break
+        case DomainEventType.snapshotRequestEvent:
+            dispatch(requestSnapshot(event))
+            break
+        case DomainEventType.answerPollEvent:
+            dispatch(answerPoll(event))
+            break
+        default:
+            throwBadEvent(event)
     }
+}

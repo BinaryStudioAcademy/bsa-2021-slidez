@@ -11,7 +11,6 @@ import Poll from '../../common/components/interactive-elements/poll/Poll'
 import InteractiveWrapper from '../../common/components/interactive-elements/interactive-wrapper/InteractiveWrapper'
 import { CreatePresentationSessionDto } from '../../services/presentation-session/dto/CreatePresentationSessionDto'
 import {
-    selectLink,
     selectConnectionStatus,
     selectSnapshot,
 } from '../../containers/presentation_session/store/selectors'
