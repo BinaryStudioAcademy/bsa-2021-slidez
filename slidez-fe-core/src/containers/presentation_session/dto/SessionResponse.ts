@@ -1,6 +1,6 @@
 import { SessionResponseType } from '../enums/SessionResponse'
 import { SnapshotDto } from './SnapshotDto'
-import { PollDto } from './PollDto'
+import { PollDto } from './InteractiveElement'
 
 export interface SessionResponse {
     type: SessionResponseType

@@ -1,7 +1,7 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
-import { PollDto } from '../../../../containers/presentation_session/dto/PollDto'
+import { PollDto } from '../../../../containers/presentation_session/dto/InteractiveElement'
 import Poll from './Poll'
 import './PollInput.scss'
 import { faCircle, faDotCircle } from '@fortawesome/free-regular-svg-icons'
