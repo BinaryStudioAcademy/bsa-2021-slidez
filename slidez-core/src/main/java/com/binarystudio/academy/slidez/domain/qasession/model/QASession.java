@@ -18,11 +18,7 @@ import java.util.UUID;
 @Table(name = "qa_session")
 public class QASession extends InteractiveElement {
 
-	@Id
-	@GeneratedValue(generator = "UUID")
-	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-	@Column(name = "id", updatable = false, nullable = false)
-	private UUID id;
+	private static final long serialVersionUID = -3297698530180925430L;
 
 	@Column(name = "title")
 	private String title;

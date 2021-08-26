@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -15,7 +16,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "google_credentials")
-public class GoogleCredentials {
+public class GoogleCredentials implements Serializable {
+
+	private static final long serialVersionUID = 2941736471296325337L;
 
 	@Id
 	@GeneratedValue(generator = "UUID")

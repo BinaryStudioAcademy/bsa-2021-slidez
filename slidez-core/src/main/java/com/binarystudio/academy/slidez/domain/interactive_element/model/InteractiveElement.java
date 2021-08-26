@@ -16,7 +16,7 @@ import java.util.UUID;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class InteractiveElement implements Serializable {
 
-    private static final long serialVersionUID = -9030801668124685221L;
+	private static final long serialVersionUID = -9030801668124685221L;
 
 	@Id
 	@GeneratedValue(generator = "UUID")

@@ -10,6 +10,6 @@ import java.util.UUID;
 @Repository
 public interface PollRepository extends JpaRepository<Poll, UUID> {
 
-    Optional<Poll> findBySlideIdIs(String slideId);
+	Optional<Poll> findBySlideIdIs(String slideId);
 
 }

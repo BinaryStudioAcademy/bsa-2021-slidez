@@ -5,12 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -21,7 +18,7 @@ import java.util.UUID;
 @PrimaryKeyJoinColumn(name = "interactive_element_id", referencedColumnName = "id")
 public class Poll extends InteractiveElement {
 
-    private static final long serialVersionUID = 7364567818837L;
+	private static final long serialVersionUID = 7364567818837L;
 
 	@Column(name = "title", nullable = false)
 	private String title;

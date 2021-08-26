@@ -15,7 +15,7 @@ import java.util.UUID;
 @Table(name = "poll_answer")
 public class PollOption implements Serializable {
 
-    private static final long serialVersionUID = 637849887541003L;
+	private static final long serialVersionUID = 637849887541003L;
 
 	@Id
 	@GeneratedValue(generator = "UUID")

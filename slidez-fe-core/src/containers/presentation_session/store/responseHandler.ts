@@ -14,7 +14,6 @@ export const responseHandler =
         if (response.error || !response.data) {
             throw new Error(response.error || 'No data')
         }
-        console.log('AAAAAAAAAA')
         switch (response.data.type) {
             case SessionResponseType.snapshot:
                 const snapshot: SnapshotDto = <SnapshotDto>response.data.data

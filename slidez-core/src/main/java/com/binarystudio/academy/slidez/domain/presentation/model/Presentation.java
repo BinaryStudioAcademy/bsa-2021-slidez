@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -19,7 +20,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "presentation")
-public class Presentation {
+public class Presentation implements Serializable {
+
+	private static final long serialVersionUID = 90029876168982L;
 
 	@Id
 	@GeneratedValue(generator = "UUID")
@@ -34,7 +37,7 @@ public class Presentation {
 	private String link;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "presentation_id", nullable = false)
+	@JoinColumn(name = "presentation_id")
 	private Set<InteractiveElement> interactiveElements;
 
 	@OneToMany(mappedBy = "presentation")

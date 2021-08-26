@@ -143,8 +143,6 @@ export const presentationSessionSlice = createSlice({
                 state.snapshot = action.payload.snapshot
                 state.currentInteractiveElement =
                     action.payload.currentInteractiveElement
-                console.log(state.snapshot)
-                console.log(state.currentInteractiveElement)
             })
             .addCase(receiveSnapshot.fulfilled, (state, action) => {
                 state.snapshot = action.payload.snapshot

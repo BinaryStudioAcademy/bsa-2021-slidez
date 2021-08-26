@@ -1,11 +1,14 @@
 package com.binarystudio.academy.slidez.domain.poll;
 
+import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElementType;
 import com.binarystudio.academy.slidez.domain.poll.dto.CreatePollDto;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollDto;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollResponseDto;
 import com.binarystudio.academy.slidez.domain.poll.exception.PollNotFoundException;
 import com.binarystudio.academy.slidez.domain.poll.mapper.PollMapper;
 import com.binarystudio.academy.slidez.domain.poll.model.Poll;
+import com.binarystudio.academy.slidez.domain.poll.model.PollOption;
+import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class PollService {
@@ -53,9 +57,9 @@ public class PollService {
 		return pollRepository.findById(id);
 	}
 
-    public Optional<Poll> getBySlideId(String slideId) {
-        return pollRepository.findBySlideIdIs(slideId);
-    }
+	public Optional<Poll> getBySlideId(String slideId) {
+		return pollRepository.findBySlideIdIs(slideId);
+	}
 
 	public Optional<PollResponseDto> getPollDtoById(UUID id) {
 		Optional<Poll> pollOptional = pollRepository.findById(id);

@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -18,7 +19,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "\"user\"")
-public class User {
+public class User implements Serializable {
+
+	private static final long serialVersionUID = 8534574179312438520L;
 
 	@Id
 	@GeneratedValue(generator = "UUID")
