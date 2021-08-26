@@ -36,7 +36,9 @@ const EventPage: React.FC = () => {
     const connectionStatus = useAppSelector(selectConnectionStatus)
     const snapshot = useAppSelector(selectSnapshot)
 
-    const activePoll = snapshot?.polls.find((poll) => poll)
+    const activePoll = snapshot?.sessionInteractiveElements.find(
+        (sessionInteractiveElements) => sessionInteractiveElements
+    )
 
     const body = activePoll ? (
         <Poll poll={activePoll as any} />

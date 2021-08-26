@@ -23,7 +23,7 @@ function PollInput({ poll, link }: PollInputProps) {
     const [chosenOptionIndex, setChosenOptionIndex] = useState(-1)
     const dispatch = useAppDispatch()
 
-    const { id, name, options, answers } = poll
+    const { id, title, options, answers } = poll
 
     let totalVotes = answers.length
 
@@ -44,7 +44,7 @@ function PollInput({ poll, link }: PollInputProps) {
                 onClick={() => setChosenOptionIndex(index)}
             >
                 <div className='poll-input-option-circle'>{circle}</div>
-                <div className='poll-input-option-title'>{option.name}</div>
+                <div className='poll-input-option-title'>{option.title}</div>
             </div>
         )
     })
@@ -82,7 +82,7 @@ function PollInput({ poll, link }: PollInputProps) {
         return (
             <div className='poll'>
                 <div className='poll-header'>
-                    <div className='poll-name'>{name}</div>
+                    <div className='poll-name'>{title}</div>
                     <div className='poll-votes'>{totalVotes} votes</div>
                 </div>
                 <div className='poll-input-options'>{mappedOptions}</div>
@@ -114,7 +114,7 @@ function PollInput({ poll, link }: PollInputProps) {
     return (
         <div className='poll'>
             <div className='poll-header'>
-                <div className='poll-name'>{name}</div>
+                <div className='poll-name'>{title}</div>
                 <div className='poll-votes'>{totalVotes} votes</div>
             </div>
             <div className='poll-input-options'>{mappedOptions}</div>
