@@ -20,9 +20,9 @@ public class State {
 	public void addAnswerToThePoll(SessionPollAnswer pollAnswer) throws PollNotFoundException, BadOptionException {
 		sessionInteractiveElements.stream()
 				.filter(element -> Objects.equals(element.getClass(), SessionPoll.class)
-						&& Objects.equals(element.getId(), pollAnswer.getPollID()))
+						&& Objects.equals(element.getId(), pollAnswer.getPollId()))
 				.map(element -> (SessionPoll) element).findFirst().orElseThrow(() -> new PollNotFoundException(
-						String.format("Poll with id %s not found", pollAnswer.getPollID())))
+						String.format("Poll with id %s not found", pollAnswer.getPollId())))
 				.addAnswer(pollAnswer);
 	}
 

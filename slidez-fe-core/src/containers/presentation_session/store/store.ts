@@ -59,7 +59,10 @@ export const requestSnapshot = createAsyncThunk(
 
 export const receiveSnapshot = createAsyncThunk(
     'snapshot/received',
-    async (snapshot: SnapshotDto) => {  }
+    async (snapshot: SnapshotDto) => {
+        const out: PresentationSessionState = { ...initialState }
+        out.snapshot = snapshot
+    }
 )
 
 export const answerPoll = createAsyncThunk(
