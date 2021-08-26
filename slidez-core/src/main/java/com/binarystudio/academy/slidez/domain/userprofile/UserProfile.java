@@ -1,16 +1,15 @@
 package com.binarystudio.academy.slidez.domain.userprofile;
 
 import com.binarystudio.academy.slidez.domain.user.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -45,6 +44,13 @@ public class UserProfile {
 		this.updatedAt = now;
 		this.firstName = firstName;
 		this.lastName = lastName;
+	}
+
+	public UserProfile(User user) {
+		LocalDateTime now = LocalDateTime.now();
+		this.createdAt = now;
+		this.updatedAt = now;
+		this.user = user;
 	}
 
 }
