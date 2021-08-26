@@ -17,28 +17,22 @@ import {
 } from '../../containers/presentation_session/store/selectors'
 
 const EventPage: React.FC = () => {
-    // const { link } = useParams<{ link?: string }>()
-    //TODO: SESSION MUST NOT BE CREATED HERE
-    const link: string | undefined = useAppSelector(selectLink)
-    const [sentCreateSession, setSentCreateSession] = useState(false)
+    const { link } = useParams<{ link?: string }>()
     const [sentInitWsSession, setSentInitWsSession] = useState(false)
     const dispatch = useAppDispatch()
-    if (link === undefined && !sentCreateSession) {
-        const dto: CreatePresentationSessionDto = {
-            presentationId: 'ed60e789-ab15-4756-b95e-218b43b6dfff',
-        }
-        setSentCreateSession(true)
-        dispatch(createSessionForPresentation(dto))
-    }
     if (link !== undefined && !sentInitWsSession) {
         setSentInitWsSession(true)
         dispatch(initWebSocketSession(link))
     }
-    // useEffect(() => {
-    //     if (link) {
-    //         dispatch(initWebSocketSession(link))
-    //     }
-    // }, [])
+    //TODO: SESSION MUST NOT BE CREATED HERE
+    useEffect(() => {
+        if (link) {
+            const dto: CreatePresentationSessionDto = {
+                presentationId: 'ed60e789-ab15-4756-b95e-218b43b6dfff',
+            }
+            dispatch(createSessionForPresentation(dto))
+        }
+    }, [])
 
     const connectionStatus = useAppSelector(selectConnectionStatus)
     const snapshot = useAppSelector(selectSnapshot)
