@@ -1,81 +1,124 @@
-import React, { FC, useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import {
     faUser,
     faSignOutAlt,
     faTimes,
-    faTrash,
     faTrashAlt,
-    faTrashRestore,
-    faTrashRestoreAlt,
-    faEye,
-    faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { logout } from '../../containers/user/store'
-import { useAppDispatch } from '../../hooks'
+import { logout, selectError } from '../../containers/user/store'
+import { useAppDispatch, useAppSelector } from '../../hooks'
 import { LogInResponseDto } from '../../services/auth/dto/LogInResponseDto'
-
 import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
 import { createDefaultAxios } from 'slidez-shared/src/net/http/http-util'
-
-import { useDetectOutsideClick } from './useDetectOutsideClick'
 import './dashboard.scss'
-import '../update/update.scss'
+import './edit-profile/update.scss'
 import { ApiGateway } from '../../services/http/api-gateway'
 import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
 import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import { Formik, Form, Field } from 'formik'
-import * as Yup from 'yup'
-import { UserField } from '../update/Field'
-// import { revealPassword } from '../../common/components/forms/form-utils'
-import { MuiThemeProvider } from '@material-ui/core/styles'
-import { revealPassword } from '../../common/components/forms/form-utils'
+import { Formik, Form, Field, FormikErrors } from 'formik'
 
-interface User {
-    id: string
-    firstName: string
-    lastName: string
-    email: string
-    password: string
+import { revealPassword } from '../../common/components/forms/form-utils'
+import { UpdateProps } from './edit-profile/editProfileTypes'
+import { DropdownUserInfo } from './edit-profile/components/DropdownUserInfo'
+import FormUpdateUserData from './edit-profile/components/FormUpdateUserData'
+import FormUpdatePassword from './edit-profile/components/FormUpdatePassword'
+
+export interface User {
+    id: string | undefined
+    firstName: string | undefined
+    lastName: string | undefined
+    email: string | undefined
 }
 
-const UserProfile = () => {
+const initialValuesUserData: User = {
+    id: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+}
+
+export interface Password {
+    id: string | undefined
+    password: string
+    confirmPassword: string
+}
+
+const initialValuesPassword: Password = {
+    id: '',
+    password: '',
+    confirmPassword: '',
+}
+
+const UserProfile = ({
+    onUpdateUserProfile,
+    onUpdatePassword,
+}: UpdateProps) => {
     const JWT = 'jwt'
     const refreshJWT = 'refresh_jwt'
     const dispatch = useAppDispatch()
     const dropdownRef = useRef<HTMLInputElement>(null)
     const [token, setToken] = useState('')
-    const [userFirstName, setUserFirstName] = useState<string | undefined>('')
-    const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
-    const [userLastName, setUserLastName] = useState<string | undefined>('')
-    const [userEmail, setUserEmail] = useState<string | undefined>('')
+    const [isActive, setIsActive] = useState(false)
     const [logo, setLogo] = useState('')
     const [openEditProfile, setOpenEditProfile] = useState(false)
     const [isPasswordRevealed, setIsPasswordRevealed] = React.useState(false)
-
-    const handleClickOpen = () => {
-        setOpenEditProfile(true)
-    }
-
-    const handleClose = () => {
-        setOpenEditProfile(false)
-    }
+    const [isConfirmPasswordRevealed, setIsConfirmPasswordRevealed] =
+        React.useState(false)
+    const [viewErrors, setViewErrors] = React.useState(false)
+    const [userData, setUserData] = useState<User>(initialValuesUserData)
+    const [userPassword, setUserPassword] = useState<Password>(
+        initialValuesPassword
+    )
+    const [isUpdatedUserData, setIsUpdatedUserData] = useState(false)
 
     useEffect(() => {
-        if (token.length > 0) {
+        if (token.length > 0 && !isUpdatedUserData) {
             performLoginByToken()
-            handleLogo()
+            setIsUpdatedUserData(true)
             return
         }
         getAccessToken()
+        handleLogo()
     })
+
+    const onOpenEditDialog = () => {
+        setOpenEditProfile(true)
+        handleDropDown()
+    }
+
+    const onCloseEditDialog = () => {
+        setOpenEditProfile(false)
+    }
+
+    const onRevealPasswordClick = () => {
+        setIsPasswordRevealed(!isPasswordRevealed)
+        revealPassword('update-password-input')
+    }
+
+    const onRevealConfirmPasswordClick = () => {
+        setIsConfirmPasswordRevealed(!isConfirmPasswordRevealed)
+        revealPassword('update-confirmPassword-input')
+    }
+
+    const handleUpdateUserProfile = async (data: any) => {
+        onUpdateUserProfile(data)
+        setIsUpdatedUserData(false)
+    }
+
+    const handleUpdatePassword = async (
+        id: string | undefined,
+        password: string,
+        confirmPassword: string
+    ) => {
+        const pass: Password = {
+            id: id,
+            password: password,
+            confirmPassword: confirmPassword,
+        }
+        onUpdatePassword(pass)
+    }
 
     const handleDropDown = () => {
         setIsActive(!isActive)
@@ -90,7 +133,6 @@ const UserProfile = () => {
     }
 
     const sendAuthRequest = async (route: string, body: object = {}) => {
-        /*const axiosInstance = createDefaultAxios()
         const axiosInstance = createDefaultAxios(
             ApiGateway.REACT_APP_API_GATEWAY
         )
@@ -100,21 +142,21 @@ const UserProfile = () => {
             method: 'POST',
             data: JSON.stringify(body),
         })
-        */
     }
 
     const performDataRequest = async (url: string, dto: object) => {
-        return null
-        /* const { data } = await sendAuthRequest(url, dto)
+        const { data } = await sendAuthRequest(url, dto)
 
         const genericResponse: GenericResponse<LogInResponseDto, string> = data
         const userData = genericResponse.data.userDetailsDto
-        setUserFirstName(userData?.firstName)
-        setUserLastName(userData?.lastName)
-        setUserEmail(userData?.email)
-
+        const user: User = {
+            id: userData?.id,
+            email: userData?.email,
+            firstName: userData?.firstName,
+            lastName: userData?.lastName,
+        }
+        setUserData(user)
         return genericResponse
-        */
     }
 
     const performLoginByToken = async () => {
@@ -125,50 +167,17 @@ const UserProfile = () => {
     }
 
     const handleLogo = () => {
-        if (userFirstName && userLastName) {
+        if (userData.firstName && userData.lastName) {
             setLogo(
-                userFirstName.charAt(0).toUpperCase() +
-                    userLastName.charAt(0).toUpperCase()
+                userData.firstName.charAt(0).toUpperCase() +
+                    userData.lastName.charAt(0).toUpperCase()
             )
-        } else if (userEmail) {
+        } else if (userData.email) {
             setLogo(
-                userEmail.charAt(0).toUpperCase() +
-                    userEmail.charAt(1).toUpperCase()
+                userData.email.charAt(0).toUpperCase() +
+                    userData.email.charAt(1).toUpperCase()
             )
         }
-    }
-
-    const initialValues: User = {
-        id: '',
-        firstName: 'Natalia',
-        lastName: 'Li',
-        email: 'Nnata@gmail.com',
-        password: '',
-    }
-
-    const [userData, setUserData] = useState<User>(initialValues)
-
-    // const handleUserData = () => {
-    //     setUserData({
-    //         id: '',
-    //         firstName: userFirstName,
-    //         lastName: userLastName,
-    //         email: userEmail,
-    //         password: '',
-    //     })
-    // }
-
-    const handleInfoSubmit = (values: typeof userData) => {
-        console.log(values)
-    }
-
-    const handlePwdSubmit = (values: typeof userData) => {
-        console.log(values)
-    }
-
-    const onRevealClick = () => {
-        setIsPasswordRevealed(!isPasswordRevealed)
-        revealPassword('sign-in-password-input')
     }
 
     return (
@@ -183,20 +192,11 @@ const UserProfile = () => {
                         isActive ? 'active' : 'inactive'
                     }`}
                 >
-                    <div className='user-info'>
-                        <div className='avatar'> {logo} </div>
-                        <div>
-                            <div className='user-name'>
-                                {userFirstName}&nbsp;
-                                {userLastName}
-                            </div>
-                            <div className='user-email'> {userEmail} </div>
-                        </div>
-                    </div>
+                    <DropdownUserInfo logo={logo} userData={userData} />
                     <hr />
                     <div
                         className='user-profile-menu'
-                        onClick={() => handleClickOpen()}
+                        onClick={() => onOpenEditDialog()}
                     >
                         <FontAwesomeIcon className='user-icon' icon={faUser} />
                         <span className='user-profile-menu-name'>
@@ -204,16 +204,11 @@ const UserProfile = () => {
                         </span>
                     </div>
                     <Dialog
-                        // className='edit-profile-wrapper'
                         open={openEditProfile}
-                        onClose={handleClose}
+                        onClose={onCloseEditDialog}
                         aria-labelledby='form-dialog-title'
-                        // fullWidth={true}
                         maxWidth={false}
                     >
-                        {/* <DialogTitle id='form-dialog-title'>
-                            Edit profile
-                        </DialogTitle> */}
                         <div className='edit-profile'>
                             <DialogContent className='left-content'>
                                 <div className='side-btns'>
@@ -242,7 +237,10 @@ const UserProfile = () => {
                             </DialogContent>
                             <div className='verticalLine' />
                             <DialogContent className='right-content'>
-                                <Button className='close' onClick={handleClose}>
+                                <Button
+                                    className='close'
+                                    onClick={onCloseEditDialog}
+                                >
                                     <FontAwesomeIcon
                                         className='close-icon'
                                         icon={faTimes}
@@ -253,173 +251,30 @@ const UserProfile = () => {
                                     {logo}
                                 </div>
                                 <div className='form'>
-                                    <Formik
-                                        initialValues={userData}
-                                        validationSchema={Yup.object({
-                                            email: Yup.string()
-                                                .required('Required')
-                                                .email('Invalid email address')
-                                                .max(64),
-                                            firstName: Yup.string()
-                                                .required('Required')
-                                                .min(3)
-                                                .max(30),
-                                            lastName: Yup.string()
-                                                .required('Required')
-                                                .min(3)
-                                                .max(30),
-                                        })}
-                                        enableReinitialize={true}
-                                        onSubmit={(values) => {
-                                            handleInfoSubmit(values)
-                                        }}
-                                    >
-                                        {({ values }) => (
-                                            <Form className='form-body'>
-                                                <div
-                                                    className='form-inputs'
-                                                    contentEditable='true'
-                                                >
-                                                    {/* <h3>Profile info</h3> */}
-                                                    <div className='input-item'>
-                                                        <p>Email</p>
-                                                        <Field
-                                                            name='email'
-                                                            component={
-                                                                UserField
-                                                            }
-                                                            value={values.email}
-                                                        />
-                                                    </div>
-                                                    <div className='input-item'>
-                                                        <p>First Name</p>
-                                                        <Field
-                                                            name='firstName'
-                                                            component={
-                                                                UserField
-                                                            }
-                                                            value={
-                                                                values.firstName
-                                                            }
-                                                        />
-                                                    </div>
-                                                    <div className='input-item'>
-                                                        <p>Last Name</p>
-                                                        <Field
-                                                            name='lastName'
-                                                            component={
-                                                                UserField
-                                                            }
-                                                            value={
-                                                                values.lastName
-                                                            }
-                                                        />
-                                                    </div>
-                                                    <Button
-                                                        className='user-btn'
-                                                        type='submit'
-                                                        onClick={handleClose}
-                                                    >
-                                                        Save
-                                                    </Button>
-                                                </div>
-                                            </Form>
-                                        )}
-                                    </Formik>
-                                    <Formik
-                                        enableReinitialize={true}
-                                        initialValues={initialValues}
-                                        onSubmit={(values) => {
-                                            handlePwdSubmit(values)
-                                        }}
-                                    >
-                                        {({ values }) => (
-                                            <Form className='form-body'>
-                                                <div className='form-inputs'>
-                                                    <span className='title-change-password'>
-                                                        Change password
-                                                    </span>
-                                                    <div className='input-item'>
-                                                        <p>New password</p>
-                                                        <Field
-                                                            id='sign-in-password-input'
-                                                            // className={
-                                                            //     'form-input input-with-icon' +
-                                                            //     (viewErrors && errors.password
-                                                            //         ? ' error-input'
-                                                            //         : '')
-                                                            // }
-                                                            type='password'
-                                                            autoComplete='current-password'
-                                                            name='password'
-                                                            component={
-                                                                UserField
-                                                            }
-                                                            value={
-                                                                values.password
-                                                            }
-                                                        />
-                                                        {/* <FontAwesomeIcon
-                                                            className={`input-icon ${
-                                                                isPasswordRevealed
-                                                                    ? 'icon-eye'
-                                                                    : 'icon-eye-slash'
-                                                            }`}
-                                                            icon={
-                                                                isPasswordRevealed
-                                                                    ? faEye
-                                                                    : faEyeSlash
-                                                            }
-                                                            onClick={
-                                                                onRevealClick
-                                                            }
-                                                        /> */}
-                                                    </div>
-                                                    <div className='input-item'>
-                                                        <p>Confirm password</p>
-                                                        <Field
-                                                            name='confirmedPassword'
-                                                            component={
-                                                                UserField
-                                                            }
-                                                            value={''}
-                                                        />
-                                                    </div>
-                                                    <Button
-                                                        className='user-btn'
-                                                        type='submit'
-                                                    >
-                                                        Save
-                                                    </Button>
-                                                </div>
-                                            </Form>
-                                        )}
-                                    </Formik>
+                                    <FormUpdateUserData
+                                        userData={userData}
+                                        handleUpdateUserProfile={
+                                            handleUpdateUserProfile
+                                        }
+                                        onCloseEditDialog={onCloseEditDialog}
+                                        viewErrors={viewErrors}
+                                        setViewErrors={setViewErrors}
+                                    />
+                                    <FormUpdatePassword
+                                        initialValuesPassword={
+                                            initialValuesPassword
+                                        }
+                                        handleUpdatePassword={
+                                            handleUpdatePassword
+                                        }
+                                        userId={userData.id}
+                                        onCloseEditDialog={onCloseEditDialog}
+                                        viewErrors={viewErrors}
+                                        setViewErrors={setViewErrors}
+                                    />
                                 </div>
-
-                                {/* <DialogContentText>
-                                To subscribe to this website, please enter your
-                                email address here. We will send updates
-                                occasionally.
-                            </DialogContentText>
-                            <TextField
-                                autoFocus
-                                margin='dense'
-                                id='name'
-                                label='Email Address'
-                                type='email'
-                                fullWidth
-                            /> */}
                             </DialogContent>
                         </div>
-                        {/* <DialogActions>
-                            <Button onClick={handleClose} color='primary'>
-                                Cancel
-                            </Button>
-                            <Button onClick={handleClose} color='primary'>
-                                Subscribe
-                            </Button>
-                        </DialogActions> */}
                     </Dialog>
                     <div
                         className='user-profile-menu'
