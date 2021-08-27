@@ -12,7 +12,7 @@ import InteractiveWrapper from '../../common/components/interactive-elements/int
 import { CreatePresentationSessionDto } from '../../services/session/dto/CreatePresentationSessionDto'
 import {
     selectConnectionStatus,
-    selectCurrentInteractiveElement,
+    selectCurrentInteractiveElement, selectLink,
 } from '../../containers/session/store/selectors'
 import {
     createStartPollRequest,
@@ -32,7 +32,8 @@ const useEditorParams = () => {
 }
 
 const EventPage: React.FC = () => {
-    const { link } = useParams<{ link?: string }>()
+    // const { link } = useParams<{ link?: string }>()
+    const link = useAppSelector(selectLink)
     const dispatch = useAppDispatch()
     const { presentationId, slideId } = useEditorParams()
 

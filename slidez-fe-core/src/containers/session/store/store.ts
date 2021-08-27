@@ -20,6 +20,7 @@ export interface PresentationSessionState {
     error: string | undefined
     snapshot: SnapshotDto | undefined
     currentInteractiveElement: InteractiveElement | undefined
+    link: string | undefined
 }
 
 const initialState: PresentationSessionState = {
@@ -27,6 +28,7 @@ const initialState: PresentationSessionState = {
     error: undefined,
     snapshot: undefined,
     currentInteractiveElement: undefined,
+    link: undefined,
 }
 
 export const createSessionForPresentation = createAsyncThunk(
@@ -115,7 +117,9 @@ export const presentationSessionSlice = createSlice({
             })
             .addCase(
                 createSessionForPresentation.fulfilled,
-                (state, action) => {}
+                (state, action) => {
+                    state.link = action.payload.link
+                }
             )
             .addCase(receiveStartPoll.fulfilled, (state, action) => {
                 state.snapshot = action.payload.snapshot
