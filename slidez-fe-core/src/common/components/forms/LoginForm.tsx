@@ -41,7 +41,7 @@ const LoginErrors = ({
     } else if (loginError) {
         handleNotification(
             'Login Failed',
-            "Can't log in: email or password is invalid",
+            `The user cannot be authenticated with email ${formikErrors.email} and the provided password`,
             NotificationTypes.ERROR
         )
     } else if (formikErrors.email && formikErrors.password) {
