@@ -14,6 +14,9 @@ import {
 import { UserDetailsDto } from './dto/UserDetailsDto'
 import { TokenDto } from '../../services/auth/dto/TokenDto'
 import { CodeDto } from '../../services/auth/dto/CodeDto'
+import { editUserProfile, editPassword } from '../../services/user/user-service'
+import { UpdateProfileDto } from '../../services/user/dto/UpdateProfileDto'
+import { UpdatePasswordDto } from '../../services/user/dto/UpdatePasswordDto'
 
 export interface UserState {
     error?: string
@@ -35,6 +38,20 @@ export const register = createAsyncThunk(
     'user/register',
     async (dto: RegisterDto) => {
         return performRegister(dto)
+    }
+)
+
+export const updateUserProfile = createAsyncThunk(
+    'user/update-profile',
+    async (dto: UpdateProfileDto) => {
+        return editUserProfile(dto)
+    }
+)
+
+export const updatePassword = createAsyncThunk(
+    'user/update-password',
+    async (dto: UpdatePasswordDto) => {
+        return editPassword(dto)
     }
 )
 
@@ -77,6 +94,20 @@ export const userSlice = createSlice({
                 }
             })
             .addCase(register.fulfilled, (state, action) => {
+                state.error = action.payload.error
+                if (action.payload.userDetailsDto) {
+                    state.user = action.payload.userDetailsDto
+                    state.isLoggedIn = isLoggedIn()
+                }
+            })
+            .addCase(updateUserProfile.fulfilled, (state, action) => {
+                state.error = action.payload.error
+                if (action.payload.userDetailsDto) {
+                    state.user = action.payload.userDetailsDto
+                    state.isLoggedIn = isLoggedIn()
+                }
+            })
+            .addCase(updatePassword.fulfilled, (state, action) => {
                 state.error = action.payload.error
                 if (action.payload.userDetailsDto) {
                     state.user = action.payload.userDetailsDto
