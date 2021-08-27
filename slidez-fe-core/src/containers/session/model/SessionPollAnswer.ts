@@ -1,1 +1,4 @@
-export type SessionPollAnswer = {}
+export type SessionPollAnswer = {
+    pollId: string
+    optionId: string
+}

@@ -1,8 +1,8 @@
 import { SnapshotDto } from '../dto/SnapshotDto'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import * as SessionService from '../../../services/session/session-service'
-import { WsConnectionStatus } from '../enums/ws-connection-status'
 import { createPresentationSession } from '../../../services/session/session-service'
+import { WsConnectionStatus } from '../enums/ws-connection-status'
 import { responseHandler } from './responseHandler'
 import { InteractiveElement, PollDto } from '../dto/InteractiveElement'
 import {
@@ -12,6 +12,8 @@ import {
     StartPollRequest,
 } from '../event/FrontendEvent'
 import { CreatePresentationSessionDto } from '../../../services/session/dto/CreatePresentationSessionDto'
+import { SessionPollAnswer } from '../model/SessionPollAnswer'
+import { InteractiveElementType } from '../enums/InteractiveElementType'
 
 export interface PresentationSessionState {
     connectionStatus: string
@@ -69,7 +71,16 @@ export const receiveSnapshot = createAsyncThunk(
 
 export const answerPoll = createAsyncThunk(
     'poll/answer',
-    async (event: AnswerPollRequest) => {}
+    async (request: AnswerPollRequest) => {
+        SessionService.sendRequest(request.link, request.event)
+    }
+)
+
+export const receiveAnswerPoll = createAsyncThunk(
+    'poll/answer-received',
+    async (answer: SessionPollAnswer) => {
+        return answer
+    }
 )
 
 export const initWebSocketSession = createAsyncThunk(
@@ -110,13 +121,21 @@ export const presentationSessionSlice = createSlice({
                 state.snapshot = action.payload.snapshot
                 state.currentInteractiveElement =
                     action.payload.currentInteractiveElement
-                console.log(action.payload.snapshot)
-                console.log(action.payload.currentInteractiveElement)
             })
             .addCase(receiveSnapshot.fulfilled, (state, action) => {
                 state.snapshot = action.payload.snapshot
             })
-            .addCase(answerPoll.fulfilled, (state, action) => {})
+            .addCase(receiveAnswerPoll.fulfilled, (state, action) => {
+                if (
+                    state.currentInteractiveElement?.type ===
+                    InteractiveElementType.poll
+                ) {
+                    const poll: PollDto = <PollDto>(
+                        state.currentInteractiveElement
+                    )
+                    poll.answers.push(action.payload)
+                }
+            })
     },
 })
 

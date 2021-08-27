@@ -21,6 +21,8 @@ import {
     StartPollRequest,
 } from '../../containers/session/event/FrontendEvent'
 import { PollDto } from '../../containers/session/dto/InteractiveElement'
+import PollInput from '../../common/components/interactive-elements/poll/PollInput'
+import { InteractiveElementType } from '../../containers/session/enums/InteractiveElementType'
 
 const EventPage: React.FC = () => {
     const { link } = useParams<{ link?: string }>()
@@ -44,12 +46,12 @@ const EventPage: React.FC = () => {
     const connectionStatus = useAppSelector(selectConnectionStatus)
 
     const currentInteraction = useAppSelector(selectCurrentInteractiveElement)
-    console.log('curr: ' + currentInteraction)
-    const body = currentInteraction ? (
-        <Poll poll={currentInteraction as PollDto} />
-    ) : (
-        <>Waiting for an interaction to start...</>
-    )
+    const body =
+        currentInteraction?.type === InteractiveElementType.poll ? (
+            <PollInput poll={currentInteraction as PollDto} link={link || ''} />
+        ) : (
+            <>Waiting for an interaction to start...</>
+        )
     return (
         <div>
             {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
