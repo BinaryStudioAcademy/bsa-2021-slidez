@@ -1,10 +1,8 @@
 import { SnapshotDto } from '../dto/SnapshotDto'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import * as SessionService from '../../../services/session/session-servise'
+import * as SessionService from '../../../services/session/session-service'
 import { WsConnectionStatus } from '../enums/ws-connection-status'
-
-import { createPresentationSession } from '../../../services/session/session-servise'
-
+import { createPresentationSession } from '../../../services/session/session-service'
 import { responseHandler } from './responseHandler'
 import { InteractiveElement, PollDto } from '../dto/InteractiveElement'
 import {
