@@ -12,12 +12,12 @@ import {
 import SideBar from './SideBar'
 import './dashboard.scss'
 import { MOCK_DATA } from './mock-data'
-import { useDetectOutsideClick } from './useDetectOutsideClick'
 import { useAppDispatch } from '../../hooks'
-import { logout } from '../../containers/user/store'
-import { AppRoute } from '../../common/routes/app-route'
+import { updatePassword, updateUserProfile } from '../../containers/user/store'
 import UserProfile from './UserProfile'
 import table_sort from '../../../src/assets/svgs/table-sort.svg'
+import { UpdateProfileDto } from '../../services/user/dto/UpdateProfileDto'
+import { UpdatePasswordDto } from '../../services/user/dto/UpdatePasswordDto'
 
 const Dashboard = () => {
     const [currentView, setCurrentView] = useState('table')
@@ -25,6 +25,7 @@ const Dashboard = () => {
     const [searchField, setSearchField] = useState('')
     const [filteredPresentations, setFilteredPresentations] =
         useState(MOCK_DATA)
+    const dispatch = useAppDispatch()
 
     const handleToggleCurrentView = useCallback(() => {
         setCurrentView((view) => (view === 'table' ? 'grid' : 'table'))
@@ -113,6 +114,14 @@ const Dashboard = () => {
         setSearchField(e.target.value)
     }
 
+    const handleUpdateUserProfile = (dto: UpdateProfileDto) => {
+        dispatch(updateUserProfile(dto))
+    }
+
+    const handleUpdatePassword = (dto: UpdatePasswordDto) => {
+        dispatch(updatePassword(dto))
+    }
+
     return (
         <div className='dashboard-page'>
             <SideBar />
@@ -130,7 +139,10 @@ const Dashboard = () => {
                             onChange={handleChange}
                         />
                     </div>
-                    <UserProfile />
+                    <UserProfile
+                        onUpdateUserProfile={handleUpdateUserProfile}
+                        onUpdatePassword={handleUpdatePassword}
+                    />
                 </div>
                 <div className='presentations-section'>
                     <div className='above-section'>
