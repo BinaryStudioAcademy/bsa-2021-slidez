@@ -44,7 +44,6 @@ const EventPage: React.FC = () => {
     )
     console.log(snapshot)
     const eventName = 'Animate'
-    
     const body = activePoll ? (
         //deprecated module
         // <Poll poll={activePoll as any} />
