@@ -4,7 +4,7 @@ import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
 import { AxiosResponse } from 'axios'
 import { CreatePresentationSessionResponseDto } from './dto/CreatePresentationSessionResponseDto'
 
-const route = '/session/new'
+const route = '/sessions/new'
 
 export const createPresentationSession = async (
     dto: CreatePresentationSessionDto
