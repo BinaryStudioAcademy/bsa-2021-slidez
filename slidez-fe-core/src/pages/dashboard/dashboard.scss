@@ -91,6 +91,7 @@
 	.search-bar {
 		position: relative;
 		overflow: hidden;
+		border-radius: 50px;
 	}
 	.user-profile {
 		display: flex;
@@ -429,7 +430,7 @@ input[type="search"]::-webkit-search-cancel-button {
 	margin-right: 2px;
 	height: 30px;
 	width: 2em;
-	border-radius: 50em;
+	border-radius: 50px;
 	background:
 	url(../../assets/svgs/clear-text-in-search.svg) no-repeat 50% 50% ;
 	
