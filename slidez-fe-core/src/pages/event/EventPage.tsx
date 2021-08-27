@@ -12,7 +12,8 @@ import InteractiveWrapper from '../../common/components/interactive-elements/int
 import { CreatePresentationSessionDto } from '../../services/session/dto/CreatePresentationSessionDto'
 import {
     selectConnectionStatus,
-    selectCurrentInteractiveElement, selectLink,
+    selectCurrentInteractiveElement,
+    selectLink,
 } from '../../containers/session/store/selectors'
 import {
     createStartPollRequest,
@@ -40,12 +41,12 @@ const EventPage: React.FC = () => {
     console.log(presentationId, slideId)
 
     useEffect(() => {
+        const dto: CreatePresentationSessionDto = {
+            presentationId,
+        }
+        setTimeout(() => dispatch(createSessionForPresentation(dto)), 2000)
         if (link) {
             dispatch(initWebSocketSession(link))
-            const dto: CreatePresentationSessionDto = {
-                presentationId,
-            }
-            setTimeout(() => dispatch(createSessionForPresentation(dto)), 2000)
             const params: StartPollRequest = createStartPollRequest(
                 link,
                 slideId
