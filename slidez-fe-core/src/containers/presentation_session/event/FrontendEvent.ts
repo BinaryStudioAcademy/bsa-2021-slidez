@@ -1,7 +1,7 @@
 import { SessionPollAnswer } from '../model/SessionPollAnswer'
 import {
-    AnswerPollEvent,
     DomainEventType,
+    AnswerPollEvent,
     SnapshotEvent,
     StartPollEvent,
 } from './DomainEvent'
