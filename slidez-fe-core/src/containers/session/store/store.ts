@@ -37,7 +37,6 @@ export const createSessionForPresentation = createAsyncThunk(
 export const requestStartPoll = createAsyncThunk(
     'poll/start',
     async (params: StartPollRequest) => {
-        console.log('REQUESTED')
         SessionService.sendRequest(params.link, params.event)
     }
 )
@@ -45,7 +44,6 @@ export const requestStartPoll = createAsyncThunk(
 export const receiveStartPoll = createAsyncThunk(
     'poll/received',
     async (poll: PollDto) => {
-        console.log('RECEIVED')
         const out: PresentationSessionState = { ...initialState }
         out.snapshot?.sessionInteractiveElements.push(poll)
         out.currentInteractiveElement = poll

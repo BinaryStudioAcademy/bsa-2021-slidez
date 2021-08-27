@@ -24,32 +24,27 @@ import { PollDto } from '../../containers/session/dto/InteractiveElement'
 
 const EventPage: React.FC = () => {
     const { link } = useParams<{ link?: string }>()
-    const [sentInitWsSession, setSentInitWsSession] = useState(false)
     const dispatch = useAppDispatch()
-    if (link !== undefined && !sentInitWsSession) {
-        setSentInitWsSession(true)
-        dispatch(initWebSocketSession(link))
-    }
-    //TODO: SESSION MUST NOT BE CREATED HERE
+
     useEffect(() => {
         if (link) {
+            dispatch(initWebSocketSession(link))
             const dto: CreatePresentationSessionDto = {
                 presentationId: 'ed60e789-ab15-4756-b95e-218b43b6dfff',
             }
-            dispatch(createSessionForPresentation(dto))
+            setTimeout(() => dispatch(createSessionForPresentation(dto)), 2000)
             const params: StartPollRequest = createStartPollRequest(
                 link,
                 'lol_poll_id'
             )
-            setTimeout(() => dispatch(requestStartPoll(params)), 2000)
+            setTimeout(() => dispatch(requestStartPoll(params)), 3000)
         }
     }, [])
 
     const connectionStatus = useAppSelector(selectConnectionStatus)
-    const snapshot = useAppSelector(selectSnapshot)
 
     const currentInteraction = useAppSelector(selectCurrentInteractiveElement)
-    console.log(currentInteraction)
+    console.log('curr: ' + currentInteraction)
     const body = currentInteraction ? (
         <Poll poll={currentInteraction as PollDto} />
     ) : (

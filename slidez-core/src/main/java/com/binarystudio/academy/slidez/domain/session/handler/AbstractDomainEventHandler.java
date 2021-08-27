@@ -34,7 +34,7 @@ public abstract class AbstractDomainEventHandler implements DomainEventHandler {
 			PresentationEventStore presentationEventStore) {
 		final DomainEventHandler nextCopy = next;
 		if (nextCopy != null) {
-			nextCopy.handle(domainEvent, presentationEventStore);
+			return nextCopy.handle(domainEvent, presentationEventStore);
 		}
 		return null;
 	}
