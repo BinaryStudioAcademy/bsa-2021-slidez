@@ -8,13 +8,11 @@ import {
 } from '../../containers/session/store/store'
 import { WsConnectionStatus } from '../../containers/session/enums/ws-connection-status'
 import Loader from '../../common/components/loader/Loader'
-import Poll from '../../common/components/interactive-elements/poll/Poll'
 import InteractiveWrapper from '../../common/components/interactive-elements/interactive-wrapper/InteractiveWrapper'
 import { CreatePresentationSessionDto } from '../../services/session/dto/CreatePresentationSessionDto'
 import {
     selectConnectionStatus,
     selectCurrentInteractiveElement,
-    selectSnapshot,
 } from '../../containers/session/store/selectors'
 import {
     createStartPollRequest,
