@@ -1,0 +1,90 @@
+@import "src/global/global";
+
+.content {
+    margin: 30px;
+}
+.events-page {
+    margin-top: 80px;
+    .page-content {
+        .MuiFormControl-root {
+            width: 100%;
+        }
+        .question {
+            font-weight: 500;
+            font-size: 16px;
+            font-family: "Rubik";
+            line-height: 18px;
+            color: $black;
+            margin-bottom: 20px;
+        }
+
+        .radio-area {
+            display: flex;
+            flex-direction: column;
+            .radio-item {
+                background-color: $light-color;
+                display: flex;
+                height: 45px;
+                margin: 0;
+                font-size: 14px;
+                font-weight: 400;
+                margin-bottom: 15px;
+                border-radius: 5px;
+                .MuiTypography-body1 {
+                    font-family: "Rubik";
+                    font-weight: 400;
+                    font-size: 14px;
+                }
+
+                .MuiRadio-root {
+                    margin: 10px;
+                    width: 20px;
+                    height: 20px;
+                    color: $light-grey;
+                    background-color: $white;
+                }
+                .MuiRadio-colorSecondary.Mui-checked {
+                    color: $main-color;
+                }
+                &:hover {
+                    background-color: $light-grey;
+                }
+                &:checked {
+                    background-color: rgba(89, 208, 165, 0.4);
+                }
+            }
+            .PrivateSwitchBase-input-4 {
+                color: white;
+            }
+        }
+        .btn-submit {
+            font-family: "Rubik";
+            width: 100%;
+            height: 45px;
+            border: none;
+            border-radius: 25px;
+            color: $white;
+            font-weight: 500;
+            font-size: 16px;
+        }
+    }
+
+    .error-content {
+        color: $black;
+        font-weight: 500;
+        font-size: 16px;
+        text-align: center;
+        margin: 20px;
+        margin-top: 170px;
+    }
+}
+
+@media (max-width: 750px) {
+    .events-page {
+        margin: 15px;
+        margin-top: 80px;
+    }
+    .content{
+        margin: 15px;
+    }
+}

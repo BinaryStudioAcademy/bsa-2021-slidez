@@ -14,6 +14,9 @@ import {
     selectConnectionStatus,
     selectSnapshot,
 } from '../../containers/presentation_session/store/selectors'
+import ParticipantView from './ParticipantView'
+import NoEvent from './NoEventPage'
+import Header from '../participant-page/Header'
 
 const EventPage: React.FC = () => {
     const { link } = useParams<{ link?: string }>()
@@ -40,17 +43,28 @@ const EventPage: React.FC = () => {
         (sessionInteractiveElements) => sessionInteractiveElements
     )
     console.log(snapshot)
+    const eventName = 'Animate'
+    
     const body = activePoll ? (
-        <Poll poll={activePoll as any} />
+        //deprecated module
+        // <Poll poll={activePoll as any} />
+        <div className='content'>
+            <Header eventName={eventName} />
+            <ParticipantView />
+        </div>
     ) : (
-        <>Waiting for an interaction to start...</>
+        <div>
+            <Header eventName='' />
+            <NoEvent />
+        </div>
     )
     return (
         <div>
             {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
-            <InteractiveWrapper eventCode={link || ''}>
-                {body}
-            </InteractiveWrapper>
+            {/* deprecated */}
+            {/* <InteractiveWrapper eventCode={link || ''}> */}
+            {body}
+            {/* </InteractiveWrapper> */}
         </div>
     )
 }
