@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import {
@@ -35,6 +35,8 @@ const useEditorParams = () => {
 
 const EventPage: React.FC = () => {
     const link = useAppSelector(selectLink)
+    //TODO: Delete this
+    const [startedPoll, setStartedPoll] = useState(false)
     const dispatch = useAppDispatch()
     const { presentationLink, slideId } = useEditorParams()
 
@@ -45,17 +47,19 @@ const EventPage: React.FC = () => {
             presentationLink: presentationLink,
         }
         dispatch(createSessionForPresentation(dto))
-        setTimeout(() => {
-            if (link) {
-                dispatch(initWebSocketSession(link))
-                const params: StartPollRequest = createStartPollRequest(
-                    link,
-                    slideId
-                )
-                setTimeout(() => dispatch(requestStartPoll(params)), 3000)
-            }
-        }, 4000)
     }, [])
+
+    setTimeout(() => {
+        if (link && !startedPoll) {
+            setStartedPoll(true)
+            dispatch(initWebSocketSession(link))
+            const params: StartPollRequest = createStartPollRequest(
+                link,
+                slideId
+            )
+            setTimeout(() => dispatch(requestStartPoll(params)), 3000)
+        }
+    }, 3000)
 
     const connectionStatus = useAppSelector(selectConnectionStatus)
 
