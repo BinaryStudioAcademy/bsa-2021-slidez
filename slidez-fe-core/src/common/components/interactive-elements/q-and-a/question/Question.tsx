@@ -1,17 +1,17 @@
 import React from 'react'
 import Avatar from 'react-avatar'
-import './question.scss'
+import '../styles.qa.scss'
 import '../../../../../global/styles.scss'
+import user from '../../../../../assets/svgs/user.svg'
 
 export type QuestionProps = {
     avatarUrl: string | undefined
     firstName: string | undefined
     question: string
 }
-// TODO: add upvote count and icon
 export const Question = (questionProps: QuestionProps) => {
     const getName = () => {
-        return questionProps.firstName ? questionProps.firstName : 'Anonimus'
+        return questionProps.firstName ? questionProps.firstName : 'Anonymous'
     }
 
     return (
@@ -25,7 +25,13 @@ export const Question = (questionProps: QuestionProps) => {
                 />
                 {getName()}
             </div>
-            <div className='question'>{questionProps.question}</div>
+            <div className='row-content'>
+                <div className='question'>{questionProps.question}</div>
+                <div className='like'>
+                    <img src={user} alt='user' />
+                    {14}
+                </div>
+            </div>
             <div className='separator' />
         </div>
     )
