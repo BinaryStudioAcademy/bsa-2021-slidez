@@ -10,7 +10,6 @@ import Editor from './pages/editor/Editor'
 import ReduxToastr from 'react-redux-toastr'
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
 import ParticipantPage from './pages/participant-page/ParticipantPage'
-import UpdatePage from './pages/update/UpdatePage'
 import { log } from 'slidez-shared'
 
 log()
@@ -35,11 +34,6 @@ function App() {
                     <Route
                         path={AppRoute.PARTICIPANT}
                         component={ParticipantPage}
-                    />
-                    <PrivateRoute
-                        exact
-                        path={AppRoute.UPDATE_USER}
-                        component={UpdatePage}
                     />
                     <Route exact strict path={AppRoute.ANY}>
                         <Redirect to={AppRoute.LOGIN} />
