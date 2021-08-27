@@ -49,6 +49,10 @@ public class PresentationService {
 		return presentationRepository.findById(id);
 	}
 
+	public Optional<Presentation> getByLink(String id) {
+	    return presentationRepository.findByLink(id);
+    }
+
 	public Presentation update(PresentationUpdateDto dto) {
 		presentationRepository.update(dto);
 		return presentationRepository.getById(dto.getId());

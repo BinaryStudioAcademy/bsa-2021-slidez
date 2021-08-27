@@ -64,9 +64,9 @@ public class SessionService {
 		return Optional.empty();
 	}
 
-	private Session createForPresentation(UUID presentationId, int linkLeaseDuration)
+	private Session createForPresentation(String presentationId, int linkLeaseDuration)
 			throws PresentationNotFoundException {
-		Optional<Presentation> presentationOptional = presentationService.get(presentationId);
+		Optional<Presentation> presentationOptional = presentationService.getByLink(presentationId);
 		if (presentationOptional.isEmpty()) {
 			throw new PresentationNotFoundException(
 					String.format("Not found presentation with id = %s", presentationId));

@@ -91,8 +91,15 @@ class CurrentSlideWatcher {
             return
         }
 
+        const idRegex = /presentation\/d\/([\d\w_\.\-]+)\/edit/
+        const presentationId = window.location.href.match(idRegex)?.[1] ?? ''
+
         ReactDOM.render(
-            <SlideIframe sourceUrl={`http://localhost:3000/#/event/aaaaaa`} />,
+            <SlideIframe
+                sourceUrl={`http://localhost:3000/#/event/aaaaaa`}
+                slideId={this.currentSlideId}
+                presentationId={presentationId}
+            />,
             svgContainer
         )
     }

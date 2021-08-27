@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import {
     createSessionForPresentation,
@@ -22,20 +22,32 @@ import { PollDto } from '../../containers/session/dto/InteractiveElement'
 import PollInput from '../../common/components/interactive-elements/poll/PollInput'
 import { InteractiveElementType } from '../../containers/session/enums/InteractiveElementType'
 
+const useEditorParams = () => {
+    const params = new URLSearchParams(useLocation().search)
+
+    return {
+        presentationId: params.get('presentationId') ?? '',
+        slideId: params.get('slideId') ?? '',
+    }
+}
+
 const EventPage: React.FC = () => {
     const { link } = useParams<{ link?: string }>()
     const dispatch = useAppDispatch()
+    const { presentationId, slideId } = useEditorParams()
+
+    console.log(presentationId, slideId)
 
     useEffect(() => {
         if (link) {
             dispatch(initWebSocketSession(link))
             const dto: CreatePresentationSessionDto = {
-                presentationId: 'ed60e789-ab15-4756-b95e-218b43b6dfff',
+                presentationId,
             }
             setTimeout(() => dispatch(createSessionForPresentation(dto)), 2000)
             const params: StartPollRequest = createStartPollRequest(
                 link,
-                'lol_poll_id'
+                slideId
             )
             setTimeout(() => dispatch(requestStartPoll(params)), 3000)
         }

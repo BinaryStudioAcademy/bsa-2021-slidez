@@ -7,6 +7,7 @@ import java.util.UUID;
 @Data
 public class CreateSessionRequestDto {
 
-	private UUID presentationId;
+    //TODO: Rename to link
+	private String presentationId;
 
 }
