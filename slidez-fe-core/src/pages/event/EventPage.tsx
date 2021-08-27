@@ -16,8 +16,11 @@ import {
     selectCurrentInteractiveElement,
     selectSnapshot,
 } from '../../containers/session/store/selectors'
-import { StartPollRequest } from '../../containers/session/event/FrontendEvent'
-import { DomainEventType } from '../../containers/session/event/DomainEvent'
+import {
+    createStartPollRequest,
+    StartPollRequest,
+} from '../../containers/session/event/FrontendEvent'
+import { PollDto } from '../../containers/session/dto/InteractiveElement'
 
 const EventPage: React.FC = () => {
     const { link } = useParams<{ link?: string }>()
@@ -34,13 +37,10 @@ const EventPage: React.FC = () => {
                 presentationId: 'ed60e789-ab15-4756-b95e-218b43b6dfff',
             }
             dispatch(createSessionForPresentation(dto))
-            const params: StartPollRequest = {
-                link: link,
-                event: {
-                    type: DomainEventType.startPollEvent,
-                    slideId: 'lol_slide_id',
-                },
-            }
+            const params: StartPollRequest = createStartPollRequest(
+                link,
+                'lol_poll_id'
+            )
             setTimeout(() => dispatch(requestStartPoll(params)), 2000)
         }
     }, [])
@@ -49,9 +49,9 @@ const EventPage: React.FC = () => {
     const snapshot = useAppSelector(selectSnapshot)
 
     const currentInteraction = useAppSelector(selectCurrentInteractiveElement)
-    console.log(snapshot)
+    console.log(currentInteraction)
     const body = currentInteraction ? (
-        <Poll poll={currentInteraction as any} />
+        <Poll poll={currentInteraction as PollDto} />
     ) : (
         <>Waiting for an interaction to start...</>
     )

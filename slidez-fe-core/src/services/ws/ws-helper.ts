@@ -21,13 +21,12 @@ export const WsHelper = (() => {
 
     const _start = AbstractXHRObject.prototype._start
 
-    debugger
-    AbstractXHRObject.prototype._start = (
+    AbstractXHRObject.prototype._start = function (
         method: any,
         url: any,
         payload: any,
         opts: { noCredentials: boolean }
-    ) => {
+    ) {
         if (!opts) {
             opts = { noCredentials: true }
         }

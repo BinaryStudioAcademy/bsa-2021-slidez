@@ -9,7 +9,7 @@ import { WsEndpoint } from '../ws/ws-endpoint'
 import { Message } from 'webstomp-client'
 import { DomainEvent } from '../../containers/session/event/DomainEvent'
 
-const route = '/session/new'
+const route = '/sessions/new'
 
 export const createPresentationSession = async (
     dto: CreatePresentationSessionDto

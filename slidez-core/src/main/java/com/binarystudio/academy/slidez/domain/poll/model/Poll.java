@@ -46,7 +46,7 @@ public class Poll extends InteractiveElement {
 	@JoinColumn(name = "owner_id")
 	private User owner;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinColumn(name = "poll_id", referencedColumnName = "id", nullable = false)
 	private List<PollOption> options = new ArrayList<>();
 
