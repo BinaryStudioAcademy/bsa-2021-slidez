@@ -22,15 +22,15 @@ public class Quiz extends InteractiveElement {
 
 	private static final long serialVersionUID = 90029876168982L;
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", columnDefinition = "uuid", updatable = false, nullable = false)
-    private UUID id;
+	@Id
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(name = "id", columnDefinition = "uuid", updatable = false, nullable = false)
+	private UUID id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "interactive_element_id")
-    private InteractiveElement interactiveElement;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "interactive_element_id")
+	private InteractiveElement interactiveElement;
 
 	@Column(name = "title")
 	private String title;
@@ -41,15 +41,16 @@ public class Quiz extends InteractiveElement {
 	@Column(name = "is_template")
 	private Boolean isTemplate;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private User owner;
+	@ManyToOne
+	@JoinColumn(name = "owner_id")
+	private User owner;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "quiz_id", referencedColumnName = "id", nullable = false)
 	private List<QuizAnswer> quizAnswers = new ArrayList<>();
 
-    public Quiz() {
-        super.setType(InteractiveElementType.QUIZ);
-    }
+	public Quiz() {
+		super.setType(InteractiveElementType.QUIZ);
+	}
+
 }

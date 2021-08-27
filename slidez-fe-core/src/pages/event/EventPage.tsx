@@ -7,16 +7,16 @@ import {
     initWebSocketSession,
     requestStartPoll,
     RequestStartPollParams,
-} from '../../containers/presentation_session/store/store'
-import { WsConnectionStatus } from '../../containers/presentation_session/enums/ws-connection-status'
+} from '../../containers/session/store/store'
+import { WsConnectionStatus } from '../../containers/session/enums/ws-connection-status'
 import Loader from '../../common/components/loader/Loader'
 import Poll from '../../common/components/interactive-elements/poll/Poll'
 import InteractiveWrapper from '../../common/components/interactive-elements/interactive-wrapper/InteractiveWrapper'
-import { CreatePresentationSessionDto } from '../../services/presentation-session/dto/CreatePresentationSessionDto'
+import { CreatePresentationSessionDto } from '../../services/session/dto/CreatePresentationSessionDto'
 import {
     selectConnectionStatus,
     selectSnapshot,
-} from '../../containers/presentation_session/store/selectors'
+} from '../../containers/session/store/selectors'
 
 const EventPage: React.FC = () => {
     const { link } = useParams<{ link?: string }>()

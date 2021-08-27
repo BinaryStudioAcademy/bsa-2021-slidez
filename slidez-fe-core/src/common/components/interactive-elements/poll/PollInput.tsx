@@ -1,7 +1,7 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
-import { PollDto } from '../../../../containers/presentation_session/dto/InteractiveElement'
+import { PollDto } from '../../../../containers/session/dto/InteractiveElement'
 import Poll from './Poll'
 import './PollInput.scss'
 import { faCircle, faDotCircle } from '@fortawesome/free-regular-svg-icons'
@@ -9,8 +9,8 @@ import { useAppDispatch } from '../../../../hooks'
 import {
     AnswerPollEvent,
     DomainEventType,
-} from '../../../../containers/presentation_session/event/DomainEvent'
-import { answerPoll } from '../../../../containers/presentation_session/store/store'
+} from '../../../../containers/session/event/DomainEvent'
+import { answerPoll } from '../../../../containers/session/store/store'
 
 type PollInputProps = {
     poll: PollDto

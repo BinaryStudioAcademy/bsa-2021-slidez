@@ -1,17 +1,19 @@
 import { SnapshotDto } from '../dto/SnapshotDto'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import * as WebSocketService from '../../../services/ws/ws-service'
+import * as SessionService from '../../../services/session/session-servise'
 import { WsConnectionStatus } from '../enums/ws-connection-status'
-import { CreatePresentationSessionDto } from '../../../services/presentation-session/dto/CreatePresentationSessionDto'
-import { createPresentationSession } from '../../../services/presentation-session/presentation-session-servise'
-import { AnswerPollEvent } from '../event/DomainEvent'
+
+import { createPresentationSession } from '../../../services/session/session-servise'
+
 import { responseHandler } from './responseHandler'
 import { InteractiveElement, PollDto } from '../dto/InteractiveElement'
 import {
+    AnswerPollRequest,
     createSnapshotRequest,
     SnapshotRequest,
     StartPollRequest,
 } from '../event/FrontendEvent'
+import { CreatePresentationSessionDto } from '../../../services/session/dto/CreatePresentationSessionDto'
 
 export interface PresentationSessionState {
     connectionStatus: string
@@ -28,7 +30,7 @@ const initialState: PresentationSessionState = {
 }
 
 export const createSessionForPresentation = createAsyncThunk(
-    'presentationSession/create',
+    'sessions/create',
     async (dto: CreatePresentationSessionDto) => {
         return await createPresentationSession(dto)
     }
@@ -36,8 +38,8 @@ export const createSessionForPresentation = createAsyncThunk(
 
 export const requestStartPoll = createAsyncThunk(
     'poll/start',
-    async (request: StartPollRequest) => {
-        WebSocketService.sendRequest(request.link, request.event)
+    async (params: StartPollRequest) => {
+        SessionService.sendRequest(params.link, params.event)
     }
 )
 
@@ -53,8 +55,8 @@ export const receiveStartPoll = createAsyncThunk(
 
 export const requestSnapshot = createAsyncThunk(
     'snapshot/get',
-    async (request: SnapshotRequest) => {
-        WebSocketService.sendRequest(request.link, request.event)
+    async (params: SnapshotRequest) => {
+        SessionService.sendRequest(params.link, params.event)
     }
 )
 
@@ -69,7 +71,7 @@ export const receiveSnapshot = createAsyncThunk(
 
 export const answerPoll = createAsyncThunk(
     'poll/answer',
-    async (event: AnswerPollEvent) => {}
+    async (event: AnswerPollRequest) => {}
 )
 
 export const initWebSocketSession = createAsyncThunk(
@@ -83,7 +85,7 @@ export const initWebSocketSession = createAsyncThunk(
         }
         const onResponse = responseHandler(dispatch)
 
-        await WebSocketService.connectToInteractiveEvents(
+        await SessionService.connectToInteractiveEvents(
             link,
             onConnectionSuccess,
             onResponse
