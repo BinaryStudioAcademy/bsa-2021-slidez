@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class SessionService {
@@ -55,7 +54,7 @@ public class SessionService {
 
 	public Optional<CreateSessionResponseDto> create(CreateSessionRequestDto dto, int leaseDuration)
 			throws IncorrectLeaseDurationException {
-		Session session = createForPresentation(dto.getPresentationId(), leaseDuration);
+		Session session = createForPresentation(dto.getPresentationLink(), leaseDuration);
 		String shortcode = session.getLink().getCode();
 		PresentationEventStore presentationEventStore = new PresentationEventStore();
 		if (inMemoryPresentationEventStoreRepository.add(shortcode, presentationEventStore)) {
@@ -64,12 +63,12 @@ public class SessionService {
 		return Optional.empty();
 	}
 
-	private Session createForPresentation(String presentationId, int linkLeaseDuration)
+	private Session createForPresentation(String presentationLink, int linkLeaseDuration)
 			throws PresentationNotFoundException {
-		Optional<Presentation> presentationOptional = presentationService.getByLink(presentationId);
+		Optional<Presentation> presentationOptional = presentationService.getByLink(presentationLink);
 		if (presentationOptional.isEmpty()) {
 			throw new PresentationNotFoundException(
-					String.format("Not found presentation with id = %s", presentationId));
+					String.format("Not found presentation with link = %s", presentationLink));
 		}
 		Session session = new Session(presentationOptional.get());
 		Link link = linkService.leaseLink(linkLeaseDuration);

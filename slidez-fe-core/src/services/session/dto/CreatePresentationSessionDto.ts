@@ -1,3 +1,3 @@
 export interface CreatePresentationSessionDto {
-    presentationId: string
+    presentationLink: string
 }

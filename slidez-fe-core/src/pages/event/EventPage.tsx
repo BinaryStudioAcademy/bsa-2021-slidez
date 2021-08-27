@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import {
     createSessionForPresentation,
@@ -26,33 +26,35 @@ import { InteractiveElementType } from '../../containers/session/enums/Interacti
 const useEditorParams = () => {
     const params = new URLSearchParams(useLocation().search)
 
+    //TODO: This are hardcoded developer-specific values
     return {
-        presentationId: params.get('presentationId') ?? '',
-        slideId: params.get('slideId') ?? '',
+        presentationLink: params.get('presentationId') ?? 'fffffff',
+        slideId: params.get('slideId') ?? 'lol_poll_id',
     }
 }
 
 const EventPage: React.FC = () => {
-    // const { link } = useParams<{ link?: string }>()
     const link = useAppSelector(selectLink)
     const dispatch = useAppDispatch()
-    const { presentationId, slideId } = useEditorParams()
+    const { presentationLink, slideId } = useEditorParams()
 
-    console.log(presentationId, slideId)
+    console.log(presentationLink, slideId)
 
     useEffect(() => {
         const dto: CreatePresentationSessionDto = {
-            presentationId,
+            presentationLink: presentationLink,
         }
-        setTimeout(() => dispatch(createSessionForPresentation(dto)), 2000)
-        if (link) {
-            dispatch(initWebSocketSession(link))
-            const params: StartPollRequest = createStartPollRequest(
-                link,
-                slideId
-            )
-            setTimeout(() => dispatch(requestStartPoll(params)), 3000)
-        }
+        dispatch(createSessionForPresentation(dto))
+        setTimeout(() => {
+            if (link) {
+                dispatch(initWebSocketSession(link))
+                const params: StartPollRequest = createStartPollRequest(
+                    link,
+                    slideId
+                )
+                setTimeout(() => dispatch(requestStartPoll(params)), 3000)
+            }
+        }, 4000)
     }, [])
 
     const connectionStatus = useAppSelector(selectConnectionStatus)
