@@ -1,5 +1,7 @@
 import SockJS from 'sockjs-client'
 import Stomp, { Client, Message, Subscription } from 'webstomp-client'
+// @ts-ignore
+import AbstractXHRObject from 'sockjs-client/lib/transport/browser/abstract-xhr'
 
 export interface WsHelper {
     send: (stompSendDestination: string, message: object) => void
@@ -16,6 +18,21 @@ export const WsHelper = (() => {
 
     let socket: WebSocket | undefined = undefined
     let stompClient: Client | undefined = undefined
+
+    const _start = AbstractXHRObject.prototype._start
+
+    debugger
+    AbstractXHRObject.prototype._start = (
+        method: any,
+        url: any,
+        payload: any,
+        opts: { noCredentials: boolean }
+    ) => {
+        if (!opts) {
+            opts = { noCredentials: true }
+        }
+        return _start.call(this, method, url, payload, opts)
+    }
 
     const send = (stompSendDestination: string, message: object = {}) => {
         if (stompClient && stompClient.connected) {

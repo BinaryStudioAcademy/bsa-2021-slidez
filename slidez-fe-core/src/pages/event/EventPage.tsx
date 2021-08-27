@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import {
-    createRequestStartPollParams,
     createSessionForPresentation,
     initWebSocketSession,
     requestStartPoll,
-    RequestStartPollParams,
 } from '../../containers/session/store/store'
 import { WsConnectionStatus } from '../../containers/session/enums/ws-connection-status'
 import Loader from '../../common/components/loader/Loader'
@@ -15,8 +13,11 @@ import InteractiveWrapper from '../../common/components/interactive-elements/int
 import { CreatePresentationSessionDto } from '../../services/session/dto/CreatePresentationSessionDto'
 import {
     selectConnectionStatus,
+    selectCurrentInteractiveElement,
     selectSnapshot,
 } from '../../containers/session/store/selectors'
+import { StartPollRequest } from '../../containers/session/event/FrontendEvent'
+import { DomainEventType } from '../../containers/session/event/DomainEvent'
 
 const EventPage: React.FC = () => {
     const { link } = useParams<{ link?: string }>()
@@ -33,10 +34,13 @@ const EventPage: React.FC = () => {
                 presentationId: 'ed60e789-ab15-4756-b95e-218b43b6dfff',
             }
             dispatch(createSessionForPresentation(dto))
-            const params: RequestStartPollParams = createRequestStartPollParams(
-                link,
-                'lol_poll_id'
-            )
+            const params: StartPollRequest = {
+                link: link,
+                event: {
+                    type: DomainEventType.startPollEvent,
+                    slideId: 'lol_slide_id',
+                },
+            }
             setTimeout(() => dispatch(requestStartPoll(params)), 2000)
         }
     }, [])
@@ -44,12 +48,10 @@ const EventPage: React.FC = () => {
     const connectionStatus = useAppSelector(selectConnectionStatus)
     const snapshot = useAppSelector(selectSnapshot)
 
-    const activePoll = snapshot?.sessionInteractiveElements.find(
-        (sessionInteractiveElements) => sessionInteractiveElements
-    )
+    const currentInteraction = useAppSelector(selectCurrentInteractiveElement)
     console.log(snapshot)
-    const body = activePoll ? (
-        <Poll poll={activePoll as any} />
+    const body = currentInteraction ? (
+        <Poll poll={currentInteraction as any} />
     ) : (
         <>Waiting for an interaction to start...</>
     )

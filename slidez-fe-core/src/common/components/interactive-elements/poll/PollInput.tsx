@@ -55,14 +55,14 @@ function PollInput({ poll, link }: PollInputProps) {
         }
         if (!voteSubmitted) {
             // post to db
-            const answerPollEvent: AnswerPollEvent = {
-                type: DomainEventType.answerPollEvent,
-                pollAnswer: {
-                    pollId: id,
-                    optionId: options[chosenOptionIndex].id,
-                },
-            }
-            dispatch(answerPoll(answerPollEvent))
+            // const answerPollEvent: AnswerPollEvent = {
+            //     type: DomainEventType.answerPollEvent,
+            //     pollAnswer: {
+            //         pollId: id,
+            //         optionId: options[chosenOptionIndex].id,
+            //     },
+            // }
+            // dispatch(answerPoll(answerPollEvent))
             setVoteSubmitted(true)
         } else {
             // update existing in db

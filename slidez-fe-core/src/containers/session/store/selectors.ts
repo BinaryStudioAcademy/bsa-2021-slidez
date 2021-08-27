@@ -5,3 +5,6 @@ export const selectConnectionStatus = (state: RootState) =>
 
 export const selectSnapshot = (state: RootState) =>
     state.presentationSession.snapshot
+
+export const selectCurrentInteractiveElement = (state: RootState) =>
+    state.presentationSession.currentInteractiveElement
