@@ -1,29 +1,44 @@
 import React from 'react'
-import './q-and-a.scss'
+import './styles.qa.scss'
 import { QandAHeader } from './header/QandAHeader'
 import { Question, QuestionProps } from './question/Question'
 import { v4 as uuidv4 } from 'uuid'
 
 const data: QuestionProps[] = [
     {
-        question: 'Hi are you?',
+        question:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo, velit adipiscing tellus lectus rhoncus?',
         avatarUrl:
             'https://resizing.flixster.com/kr0IphfLGZqni5JOWDS2P1-zod4=/280x250/v1.cjs0OTQ2NztqOzE4NDk1OzEyMDA7MjgwOzI1MA',
-        firstName: 'Ruth',
+        firstName: 'Gretchen',
     },
     {
-        question: 'What is the weather like today?',
+        question: 'Commodo, velit adipiscing tellus lectus rhoncus?',
         avatarUrl:
             'https://resizing.flixster.com/EVAkglctn7E9B0hVKJrueplabuQ=/220x196/v1.cjs0NjYwNjtqOzE4NDk1OzEyMDA7MjIwOzE5Ng',
-        firstName: 'Wendy',
+        firstName: 'Carter',
     },
     {
-        question: 'What time is it now?',
+        question:
+            'Tempor faucibus justo purus netus amet est. Cursus feugiat urna quis ultrices at urna?',
         avatarUrl: undefined,
-        firstName: 'Helen',
+        firstName: 'Erin',
     },
     {
-        question: 'Who am I?',
+        question:
+            'Sapien, nec nulla quis augue est. Orci euismod praesent lobortis pellentesque. Odio integer arcu tortor, vitae vel, purus amet urna, fringilla?',
+        avatarUrl: undefined,
+        firstName: 'Martin',
+    },
+    {
+        question:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo, velit adipiscing tellus lectus rhoncus?',
+        avatarUrl:
+            'https://resizing.flixster.com/kr0IphfLGZqni5JOWDS2P1-zod4=/280x250/v1.cjs0OTQ2NztqOzE4NDk1OzEyMDA7MjgwOzI1MA',
+        firstName: 'Gretchen',
+    },
+    {
+        question: 'Commodo, velit adipiscing tellus lectus rhoncus?',
         avatarUrl: undefined,
         firstName: undefined,
     },
