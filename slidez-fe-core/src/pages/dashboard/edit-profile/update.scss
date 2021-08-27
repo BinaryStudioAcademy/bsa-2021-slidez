@@ -1,7 +1,4 @@
 @import "src/global/global";
-* {
-    // font-family: "Work Sans";
-}
 
 .user-profile {
     display: flex;
@@ -22,27 +19,26 @@
         }
     }
 }
-.edit-profile-wrapper {
-    max-width: 874px;
-}
+
 .MuiDialog-paper {
     margin: 32px;
     position: relative;
     overflow-y: auto;
     border-radius: 15px;
 }
+
+.MuiDialog-paperScrollPaper {
+    display: flex !important; 
+    max-height: calc(100% - 64px) !important;
+    flex-direction: column;
+    border-radius: 15px !important;
+}
+
 .edit-profile {
-    /* z-index: 9; */
     display: flex;
-    /* padding-left: 10px; */
     justify-content: space-between;
     align-content: center;
-    /* width: 70%; */
-    /* margin-top: 80px; */
-    /* margin-right: 12%; */
-    /* background: #F6F4F8; */
-    /* border-radius: 1%;*/
-    max-width: 875px;
+    max-width: 877px;
     border-radius: 15px;
     .side-btns {
         display: flex;
@@ -50,9 +46,6 @@
         font-weight: bold;
         .window-name {
             width: 132px;
-            /* height: 28px; */
-            /* left: 570px; */
-            /* top: 139px; */
             font-family: Rubik;
             font-style: normal;
             font-weight: bold;
@@ -60,7 +53,6 @@
             line-height: 28px;
             padding-top: 19px;
             padding-bottom: 39px;
-            /* padding-left: 20px;*/
         }
         button {
             text-transform: none;
@@ -72,7 +64,6 @@
             font-weight: 500;
             background: rgba(89, 208, 165, 0.15);
             color: #59D0A5;
-            /* text-align: start; */
             justify-content: flex-start;
             align-items: center;
             width: 197px;
@@ -80,8 +71,6 @@
             border: none;
             box-shadow: none;
             outline: none;
-            /* font-family: Rubik; */
-            /* font-style: normal;*/
             .button-icon {
                 margin-right: 11px;
                 margin-left: 8px;
@@ -118,7 +107,6 @@
             justify-content: center;
             width: 102px;
             height: 102px;
-            /* top: 139px; */
             margin-top: 20px;
             border-radius: 50%;
             font-size: 50px;
@@ -137,17 +125,10 @@
         flex-direction: column;
         justify-content: left;
         margin-top: 18px;
-        // margin: 30px;
         .form-body {
-            // padding: 20px;
             .form-inputs {
                 display: flex;
                 flex-direction: column;
-                // h3 {
-                //     font-size: 11pt;
-                //     margin-bottom: 15px;
-                // }
-                // border-radius: 50px;
                 input {
                     background: #F6F4F8;
                     border-radius: 50px;
@@ -174,36 +155,23 @@
                 }
                 .input-icon {
                     position: absolute;
-                    top: 13px;
-                    right: 11px;
                     width: 20px;
                     height: 20px;
                     color: $grey;
-                
-                    &.icon-eye {
-                        right: 12.5px;
-                    }
                 }
-                .pwd-input {
-                    margin-bottom: 10px;
+                .input-icon-password {
+                    top: 660px;
+                    right: 130px;
                 }
-                .bottom-inputs {
-                    display: flex;
-                    flex-direction: row;
-                    margin: 10px 0;
-                    div {
-                        margin-right: 10px;
-                        &:last-child {
-                            margin-right: 0;
-                        }
-                    }
+                .input-icon-confirm-password {
+                    top: 740px;
+                    right: 130px;
                 }
                 button {
                     color: rgb(255, 255, 255);
                     background: $main-color;
                     align-self: flex-start;
                     text-transform: none;
-                    /* padding: 3px 25px; */
                     margin-bottom: 35px;
                     border-radius: 50px;
                     width: 116px;
@@ -220,6 +188,22 @@
                     font-size: small;
                     margin-bottom: 5px;
                     font-weight: normal;
+                }
+                .error-text-user-profile {
+                    display: flex;
+                    align-items: center;
+                    min-height: 5px;
+                    color: #f73b48;
+                    font-size: 12px;
+                    padding-bottom: 5px;
+                }
+                .error-text-edit-password {
+                    display: flex;
+                    align-items: center;
+                    min-height: 5px;
+                    color: #f73b48;
+                    font-size: 12px;
+                    padding-bottom: 5px;
                 }
             }
         }
