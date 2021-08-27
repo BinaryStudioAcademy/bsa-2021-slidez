@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import {
-    createRequestStartPollParams,
     createSessionForPresentation,
     initWebSocketSession,
     requestStartPoll,
-    RequestStartPollParams,
 } from '../../containers/session/store/store'
 import { WsConnectionStatus } from '../../containers/session/enums/ws-connection-status'
 import Loader from '../../common/components/loader/Loader'
@@ -17,6 +15,10 @@ import {
     selectConnectionStatus,
     selectSnapshot,
 } from '../../containers/session/store/selectors'
+import {
+    createStartPollRequest,
+    StartPollRequest,
+} from '../../containers/session/event/FrontendEvent'
 
 const EventPage: React.FC = () => {
     const { link } = useParams<{ link?: string }>()
@@ -33,7 +35,7 @@ const EventPage: React.FC = () => {
                 presentationId: 'ed60e789-ab15-4756-b95e-218b43b6dfff',
             }
             dispatch(createSessionForPresentation(dto))
-            const params: RequestStartPollParams = createRequestStartPollParams(
+            const params: StartPollRequest = createStartPollRequest(
                 link,
                 'lol_poll_id'
             )
