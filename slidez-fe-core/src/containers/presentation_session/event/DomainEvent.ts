@@ -11,7 +11,7 @@ export type StartPollEvent = {
     slideId: string
 }
 
-export type SnapshotRequestEvent = {
+export type SnapshotEvent = {
     type: DomainEventType.snapshotRequestEvent
 }
 
@@ -20,7 +20,4 @@ export type AnswerPollEvent = {
     pollAnswer: SessionPollAnswer
 }
 
-export type DomainEvent =
-    | StartPollEvent
-    | SnapshotRequestEvent
-    | AnswerPollEvent
+export type DomainEvent = StartPollEvent | SnapshotEvent | AnswerPollEvent
