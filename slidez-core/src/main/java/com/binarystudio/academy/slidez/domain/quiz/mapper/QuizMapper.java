@@ -18,10 +18,10 @@ public interface QuizMapper {
 
 	List<QuizAnswerDto> quizAnswersToDtos(List<QuizAnswer> quizAnswers);
 
-	@Mappings({ @Mapping(source = "quiz.id", target = "id"), @Mapping(source = "quiz.type", target = "type"),
-			@Mapping(source = "quiz.slideId", target = "slideId"),
-			@Mapping(source = "quiz.ownerId", target = "ownerId"), @Mapping(source = "quiz.title", target = "title"),
-			@Mapping(source = "quiz.isMulti", target = "isMulti"),
+	@Mappings({ @Mapping(source = "quiz.id", target = "id"),
+			@Mapping(source = "quiz.interactiveElement.type", target = "type"),
+			@Mapping(source = "quiz.interactiveElement.slideId", target = "slideId"),
+			@Mapping(source = "quiz.title", target = "title"), @Mapping(source = "quiz.isMulti", target = "isMulti"),
 			@Mapping(source = "quiz.isTemplate", target = "isTemplate"),
 			@Mapping(target = "quizAnswers", expression = "java( quizAnswersToDtos(quiz.getQuizAnswers()) )") })
 	QuizDto quizToQuizDto(Quiz quiz);

@@ -4,15 +4,12 @@ import { Formik, Form, Field, FieldArray } from 'formik'
 import './PollEditor.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
-import { CreatePollDto } from './dto'
-import httpHelper from '../../services/http/http-helper'
-import { handleNotification } from '../../common/notification/Notification'
-import { getMessageBusUnsafe } from '../../hooks/event-bus'
-import { EventType, InsertSlideSuccess } from 'slidez-shared'
 import back_button_icon from '../../assets/svgs/back_button_icon.svg'
 import checked_icon from '../../assets/svgs/checked_icon.svg'
 import drop_down_icon from '../../assets/svgs/drop_down_icon.svg'
+import { useDispatch, useSelector } from 'react-redux'
+import { createPoll } from './store'
+import { RootState } from '../../store'
 
 export type PollEditorProps = {
     pollId?: string | null
@@ -20,27 +17,25 @@ export type PollEditorProps = {
 
 // eslint-disable-next-line react/prop-types
 const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
-    const initialValues: CreatePollDto = {
-        presentationId: '',
+    const dispatch = useDispatch()
+    const presentationId = useSelector(
+        (state: RootState) => state.editor.presentationId
+    )
+
+    const initialValues = {
         title: '',
         options: [],
     }
 
-    const handleSubmit = async (values: CreatePollDto) => {
-        const data =
-            await getMessageBusUnsafe()?.sendMessageAndListen<InsertSlideSuccess>(
-                {
-                    type: EventType.INSERT_SLIDE,
-                    data: {
-                        id: 'slidez_test_id_lol_' + new Date().getTime(),
-                        title: `Poll: ${values.title}`,
-                    },
-                },
-                EventType.INSERT_SLIDE_SUCCESS,
-                5000
-            )
-
-        console.log('Created poll slide successfully, returned data: ', data)
+    const handleSubmit = async (values: typeof initialValues) => {
+        dispatch(
+            createPoll({
+                ...values,
+                //TODO: Move to common function
+                slideId: 'slidez_' + new Date().getTime(),
+                presentationId,
+            })
+        )
     }
 
     const toggleRemoveClick = (index: number, arrayHelpers: any) => {

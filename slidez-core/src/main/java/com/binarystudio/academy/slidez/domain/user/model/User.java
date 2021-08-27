@@ -11,6 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -45,9 +46,8 @@ public class User implements Serializable {
 	@OneToOne(mappedBy = "user")
 	private GoogleCredentials googleCredentials;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	private Set<Presentation> presentations;
+	@OneToMany(mappedBy = "user")
+	private Set<Presentation> presentations = new HashSet<>();
 
 	@Column(name = "created_at", nullable = false, updatable = false)
 	private LocalDateTime createdAt;
