@@ -1,0 +1,43 @@
+@import 'src/global/global';
+$likebtnwidth: 62px;
+
+.card {
+  display: flex;
+  flex-direction: row;
+}
+
+.author {
+  margin: 5px;
+  padding-top: 13px;
+  padding-left: 13px;
+  font-weight: 400;
+}
+
+.pool-content {
+  font-weight: 500;
+  padding-left: 13px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  width: calc(100% - #{$likebtnwidth});
+}
+
+.reaction {
+  margin-left: auto;
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.like-btn {
+  color: $main-color;
+  background-color: $white;
+  border-radius: 25px;
+  border: none;
+  border-color: $white;
+  width: $likebtnwidth;
+  height: 35px;
+  margin-right: 5px;
+  .like-icon {
+    margin-right: 5px;
+  }
+}
