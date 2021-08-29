@@ -1,16 +1,22 @@
-@import 'src/global/global';
+@import '../../../global/global.scss';
 $likebtnwidth: 62px;
 
 .card {
+  margin: 5px;
   display: flex;
   flex-direction: row;
+  background: #f6f4f8;
+  border-radius: 5px;
 }
 
 .author {
-  margin: 5px;
+  margin: 5px 0;
   padding-top: 13px;
   padding-left: 13px;
-  font-weight: 400;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  color: #7b7a7c;
 }
 
 .pool-content {
@@ -19,6 +25,7 @@ $likebtnwidth: 62px;
   margin-right: 10px;
   margin-bottom: 10px;
   width: calc(100% - #{$likebtnwidth});
+  color: #353535;
 }
 
 .reaction {
@@ -38,6 +45,21 @@ $likebtnwidth: 62px;
   height: 35px;
   margin-right: 5px;
   .like-icon {
+    fill: #59d0a5;
+    color: #59d0a5;
     margin-right: 5px;
+    width: 13px;
+    height: 13px;
   }
+  .like-icon:hover,
+  .icon-bike:focus {
+    margin-right: 5px;
+    width: 13px;
+    height: 13px;
+    background-image: url('../../../assets/svgs/thumbs-up-solid.svg');
+  }
+}
+
+#thumbs-up-solid {
+  color: #59d0a5;
 }

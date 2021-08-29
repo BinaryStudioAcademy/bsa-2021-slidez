@@ -2,17 +2,27 @@ import * as React from 'react'
 import '../qa.scss'
 
 const SelectorPanel = (props: any) => {
+    console.log(props.isRecentSelected)
+
+    const isRecentSelected =
+        'selector-button ' +
+        (props.isRecentSelected ? 'selected-button' : 'unselected-button')
+
+    const isTopSelected =
+        'selector-button ' +
+        (props.isRecentSelected ? 'unselected-button' : 'selected-button')
+
     return (
         <div className='selector-panel'>
             <div className='selector'>
                 <button
-                    className='selector-button selected-button'
+                    className={isRecentSelected}
                     onClick={props.handleRecentClick}
                 >
                     Recent
                 </button>
                 <button
-                    className='selector-button unselected-button'
+                    className={isTopSelected}
                     onClick={props.handleTopClick}
                 >
                     Top

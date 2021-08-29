@@ -31,10 +31,6 @@ const useStyles = makeStyles({
     },
 })
 
-const handleLike = () => {
-    alert('Like!')
-}
-
 const handleSubmit = () => {
     alert('Submit!')
 }
@@ -43,17 +39,33 @@ const Qa = (qaProps: QaProps) => {
     const { handleClose, show } = qaProps
     const classes = useStyles()
     const [listQA, setListQA] = useState(MOCK_DATA)
+    const [isRecentSelected, setIsRecentSelected] = useState(true)
+
+    const handleLike = (UUID: string) => {
+        const newItems = listQA.map((item) =>
+            item.UUID === UUID ? { ...item, isLikid: !item.isLiked } : item
+        )
+        setListQA(newItems)
+    }
 
     const handleRecentClick = () => {
-        let sortedList: any = listQA.sort((a, b) => b.id - a.id)
-        setListQA(sortedList)
-        console.log(sortedList)
+        const sorted = [...listQA]
+        sorted.sort((a, b) => {
+            let y = new Date(a.createdAt)
+            let x = new Date(b.createdAt)
+            console.log(x)
+            console.log(y)
+            return x < y ? -1 : x > y ? 1 : 0
+        })
+        setIsRecentSelected(true)
+        setListQA(sorted)
     }
 
     const handleTopClick = () => {
-        let sortedList: any = listQA.sort((a, b) => b.likes - a.likes)
-        setListQA(sortedList)
-        console.log(sortedList)
+        const sorted = [...listQA]
+        sorted.sort((a, b) => b.likes - a.likes)
+        setIsRecentSelected(false)
+        setListQA(sorted)
     }
 
     return (
@@ -73,13 +85,15 @@ const Qa = (qaProps: QaProps) => {
                     totalQuestions={listQA.length}
                     handleRecentClick={handleRecentClick}
                     handleTopClick={handleTopClick}
+                    isRecentSelected={isRecentSelected}
                 />
                 {listQA.map((qaItem) => (
                     <QACard
-                        key={qaItem.id}
+                        key={qaItem.UUID}
                         author={qaItem.author}
                         likes={qaItem.likes}
-                        likeClick={handleLike}
+                        isLiked={qaItem.isLiked}
+                        likeClick={() => handleLike(qaItem.UUID)}
                     >
                         {qaItem.pollContent}
                     </QACard>
