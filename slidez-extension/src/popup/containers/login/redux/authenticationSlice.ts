@@ -8,10 +8,12 @@ import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
 const getAuthHeaderValue = () => ''
 const performRefreshTokens = () => Promise.resolve()
 const apiGateway = ''
+const performLogout = () => {}
 
 const httpHelper = new HttpHelper(
     getAuthHeaderValue,
     performRefreshTokens,
+    performLogout,
     apiGateway
 )
 

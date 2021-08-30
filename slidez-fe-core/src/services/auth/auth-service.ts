@@ -8,6 +8,7 @@ import { RefreshTokensResponseDto } from './dto/RefreshTokensResponseDto'
 import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
 import { ApiGateway } from '../http/api-gateway'
 import { CodeDto } from './dto/CodeDto'
+import { AppRoute } from '../../common/routes/app-route'
 
 const JWT = 'jwt'
 const refreshJWT = 'refresh_jwt'
@@ -88,6 +89,7 @@ export const isLoggedIn = () => {
 export const performLogout = () => {
     window.localStorage.removeItem(JWT)
     window.localStorage.removeItem(refreshJWT)
+    window.location.assign(AppRoute.LOGIN)
 }
 
 export const getAuthHeaderValue = () => {

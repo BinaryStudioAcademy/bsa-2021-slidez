@@ -1,15 +1,18 @@
 import { Method } from 'axios'
 import { createDefaultAxios } from './http-util'
+import { performLogout } from 'slidez-fe-core/src/services/auth/auth-service'
 
 class HttpHelper {
     private readonly getAuthHeaderValue: () => string
     private readonly performRefreshTokens: () => Promise<any>
     private readonly baseUrl: string
     private inProcessOfRefreshingTokens = false
+    private retryAfterRefreshTokenCount = 0
 
     constructor(
         getAuthHeaderValue: () => string,
         performRefreshTokens: () => Promise<any>,
+        preformLogout: () => void,
         baseUrl: string
     ) {
         this.getAuthHeaderValue = getAuthHeaderValue
@@ -30,18 +33,27 @@ class HttpHelper {
             (response) => {
                 return response
             },
-            (error) => {
+            async (error) => {
                 if (error.response) {
-                    const status = error.response.status
-                    if (status === 403) {
+                    if (error.response.status === 403) {
+                        if (this.retryAfterRefreshTokenCount != 0) {
+                            performLogout()
+                            this.retryAfterRefreshTokenCount = 0
+                            return Promise.reject(error)
+                        }
+                        const originalConfig = error.config
+                        originalConfig._retry = true
                         if (!this.inProcessOfRefreshingTokens) {
                             this.inProcessOfRefreshingTokens = true
-                            this.performRefreshTokens().finally(
-                                () => (this.inProcessOfRefreshingTokens = false)
-                            )
+                            await this.performRefreshTokens()
+                            this.retryAfterRefreshTokenCount++
+                            this.inProcessOfRefreshingTokens = false
                         }
+                        return axiosInstance(originalConfig)
                     }
+                    return Promise.reject(error)
                 }
+                return Promise.reject(error)
             }
         )
 
