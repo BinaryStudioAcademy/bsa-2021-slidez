@@ -1,7 +1,8 @@
 package com.binarystudio.academy.slidez.domain.user;
 
 import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
-import com.binarystudio.academy.slidez.domain.user.dto.UserPasswordDto;
+import com.binarystudio.academy.slidez.domain.user.dto.UserPasswordRequest;
+import com.binarystudio.academy.slidez.domain.user.dto.UserPasswordResponse;
 import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import com.binarystudio.academy.slidez.domain.userprofile.UserProfile;
@@ -102,8 +103,8 @@ public class UserService {
 		return (newData.isEmpty()) ? currentData : newData;
 	}
 
-	public Optional<UserPasswordDto> updatePassword(UserPasswordDto userPasswordDto) {
-		Optional<User> user = userRepository.findById(userPasswordDto.getId());
+	public Optional<UserPasswordResponse> updatePassword(UserPasswordRequest userPasswordRequest) {
+		Optional<User> user = userRepository.findById(userPasswordRequest.getId());
 		if (user.isEmpty()) {
 			return Optional.empty();
 		}
@@ -112,9 +113,9 @@ public class UserService {
 		LocalDateTime updatedAt = LocalDateTime.now();
 		updateUser.setUpdatedAt(updatedAt);
 
-		updateUser.setPassword(passwordEncoder.encode(userPasswordDto.getPassword()));
+		updateUser.setPassword(passwordEncoder.encode(userPasswordRequest.getPassword()));
 
-		return Optional.of(UserMapper.INSTANCE.mapUserToUserPasswordDto(this.userRepository.save(updateUser)));
+		return Optional.of(UserMapper.INSTANCE.mapUserToUserPasswordResponse(this.userRepository.save(updateUser)));
 	}
 
 }

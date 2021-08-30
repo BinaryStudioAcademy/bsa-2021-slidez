@@ -1,7 +1,7 @@
 package com.binarystudio.academy.slidez.domain.user.mapper;
 
 import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
-import com.binarystudio.academy.slidez.domain.user.dto.UserPasswordDto;
+import com.binarystudio.academy.slidez.domain.user.dto.UserPasswordResponse;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,7 +18,7 @@ public interface UserMapper {
 			@Mapping(target = "lastName", source = "user.userProfile.lastName") })
 	UserDetailsDto mapUserToUserDetailsDto(User user);
 
-	@Mappings({ @Mapping(target = "id", source = "user.id"), @Mapping(target = "password", source = "user.password") })
-	UserPasswordDto mapUserToUserPasswordDto(User user);
+	@Mappings({ @Mapping(target = "id", source = "user.id") })
+    UserPasswordResponse mapUserToUserPasswordResponse(User user);
 
 }
