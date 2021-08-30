@@ -14,6 +14,8 @@ import { NavLink } from 'react-router-dom'
 import { AppRoute } from '../../routes/app-route'
 import { Field, Form, Formik, FormikErrors } from 'formik'
 import * as Yup from 'yup'
+import { handleNotification } from '../../notification/Notification'
+import { NotificationTypes } from '../../notification/notification-types'
 
 type RegistrationProps = {
     onRegister: Function
@@ -55,7 +57,11 @@ const RegistrationErrors = ({
     if (!viewErrors) {
         errorMessage = null
     } else if (registrationError) {
-        errorMessage = 'This email is taken'
+        handleNotification(
+            'Registration Failed',
+            'The account with provided email is already registered',
+            NotificationTypes.ERROR
+        )
     } else if (formikErrors.email) {
         errorMessage = 'Please provide valid email'
     } else if (formikErrors.password) {
@@ -224,7 +230,7 @@ const RegistrationForm = ({
                     onSuccess={handleRegisterWithGoogle}
                     redirectUri={GoogleOAuth.GOOGLE_REDIRECT_URI}
                     cookiePolicy={GoogleOAuth.GOOGLE_COOKIE_POLICY}
-                    scope='https://www.googleapis.com/auth/presentations,https://www.googleapis.com/auth/drive'
+                    scope='https://www.googleapis.com/auth/presentations https://www.googleapis.com/auth/drive'
                     responseType='code'
                     render={(renderProps) => (
                         <button

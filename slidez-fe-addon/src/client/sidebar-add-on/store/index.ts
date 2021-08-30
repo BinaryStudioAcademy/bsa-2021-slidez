@@ -1,8 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import eventBus from '../components/event-bus/redux/eventBusSlice';
 
 export const store = configureStore({
-    reducer: { eventBus },
+    reducer: {},
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

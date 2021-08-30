@@ -1,19 +1,21 @@
 package com.binarystudio.academy.slidez.domain.poll.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "poll_answer")
-public class PollOption {
+public class PollOption implements Serializable {
+
+	private static final long serialVersionUID = 637849887541003L;
 
 	@Id
 	@GeneratedValue(generator = "UUID")

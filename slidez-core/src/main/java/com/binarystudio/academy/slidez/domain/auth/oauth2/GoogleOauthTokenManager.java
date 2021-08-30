@@ -24,6 +24,8 @@ import java.util.Optional;
 @Service
 public class GoogleOauthTokenManager {
 
+	private static final int SECONDS_TO_MILLS_FACTOR = 1000;
+
 	private static final JsonFactory JSON_FACTORY = new GsonFactory();
 
 	private static final HttpTransport TRANSPORT = new NetHttpTransport();
@@ -63,7 +65,7 @@ public class GoogleOauthTokenManager {
 			if (response.getRefreshToken() != null) {
 				credential.setRefreshToken(response.getRefreshToken());
 			}
-			credential.setExpirationTimeMilliseconds(response.getExpiresInSeconds() * 1000);
+			credential.setExpirationTimeMilliseconds(response.getExpiresInSeconds() * SECONDS_TO_MILLS_FACTOR);
 
 			return credential;
 		}
@@ -85,9 +87,7 @@ public class GoogleOauthTokenManager {
 		if (response.getRefreshToken() != null) {
 			googleCredentials.setRefreshToken(response.getRefreshToken());
 		}
-		final int secondsToMillFactor = 1000;
-		googleCredentials.setExpirationTimeMillis(response.getExpiresInSeconds() * secondsToMillFactor);
-
+		googleCredentials.setExpirationTimeMillis(response.getExpiresInSeconds() * SECONDS_TO_MILLS_FACTOR);
 		return googleCredentialsRepository.save(googleCredentials);
 	}
 
@@ -121,8 +121,7 @@ public class GoogleOauthTokenManager {
 
 			oldTokens.setAccessToken(tokenResponse.getAccessToken());
 			oldTokens.setRefreshToken(tokenResponse.getRefreshToken());
-			final int secondsToMillFactor = 1000;
-			oldTokens.setExpirationTimeMillis(tokenResponse.getExpiresInSeconds() * secondsToMillFactor);
+			oldTokens.setExpirationTimeMillis(tokenResponse.getExpiresInSeconds() * SECONDS_TO_MILLS_FACTOR);
 
 			this.repository.save(oldTokens);
 		}

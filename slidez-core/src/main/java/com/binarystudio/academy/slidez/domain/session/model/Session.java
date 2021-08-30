@@ -2,21 +2,23 @@ package com.binarystudio.academy.slidez.domain.session.model;
 
 import com.binarystudio.academy.slidez.domain.link.model.Link;
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "session")
-public class Session {
+public class Session implements Serializable {
+
+	private static final long serialVersionUID = 489871292233432715L;
 
 	@Id
 	@GeneratedValue(generator = "UUID")

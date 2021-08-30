@@ -3,10 +3,10 @@ const AppRoute = {
     LOGIN: '/login',
     REGISTRATION: '/registration',
     RESTORE_PASSWORD: '/restore-password',
-    EVENT: '/event/:link',
-    PARTICIPANT: '/participant/:link',
+    EVENTS: '/events',
+    EVENT: '/events/:link',
     DASHBOARD: '/dashboard',
-    EDITOR: '/editor',
+    ADDON: '/addon',
 }
 
 export { AppRoute }

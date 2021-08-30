@@ -47,6 +47,13 @@ export const register = createAsyncThunk(
     }
 )
 
+export const loginByToken = createAsyncThunk(
+    'user/login-by-token',
+    async (dto: TokenDto) => {
+        return performLoginByToken(dto)
+    }
+)
+
 export const updateUserProfile = createAsyncThunk(
     'user/update-profile',
     async (dto: UpdateProfileDto) => {
@@ -58,13 +65,6 @@ export const updatePassword = createAsyncThunk(
     'user/update-password',
     async (dto: UpdatePasswordRequest) => {
         return editPassword(dto)
-    }
-)
-
-export const loginByToken = createAsyncThunk(
-    'user/login-by-token',
-    async (dto: TokenDto) => {
-        return performLoginByToken(dto)
     }
 )
 

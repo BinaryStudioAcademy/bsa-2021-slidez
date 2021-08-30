@@ -11,6 +11,8 @@ import GoogleLogin from 'react-google-login'
 import { GoogleOAuth } from '../../../services/auth/google-oauth'
 import { Field, Form, Formik, FormikErrors } from 'formik'
 import * as Yup from 'yup'
+import { handleNotification } from '../../notification/Notification'
+import { NotificationTypes } from '../../notification/notification-types'
 
 type LoginProps = {
     onLogin: Function
@@ -21,6 +23,7 @@ type LoginErorrsProps = {
     viewErrors: boolean
     loginError: string | undefined
     formikErrors: FormikErrors<{ email: string; password: string }>
+    invalidEmail: string
 }
 
 const loginFieldsValidation = Yup.object({
@@ -32,12 +35,17 @@ const LoginErrors = ({
     viewErrors,
     loginError,
     formikErrors,
+    invalidEmail,
 }: LoginErorrsProps) => {
     let errorMessage: string | null = null
     if (!viewErrors) {
         errorMessage = null
     } else if (loginError) {
-        errorMessage = "Can't log in: email or password is invalid"
+        handleNotification(
+            'Login Failed',
+            `The user cannot be authenticated with email ${invalidEmail} and the provided password`,
+            NotificationTypes.ERROR
+        )
     } else if (formikErrors.email && formikErrors.password) {
         errorMessage = 'Please provide email and password'
     } else if (formikErrors.email) {
@@ -53,6 +61,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
     const [isPasswordRevealed, setIsPasswordRevealed] = React.useState(false)
     const [viewErrors, setViewErrors] = React.useState(false)
     const loginError = useAppSelector(selectError)
+    const [invalidEmail, setInvalidEmail] = React.useState('')
 
     const onRevealClick = () => {
         setIsPasswordRevealed(!isPasswordRevealed)
@@ -62,6 +71,15 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
     const handleLoginWithGoogle = async (googleData: any) => {
         onLoginWithGoogle(googleData)
     }
+
+    const googleLoginFailed = () => {
+        handleNotification(
+            'Google Login Failed',
+            'The provided user account is not registered in the system',
+            NotificationTypes.ERROR
+        )
+    }
+
     return (
         <div className='sign-form'>
             <div className='form-row header-row'>Log In</div>
@@ -77,6 +95,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                 onSubmit={({ email, password }, { setSubmitting }) => {
                     onLogin(email, password)
                     setSubmitting(false)
+                    setInvalidEmail(email)
                 }}
             >
                 {({ errors }) => (
@@ -146,6 +165,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                             viewErrors={viewErrors}
                             loginError={loginError}
                             formikErrors={errors}
+                            invalidEmail={invalidEmail}
                         />
 
                         <div className='form-row buttons-row'>
@@ -167,6 +187,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                     className='form-button login-with-google-button'
                     clientId={GoogleOAuth.GOOGLE_CLIENT_ID}
                     onSuccess={handleLoginWithGoogle}
+                    onFailure={googleLoginFailed}
                     redirectUri={GoogleOAuth.GOOGLE_REDIRECT_URI}
                     cookiePolicy={GoogleOAuth.GOOGLE_COOKIE_POLICY}
                     scope={[

@@ -91,7 +91,6 @@
 	.search-bar {
 		position: relative;
 		overflow: hidden;
-		border-radius: 50px;
 	}
 	.user-profile {
 		display: flex;
@@ -147,30 +146,21 @@
 	box-shadow: 0px 4px 6px rgba(189, 189, 189, 0.1);
 	border-radius: 7px;
 	margin-top: 14px;
-	min-width: 191px;
+	min-width: 160px;
 	overflow: auto;
 	z-index: 1;
 	left: auto !important;
-	right: 51px !important;
-	.user-profile-menu {
+	right: 10px !important;
+	a {
 		color: $black;
-		padding: 10px 0 10px 15px;
+		margin: 13px 0 25px 18px;
 		text-decoration: none;
 		display: flex;
 		justify-content: flex-start;
 		align-items: center;
 		font-size: 14px;
-		.user-profile-menu-name {
-			font-family: 'Rubik', sans-serif;
-			font-weight: lighter;
-		}
 		&:hover {
 			color:$accent-color;
-			cursor: pointer;
-			background-color: $light-grey;
-			.user-profile-menu-name {
-				font-weight: normal;
-			}
 		}
 	}
 	.user-icon {
@@ -187,6 +177,32 @@
 	opacity: 1;
 	visibility: visible;
 	transform: translateY(0);
+}
+.user-info {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	margin-top: 18px;
+	margin-left: 18px;
+	margin-right: 18px;
+	text-align: left;
+	.avatar {
+		margin-right: 9px;
+		width: 32px !important;
+		height: 32px !important;
+		font-family: 'Work Sans';
+	}
+	.user-name {
+		font-weight: 500;
+		font-size: 14px;
+	}
+	.user-email {
+		padding: 5px 0;
+		font-weight: 500;
+		font-size: 12px;
+		line-height: 14px;
+		color: rgba(0, 0, 0, 0.4);
+	}
 }
 
 .presentations-section {
@@ -404,15 +420,15 @@ input[type="search"]::-webkit-search-cancel-button {
 	margin-right: 2px;
 	height: 30px;
 	width: 2em;
-	border-radius: 50px;
+	border-radius: 50em;
 	background:
 	url(../../assets/svgs/clear-text-in-search.svg) no-repeat 50% 50% ;
-	
+
 	background-size: auto;
 	pointer-events: none;
 	cursor: pointer;
   }
-  
+
   input[type="search"]:focus::-webkit-search-cancel-button {
 	height: 30px;
 	width: 30px;

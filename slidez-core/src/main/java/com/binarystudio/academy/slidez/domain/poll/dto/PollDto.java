@@ -1,34 +1,25 @@
 package com.binarystudio.academy.slidez.domain.poll.dto;
 
-import com.binarystudio.academy.slidez.domain.poll.model.PollOption;
-import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
+import com.binarystudio.academy.slidez.domain.interactive_element.dto.InteractiveElementDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PollDto {
+public class PollDto extends InteractiveElementDto {
 
-	private UUID id;
+	private String title;
 
-	private String name;
+	private Boolean isTemplate;
 
-	private boolean isMulti;
+	private Boolean isMulti;
 
-	private boolean isTemplate;
-
-	private Date createdAt;
-
-	private Date updatedAt;
-
-	private List<PollOption> options;
-
-	private InteractiveElement owner;
+	private List<PollOptionDto> pollOptions;
 
 }

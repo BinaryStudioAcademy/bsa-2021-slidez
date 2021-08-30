@@ -2,25 +2,31 @@ package com.binarystudio.academy.slidez.domain.presentation.model;
 
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.binarystudio.academy.slidez.domain.user.model.User;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "presentation")
-public class Presentation {
+public class Presentation implements Serializable {
+
+	private static final long serialVersionUID = 90029876168982L;
 
 	@Id
 	@GeneratedValue(generator = "UUID")
@@ -34,16 +40,21 @@ public class Presentation {
 	@Column(name = "link", nullable = false, unique = true)
 	private String link;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "presentation_id", nullable = false)
-	private Set<InteractiveElement> interactiveElements;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private User user;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "presentation")
+	private Set<InteractiveElement> interactiveElements = new HashSet<>();
 
 	@OneToMany(mappedBy = "presentation")
-	private Set<Session> sessions;
+	private Set<Session> sessions = new HashSet<>();
 
+	@CreationTimestamp
 	@Column(name = "created_at", nullable = false, updatable = false)
 	private LocalDateTime createdAt;
 
+	@UpdateTimestamp
 	@Column(name = "updated_at", nullable = false)
 	private LocalDateTime updatedAt;
 

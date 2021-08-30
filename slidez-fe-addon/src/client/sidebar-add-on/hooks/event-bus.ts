@@ -4,7 +4,13 @@ import {
     BasicMessagingBus,
     isRunningInChrome,
     MESSAGING_TOPIC,
+    InsertSlide,
+    EventType,
+    of,
+    InsertSlideRequestSuccess,
 } from 'slidez-shared';
+import { EXTENSION_ID } from '../env';
+import { runGoogleScript } from '../helpers';
 
 export enum EventBusConnectionStatus {
     NOT_INITIALIZED = 'not_initialized',
@@ -56,7 +62,7 @@ export const useEventBus = () => {
             return;
         }
         ChromeMessageConnector.connect({
-            descriptor: 'dhddedmopeoomnnlppiejipdodhkplhb',
+            descriptor: EXTENSION_ID,
         })
             .then((driver) => {
                 messageBusState = {
@@ -64,7 +70,9 @@ export const useEventBus = () => {
                     eventBus: new BasicMessagingBus(driver),
                 };
                 setState(messageBusState);
+                return messageBusState.eventBus;
             })
+            .then(registerListeners)
             .catch((error) => {
                 console.error('Caught message bus init error', error);
                 messageBusState = {
@@ -75,4 +83,24 @@ export const useEventBus = () => {
     }, []);
 
     return state;
+};
+
+const registerListeners = (bus: BasicMessagingBus) => {
+    bus.registerEventHandler(
+        EventType.INSERT_SLIDE,
+        of<InsertSlide>((event) => {
+            console.log('Slide insert request intercepted!');
+            runGoogleScript<InsertSlideRequestSuccess>(
+                'insertSlide',
+                event.data
+            ).then((data) =>
+                bus.sendMessageNoCallback({
+                    type: EventType.INSERT_SLIDE_SUCCESS,
+                    data,
+                })
+            );
+        })
+    );
+
+    console.log('Registered listeners!');
 };

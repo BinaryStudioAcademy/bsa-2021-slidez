@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -14,7 +15,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "user_profile")
-public class UserProfile {
+public class UserProfile implements Serializable {
+
+	private static final long serialVersionUID = -4035825574693260775L;
 
 	@Id
 	@GeneratedValue(generator = "UUID")

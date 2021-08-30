@@ -9,52 +9,28 @@ import {
     faEllipsisV,
     faEllipsisH,
 } from '@fortawesome/free-solid-svg-icons'
-import SideBar from './SideBar'
+import SideBar from '../../containers/sideBar/SideBar'
 import './dashboard.scss'
+import styles from './styles.module.scss'
 import { MOCK_DATA } from './mock-data'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import { useDetectOutsideClick } from './useDetectOutsideClick'
+import { useAppDispatch } from '../../hooks'
+import { logout } from '../../containers/user/store'
+import { AppRoute } from '../../common/routes/app-route'
+import UserProfile from './UserProfile'
 import table_sort from '../../../src/assets/svgs/table-sort.svg'
-import UserProfile from './user-profile/UserProfile'
-import {
-    isFetchingUser,
-    loginByToken,
-    selectIsLoggedIn,
-} from '../../containers/user/store'
-import { TokenDto } from '../../services/auth/dto/TokenDto'
-import Loader from '../../common/components/loader/Loader'
-import '../../common/components/loader/Loader.css'
 
 const Dashboard = () => {
     const [currentView, setCurrentView] = useState('table')
-    const [activeButton, setActiveButton] = useState(false)
     const [searchField, setSearchField] = useState('')
     const [filteredPresentations, setFilteredPresentations] =
         useState(MOCK_DATA)
-    const dispatch = useAppDispatch()
-    const isFetchingUserData = useAppSelector(isFetchingUser)
-    const isLoggedIn = useAppSelector(selectIsLoggedIn)
-    const JWT = 'jwt'
-    const refreshJWT = 'refresh_jwt'
-    const [token, setToken] = useState('')
 
-    useEffect(() => {
-        console.log(isFetchingUserData)
-        setToken(window.localStorage.getItem(JWT) || '')
-    })
-
-    const handleToken = (token: string) => {
-        const dto: TokenDto = {
-            token: token,
-        }
-        dispatch(loginByToken(dto))
+    const toggleGridView = () => {
+        setCurrentView('grid')
     }
-
-    const handleToggleCurrentView = useCallback(() => {
-        setCurrentView((view) => (view === 'table' ? 'grid' : 'table'))
-    }, [setCurrentView])
-
-    const handleClickedButton = () => {
-        setActiveButton(!activeButton)
+    const toggleTableView = () => {
+        setCurrentView('table')
     }
 
     const tableHeader = [
@@ -102,7 +78,7 @@ const Dashboard = () => {
                     <td>02.08.21</td>
                     <td>
                         <FontAwesomeIcon
-                            className='icon-options'
+                            className={styles.iconOptions}
                             icon={faEllipsisH}
                         />
                     </td>
@@ -121,14 +97,7 @@ const Dashboard = () => {
         )
     }, [searchField])
 
-    const isNotEmptyPresentation = () =>
-        filteredPresentations.length === 0 ? (
-            <span>
-                No presentations are found by search term {searchField}.
-            </span>
-        ) : (
-            ''
-        )
+    const isEmptyPresentations = () => filteredPresentations.length === 0
 
     const handleChange = (e: {
         target: { value: React.SetStateAction<string> }
@@ -136,135 +105,119 @@ const Dashboard = () => {
         setSearchField(e.target.value)
     }
 
-    if (!isFetchingUserData) {
-        handleToken(token)
-        return <Loader />
-    } else {
-        return (
-            <div className='dashboard-page'>
-                <SideBar />
-                <div className='page-content'>
-                    <div className='search-and-user'>
-                        <div className='search-bar'>
-                            <FontAwesomeIcon
-                                className='search-icon'
-                                icon={faSearch}
-                            />
-                            <input
-                                id='searchQueryInput'
-                                type='search'
-                                placeholder='Search...'
-                                onChange={handleChange}
-                            />
+    const getNoFoundPresentationBlock = () => (
+        <div className={styles.noFoundPresentations}>
+            <span className={styles.textNotFound}>
+                No presentations are found by search term {searchField}.
+            </span>
+        </div>
+    )
+
+    const getTableView = () =>
+        !isEmptyPresentations() ? (
+            <div className={styles.table}>
+                <table className={styles.presentationTable}>
+                    <tbody>
+                        <tr>{renderTableHeader()}</tr>
+                        {renderTableData()}
+                    </tbody>
+                </table>
+            </div>
+        ) : (
+            getNoFoundPresentationBlock()
+        )
+
+    const getGridView = () =>
+        !isEmptyPresentations() ? (
+            <div className={styles.grid}>
+                {filteredPresentations.map((md) => (
+                    <div className={styles.card} key={md.id}>
+                        <img className={styles.cardImg} src={md.pictureUrl} />
+                        <div className={styles.cardName}> {md.name} </div>
+                        <div className={styles.cardInfo}>
+                            <span className={styles.cardIcons}>
+                                <FontAwesomeIcon
+                                    className={styles.iconPresentation}
+                                    icon={faChalkboard}
+                                />
+                                <FontAwesomeIcon
+                                    className={styles.iconUsers}
+                                    icon={faUsers}
+                                />
+                                <span className={styles.cardDate}>
+                                    12.07.21
+                                </span>
+                            </span>
+                            <span className={styles.iconDetails}>
+                                <FontAwesomeIcon icon={faEllipsisV} />
+                            </span>
                         </div>
-                        <UserProfile />
                     </div>
-                    <div className='presentations-section'>
-                        <div className='above-section'>
+                ))}
+            </div>
+        ) : (
+            getNoFoundPresentationBlock()
+        )
+
+    return (
+        <div className={styles.dashboardPage}>
+            <SideBar />
+            <div className={styles.pageContent}>
+                <div className={styles.header}>
+                    <div className={styles.searchBar}>
+                        <FontAwesomeIcon
+                            className={styles.searchIcon}
+                            icon={faSearch}
+                        />
+                        <input
+                            className={styles.searchInput}
+                            type='search'
+                            placeholder='Search...'
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <UserProfile />
+                </div>
+                <div className={styles.content}>
+                    <div className={styles.presentationsSection}>
+                        <div className={styles.presentationHeader}>
                             <p>Your presentation</p>
-                            <div className='table-grid-toggler'>
+                            <div className={styles.tableGridToggler}>
                                 <div>
-                                    <label>
-                                        <input
-                                            type='radio'
-                                            value='table'
-                                            checked={currentView === 'grid'}
-                                            onChange={handleToggleCurrentView}
-                                            onClick={handleClickedButton}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faList}
-                                            className={
-                                                currentView === 'grid'
-                                                    ? 'view-btn-active'
-                                                    : 'view-btn'
-                                            }
-                                        />
-                                    </label>
+                                    <FontAwesomeIcon
+                                        onClick={toggleGridView}
+                                        icon={faList}
+                                        className={
+                                            currentView === 'grid'
+                                                ? styles.viewBtnActive
+                                                : styles.viewBtn
+                                        }
+                                    />
                                 </div>
-                                <div className='verticalLine' />
+                                <div className={styles.verticalLine} />
                                 <div>
-                                    <label>
-                                        <input
-                                            type='radio'
-                                            value='grid'
-                                            checked={currentView === 'table'}
-                                            onChange={handleToggleCurrentView}
-                                            onClick={handleClickedButton}
-                                        />
-                                        <FontAwesomeIcon
-                                            icon={faThLarge}
-                                            className={
-                                                currentView === 'table'
-                                                    ? 'view-btn-active'
-                                                    : 'view-btn'
-                                            }
-                                        />
-                                    </label>
+                                    <FontAwesomeIcon
+                                        onClick={toggleTableView}
+                                        icon={faThLarge}
+                                        className={
+                                            currentView === 'table'
+                                                ? styles.viewBtnActive
+                                                : styles.viewBtn
+                                        }
+                                    />
                                 </div>
                             </div>
                         </div>
                         <div>
-                            {currentView === 'grid' ? (
-                                <div className='table'>
-                                    <table id='table-presentation'>
-                                        <tbody>
-                                            <tr>{renderTableHeader()}</tr>
-                                            {renderTableData()}
-                                        </tbody>
-                                    </table>
-                                    <div className='no-found-presentations'>
-                                        <span className='text-no-found'>
-                                            {isNotEmptyPresentation()}
-                                        </span>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className='grid'>
-                                    {filteredPresentations.map((md) => (
-                                        <div className='card' key={md.id}>
-                                            <img
-                                                className='card-img'
-                                                src={md.pictureUrl}
-                                            />
-                                            <div className='card-name'>
-                                                {md.name}
-                                            </div>
-                                            <div className='card-info'>
-                                                <span className='card-icons'>
-                                                    <FontAwesomeIcon
-                                                        className='icon-presentation'
-                                                        icon={faChalkboard}
-                                                    />
-                                                    <FontAwesomeIcon
-                                                        className='icon-users'
-                                                        icon={faUsers}
-                                                    />
-                                                    <span className='card-date'>
-                                                        12.07.21
-                                                    </span>
-                                                </span>
-                                                <span className='icon-details'>
-                                                    <FontAwesomeIcon
-                                                        icon={faEllipsisV}
-                                                    />
-                                                </span>
-                                            </div>
-                                        </div>
-                                    ))}
-                                    <div className='no-found-presentations'>
-                                        <span className='text-no-found'>
-                                            {isNotEmptyPresentation()}
-                                        </span>
-                                    </div>
-                                </div>
-                            )}
+                            {currentView === 'grid'
+                                ? getTableView()
+                                : getGridView()}
                         </div>
                     </div>
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
 export default Dashboard
