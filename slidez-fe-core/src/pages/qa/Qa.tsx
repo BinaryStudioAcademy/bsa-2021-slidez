@@ -10,7 +10,7 @@ import './qa.scss'
 import { MOCK_DATA } from './mock-poll-data'
 
 type QaProps = {
-    handleClose: MouseEventHandler
+    handleClose: any
     show: boolean
 }
 
@@ -42,9 +42,19 @@ const Qa = (qaProps: QaProps) => {
     const [isRecentSelected, setIsRecentSelected] = useState(true)
 
     const handleLike = (UUID: string) => {
-        const newItems = listQA.map((item) =>
-            item.UUID === UUID ? { ...item, isLikid: !item.isLiked } : item
-        )
+        const newItems = [...listQA]
+        newItems.map((item) => {
+            if (item.UUID === UUID) {
+                if (item.isLiked) {
+                    item.isLiked = false
+                    item.likes = item.likes - 1
+                } else {
+                    item.isLiked = true
+                    item.likes = item.likes + 1
+                }
+            }
+            return item
+        })
         setListQA(newItems)
     }
 
@@ -53,8 +63,6 @@ const Qa = (qaProps: QaProps) => {
         sorted.sort((a, b) => {
             let y = new Date(a.createdAt)
             let x = new Date(b.createdAt)
-            console.log(x)
-            console.log(y)
             return x < y ? -1 : x > y ? 1 : 0
         })
         setIsRecentSelected(true)
@@ -69,15 +77,14 @@ const Qa = (qaProps: QaProps) => {
     }
 
     return (
-        <div>
-            <Dialog
-                open={show}
-                keepMounted
-                onClose={handleClose}
-                aria-labelledby='alert-dialog-slide-title'
-                aria-describedby='alert-dialog-slide-description'
-                className={classes.root}
-            >
+        <Dialog
+            open={show}
+            keepMounted
+            aria-labelledby='alert-dialog-slide-title'
+            aria-describedby='alert-dialog-slide-description'
+            className={classes.root}
+        >
+            <div className='qa-header'>
                 <div className='qa-title'>
                     <CloseButton onClick={handleClose} />
                 </div>
@@ -87,6 +94,8 @@ const Qa = (qaProps: QaProps) => {
                     handleTopClick={handleTopClick}
                     isRecentSelected={isRecentSelected}
                 />
+            </div>
+            <div className='qa-body'>
                 {listQA.map((qaItem) => (
                     <QACard
                         key={qaItem.UUID}
@@ -98,9 +107,9 @@ const Qa = (qaProps: QaProps) => {
                         {qaItem.pollContent}
                     </QACard>
                 ))}
-                <QAAdd onSubmit={handleSubmit} />
-            </Dialog>
-        </div>
+            </div>
+            <QAAdd onSubmit={handleSubmit} />
+        </Dialog>
     )
 }
 

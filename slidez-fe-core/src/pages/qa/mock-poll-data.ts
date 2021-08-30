@@ -1,6 +1,6 @@
 export const MOCK_DATA = [
     {
-        UUID: 'b5c5620f-ca52-488d-953f-a3fc1c982fb1',
+        UUID: 'b15c5620f-ca52-488d-953f-a3fc1c982fb1',
         isLiked: false,
         createdAt: '2021-08-25T21:54:30.253Z',
         author: 'Anonymous',
@@ -9,7 +9,7 @@ export const MOCK_DATA = [
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo, velit adipiscing tellus lectus rhoncus?',
     },
     {
-        UUID: 'b5c5620f-ca52-488d-953f-a3fc1c982fb2',
+        UUID: 'b2c5620f-ca52-488d-953f-a3fc1c982fb2',
         isLiked: false,
         createdAt: '2021-08-26T21:54:30.253Z',
         likes: 102,
@@ -17,7 +17,7 @@ export const MOCK_DATA = [
         pollContent: 'Commodo, velit adipiscing tellus lectus rhoncus?',
     },
     {
-        UUID: 'b5c5620f-ca52-488d-953f-a3fc1c982fb3',
+        UUID: 'b3c5620f-ca52-488d-953f-a3fc1c982fb3',
         isLiked: true,
         createdAt: '2021-08-27T21:54:30.253Z',
         author: 'Anonymous',
@@ -26,7 +26,7 @@ export const MOCK_DATA = [
             'Tempor faucibus justo purus netus amet est. Cursus feug iat urna quis ultrices at urna?',
     },
     {
-        UUID: 'b5c5620f-ca52-488d-953f-a3fc1c982fb4',
+        UUID: 'b4c5620f-ca52-488d-953f-a3fc1c982fb4',
         isLiked: false,
         createdAt: '2021-08-28T21:54:30.253Z',
         likes: 0,

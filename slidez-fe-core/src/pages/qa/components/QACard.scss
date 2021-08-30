@@ -44,19 +44,25 @@ $likebtnwidth: 62px;
   width: $likebtnwidth;
   height: 35px;
   margin-right: 5px;
-  .like-icon {
-    fill: #59d0a5;
-    color: #59d0a5;
+
+  .unliked-icon {
     margin-right: 5px;
     width: 13px;
     height: 13px;
   }
-  .like-icon:hover,
-  .icon-bike:focus {
+  .unliked-icon:hover,
+  .unliked-icon:focus {
+    background-image: url('../../../assets/svgs/thumbs-up-solid.svg');
+  }
+
+  .liked-icon {
     margin-right: 5px;
     width: 13px;
     height: 13px;
-    background-image: url('../../../assets/svgs/thumbs-up-solid.svg');
+  }
+  .liked-icon:hover,
+  .liked-icon:focus {
+    background-image: url('../../../assets/svgs/thumbs-up-regular.svg');
   }
 }
 

@@ -2,8 +2,6 @@ import * as React from 'react'
 import '../qa.scss'
 
 const SelectorPanel = (props: any) => {
-    console.log(props.isRecentSelected)
-
     const isRecentSelected =
         'selector-button ' +
         (props.isRecentSelected ? 'selected-button' : 'unselected-button')
