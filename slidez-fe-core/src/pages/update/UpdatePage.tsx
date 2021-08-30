@@ -51,9 +51,6 @@ const UpdatePage = () => {
     const handlePwdSubmit = (values: typeof userData) => {
         console.log(values)
     }
-    const hideDeleteAccountModal = () => {
-        setShowModal(false)
-    }
     const showDeleteAccountModal = () => {
         setShowModal(true)
     }
@@ -115,13 +112,10 @@ const UpdatePage = () => {
                 <div className='side-btns'>
                     <h2 id='window-name'>Edit profile</h2>
                     <Button>Profile</Button>
-                    <DeleteAccount
-                        show={showModal}
-                        handleClose={hideDeleteAccountModal}
-                    ></DeleteAccount>
-                    <Button onClick={() => showDeleteAccountModal()}>
+                    <Button onClick={showDeleteAccountModal}>
                         Delete account
                     </Button>
+                    {showModal ? <DeleteAccount /> : ''}
                 </div>
                 <div className='verticalLine' />
                 <div className='form'>

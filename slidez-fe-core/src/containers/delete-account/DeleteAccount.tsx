@@ -11,47 +11,43 @@ import {
 } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 import httpHelper from '../../services/http/http-helper'
-import { UserDetailsDto } from '../user/dto/UserDetailsDto'
 import { handleNotification } from '../../common/notification/Notification'
 import { Redirect } from 'react-router-dom'
+import { AxiosResponse } from 'axios'
+import { GenericResponse } from '../../../../slidez-shared/src/net/dto/GenericResponse'
+import { UserDetailsDto } from '../user/dto/UserDetailsDto'
 
-type DeleteAccountProps = {
-    handleClose: () => void
-    show: boolean
-    children?: never[]
-}
-const DeleteAccount = ({ handleClose, show, children }: DeleteAccountProps) => {
+const DeleteAccount = () => {
     const JWT = 'jwt'
+    const [showModal, setShowModal] = useState(true)
     const [token, setToken] = useState('')
     const [userId, setUserId] = useState('')
-    const [userEmail, setUserEmail] = useState('')
-    useEffect(() => {
-        if (token.length > 0) {
-            performLoginByToken()
-            return
-        }
-        getAccessToken()
-    })
 
-    const performLoginByToken = async () => {
+    useEffect(() => {
+        setToken(window.localStorage.getItem(JWT) || '{}')
         const dto = {
             token: token,
         }
-        return performDataRequest('/auth/login-by-token', dto)
+        getAccessToken(dto, '')
+    })
+
+    const hideDeleteAccountModal = () => {
+        setShowModal(false)
     }
 
-    const getAccessToken = () => {
-        setToken(window.localStorage.getItem(JWT) || '{}')
-        console.log(token)
+    const getAccessToken = async (dto: object, route: string) => {
+        const axiosResp: AxiosResponse = await httpHelper.doPost(route, dto)
+        const { data } = axiosResp
+        const resp: GenericResponse<UserDetailsDto, string> = data
+        setUserId(resp.data.id)
     }
 
-    const performDataRequest = async (url: string, dto: object) => {
-        return null
-    }
-
-    const handleDeleteAccount = (values: UserDetailsDto) => {
+    const handleDeleteAccount = () => {
+        const user = {
+            id: userId,
+        }
         httpHelper
-            .doDelete('user', values)
+            .doDelete('user', user)
             .then(() => {
                 return <Redirect to='/login' />
             })
@@ -65,10 +61,10 @@ const DeleteAccount = ({ handleClose, show, children }: DeleteAccountProps) => {
     }
 
     return (
-        <Dialog open={show} maxWidth='sm' fullWidth>
+        <Dialog open={showModal} maxWidth='sm' fullWidth>
             <DialogTitle>Confirm the action</DialogTitle>
             <Box position='absolute' top={0} right={0}>
-                <IconButton onClick={handleClose}>
+                <IconButton onClick={hideDeleteAccountModal}>
                     <Close />
                 </IconButton>
             </Box>
@@ -82,7 +78,7 @@ const DeleteAccount = ({ handleClose, show, children }: DeleteAccountProps) => {
                 </Typography>
             </DialogContent>
             <DialogActions>
-                <Button variant='contained' onClick={handleClose}>
+                <Button variant='contained' onClick={hideDeleteAccountModal}>
                     Cancel
                 </Button>
                 <Button
@@ -90,9 +86,7 @@ const DeleteAccount = ({ handleClose, show, children }: DeleteAccountProps) => {
                         backgroundColor: '#C85250',
                     }}
                     variant='contained'
-                    onClick={() =>
-                        handleDeleteAccount({ id: userId, email: userEmail })
-                    }
+                    onClick={handleDeleteAccount}
                 >
                     Confirm
                 </Button>
