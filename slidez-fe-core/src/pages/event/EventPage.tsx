@@ -8,7 +8,6 @@ import {
 } from '../../containers/session/store/store'
 import { WsConnectionStatus } from '../../containers/session/enums/ws-connection-status'
 import Loader from '../../common/components/loader/Loader'
-import InteractiveWrapper from '../../common/components/interactive-elements/interactive-wrapper/InteractiveWrapper'
 import { CreatePresentationSessionDto } from '../../services/session/dto/CreatePresentationSessionDto'
 import {
     selectConnectionStatus,
@@ -20,7 +19,6 @@ import {
     StartPollRequest,
 } from '../../containers/session/event/FrontendEvent'
 import { PollDto } from '../../containers/session/dto/InteractiveElement'
-import PollInput from '../../common/components/interactive-elements/poll/PollInput'
 import { InteractiveElementType } from '../../containers/session/enums/InteractiveElementType'
 
 const useEditorParams = () => {
@@ -32,6 +30,10 @@ const useEditorParams = () => {
         slideId: params.get('slideId') ?? 'lol_poll_id',
     }
 }
+
+import ParticipantView from './ParticipantView'
+import NoEvent from './NoEventPage'
+import Header from '../participant-page/Header'
 
 const EventPage: React.FC = () => {
     const link = useAppSelector(selectLink)
@@ -64,18 +66,28 @@ const EventPage: React.FC = () => {
     const connectionStatus = useAppSelector(selectConnectionStatus)
 
     const currentInteraction = useAppSelector(selectCurrentInteractiveElement)
-    const body =
-        currentInteraction?.type === InteractiveElementType.poll ? (
-            <PollInput poll={currentInteraction as PollDto} link={link || ''} />
-        ) : (
-            <>Waiting for an interaction to start...</>
-        )
+
+    const activePoll: PollDto | undefined =
+        currentInteraction?.type === InteractiveElementType.poll
+            ? (currentInteraction as PollDto)
+            : undefined
+    const eventName = 'Animate'
+    const body = activePoll ? (
+        <div className='content'>
+            <Header eventName={eventName} />
+            <ParticipantView />
+        </div>
+    ) : (
+        <div>
+            <Header eventName='' />
+            <NoEvent />
+        </div>
+    )
+
     return (
         <div>
             {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
-            <InteractiveWrapper eventCode={link || ''}>
-                {body}
-            </InteractiveWrapper>
+            {body}
         </div>
     )
 }

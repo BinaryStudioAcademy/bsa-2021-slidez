@@ -59,7 +59,7 @@ const RegistrationErrors = ({
     } else if (registrationError) {
         handleNotification(
             'Registration Failed',
-            'This email is taken',
+            'The account with provided email is already registered',
             NotificationTypes.ERROR
         )
     } else if (formikErrors.email) {
