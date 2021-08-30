@@ -14,6 +14,20 @@ const Reaction = ({ anchor }: ButtonProps) => {
     const [showThumbUp, setShowThumbUp] = useState(false)
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(anchor)
 
+    const handleReaction = (show: boolean, src: string) => {
+        return (
+            <div>
+                {show ? (
+                    <img
+                        src={src}
+                        className='animate__animated animate__slideInUp'
+                    />
+                ) : (
+                    ''
+                )}
+            </div>
+        )
+    }
     const handleLike = () => {
         setShowLike(true)
         setTimeout(() => setShowLike(false), 2000)
@@ -50,24 +64,8 @@ const Reaction = ({ anchor }: ButtonProps) => {
                     <Button onClick={handleThumbUp}>Thumb up</Button>
                 </ButtonGroup>
             </Popover>
-            {showLike ? (
-                <img
-                    src={like}
-                    alt='like'
-                    className='animate__animated animate__slideInUp'
-                />
-            ) : (
-                ''
-            )}
-            {showThumbUp ? (
-                <img
-                    src={thumb_up}
-                    alt='thumb up'
-                    className='animate__animated animate__slideInUp'
-                />
-            ) : (
-                ''
-            )}
+            {handleReaction(showLike, like)}
+            {handleReaction(showThumbUp, thumb_up)}
         </div>
     )
 }
