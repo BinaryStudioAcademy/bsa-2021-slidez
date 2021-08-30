@@ -1,34 +1,74 @@
 import { Button, ButtonGroup, Popover } from '@material-ui/core'
 import React, { useState } from 'react'
-import { CSSTransition } from 'react-transition-group'
+import like from '../../../../assets/svgs/like_reaction.svg'
+import thumb_up from '../../../../assets/svgs/thumb_up_reaction.svg'
+import 'animate.css'
+import './reaction.scss'
 
-const Reaction = () => {
-    const [showMessage, setShowMessage] = useState(true)
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    anchor: HTMLButtonElement | null
+}
+
+const Reaction = ({ anchor }: ButtonProps) => {
+    const [showLike, setShowLike] = useState(false)
+    const [showThumbUp, setShowThumbUp] = useState(false)
+    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(anchor)
+
+    const handleLike = () => {
+        setShowLike(true)
+        setTimeout(() => setShowLike(false), 2000)
+    }
+
+    const handleThumbUp = () => {
+        setShowThumbUp(true)
+        setTimeout(() => setShowThumbUp(false), 2000)
+    }
+
+    const handleClose = () => {
+        setAnchorEl(null)
+    }
+    const open = Boolean(anchorEl)
 
     return (
-        <Popover
-            open={showMessage}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-            }}
-            transformOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-            }}
-        >
-            <CSSTransition
-                in={showMessage}
-                timeout={300}
-                classNames='alert'
-                unmountOnExit
+        <div className='reaction'>
+            <Popover
+                id='simple-popover'
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                open={open}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
             >
                 <ButtonGroup>
-                    <Button onClick={() => setShowMessage(false)}>Like</Button>
-                    <Button>Thumb up</Button>
+                    <Button onClick={handleLike}>Like</Button>
+                    <Button onClick={handleThumbUp}>Thumb up</Button>
                 </ButtonGroup>
-            </CSSTransition>
-        </Popover>
+            </Popover>
+            {showLike ? (
+                <img
+                    src={like}
+                    alt='like'
+                    className='animate__animated animate__slideInUp'
+                />
+            ) : (
+                ''
+            )}
+            {showThumbUp ? (
+                <img
+                    src={thumb_up}
+                    alt='thumb up'
+                    className='animate__animated animate__slideInUp'
+                />
+            ) : (
+                ''
+            )}
+        </div>
     )
 }
 
