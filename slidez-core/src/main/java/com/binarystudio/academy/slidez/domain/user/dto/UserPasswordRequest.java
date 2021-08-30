@@ -9,10 +9,10 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserPasswordDto {
+public class UserPasswordRequest {
 
 	private UUID id;
 
-	private String password;
+    private String password;
 
 }
