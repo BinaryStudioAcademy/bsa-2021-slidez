@@ -11,14 +11,14 @@ import { logout, selectUserDetals } from '../../../containers/user/store'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
-import { DropdownUserInfo } from './edit-profile/components/DropdownUserInfo'
+import { DropdownMenu } from './edit-profile/components/DropdownMenu'
 import { handleLogo } from './edit-profile/handleLogo'
 import FormUpdateUserData from './edit-profile/components/FormUpdateUserData'
 import FormUpdatePassword from './edit-profile/components/FormUpdatePassword'
 import { UserDetailsDto } from '../../../containers/user/dto/UserDetailsDto'
 import '../dashboard.scss'
 import './UserProfile.scss'
-import './edit-profile/components/DropdownUserInfo.scss'
+import './edit-profile/components/DropdownMenu.scss'
 import './edit-profile/components/Form.scss'
 import './edit-profile/components/Loader.scss'
 
@@ -70,7 +70,7 @@ const UserProfile = () => {
                         isActive ? 'active' : 'inactive'
                     }`}
                 >
-                    <DropdownUserInfo logo={logo} userData={userData} />
+                    <DropdownMenu logo={logo} userData={userData} />
                     <hr />
                     <div
                         className='user-profile-menu'
