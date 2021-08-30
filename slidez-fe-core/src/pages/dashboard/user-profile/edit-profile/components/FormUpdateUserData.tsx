@@ -1,36 +1,40 @@
 import React, { useState, useRef, useEffect } from 'react'
-
 import Button from '@material-ui/core/Button'
 import { Field, Form, Formik } from 'formik'
-import { selectError } from '../../../../containers/user/store'
-import { useAppSelector } from '../../../../hooks'
-import '../update.scss'
-import { FormUpdateUserDataProps } from '../editProfileTypes'
+import {
+    selectError,
+    isSavingUser,
+    updateUserProfile,
+    selectUserDetals,
+} from '../../../../../containers/user/store'
+import { useAppDispatch, useAppSelector } from '../../../../../hooks'
 import { updateUserProfileFieldsValidation } from '../validations'
 import { UpdateUserProfileErrors } from './UpdateUserProfileErrors'
-import { UserField } from '../Field'
 
-const FormUpdateUserData = ({
-    userData,
-    handleUpdateUserProfile,
-    onCloseEditDialog,
-    viewErrors,
-    setViewErrors,
-}: FormUpdateUserDataProps) => {
+import { UserField } from '../Field'
+import { Loader } from './Loader'
+import { UpdateProfileDto } from '../../../../../services/user/dto/UpdateProfileDto'
+import { initialValuesUserData } from '../../UserProfile'
+import './Form.scss'
+
+const FormUpdateUserData = () => {
+    const isSavingUserData = useAppSelector(isSavingUser)
     const updateUserProfileError = useAppSelector(selectError)
-    const handleInfoSubmit = (values: typeof userData) => {
-        console.log(values)
+    const userData = useAppSelector(selectUserDetals) || initialValuesUserData
+    const [viewErrors, setViewErrors] = React.useState(false)
+    const dispatch = useAppDispatch()
+
+    const handleUpdateUserProfile = (dto: UpdateProfileDto) => {
+        dispatch(updateUserProfile(dto))
     }
+
     return (
         <Formik
             initialValues={userData}
             validationSchema={updateUserProfileFieldsValidation}
             enableReinitialize={true}
             onSubmit={(values, { setSubmitting }) => {
-                handleInfoSubmit(values),
-                    handleUpdateUserProfile(values),
-                    onCloseEditDialog(),
-                    setSubmitting(false)
+                handleUpdateUserProfile(values), setSubmitting(false)
             }}
         >
             {({ errors }) => (
@@ -102,7 +106,7 @@ const FormUpdateUserData = ({
                             type='submit'
                             onClick={() => setViewErrors(true)}
                         >
-                            Save
+                            {isSavingUserData ? <Loader /> : 'Save'}
                         </Button>
                     </div>
                 </Form>

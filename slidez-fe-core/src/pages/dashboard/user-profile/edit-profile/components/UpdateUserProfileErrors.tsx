@@ -1,6 +1,6 @@
 import React from 'react'
 import { UpdateUserProfileErorrsProps } from '../editProfileTypes'
-import '../update.scss'
+import './Form.scss'
 
 export const UpdateUserProfileErrors = ({
     viewErrors,

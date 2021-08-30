@@ -1,27 +1,50 @@
-import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { useState, useRef, useEffect } from 'react'
 import Button from '@material-ui/core/Button'
 import { Field, Form, Formik } from 'formik'
-import React, { useState, useRef, useEffect } from 'react'
-import { selectError } from '../../../../containers/user/store'
-import { useAppSelector } from '../../../../hooks'
-import { FormUpdatePasswordProps } from '../editProfileTypes'
+import {
+    selectError,
+    isSavingPassword,
+    updatePassword,
+    selectId,
+} from '../../../../../containers/user/store'
+import { useAppDispatch, useAppSelector } from '../../../../../hooks'
 import { UserField } from '../Field'
 import { updatePasswordFieldsValidation } from '../validations'
 import { UpdatePasswordErrors } from './UpdatePasswordErrors'
+import { Loader } from './Loader'
+import { UpdatePasswordRequest } from '../../../../../services/user/dto/UpdatePasswordRequest'
+import './Form.scss'
 
-const FormUpdatePassword = ({
-    initialValuesPassword,
-    handleUpdatePassword,
-    userId,
-    onCloseEditDialog,
-    viewErrors,
-    setViewErrors,
-}: FormUpdatePasswordProps) => {
+export interface Password {
+    id: string | undefined
+    password: string
+    confirmPassword: string
+}
+
+const initialValuesPassword: Password = {
+    id: '',
+    password: '',
+    confirmPassword: '',
+}
+
+const FormUpdatePassword = () => {
+    const [viewErrors, setViewErrors] = React.useState(false)
+    const isSavingPasswordData = useAppSelector(isSavingPassword)
     const updatePasswordError = useAppSelector(selectError)
+    const userId = useAppSelector(selectId)
+    const dispatch = useAppDispatch()
 
-    const handlePwdSubmit = (values: typeof initialValuesPassword) => {
-        console.log(values)
+    const handleUpdatePassword = async (
+        id: string | undefined,
+        password: string,
+        confirmPassword: string
+    ) => {
+        const pass: UpdatePasswordRequest = {
+            id: id,
+            password: password,
+            confirmPassword: confirmPassword,
+        }
+        dispatch(updatePassword(pass))
     }
 
     return (
@@ -30,13 +53,11 @@ const FormUpdatePassword = ({
             validationSchema={updatePasswordFieldsValidation}
             enableReinitialize={true}
             onSubmit={(values, { setSubmitting }) => {
-                handlePwdSubmit(values),
-                    handleUpdatePassword(
-                        userId,
-                        values.password,
-                        values.confirmPassword
-                    ),
-                    onCloseEditDialog(),
+                handleUpdatePassword(
+                    userId,
+                    values.password,
+                    values.confirmPassword
+                ),
                     setSubmitting(false)
             }}
         >
@@ -85,7 +106,7 @@ const FormUpdatePassword = ({
                             onClick={() => setViewErrors(true)}
                             type='submit'
                         >
-                            Save
+                            {isSavingPasswordData ? <Loader /> : 'Save'}
                         </Button>
                     </div>
                 </Form>

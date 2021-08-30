@@ -1,0 +1,27 @@
+.user-info {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	margin-top: 18px;
+	margin-left: 18px;
+	margin-right: 18px;
+	margin-bottom: 10px;
+	text-align: left;
+	.avatar {
+		margin-right: 9px;
+		width: 32px !important;
+		height: 32px !important;
+		font-family: 'Work Sans';
+	}
+	.user-name {
+		font-weight: 500;
+		font-size: 14px;
+	}
+	.user-email {
+		padding: 5px 0;
+		font-weight: 500;
+		font-size: 12px;
+		line-height: 14px;
+		color: rgba(0, 0, 0, 0.4);
+	}
+}

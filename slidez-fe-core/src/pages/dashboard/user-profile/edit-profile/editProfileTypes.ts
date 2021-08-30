@@ -1,5 +1,5 @@
 import { FormikErrors } from "formik"
-import { Password, User } from "../UserProfile"
+import { UserDetailsDto } from "../../../../containers/user/dto/UserDetailsDto"
 
 export type UpdateProps = {
     onUpdateUserProfile: Function
@@ -27,22 +27,5 @@ export type UpdatePasswordErorrsProps = {
 
 export type DropdownUserInfoProps = {
     logo: string
-    userData: User
-}
-
-export type FormUpdateUserDataProps = {
-    userData: User
-    handleUpdateUserProfile: Function
-    onCloseEditDialog: Function
-    viewErrors: boolean
-    setViewErrors: Function
-}
-
-export type FormUpdatePasswordProps = {
-    initialValuesPassword: Password
-    handleUpdatePassword: Function
-    userId: string | undefined
-    onCloseEditDialog: Function
-    viewErrors: boolean
-    setViewErrors: Function
+    userData: UserDetailsDto
 }

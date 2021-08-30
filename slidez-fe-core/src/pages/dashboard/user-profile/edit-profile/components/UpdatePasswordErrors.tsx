@@ -1,6 +1,6 @@
 import React from 'react'
 import { UpdatePasswordErorrsProps } from '../editProfileTypes'
-import '../update.scss'
+import './Form.scss'
 
 export const UpdatePasswordErrors = ({
     viewErrors,
