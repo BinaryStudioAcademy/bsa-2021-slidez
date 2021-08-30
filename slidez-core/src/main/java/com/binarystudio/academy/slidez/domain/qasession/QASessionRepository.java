@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public interface QASessionRepository extends JpaRepository<QASession, UUID> {
 
-    Optional<QASession> getBySlideIdIs(String slideId);
+	Optional<QASession> getBySlideIdIs(String slideId);
 
 }

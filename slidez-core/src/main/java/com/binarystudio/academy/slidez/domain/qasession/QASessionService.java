@@ -49,8 +49,8 @@ public class QASessionService {
 		return QASessionMapper.INSTANCE.qaSessionToDto(out);
 	}
 
-    public Optional<QASession> getBySlideId(String slideId) {
-        return qaSessionRepository.getBySlideIdIs(slideId);
-    }
+	public Optional<QASession> getBySlideId(String slideId) {
+		return qaSessionRepository.getBySlideIdIs(slideId);
+	}
 
 }
