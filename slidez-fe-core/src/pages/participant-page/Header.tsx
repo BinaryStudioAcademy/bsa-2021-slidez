@@ -9,6 +9,7 @@ interface IProps {
 
 const Header: React.FC<IProps> = ({ eventName }: IProps) => {
     const [showQAModal, setShowQAModal] = useState(false)
+
     const handleQAClose = () => {
         setShowQAModal(false)
     }
@@ -26,7 +27,7 @@ const Header: React.FC<IProps> = ({ eventName }: IProps) => {
             <button type='button' onClick={() => handleQAShow()}>
                 Open Q&amp;A page
             </button>
-            <Qa show={showQAModal} handleClose={() => handleQAClose()}></Qa>
+            <Qa show={showQAModal} handleClose={handleQAClose}></Qa>
             <div className='event-name'>{eventName}</div>
         </div>
     )

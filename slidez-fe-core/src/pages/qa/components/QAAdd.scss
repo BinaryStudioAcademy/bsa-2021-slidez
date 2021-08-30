@@ -46,3 +46,14 @@ $submitWidth: calc(100% - 16px);
   padding-bottom: 10px;
   border-radius: 50px;
 }
+
+.chars-counter {
+  font-size: 10px;
+  color: #777777;
+  z-index: 10;
+  flex: auto;
+  position: absolute;
+  right: 18px;
+  bottom: 66px;
+  text-align: right;
+}
