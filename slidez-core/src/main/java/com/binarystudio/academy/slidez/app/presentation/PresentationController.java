@@ -24,10 +24,10 @@ public class PresentationController {
 		this.presentationService = presentationService;
 	}
 
-	@GetMapping("/{link}/interactions")
+	@GetMapping("{link}/interactions")
 	public GenericResponse<Collection<InteractiveElementDto>, String> getInteractiveElements(
 			@PathVariable("link") String link) throws EntityNotFoundException, IllegalElementTypeException {
-		Collection<InteractiveElementDto> interactiveElements = presentationService.getInteractiveElements(link);
+		Collection<InteractiveElementDto> interactiveElements = presentationService.getInteractiveElementDtos(link);
 		return new GenericResponse<>(interactiveElements);
 	}
 

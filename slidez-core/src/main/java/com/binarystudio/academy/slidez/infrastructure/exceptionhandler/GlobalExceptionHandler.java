@@ -2,7 +2,7 @@ package com.binarystudio.academy.slidez.infrastructure.exceptionhandler;
 
 import com.binarystudio.academy.slidez.domain.exception.DomainException;
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-@Log4j2
+@Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	private final ExceptionProperties exceptionProperties;
@@ -36,6 +36,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 				exceptionProperties.getUnpredictedExceptionMessage());
 		this.logger.error(ex.getMessage());
 		this.logger.error(ex.getStackTrace());
+		ex.printStackTrace();
 		return new ResponseEntity<>(out, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 

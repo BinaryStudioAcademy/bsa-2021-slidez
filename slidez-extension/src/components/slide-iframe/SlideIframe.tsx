@@ -8,9 +8,11 @@ import './SlideIframe.scss'
 
 type SlideIframeProps = {
     sourceUrl: string
+    slideId: string
+    presentationId: string
 }
 
-function SlideIframe({ sourceUrl }: SlideIframeProps) {
+function SlideIframe({ sourceUrl, slideId, presentationId }: SlideIframeProps) {
     useEffect(() => {
         const slideIframeDoc = queryElement<HTMLIFrameElement>(
             document,
@@ -28,7 +30,7 @@ function SlideIframe({ sourceUrl }: SlideIframeProps) {
     return (
         <iframe
             className={CLASS_NAME_INTERACTIVE_SLIDE_IFRAME}
-            src={sourceUrl}
+            src={`${sourceUrl}?presentationId=${presentationId}&slideId=${slideId}`}
             title='Interactive element'
         ></iframe>
     )

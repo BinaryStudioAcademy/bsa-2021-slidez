@@ -7,6 +7,8 @@ import com.binarystudio.academy.slidez.domain.interactive_element.model.Interact
 import com.binarystudio.academy.slidez.domain.presentation.dto.PresentationUpdateDto;
 import com.binarystudio.academy.slidez.domain.presentation.exception.PresentationNotFoundException;
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
+import com.binarystudio.academy.slidez.domain.user.UserService;
+import com.binarystudio.academy.slidez.domain.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,20 +21,36 @@ import java.util.stream.Collectors;
 @Service
 public class PresentationService {
 
+	private final UserService userService;
+
 	private final PresentationRepository presentationRepository;
 
 	@Autowired
-	public PresentationService(PresentationRepository presentationRepository) {
+	public PresentationService(UserService userService, PresentationRepository presentationRepository) {
+		this.userService = userService;
 		this.presentationRepository = presentationRepository;
 	}
 
-	public Presentation add(String name) {
-		Presentation presentation = new Presentation(name);
-		return presentationRepository.save(presentation);
+	/**
+	 * Fetches presentation or creates a new presentation if it doesn't exists
+	 */
+
+	public Presentation assertPresentationExists(String presentationLink, User owner) {
+		return this.presentationRepository.findByLink(presentationLink).orElseGet(() -> {
+			var newPresentation = new Presentation();
+			newPresentation.setLink(presentationLink);
+			newPresentation.setName("Unnamed presentation");
+			newPresentation.setUser(owner);
+			return presentationRepository.save(newPresentation);
+		});
 	}
 
 	public Optional<Presentation> get(UUID id) {
 		return presentationRepository.findById(id);
+	}
+
+	public Optional<Presentation> getByLink(String id) {
+		return presentationRepository.findByLink(id);
 	}
 
 	public Presentation update(PresentationUpdateDto dto) {
@@ -44,13 +62,7 @@ public class PresentationService {
 		presentationRepository.deleteById(id);
 	}
 
-	public Set<InteractiveElement> getInteractiveElements(UUID presentationId) throws PresentationNotFoundException {
-		Presentation presentation = get(presentationId).orElseThrow(
-				() -> new PresentationNotFoundException(String.format("No presentation with id = %s", presentationId)));
-		return presentation.getInteractiveElements();
-	}
-
-	public Collection<InteractiveElementDto> getInteractiveElements(String presentationLink)
+	public Collection<InteractiveElementDto> getInteractiveElementDtos(String presentationLink)
 			throws IllegalElementTypeException {
 		Presentation presentation = this.presentationRepository.findByLink(presentationLink)
 				.orElseThrow(() -> new PresentationNotFoundException(
