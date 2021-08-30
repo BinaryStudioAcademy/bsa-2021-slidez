@@ -1,11 +1,9 @@
 @import "src/global/global";
 
-//q-and-a.scss
 .q-and-a {
     margin: 60px;
 }
 
-//q-and-a-header.scss
 .q-and-a-header {
     display: flex;
     align-items: center;
@@ -22,7 +20,6 @@
     }
 }
 
-///question.scss
 .question-container {
     display: flex;
     flex-direction: column;
@@ -57,12 +54,12 @@
             padding-right: 15px;
             font-size: 14px;
             font-weight: 400;
-            img{
+            border: none;
+            img {
                 margin-right: 5px;
             }
         }
     }
-
     .separator {
         width: 100%;
         border-bottom: solid 1px $light-grey;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Avatar from 'react-avatar'
 import '../styles.qa.scss'
 import '../../../../../global/styles.scss'
@@ -12,6 +12,23 @@ export type QuestionProps = {
 export const Question = (questionProps: QuestionProps) => {
     const getName = () => {
         return questionProps.firstName ? questionProps.firstName : 'Anonymous'
+    }
+    const [like, setLike] = useState(0)
+    const [isClicked, setIsClicked] = useState(false)
+    const increment = () => {
+        setLike(like + 1)
+    }
+    const decrement = () => {
+        setLike(like - 1)
+    }
+    const handleLike = () => {
+        if (isClicked) {
+            decrement()
+            setIsClicked(false)
+        } else {
+            increment()
+            setIsClicked(true)
+        }
     }
 
     return (
@@ -27,10 +44,10 @@ export const Question = (questionProps: QuestionProps) => {
             </div>
             <div className='row-content'>
                 <div className='question'>{questionProps.question}</div>
-                <div className='like'>
+                <button className='like' onClick={() => handleLike()}>
                     <img src={user} alt='user' />
-                    {14}
-                </div>
+                    {like}
+                </button>
             </div>
             <div className='separator' />
         </div>
