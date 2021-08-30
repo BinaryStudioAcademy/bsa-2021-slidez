@@ -46,6 +46,9 @@ public class PollService {
 		poll.setIsTemplate(false);
 		poll.setOptions(pollDto.getOptions().stream().map(option -> new PollOption(option.getTitle()))
 				.collect(Collectors.toList()));
+		// TODO: DUPLICATE CODE: WE SET THAT TO INNER OBJECT
+		poll.setSlideId(pollDto.getSlideId());
+		poll.setPresentation(presentation);
 
 		poll.setInteractiveElement(ie);
 		poll.setOwner(actor);
