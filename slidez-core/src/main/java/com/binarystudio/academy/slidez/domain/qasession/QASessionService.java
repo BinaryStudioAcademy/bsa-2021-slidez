@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class QASessionService {
 
@@ -46,5 +48,9 @@ public class QASessionService {
 		QASession out = qaSessionRepository.save(qaSession);
 		return QASessionMapper.INSTANCE.qaSessionToDto(out);
 	}
+
+    public Optional<QASession> getBySlideId(String slideId) {
+        return qaSessionRepository.getBySlideIdIs(slideId);
+    }
 
 }
