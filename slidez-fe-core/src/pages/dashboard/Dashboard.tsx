@@ -13,11 +13,8 @@ import SideBar from './SideBar'
 import './dashboard.scss'
 import { MOCK_DATA } from './mock-data'
 import { useAppDispatch } from '../../hooks'
-import { updatePassword, updateUserProfile } from '../../containers/user/store'
-import UserProfile from './UserProfile'
 import table_sort from '../../../src/assets/svgs/table-sort.svg'
-import { UpdateProfileDto } from '../../services/user/dto/UpdateProfileDto'
-import { UpdatePasswordDto } from '../../services/user/dto/UpdatePasswordDto'
+import UserProfile from './user-profile/UserProfile'
 
 const Dashboard = () => {
     const [currentView, setCurrentView] = useState('table')
@@ -114,14 +111,6 @@ const Dashboard = () => {
         setSearchField(e.target.value)
     }
 
-    const handleUpdateUserProfile = (dto: UpdateProfileDto) => {
-        dispatch(updateUserProfile(dto))
-    }
-
-    const handleUpdatePassword = (dto: UpdatePasswordDto) => {
-        dispatch(updatePassword(dto))
-    }
-
     return (
         <div className='dashboard-page'>
             <SideBar />
@@ -139,10 +128,7 @@ const Dashboard = () => {
                             onChange={handleChange}
                         />
                     </div>
-                    <UserProfile
-                        onUpdateUserProfile={handleUpdateUserProfile}
-                        onUpdatePassword={handleUpdatePassword}
-                    />
+                    <UserProfile />
                 </div>
                 <div className='presentations-section'>
                     <div className='above-section'>
