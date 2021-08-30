@@ -50,8 +50,8 @@ public class PresentationService {
 	}
 
 	public Optional<Presentation> getByLink(String id) {
-	    return presentationRepository.findByLink(id);
-    }
+		return presentationRepository.findByLink(id);
+	}
 
 	public Presentation update(PresentationUpdateDto dto) {
 		presentationRepository.update(dto);
