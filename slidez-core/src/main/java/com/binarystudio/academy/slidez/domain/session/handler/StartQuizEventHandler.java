@@ -30,21 +30,21 @@ public class StartQuizEventHandler extends AbstractDomainEventHandler {
 	@Override
 	public GenericResponse<SessionResponse, SessionResponseCodes> handle(DomainEvent domainEvent,
 			PresentationEventStore presentationEventStore) {
-        if (!Objects.equals(domainEvent.getClass(), StartQuizEvent.class)) {
-            return super.handle(domainEvent, presentationEventStore);
-        }
-        StartQuizEvent event = (StartQuizEvent) domainEvent;
-        Optional<Quiz> bySlideId = quizService.findBySlideId(event.getSlideId());
-        if (bySlideId.isEmpty()) {
-            return new GenericResponse<>(null, SessionResponseCodes.COULD_NOT_START_QUIZ);
-        }
-        Quiz quiz = bySlideId.get();
-        SessionInteractiveElementMapper mapper = SessionInteractiveElementMapper.INSTANCE;
-        SessionQuiz sessionQuiz = mapper.mapQuizToSessionQuiz(quiz);
-        event.setSessionQuiz(sessionQuiz);
-        super.handle(event, presentationEventStore);
-        SessionResponse sessionResponse = new SessionResponse(ResponseType.STARTED_QUIZ, sessionQuiz);
-        return new GenericResponse<>(sessionResponse);
-    }
+		if (!Objects.equals(domainEvent.getClass(), StartQuizEvent.class)) {
+			return super.handle(domainEvent, presentationEventStore);
+		}
+		StartQuizEvent event = (StartQuizEvent) domainEvent;
+		Optional<Quiz> bySlideId = quizService.findBySlideId(event.getSlideId());
+		if (bySlideId.isEmpty()) {
+			return new GenericResponse<>(null, SessionResponseCodes.COULD_NOT_START_QUIZ);
+		}
+		Quiz quiz = bySlideId.get();
+		SessionInteractiveElementMapper mapper = SessionInteractiveElementMapper.INSTANCE;
+		SessionQuiz sessionQuiz = mapper.mapQuizToSessionQuiz(quiz);
+		event.setSessionQuiz(sessionQuiz);
+		super.handle(event, presentationEventStore);
+		SessionResponse sessionResponse = new SessionResponse(ResponseType.STARTED_QUIZ, sessionQuiz);
+		return new GenericResponse<>(sessionResponse);
+	}
 
 }
