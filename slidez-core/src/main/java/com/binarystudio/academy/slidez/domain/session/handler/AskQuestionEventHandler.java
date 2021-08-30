@@ -14,14 +14,16 @@ import java.util.Objects;
 @Component
 public class AskQuestionEventHandler extends AbstractDomainEventHandler {
 
-    @Override
-    public GenericResponse<SessionResponse, SessionResponseCodes> handle(DomainEvent domainEvent, PresentationEventStore presentationEventStore) {
-        if (Objects.equals(domainEvent.getClass(), AskQuestionEvent.class)) {
-            AskQuestionEvent event = (AskQuestionEvent) domainEvent;
-            super.handle(event, presentationEventStore);
-            SessionResponse sessionResponse = new SessionResponse(ResponseType.ASKED_QUESTION, event.getQuestion());
-            return new GenericResponse<>(sessionResponse);
-        }
-        return super.handle(domainEvent, presentationEventStore);
-    }
+	@Override
+	public GenericResponse<SessionResponse, SessionResponseCodes> handle(DomainEvent domainEvent,
+			PresentationEventStore presentationEventStore) {
+		if (Objects.equals(domainEvent.getClass(), AskQuestionEvent.class)) {
+			AskQuestionEvent event = (AskQuestionEvent) domainEvent;
+			super.handle(event, presentationEventStore);
+			SessionResponse sessionResponse = new SessionResponse(ResponseType.ASKED_QUESTION, event.getQuestion());
+			return new GenericResponse<>(sessionResponse);
+		}
+		return super.handle(domainEvent, presentationEventStore);
+	}
+
 }

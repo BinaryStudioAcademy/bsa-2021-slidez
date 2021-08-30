@@ -27,13 +27,14 @@ public class State {
 				.addAnswer(pollAnswer);
 	}
 
-    public void addQuestionToQASession(SessionQAQuestion sessionQAQuestion) {
-        sessionInteractiveElements.stream()
-            .filter(element -> Objects.equals(element.getClass(), SessionQASession.class)
-                && Objects.equals(element.getId(), sessionQAQuestion.getQaSessionId()))
-            .map(element -> (SessionQASession) element).findFirst().orElseThrow(() -> new QASessionNotFoundException(
-                String.format("QASession with id %s not found", sessionQAQuestion.getQaSessionId())))
-            .addQuestion(sessionQAQuestion);
-    }
+	public void addQuestionToQASession(SessionQAQuestion sessionQAQuestion) {
+		sessionInteractiveElements.stream()
+				.filter(element -> Objects.equals(element.getClass(), SessionQASession.class)
+						&& Objects.equals(element.getId(), sessionQAQuestion.getQaSessionId()))
+				.map(element -> (SessionQASession) element).findFirst()
+				.orElseThrow(() -> new QASessionNotFoundException(
+						String.format("QASession with id %s not found", sessionQAQuestion.getQaSessionId())))
+				.addQuestion(sessionQAQuestion);
+	}
 
 }

@@ -18,7 +18,7 @@ public class AskQuestionEvent extends DomainEvent {
 
 	@Override
 	public void applyEvent(State state) throws DomainException {
-        state.addQuestionToQASession(question);
+		state.addQuestionToQASession(question);
 	}
 
 }

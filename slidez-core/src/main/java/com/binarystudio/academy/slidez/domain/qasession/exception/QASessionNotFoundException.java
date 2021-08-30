@@ -4,7 +4,8 @@ import com.binarystudio.academy.slidez.domain.exception.DomainException;
 
 public class QASessionNotFoundException extends DomainException {
 
-    public QASessionNotFoundException(String message) {
-        super(message);
-    }
+	public QASessionNotFoundException(String message) {
+		super(message);
+	}
+
 }

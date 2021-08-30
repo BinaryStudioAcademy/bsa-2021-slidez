@@ -16,9 +16,10 @@ public class SessionQASession extends SessionInteractiveElement {
 
 	private String title;
 
-    private List<SessionQAQuestion> questions = new ArrayList<>();
+	private List<SessionQAQuestion> questions = new ArrayList<>();
 
-    public void addQuestion(SessionQAQuestion sessionQAQuestion) {
-        questions.add(sessionQAQuestion);
-    }
+	public void addQuestion(SessionQAQuestion sessionQAQuestion) {
+		questions.add(sessionQAQuestion);
+	}
+
 }
