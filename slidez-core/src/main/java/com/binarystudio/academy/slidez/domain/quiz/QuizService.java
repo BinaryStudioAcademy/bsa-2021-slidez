@@ -49,7 +49,6 @@ public class QuizService {
 		quiz.setSlideId(dto.getSlideId());
 
 		Quiz saved = quizRepository.save(quiz);
-        System.out.println(saved.getId());
 		return QuizMapper.INSTANCE.quizToQuizDto(saved);
 	}
 
