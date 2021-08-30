@@ -47,7 +47,7 @@ public class Quiz extends InteractiveElement {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "quiz_id", referencedColumnName = "id", nullable = false)
-	private List<QuizAnswer> quizAnswers = new ArrayList<>();
+	private List<QuizAnswer> answers = new ArrayList<>();
 
 	public Quiz() {
 		super.setType(InteractiveElementType.QUIZ);

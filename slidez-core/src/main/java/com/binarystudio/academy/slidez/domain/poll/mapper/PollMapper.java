@@ -19,11 +19,9 @@ public interface PollMapper {
 
 	List<PollOptionDto> pollOptionsToPollOptionDtos(List<PollOption> pollOptions);
 
-	@Mappings({ @Mapping(source = "id", target = "id"),
-			@Mapping(source = "interactiveElement.type", target = "type"),
+	@Mappings({ @Mapping(source = "id", target = "id"), @Mapping(source = "interactiveElement.type", target = "type"),
 			@Mapping(source = "title", target = "title"), @Mapping(source = "isMulti", target = "isMulti"),
-			@Mapping(source = "isTemplate", target = "isTemplate"),
-            @Mapping(source = "owner.id", target = "ownerId"),
+			@Mapping(source = "isTemplate", target = "isTemplate"), @Mapping(source = "owner.id", target = "ownerId"),
 			@Mapping(target = "pollOptions", expression = "java( pollOptionsToPollOptionDtos(poll.getOptions()) )") })
 	PollDto pollToPollDto(Poll poll);
 

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,7 +40,7 @@ public class QuizService {
 		Quiz quiz = new Quiz();
 		List<QuizAnswer> answers = dto.getAnswers().stream()
 				.map(e -> new QuizAnswer(null, e.getTitle(), e.getIsCorrect())).collect(Collectors.toList());
-		quiz.setQuizAnswers(answers);
+		quiz.setAnswers(answers);
 		quiz.setInteractiveElement(interactiveElement);
 		quiz.setOwner(owner);
 		quiz.setIsMulti(dto.getIsMulti());
@@ -50,6 +51,10 @@ public class QuizService {
 
 		Quiz saved = quizRepository.save(quiz);
 		return QuizMapper.INSTANCE.quizToQuizDto(saved);
+	}
+
+	public Optional<Quiz> findBySlideId(String slideId) {
+		return quizRepository.findBySlideIdIs(slideId);
 	}
 
 }
