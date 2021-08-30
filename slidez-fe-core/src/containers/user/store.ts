@@ -16,17 +16,21 @@ import { TokenDto } from '../../services/auth/dto/TokenDto'
 import { CodeDto } from '../../services/auth/dto/CodeDto'
 import { editUserProfile, editPassword } from '../../services/user/user-service'
 import { UpdateProfileDto } from '../../services/user/dto/UpdateProfileDto'
-import { UpdatePasswordDto } from '../../services/user/dto/UpdatePasswordDto'
+import { UpdatePasswordRequest } from '../../services/user/dto/UpdatePasswordRequest'
 
 export interface UserState {
     error?: string
     user?: UserDetailsDto
+    isSavingUser: boolean
+    isSavingPassword: boolean
     isLoggedIn: boolean
 }
 
 const initialState: UserState = {
     error: undefined,
     user: undefined,
+    isSavingUser: false,
+    isSavingPassword: false,
     isLoggedIn: isLoggedIn(),
 }
 
@@ -50,7 +54,7 @@ export const updateUserProfile = createAsyncThunk(
 
 export const updatePassword = createAsyncThunk(
     'user/update-password',
-    async (dto: UpdatePasswordDto) => {
+    async (dto: UpdatePasswordRequest) => {
         return editPassword(dto)
     }
 )
@@ -100,19 +104,29 @@ export const userSlice = createSlice({
                     state.isLoggedIn = isLoggedIn()
                 }
             })
+            .addCase(updateUserProfile.pending, (state) => {
+                state.isSavingUser = true
+            })
+            .addCase(updateUserProfile.rejected, (state) => {
+                state.isSavingUser = false
+            })
             .addCase(updateUserProfile.fulfilled, (state, action) => {
+                state.isSavingUser = false
                 state.error = action.payload.error
                 if (action.payload.userDetailsDto) {
                     state.user = action.payload.userDetailsDto
                     state.isLoggedIn = isLoggedIn()
                 }
             })
+            .addCase(updatePassword.pending, (state) => {
+                state.isSavingPassword = true
+            })
+            .addCase(updatePassword.rejected, (state) => {
+                state.isSavingPassword = false
+            })
             .addCase(updatePassword.fulfilled, (state, action) => {
+                state.isSavingPassword = false
                 state.error = action.payload.error
-                if (action.payload.userDetailsDto) {
-                    state.user = action.payload.userDetailsDto
-                    state.isLoggedIn = isLoggedIn()
-                }
             })
             .addCase(loginByToken.fulfilled, (state, action) => {
                 state.error = action.payload.error
@@ -142,6 +156,13 @@ export const userSlice = createSlice({
             })
     },
 })
+
+export const isSavingUser = (state: RootState) => state.user.isSavingUser
+
+export const isSavingPassword = (state: RootState) =>
+    state.user.isSavingPassword
+
+export const selectUserDetals = (state: RootState) => state.user.user
 
 export const selectId = (state: RootState) => state.user.user?.id
 
