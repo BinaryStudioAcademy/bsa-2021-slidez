@@ -8,7 +8,6 @@ import SignPage from './pages/sign/SignPage'
 import ReduxToastr from 'react-redux-toastr'
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
 import ParticipantPage from './pages/participant-page/ParticipantPage'
-import UpdatePage from './pages/update/UpdatePage'
 import Addon from './containers/poll-editor/Addon'
 import EventPage from './pages/event/EventPage'
 
@@ -34,11 +33,6 @@ function App() {
                         component={ParticipantPage}
                     />
                     <Route path={AppRoute.EVENT} component={EventPage} />
-                    <PrivateRoute
-                        exact
-                        path={AppRoute.UPDATE_USER}
-                        component={UpdatePage}
-                    />
                     <Route exact strict path={AppRoute.ANY}>
                         <Redirect to={AppRoute.LOGIN} />
                     </Route>

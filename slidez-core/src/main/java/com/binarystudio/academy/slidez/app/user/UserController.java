@@ -3,9 +3,12 @@ package com.binarystudio.academy.slidez.app.user;
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import com.binarystudio.academy.slidez.domain.user.UserService;
 import com.binarystudio.academy.slidez.domain.user.dto.UserDetailsDto;
+import com.binarystudio.academy.slidez.domain.user.dto.UserPasswordRequest;
+import com.binarystudio.academy.slidez.domain.user.dto.UserPasswordResponse;
 import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,6 +46,26 @@ public class UserController {
 		}
 
 		return new GenericResponse<>(userOptional, null);
+	}
+
+	@PostMapping("update-profile")
+	public GenericResponse<UserDetailsDto, UserResponseCodes> update(
+			@RequestBody @Validated UserDetailsDto userDetailsDto) {
+		Optional<UserDetailsDto> userResponseOptional = userService.updateUserData(userDetailsDto);
+		if (userResponseOptional.isEmpty()) {
+			return new GenericResponse<>(null, UserResponseCodes.NOT_FOUND);
+		}
+		return new GenericResponse<>(userResponseOptional.get());
+	}
+
+	@PostMapping("update-password")
+	public GenericResponse<UserPasswordResponse, UserResponseCodes> updatePassword(
+			@RequestBody @Validated UserPasswordRequest userPasswordRequest) {
+		Optional<UserPasswordResponse> userResponseOptional = userService.updatePassword(userPasswordRequest);
+		if (userResponseOptional.isEmpty()) {
+			return new GenericResponse<>(null, UserResponseCodes.NOT_FOUND);
+		}
+		return new GenericResponse<>(userResponseOptional.get());
 	}
 
 }
