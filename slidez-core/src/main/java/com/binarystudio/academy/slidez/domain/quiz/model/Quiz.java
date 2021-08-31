@@ -1,10 +1,10 @@
 package com.binarystudio.academy.slidez.domain.quiz.model;
 
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
-import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElementType;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -15,10 +15,11 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "quiz")
-public class Quiz extends InteractiveElement {
+public class Quiz {
 
 	private static final long serialVersionUID = 90029876168982L;
 
@@ -47,10 +48,6 @@ public class Quiz extends InteractiveElement {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "quiz_id", referencedColumnName = "id", nullable = false)
-	private List<QuizAnswer> quizAnswers = new ArrayList<>();
-
-	public Quiz() {
-		super.setType(InteractiveElementType.QUIZ);
-	}
+	private List<QuizAnswer> answers = new ArrayList<>();
 
 }

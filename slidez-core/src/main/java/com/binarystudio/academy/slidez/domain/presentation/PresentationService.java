@@ -7,7 +7,6 @@ import com.binarystudio.academy.slidez.domain.interactive_element.model.Interact
 import com.binarystudio.academy.slidez.domain.presentation.dto.PresentationUpdateDto;
 import com.binarystudio.academy.slidez.domain.presentation.exception.PresentationNotFoundException;
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
-import com.binarystudio.academy.slidez.domain.user.UserService;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,13 +20,10 @@ import java.util.stream.Collectors;
 @Service
 public class PresentationService {
 
-	private final UserService userService;
-
 	private final PresentationRepository presentationRepository;
 
 	@Autowired
-	public PresentationService(UserService userService, PresentationRepository presentationRepository) {
-		this.userService = userService;
+	public PresentationService(PresentationRepository presentationRepository) {
 		this.presentationRepository = presentationRepository;
 	}
 
@@ -63,7 +59,7 @@ public class PresentationService {
 	}
 
 	public Collection<InteractiveElementDto> getInteractiveElementDtos(String presentationLink)
-			throws IllegalElementTypeException {
+			throws IllegalElementTypeException, IllegalStateException {
 		Presentation presentation = this.presentationRepository.findByLink(presentationLink)
 				.orElseThrow(() -> new PresentationNotFoundException(
 						String.format("Not found presentation with link %s", presentationLink)));

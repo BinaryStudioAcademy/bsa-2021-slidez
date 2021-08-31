@@ -7,7 +7,6 @@ const AppRoute = {
     EVENT: '/events/:link',
     DASHBOARD: '/dashboard',
     ADDON: '/addon',
-    UPDATE_USER: '/update-user',
 }
 
 export { AppRoute }

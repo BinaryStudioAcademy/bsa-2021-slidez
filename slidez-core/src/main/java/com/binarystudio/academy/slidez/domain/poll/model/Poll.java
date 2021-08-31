@@ -15,11 +15,11 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "poll")
-public class Poll extends InteractiveElement {
+public class Poll {
 
 	private static final long serialVersionUID = 7364567818837L;
 

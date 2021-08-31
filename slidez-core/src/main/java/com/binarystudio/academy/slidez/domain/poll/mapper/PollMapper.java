@@ -1,6 +1,5 @@
 package com.binarystudio.academy.slidez.domain.poll.mapper;
 
-import com.binarystudio.academy.slidez.domain.poll.dto.CreatePollDto;
 import com.binarystudio.academy.slidez.domain.poll.dto.CreatePollOptionDto;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollDto;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollOptionDto;
@@ -20,10 +19,10 @@ public interface PollMapper {
 
 	List<PollOptionDto> pollOptionsToPollOptionDtos(List<PollOption> pollOptions);
 
-	@Mappings({ @Mapping(source = "poll.id", target = "id"),
-			@Mapping(source = "poll.interactiveElement.type", target = "type"),
-			@Mapping(source = "poll.title", target = "title"), @Mapping(source = "poll.isMulti", target = "isMulti"),
-			@Mapping(source = "poll.isTemplate", target = "isTemplate"),
+	@Mappings({ @Mapping(source = "id", target = "id"), @Mapping(source = "interactiveElement.type", target = "type"),
+			@Mapping(source = "interactiveElement.slideId", target = "slideId"),
+			@Mapping(source = "title", target = "title"), @Mapping(source = "isMulti", target = "isMulti"),
+			@Mapping(source = "isTemplate", target = "isTemplate"), @Mapping(source = "owner.id", target = "ownerId"),
 			@Mapping(target = "pollOptions", expression = "java( pollOptionsToPollOptionDtos(poll.getOptions()) )") })
 	PollDto pollToPollDto(Poll poll);
 
