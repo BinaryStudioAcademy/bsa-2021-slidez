@@ -1,24 +1,16 @@
 import { Method } from 'axios'
 import { createDefaultAxios } from './http-util'
-import { performLogout } from 'slidez-fe-core/src/services/auth/auth-service'
 
 class HttpHelper {
-    private readonly getAuthHeaderValue: () => string
-    private readonly performRefreshTokens: () => Promise<any>
-    private readonly baseUrl: string
     private inProcessOfRefreshingTokens = false
     private retryAfterRefreshTokenCount = 0
 
     constructor(
-        getAuthHeaderValue: () => string,
-        performRefreshTokens: () => Promise<any>,
-        preformLogout: () => void,
-        baseUrl: string
-    ) {
-        this.getAuthHeaderValue = getAuthHeaderValue
-        this.performRefreshTokens = performRefreshTokens
-        this.baseUrl = baseUrl
-    }
+        private readonly getAuthHeaderValue: () => string,
+        private readonly performRefreshTokens: () => Promise<any>,
+        private readonly performLogout: () => void,
+        private readonly baseUrl: string
+    ) {}
 
     public sendRequest(
         route: string,
@@ -37,7 +29,7 @@ class HttpHelper {
                 if (error.response) {
                     if (error.response.status === 403) {
                         if (this.retryAfterRefreshTokenCount != 0) {
-                            performLogout()
+                            this.performLogout()
                             this.retryAfterRefreshTokenCount = 0
                             return Promise.reject(error)
                         }
