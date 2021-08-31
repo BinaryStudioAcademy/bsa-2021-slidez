@@ -21,7 +21,7 @@ public interface InteractiveElementMapper {
 	 * Method returns dto that corresponds to element's type
 	 */
 	default InteractiveElementDto interactiveElementToTypeRelatedDto(final InteractiveElement element)
-			throws IllegalElementTypeException {
+			throws IllegalElementTypeException, IllegalStateException {
 		switch (element.getType()) {
 		case POLL:
 			return mapToDto(element::getPoll, PollMapper.INSTANCE::pollToPollDto);
