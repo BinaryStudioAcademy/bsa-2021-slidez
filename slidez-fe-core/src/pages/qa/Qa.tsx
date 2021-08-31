@@ -19,27 +19,38 @@ const useStyles = makeStyles({
         '& .MuiPaper-root': {
             borderRadius: '14px',
         },
-        '& .MuiDialog-paperWidthSm': {
-            maxWidth: 'calc(100% - 16px)',
-        },
         '& .MuiDialog-paperScrollPaper': {
-            maxHeight: 'calc(100% - 16px)',
+            height: 'calc(100% - 16px)',
         },
         '& .MuiDialog-paper': {
             margin: '0px',
         },
+        '& .makeStyles-root-1 .MuiDialog-paperScrollPaper': {
+            height: 'calc(100% - 16px)',
+        },
     },
 })
-
-const handleSubmit = () => {
-    alert('Submit!')
-}
 
 const Qa = (qaProps: QaProps) => {
     const { handleClose, show } = qaProps
     const classes = useStyles()
     const [listQA, setListQA] = useState(MOCK_DATA)
     const [isRecentSelected, setIsRecentSelected] = useState(true)
+
+    const handleSubmit = (textValue: string) => {
+        var now: string = new Date().toDateString()
+        const newQA = {
+            UUID: now,
+            isLiked: false,
+            createdAt: now,
+            author: 'Principal',
+            likes: 0,
+            pollContent: textValue,
+        }
+        const newList = [...listQA]
+        newList.push(newQA)
+        setListQA(newList)
+    }
 
     const handleLike = (UUID: string) => {
         const newItems = [...listQA]

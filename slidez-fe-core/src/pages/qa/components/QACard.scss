@@ -20,11 +20,13 @@ $likebtnwidth: 62px;
 }
 
 .pool-content {
+  font-style: normal;
   font-weight: 500;
+  font-size: 14px;
   padding-left: 13px;
-  margin-right: 10px;
+  margin-right: 12px;
   margin-bottom: 10px;
-  width: calc(100% - #{$likebtnwidth});
+  width: 100%;
   color: #353535;
 }
 

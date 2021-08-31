@@ -4,11 +4,17 @@ import './QAAdd.scss'
 
 export default function QAAdd(props: any) {
     const [charsCounterValue, setCharsCounterValue] = useState(0)
+    const [textValue, setTextValue] = useState(0)
 
     const charsCount = (e: any) => {
         var currentText = e.target.value
         var characterCount = currentText.length
         setCharsCounterValue(characterCount)
+        setTextValue(currentText)
+    }
+
+    const handleSubmit = (e: any) => {
+        props.onSubmit(e)
     }
 
     return (
@@ -21,13 +27,18 @@ export default function QAAdd(props: any) {
                 <textarea
                     className='qaadd-text'
                     name='question'
+                    value={textValue}
                     onChange={(e) => charsCount(e)}
                 ></textarea>
             </div>
             <div className='chars-counter'>{charsCounterValue}</div>
-            <div>
-                <SubmitButton onClick={props.onSubmit}>Submit</SubmitButton>
-            </div>
+
+            <SubmitButton
+                onClick={(e: any) => props.onSubmit(e)}
+                textValue={textValue}
+            >
+                Submit
+            </SubmitButton>
         </div>
     )
 }

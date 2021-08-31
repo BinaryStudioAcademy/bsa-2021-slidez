@@ -1,5 +1,5 @@
 import * as React from 'react'
-import '../qa.scss'
+import './SelectorPanel.scss'
 
 const SelectorPanel = (props: any) => {
     const isRecentSelected =
