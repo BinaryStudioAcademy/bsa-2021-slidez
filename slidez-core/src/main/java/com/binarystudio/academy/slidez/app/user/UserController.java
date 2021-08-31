@@ -70,11 +70,11 @@ public class UserController {
 		return new GenericResponse<>(userResponseOptional.get());
 	}
 
-    @DeleteMapping
-    public void deleteUser(Principal principal) {
-        UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) principal;
-        User user = (User) token.getPrincipal();
-        userService.delete(user.getId());
-    }
+	@DeleteMapping
+	public void deleteUser(Principal principal) {
+		UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) principal;
+		User user = (User) token.getPrincipal();
+		userService.delete(user.getId());
+	}
 
 }

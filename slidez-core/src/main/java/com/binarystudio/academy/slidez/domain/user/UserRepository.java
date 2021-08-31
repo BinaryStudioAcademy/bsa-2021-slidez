@@ -17,9 +17,9 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
 	Optional<User> findByEmail(String email);
 
-    @Transactional
-    @Modifying
-    @Query("DELETE FROM User u WHERE u.id = :id")
-    void deleteWithId(UUID id);
+	@Transactional
+	@Modifying
+	@Query("DELETE FROM User u WHERE u.id = :id")
+	void deleteWithId(UUID id);
 
 }
