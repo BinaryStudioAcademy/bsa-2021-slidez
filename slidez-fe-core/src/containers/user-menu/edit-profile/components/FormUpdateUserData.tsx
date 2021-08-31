@@ -1,21 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react'
 import Button from '@material-ui/core/Button'
 import { Field, Form, Formik } from 'formik'
-import {
-    selectError,
-    isSavingUser,
-    updateUserProfile,
-    selectUserDetals,
-} from '../../../../../containers/user/store'
-import { useAppDispatch, useAppSelector } from '../../../../../hooks'
 import { updateUserProfileFieldsValidation } from '../validations'
 import { UpdateUserProfileErrors } from './UpdateUserProfileErrors'
-
 import { UserField } from '../Field'
 import { Loader } from './Loader'
-import { UpdateProfileDto } from '../../../../../services/user/dto/UpdateProfileDto'
-import { initialValuesUserData } from '../../UserProfile'
 import './Form.scss'
+import { useAppDispatch, useAppSelector } from '../../../../hooks'
+import { UpdateProfileDto } from '../../../../services/user/dto/UpdateProfileDto'
+import {
+    isSavingUser,
+    selectError,
+    selectUserDetals,
+    updateUserProfile,
+} from '../../../user/store'
+import { initialValuesUserData } from '../../UserMenu'
 
 const FormUpdateUserData = () => {
     const isSavingUserData = useAppSelector(isSavingUser)

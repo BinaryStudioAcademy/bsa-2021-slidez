@@ -6,14 +6,14 @@ import {
     isSavingPassword,
     updatePassword,
     selectId,
-} from '../../../../../containers/user/store'
-import { useAppDispatch, useAppSelector } from '../../../../../hooks'
-import { UserField } from '../Field'
+} from '../../../user/store'
 import { updatePasswordFieldsValidation } from '../validations'
+import './Form.scss'
+import { UserField } from '../Field'
 import { UpdatePasswordErrors } from './UpdatePasswordErrors'
 import { Loader } from './Loader'
-import { UpdatePasswordRequest } from '../../../../../services/user/dto/UpdatePasswordRequest'
-import './Form.scss'
+import { useAppDispatch, useAppSelector } from '../../../../hooks'
+import { UpdatePasswordRequest } from '../../../../services/user/dto/UpdatePasswordRequest'
 
 export interface Password {
     id: string | undefined

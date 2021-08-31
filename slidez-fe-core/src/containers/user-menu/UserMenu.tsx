@@ -1,215 +1,176 @@
-import React, { useRef, useState } from 'react'
-import { Button } from '@material-ui/core'
-import { Formik, Form, Field } from 'formik'
-import * as Yup from 'yup'
-import { UserField } from './Field'
-import { useDetectOutsideClick } from '../dashboard/useDetectOutsideClick'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { useState, useRef, useEffect } from 'react'
 import {
     faUser,
-    faCog,
     faSignOutAlt,
     faTimes,
+    faTrashAlt,
 } from '@fortawesome/free-solid-svg-icons'
-import SideBar from '../../containers/sideBar/SideBar'
-// import '../dashboard/dashboard.scss'
-import './update.scss'
-import { AppRoute } from '../../common/routes/app-route'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { logout, selectUserDetals } from '../user/store'
+import { useAppDispatch, useAppSelector } from '../../hooks'
+import { handleLogo } from './handleLogo'
 
-interface User {
-    id: string
-    firstName: string
-    lastName: string
-    email: string
-    password: string
+import { useDetectOutsideClick } from '../../pages/dashboard/useDetectOutsideClick'
+import styles from './styles.module.scss'
+import './edit-profile/components/Form.scss'
+import { UserDetailsDto } from '../user/dto/UserDetailsDto'
+import { Button, Dialog, DialogContent } from '@material-ui/core'
+import FormUpdateUserData from './edit-profile/components/FormUpdateUserData'
+import FormUpdatePassword from './edit-profile/components/FormUpdatePassword'
+
+export const initialValuesUserData: UserDetailsDto = {
+    id: '',
+    firstName: '',
+    lastName: '',
+    email: '',
 }
 
-const UpdatePage = () => {
+const UserMenu: React.FC = () => {
+    const dispatch = useAppDispatch()
     const dropdownRef = useRef<HTMLInputElement>(null)
-    const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
+    const [isActive, setIsActive] = useState(false)
+    const [logo, setLogo] = useState('')
+    const [openEditProfile, setOpenEditProfile] = useState(false)
+    const userData = useAppSelector(selectUserDetals) || initialValuesUserData
+
+    useEffect(() => {
+        setLogo(handleLogo(userData))
+    }, [userData])
+
+    const onOpenEditDialog = () => {
+        setOpenEditProfile(true)
+        handleDropDown()
+    }
+
+    const onCloseEditDialog = () => {
+        setOpenEditProfile(false)
+    }
 
     const handleDropDown = () => {
         setIsActive(!isActive)
     }
 
-    const initialValues: User = {
-        id: '',
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
+    const handleLogout = () => {
+        dispatch(logout())
     }
 
-    const [userData, setUserData] = useState<User>(initialValues)
-
-    const handleInfoSubmit = (values: typeof userData) => {
-        console.log(values)
+    const viewName = () => {
+        if (userData.firstName && userData.lastName) {
+            return (
+                <div className={styles.userName}>
+                    {`${userData.firstName} ${userData.lastName}`}
+                </div>
+            )
+        }
     }
 
-    const handlePwdSubmit = (values: typeof userData) => {
-        console.log(values)
-    }
     return (
-        <div className='dashboard-page'>
-            <SideBar></SideBar>
-            <div className='page-content'>
-                <div className='search-and-user'>
-                    <div className='user-profile'>
-                        <div className='user-avatar'>
-                            <div onClick={handleDropDown} className='avatar'>
-                                WH
-                            </div>
-                            <div
-                                ref={dropdownRef}
-                                className={`dropdown-content ${
-                                    isActive ? 'active' : 'inactive'
-                                }`}
-                            >
-                                <div className='user-info'>
-                                    <div className='avatar'>WH</div>
-                                    <div>
-                                        <div className='user-name'>
-                                            Wilson Herwitz
-                                        </div>
-                                        <div className='user-email'>
-                                            herwitz@example.com
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr></hr>
-                                <a href={AppRoute.UPDATE_USER}>
-                                    <FontAwesomeIcon
-                                        className='user-icon'
-                                        icon={faUser}
-                                    />
-                                    Edit profile
-                                </a>
-                                <a href=''>
-                                    <FontAwesomeIcon
-                                        className='user-icon'
-                                        icon={faCog}
-                                    />
-                                    Setting
-                                </a>
-                                <a href=''>
-                                    <FontAwesomeIcon
-                                        className='user-icon'
-                                        icon={faSignOutAlt}
-                                    />
-                                    Log out
-                                </a>
+        <div className={styles.userProfile}>
+            <div className={styles.userAvatar}>
+                <div onClick={handleDropDown} className={styles.avatar}>
+                    {logo}
+                </div>
+                <div
+                    ref={dropdownRef}
+                    className={`${styles.dropdownContent} ${
+                        isActive ? styles.active : styles.inactive
+                    }`}
+                >
+                    <div className={styles.userInfo}>
+                        <div className={styles.avatar}> {logo} </div>
+                        <div>
+                            {viewName()}
+                            <div className={styles.userEmail}>
+                                {userData.email}
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div className='edit-profile'>
-                <div className='side-btns'>
-                    <h2 id='window-name'>Edit profile</h2>
-                    <Button>Profile</Button>
-                    <Button>Delete account</Button>
-                </div>
-                <div className='verticalLine' />
-                <div className='form'>
-                    <Formik
-                        initialValues={userData}
-                        validationSchema={Yup.object({
-                            email: Yup.string()
-                                .required('Required')
-                                .email('Invalid email address')
-                                .max(64),
-                            firstName: Yup.string()
-                                .required('Required')
-                                .min(3)
-                                .max(30),
-                            lastName: Yup.string()
-                                .required('Required')
-                                .min(3)
-                                .max(30),
-                        })}
-                        enableReinitialize={true}
-                        onSubmit={(values) => {
-                            handleInfoSubmit(values)
-                        }}
+                    <hr />
+                    <div
+                        className={styles.userProfileMenu}
+                        onClick={() => onOpenEditDialog()}
                     >
-                        {({ values }) => (
-                            <Form className='form-body'>
-                                <div className='form-inputs'>
-                                    <h3>Profile info</h3>
-                                    <div className='top-input'>
-                                        <p>Email</p>
-                                        <Field
-                                            name='email'
-                                            component={UserField}
-                                            value={values.email}
-                                        />
-                                    </div>
-                                    <div className='bottom-inputs'>
-                                        <div>
-                                            <p>First Name</p>
-                                            <Field
-                                                name='firstName'
-                                                component={UserField}
-                                                value={values.firstName}
-                                            />
-                                        </div>
-                                        <div>
-                                            <p>Last Name</p>
-                                            <Field
-                                                name='lastName'
-                                                component={UserField}
-                                                value={values.lastName}
-                                            />
-                                        </div>
-                                    </div>
-                                    <Button className='user-btn' type='submit'>
-                                        Save
-                                    </Button>
-                                </div>
-                            </Form>
-                        )}
-                    </Formik>
-                    <Formik
-                        enableReinitialize={true}
-                        initialValues={initialValues}
-                        onSubmit={(values) => {
-                            handlePwdSubmit(values)
-                        }}
+                        <FontAwesomeIcon
+                            className={styles.userIcon}
+                            icon={faUser}
+                        />
+                        <span className={styles.userProfileMenuName}>
+                            Edit profile
+                        </span>
+                    </div>
+                    <Dialog
+                        className={styles.MuiDialogPaperScrollPaper}
+                        open={openEditProfile}
+                        onClose={onCloseEditDialog}
+                        aria-labelledby='form-dialog-title'
+                        maxWidth={false}
                     >
-                        {({ values }) => (
-                            <Form className='form-body'>
-                                <div className='form-inputs'>
-                                    <h3>Change password</h3>
-                                    <div className='top-input pwd-input'>
-                                        <p>New password</p>
-                                        <Field
-                                            name='password'
-                                            component={UserField}
-                                            value={values.password}
-                                        />
+                        <div className={styles.editProfile}>
+                            <DialogContent className={styles.leftContent}>
+                                <div className={styles.leftContentFixed}>
+                                    <div className={styles.sideBtns}>
+                                        <span className={styles.windowName}>
+                                            Edit profile
+                                        </span>
+                                        <Button>
+                                            <FontAwesomeIcon
+                                                className={styles.buttonIcon}
+                                                icon={faUser}
+                                            />
+                                            <span className={styles.buttonName}>
+                                                Profile
+                                            </span>
+                                        </Button>
+                                        <Button>
+                                            <FontAwesomeIcon
+                                                className={styles.buttonIcon}
+                                                icon={faTrashAlt}
+                                            />
+                                            <span className={styles.buttonName}>
+                                                Delete account
+                                            </span>
+                                        </Button>
                                     </div>
-                                    <div className='top-input pwd-input'>
-                                        <p>Confirm password</p>
-                                        <Field
-                                            name='confirmedPassword'
-                                            component={UserField}
-                                            value={''}
-                                        />
-                                    </div>
-                                    <Button className='user-btn' type='submit'>
-                                        Save
-                                    </Button>
                                 </div>
-                            </Form>
-                        )}
-                    </Formik>
+                            </DialogContent>
+                            <DialogContent className={styles.rightContent}>
+                                <Button
+                                    className={styles.close}
+                                    onClick={onCloseEditDialog}
+                                >
+                                    <FontAwesomeIcon
+                                        className={styles.closeIicon}
+                                        icon={faTimes}
+                                    />
+                                </Button>
+                                <div className={styles.formTitle}>
+                                    Profile info
+                                </div>
+                                <div className={styles.avatarEditProfile}>
+                                    {logo}
+                                </div>
+                                <div className={styles.form}>
+                                    <FormUpdateUserData />
+                                    <FormUpdatePassword />
+                                </div>
+                            </DialogContent>
+                        </div>
+                    </Dialog>
+                    <div
+                        className={styles.userProfileMenu}
+                        onClick={() => handleLogout()}
+                    >
+                        <FontAwesomeIcon
+                            className={styles.userIcon}
+                            icon={faSignOutAlt}
+                        />
+                        <span className={styles.userProfileMenuName}>
+                            Log out
+                        </span>
+                    </div>
                 </div>
-                <Button className='close'>
-                    <FontAwesomeIcon className='close-icon' icon={faTimes} />
-                </Button>
             </div>
         </div>
     )
 }
-
-export default UpdatePage
+export default UserMenu

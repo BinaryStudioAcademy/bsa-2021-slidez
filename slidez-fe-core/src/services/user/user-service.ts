@@ -19,7 +19,7 @@ type UpdateProfileDto = {
 
 export const editUserProfile = async (dto: UpdateProfileDto) => {
     const { data } = await httpHelper.doPost(route('update-profile'), dto)
-    handleNotification('Saved', 'Profile updated successfully', 'success')
+
     const resp: GenericResponse<UserDetailsDto, string> = data
     const out: UpdateResult = {
         error: resp.error,
@@ -29,6 +29,9 @@ export const editUserProfile = async (dto: UpdateProfileDto) => {
         const payload: UserDetailsDto = resp.data
         out.userDetailsDto = payload
     }
+    setTimeout(function () {
+        handleNotification('Saved', 'Profile updated successfully', 'success')
+    }, 500)
     return out
 }
 
@@ -37,11 +40,14 @@ export const editPassword = async (dto: UpdatePasswordRequest) => {
         route('update-password'),
         dto
     )
-    handleNotification('Saved', 'Password edited successfully', 'success')
+
     const { data } = axiosResp
     const resp: GenericResponse<UserDetailsDto, string> = data
     const out: UpdateResult = {
         error: resp.error,
     }
+    setTimeout(function () {
+        handleNotification('Saved', 'Password edited successfully', 'success')
+    }, 500)
     return out
 }

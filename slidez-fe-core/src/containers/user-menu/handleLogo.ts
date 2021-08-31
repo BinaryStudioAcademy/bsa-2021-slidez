@@ -1,4 +1,4 @@
-import { UserDetailsDto } from '../../../../containers/user/dto/UserDetailsDto'
+import { UserDetailsDto } from '../user/dto/UserDetailsDto'
 
 export const handleLogo = (userData: UserDetailsDto) => {
     if (userData.firstName && userData.lastName) {

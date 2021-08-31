@@ -13,6 +13,6 @@ public class UserPasswordRequest {
 
 	private UUID id;
 
-    private String password;
+	private String password;
 
 }
