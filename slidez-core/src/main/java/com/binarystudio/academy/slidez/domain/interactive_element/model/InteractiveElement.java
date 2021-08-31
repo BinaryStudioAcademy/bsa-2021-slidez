@@ -17,7 +17,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "interactive_element")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class InteractiveElement implements Serializable {
 
 	private static final long serialVersionUID = -9030801668124685221L;

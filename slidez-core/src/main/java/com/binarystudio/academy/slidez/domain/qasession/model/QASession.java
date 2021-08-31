@@ -1,10 +1,10 @@
 package com.binarystudio.academy.slidez.domain.qasession.model;
 
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
-import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElementType;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -13,10 +13,11 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "qa_session")
-public class QASession extends InteractiveElement {
+public class QASession {
 
 	private static final long serialVersionUID = -3297698530180925430L;
 
@@ -36,9 +37,5 @@ public class QASession extends InteractiveElement {
 
 	@Column(name = "title")
 	private String title;
-
-	public QASession() {
-		super.setType(InteractiveElementType.QASession);
-	}
 
 }
