@@ -1,52 +1,78 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import {
     createSessionForPresentation,
     initWebSocketSession,
-} from '../../containers/presentation_session/store/store'
-import { WsConnectionStatus } from '../../containers/presentation_session/enums/ws-connection-status'
+    requestStartPoll,
+} from '../../containers/session/store/store'
+import { WsConnectionStatus } from '../../containers/session/enums/ws-connection-status'
 import Loader from '../../common/components/loader/Loader'
-import Poll from '../../common/components/interactive-elements/poll/Poll'
-import InteractiveWrapper from '../../common/components/interactive-elements/interactive-wrapper/InteractiveWrapper'
-import { CreatePresentationSessionDto } from '../../services/presentation-session/dto/CreatePresentationSessionDto'
+import { CreatePresentationSessionDto } from '../../services/session/dto/CreatePresentationSessionDto'
 import {
     selectConnectionStatus,
-    selectSnapshot,
-} from '../../containers/presentation_session/store/selectors'
+    selectCurrentInteractiveElement,
+    selectLink,
+} from '../../containers/session/store/selectors'
+import {
+    createStartPollRequest,
+    StartPollRequest,
+} from '../../containers/session/event/FrontendEvent'
+import { PollDto } from '../../containers/session/dto/InteractiveElement'
+import { InteractiveElementType } from '../../containers/session/enums/InteractiveElementType'
+
+const useEditorParams = () => {
+    const params = new URLSearchParams(useLocation().search)
+
+    //TODO: This are hardcoded developer-specific values
+    return {
+        presentationLink: params.get('presentationId') ?? 'fffffff',
+        slideId: params.get('slideId') ?? 'lol_poll_id',
+    }
+}
+
 import ParticipantView from './ParticipantView'
 import NoEvent from './NoEventPage'
 import Header from '../participant-page/Header'
 
 const EventPage: React.FC = () => {
-    const { link } = useParams<{ link?: string }>()
-    const [sentInitWsSession, setSentInitWsSession] = useState(false)
+    const link = useAppSelector(selectLink)
+    //TODO: Delete this
+    const [startedPoll, setStartedPoll] = useState(false)
     const dispatch = useAppDispatch()
-    if (link !== undefined && !sentInitWsSession) {
-        setSentInitWsSession(true)
-        dispatch(initWebSocketSession(link))
-    }
-    //TODO: SESSION MUST NOT BE CREATED HERE
+    const { presentationLink, slideId } = useEditorParams()
+
+    console.log(presentationLink, slideId)
+
     useEffect(() => {
-        if (link) {
-            const dto: CreatePresentationSessionDto = {
-                presentationId: 'ed60e789-ab15-4756-b95e-218b43b6dfff',
-            }
-            dispatch(createSessionForPresentation(dto))
+        const dto: CreatePresentationSessionDto = {
+            presentationLink: presentationLink,
         }
+        dispatch(createSessionForPresentation(dto))
     }, [])
 
-    const connectionStatus = useAppSelector(selectConnectionStatus)
-    const snapshot = useAppSelector(selectSnapshot)
+    setTimeout(() => {
+        if (link && !startedPoll) {
+            setStartedPoll(true)
+            dispatch(initWebSocketSession(link))
+            const params: StartPollRequest = createStartPollRequest(
+                link,
+                slideId
+            )
+            setTimeout(() => dispatch(requestStartPoll(params)), 3000)
+        }
+    }, 3000)
 
-    const activePoll = snapshot?.sessionInteractiveElements.find(
-        (sessionInteractiveElements) => sessionInteractiveElements
-    )
-    console.log(snapshot)
+    const connectionStatus = useAppSelector(selectConnectionStatus)
+
+    const currentInteraction = useAppSelector(selectCurrentInteractiveElement)
+
+    const activePoll: PollDto | undefined =
+        currentInteraction?.type === InteractiveElementType.poll
+            ? (currentInteraction as PollDto)
+            : undefined
     const eventName = 'Animate'
     const body = activePoll ? (
-        //deprecated module
-        // <Poll poll={activePoll as any} />
         <div className='content'>
             <Header eventName={eventName} />
             <ParticipantView />
@@ -57,13 +83,11 @@ const EventPage: React.FC = () => {
             <NoEvent />
         </div>
     )
+
     return (
         <div>
             {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
-            {/* deprecated */}
-            {/* <InteractiveWrapper eventCode={link || ''}> */}
             {body}
-            {/* </InteractiveWrapper> */}
         </div>
     )
 }

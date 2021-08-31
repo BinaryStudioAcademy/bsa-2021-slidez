@@ -23,6 +23,7 @@ type LoginErorrsProps = {
     viewErrors: boolean
     loginError: string | undefined
     formikErrors: FormikErrors<{ email: string; password: string }>
+    invalidEmail: string
 }
 
 const loginFieldsValidation = Yup.object({
@@ -34,6 +35,7 @@ const LoginErrors = ({
     viewErrors,
     loginError,
     formikErrors,
+    invalidEmail,
 }: LoginErorrsProps) => {
     let errorMessage: string | null = null
     if (!viewErrors) {
@@ -41,7 +43,7 @@ const LoginErrors = ({
     } else if (loginError) {
         handleNotification(
             'Login Failed',
-            "Can't log in: email or password is invalid",
+            `The user cannot be authenticated with email ${invalidEmail} and the provided password`,
             NotificationTypes.ERROR
         )
     } else if (formikErrors.email && formikErrors.password) {
@@ -59,6 +61,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
     const [isPasswordRevealed, setIsPasswordRevealed] = React.useState(false)
     const [viewErrors, setViewErrors] = React.useState(false)
     const loginError = useAppSelector(selectError)
+    const [invalidEmail, setInvalidEmail] = React.useState('')
 
     const onRevealClick = () => {
         setIsPasswordRevealed(!isPasswordRevealed)
@@ -92,6 +95,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                 onSubmit={({ email, password }, { setSubmitting }) => {
                     onLogin(email, password)
                     setSubmitting(false)
+                    setInvalidEmail(email)
                 }}
             >
                 {({ errors }) => (
@@ -161,6 +165,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                             viewErrors={viewErrors}
                             loginError={loginError}
                             formikErrors={errors}
+                            invalidEmail={invalidEmail}
                         />
 
                         <div className='form-row buttons-row'>

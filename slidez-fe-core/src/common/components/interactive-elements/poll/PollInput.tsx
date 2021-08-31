@@ -1,16 +1,17 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
-import { PollDto } from '../../../../containers/presentation_session/dto/InteractiveElement'
+import { PollDto } from '../../../../containers/session/dto/InteractiveElement'
 import Poll from './Poll'
 import './PollInput.scss'
 import { faCircle, faDotCircle } from '@fortawesome/free-regular-svg-icons'
 import { useAppDispatch } from '../../../../hooks'
+import { answerPoll } from '../../../../containers/session/store/store'
 import {
-    AnswerPollEvent,
-    DomainEventType,
-} from '../../../../containers/presentation_session/event/DomainEvent'
-import { answerPoll } from '../../../../containers/presentation_session/store/store'
+    AnswerPollRequest,
+    createAnswerPollRequest,
+} from '../../../../containers/session/event/FrontendEvent'
+import { SessionPollAnswer } from '../../../../containers/session/model/SessionPollAnswer'
 
 type PollInputProps = {
     poll: PollDto
@@ -55,14 +56,13 @@ function PollInput({ poll, link }: PollInputProps) {
         }
         if (!voteSubmitted) {
             // post to db
-            const answerPollEvent: AnswerPollEvent = {
-                type: DomainEventType.answerPollEvent,
-                pollAnswer: {
-                    pollId: id,
-                    optionId: options[chosenOptionIndex].id,
-                },
+            const pollAnswer: SessionPollAnswer = {
+                pollId: id,
+                optionId: options[chosenOptionIndex].id,
             }
-            dispatch(answerPoll(answerPollEvent))
+            const answerPollRequest: AnswerPollRequest =
+                createAnswerPollRequest(link, pollAnswer)
+            dispatch(answerPoll(answerPollRequest))
             setVoteSubmitted(true)
         } else {
             // update existing in db
