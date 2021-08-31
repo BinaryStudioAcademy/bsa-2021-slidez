@@ -4,7 +4,6 @@ import QACard from './components/QACard'
 import QAAdd from './components/QAAdd'
 import SelectorPanel from './components/SelectorPanel'
 import CloseButton from './components/CloseButton'
-
 import { makeStyles } from '@material-ui/styles'
 import './qa.scss'
 import { MOCK_DATA } from './mock-poll-data'
@@ -38,9 +37,9 @@ const Qa = (qaProps: QaProps) => {
     const [isRecentSelected, setIsRecentSelected] = useState(true)
 
     const handleSubmit = (textValue: string) => {
-        var now: string = new Date().toDateString()
+        let now: string = new Date().toUTCString()
         const newQA = {
-            UUID: '',
+            UUID: now,
             isLiked: false,
             createdAt: now,
             author: 'Principal',
