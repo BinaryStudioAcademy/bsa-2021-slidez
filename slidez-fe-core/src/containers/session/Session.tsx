@@ -17,7 +17,6 @@ const Session = () => {
     const session_id = '#131324235'
 
     const sideMenuClasses = openMenu ? 'session-page-active' : 'session-page'
-    console.log(openMenu)
 
     const handleLogout = () => {
         dispatch(logout())
