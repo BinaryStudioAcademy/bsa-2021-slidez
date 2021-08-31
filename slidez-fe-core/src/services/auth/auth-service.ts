@@ -33,6 +33,7 @@ const performSign = async (
 ) => {
     const { data } = await sendAuthRequest(url, dto)
     const genericResponse: GenericResponse<LogInResponseDto, string> = data
+    console.log(genericResponse.error)
     const out: LogInResult = {
         error: genericResponse.error,
         userDetailsDto: undefined,

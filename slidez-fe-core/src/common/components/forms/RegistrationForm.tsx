@@ -38,7 +38,7 @@ const registrationFieldsValidation = Yup.object({
         .required('Required')
         .min(12, 'Too short - 12 symbols minimum')
         .max(32, 'Too long - 32 symbols maximum')
-        .matches(/^\S*$/, 'Should not contain spaces')
+        .matches(/^\S/, 'Should not contain spaces')
         .matches(/[a-z]/, 'Should have lowercase letters')
         .matches(/[A-Z]/, 'Should have uppercase letters')
         .matches(/[0-9]/, 'Should have digits')
