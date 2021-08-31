@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CreatePollDto {
 
-	private String presentationLink;
+	private String presentationId;
 
 	private String slideId;
 
