@@ -99,7 +99,6 @@ const UserMenu: React.FC = () => {
                         </span>
                     </div>
                     <Dialog
-                        className={styles.MuiDialogPaperScrollPaper}
                         open={openEditProfile}
                         onClose={onCloseEditDialog}
                         aria-labelledby='form-dialog-title'

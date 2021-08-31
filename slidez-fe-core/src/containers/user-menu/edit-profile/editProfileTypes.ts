@@ -1,5 +1,5 @@
-import { FormikErrors } from "formik"
-import { UserDetailsDto } from "../../user/dto/UserDetailsDto"
+import { FormikErrors } from 'formik'
+import { UserDetailsDto } from '../../user/dto/UserDetailsDto'
 
 export type UpdateProps = {
     onUpdateUserProfile: Function

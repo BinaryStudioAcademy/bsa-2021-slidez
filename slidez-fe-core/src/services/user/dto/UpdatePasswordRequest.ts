@@ -1,5 +1,5 @@
 export interface UpdatePasswordRequest {
-    id: string | undefined,
-    password: string,
-    confirmPassword: string,
+    id: string | undefined
+    password: string
+    confirmPassword: string
 }

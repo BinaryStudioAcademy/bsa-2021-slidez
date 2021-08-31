@@ -1,3 +1,3 @@
 export interface UpdatePasswordResponse {
-    id: string,
+    id: string
 }
