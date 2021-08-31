@@ -42,7 +42,7 @@ public class Quiz {
 	@Column(name = "is_template")
 	private Boolean isTemplate;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "owner_id")
 	private User owner;
 

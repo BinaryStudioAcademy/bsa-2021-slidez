@@ -31,7 +31,7 @@ public class QASession {
 	@JoinColumn(name = "interactive_element_id")
 	private InteractiveElement interactiveElement;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "owner_id")
 	private User owner;
 
