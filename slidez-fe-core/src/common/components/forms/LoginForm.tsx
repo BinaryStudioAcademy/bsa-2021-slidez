@@ -32,7 +32,6 @@ export const handleLoginErrorNotification = (
     loginError: string | undefined,
     invalidEmail: string
 ) => {
-    console.log(loginError)
     if (loginError) {
         handleNotification(
             'Login Failed',
