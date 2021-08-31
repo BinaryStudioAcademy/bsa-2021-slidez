@@ -22,8 +22,5 @@
   },
   "include": [
     "src"
-  ],
-  "prettier": {
-    "singleQuote": true
-  }
+  ]
 }

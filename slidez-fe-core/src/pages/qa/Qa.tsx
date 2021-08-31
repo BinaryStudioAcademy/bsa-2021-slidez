@@ -40,7 +40,7 @@ const Qa = (qaProps: QaProps) => {
     const handleSubmit = (textValue: string) => {
         var now: string = new Date().toDateString()
         const newQA = {
-            UUID: now,
+            UUID: '',
             isLiked: false,
             createdAt: now,
             author: 'Principal',
