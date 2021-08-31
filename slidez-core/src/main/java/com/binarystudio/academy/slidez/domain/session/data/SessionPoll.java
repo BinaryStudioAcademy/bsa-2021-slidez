@@ -21,8 +21,6 @@ public class SessionPoll extends SessionInteractiveElement {
 
 	private Boolean isMulti;
 
-	private Boolean isTemplate;
-
 	private List<SessionPollOption> options = new ArrayList<>();
 
 	private List<SessionPollAnswer> answers = new ArrayList<>();

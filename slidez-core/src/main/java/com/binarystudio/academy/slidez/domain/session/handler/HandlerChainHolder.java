@@ -26,10 +26,15 @@ public class HandlerChainHolder implements ApplicationContextAware {
 				StartQASessionHandler.class);
 		AskQuestionEventHandler askQuestionEventHandler = applicationContext.getBean("askQuestionEventHandler",
 				AskQuestionEventHandler.class);
+		StartQuizEventHandler startQuizEventHandler = applicationContext.getBean("startQuizEventHandler",
+				StartQuizEventHandler.class);
+		AnswerQuizEventHandler answerQuizEventHandler = applicationContext.getBean("answerQuizEventHandler",
+				AnswerQuizEventHandler.class);
 		DefaultEventHandler defaultEventHandler = applicationContext.getBean("defaultEventHandler",
 				DefaultEventHandler.class);
 		snapshotRequestHandler.setNext(startPollHandler).setNext(answerPollHandler).setNext(startQASessionHandler)
-				.setNext(askQuestionEventHandler).setNext(defaultEventHandler);
+				.setNext(askQuestionEventHandler).setNext(startQuizEventHandler).setNext(answerQuizEventHandler)
+				.setNext(defaultEventHandler);
 		return snapshotRequestHandler;
 	}
 
