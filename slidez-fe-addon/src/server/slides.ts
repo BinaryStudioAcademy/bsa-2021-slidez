@@ -17,13 +17,16 @@ export const insertSlide = (
 ): InsertSlideRequestSuccess => {
     const textboxId = `title_${Date.now().toString()}`;
     const pt350 = { magnitude: 350, unit: 'pt' };
+    var currentPage = SlidesApp.getActivePresentation().getSelection().getCurrentPage().asSlide();
+    var indexCurrentPage = SlidesApp.getActivePresentation().getSlides().findIndex(x => x.getObjectId() == currentPage.getObjectId());
+    var nextSlide = indexCurrentPage + 1;
     Slides.Presentations!.batchUpdate(
         {
             requests: [
                 {
                     createSlide: {
                         objectId: data.id,
-                        insertionIndex: 1,
+                        insertionIndex: nextSlide,
                     },
                 },
                 {
@@ -53,6 +56,7 @@ export const insertSlide = (
         },
         SlidesApp.getActivePresentation().getId()
     );
-
+    // example to focus another slide
+    // SlidesApp.getActivePresentation().getSlides()[1].selectAsCurrentPage()
     return { insertedId: data.id };
 };
