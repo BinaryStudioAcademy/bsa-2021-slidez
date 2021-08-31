@@ -46,15 +46,13 @@ public class QuizService {
 		quiz.setIsMulti(dto.getIsMulti());
 		quiz.setTitle(dto.getTitle());
 		quiz.setIsTemplate(dto.getIsTemplate());
-		quiz.setPresentation(presentation);
-		quiz.setSlideId(dto.getSlideId());
 
 		Quiz saved = quizRepository.save(quiz);
 		return QuizMapper.INSTANCE.quizToQuizDto(saved);
 	}
 
 	public Optional<Quiz> findBySlideId(String slideId) {
-		return quizRepository.findBySlideIdIs(slideId);
+		return quizRepository.findBySlideId(slideId);
 	}
 
 }

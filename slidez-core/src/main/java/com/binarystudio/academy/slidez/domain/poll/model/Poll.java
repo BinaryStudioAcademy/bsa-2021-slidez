@@ -1,10 +1,10 @@
 package com.binarystudio.academy.slidez.domain.poll.model;
 
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
-import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElementType;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -15,10 +15,11 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "poll")
-public class Poll extends InteractiveElement {
+public class Poll {
 
 	private static final long serialVersionUID = 7364567818837L;
 
@@ -48,9 +49,5 @@ public class Poll extends InteractiveElement {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinColumn(name = "poll_id", referencedColumnName = "id", nullable = false)
 	private List<PollOption> options = new ArrayList<>();
-
-	public Poll() {
-		super.setType(InteractiveElementType.POLL);
-	}
 
 }

@@ -9,6 +9,7 @@ import com.binarystudio.academy.slidez.domain.poll.model.Poll;
 import com.binarystudio.academy.slidez.domain.poll.model.PollOption;
 import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
 
+import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,26 +33,23 @@ public class PollService {
 	}
 
 	@Transactional
-	public PollDto create(CreatePollDto pollDto, User actor) {
-		var presentation = presentationService.assertPresentationExists(pollDto.getPresentationLink(), actor);
+	public PollDto create(CreatePollDto pollDto, User owner) {
+		Presentation presentation = presentationService.assertPresentationExists(pollDto.getPresentationLink(), owner);
 
-		var ie = new InteractiveElement();
+		InteractiveElement ie = new InteractiveElement();
 		ie.setPresentation(presentation);
 		ie.setType(InteractiveElementType.POLL);
 		ie.setSlideId(pollDto.getSlideId());
 
-		var poll = new Poll();
+		Poll poll = new Poll();
 		poll.setTitle(pollDto.getTitle());
-		poll.setIsMulti(false);
-		poll.setIsTemplate(false);
+		poll.setIsMulti(pollDto.getIsMulti());
+		poll.setIsTemplate(pollDto.getIsTemplate());
 		poll.setOptions(pollDto.getOptions().stream().map(option -> new PollOption(option.getTitle()))
 				.collect(Collectors.toList()));
-		// TODO: DUPLICATE CODE: WE SET THAT TO INNER OBJECT
-		poll.setSlideId(pollDto.getSlideId());
-		poll.setPresentation(presentation);
 
 		poll.setInteractiveElement(ie);
-		poll.setOwner(actor);
+		poll.setOwner(owner);
 
 		pollRepository.save(poll);
 		return PollMapper.INSTANCE.pollToPollDto(poll);
@@ -67,7 +65,7 @@ public class PollService {
 	}
 
 	public Optional<Poll> getBySlideId(String slideId) {
-		return pollRepository.findBySlideIdIs(slideId);
+		return pollRepository.findBySlideId(slideId);
 	}
 
 	public Optional<PollDto> getPollDtoById(UUID id) {

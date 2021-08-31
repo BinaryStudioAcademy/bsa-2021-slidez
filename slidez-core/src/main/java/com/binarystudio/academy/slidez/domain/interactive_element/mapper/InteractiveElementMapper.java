@@ -9,28 +9,37 @@ import com.binarystudio.academy.slidez.domain.quiz.mapper.QuizMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 @Mapper
 public interface InteractiveElementMapper {
 
 	InteractiveElementMapper INSTANCE = Mappers.getMapper(InteractiveElementMapper.class);
 
 	/**
-	 * Method returns dto that corresponds to element's actual type
+	 * Method returns dto that corresponds to element's type
 	 */
-	default InteractiveElementDto interactiveElementToTypeRelatedDto(InteractiveElement element)
+	default InteractiveElementDto interactiveElementToTypeRelatedDto(final InteractiveElement element)
 			throws IllegalElementTypeException {
 		switch (element.getType()) {
 		case POLL:
-			return PollMapper.INSTANCE.pollToPollDto(element.getPoll());
+			return mapToDto(element::getPoll, PollMapper.INSTANCE::pollToPollDto);
 		case QUIZ:
-			return QuizMapper.INSTANCE.quizToQuizDto(element.getQuiz());
+			return mapToDto(element::getQuiz, QuizMapper.INSTANCE::quizToQuizDto);
 		case QASession:
-			return QASessionMapper.INSTANCE.qaSessionToDto(element.getQaSession());
+			return mapToDto(element::getQaSession, QASessionMapper.INSTANCE::qaSessionToDto);
 		default:
-			throw new IllegalElementTypeException(
-					String.format("Invalid type of element: %s", element.getClass().getName()));
-
+			throw new IllegalElementTypeException(String.format("Invalid type of element: %s", element.getType()));
 		}
+	}
+
+	private static <T, R> R mapToDto(Supplier<T> entitySupplier, Function<T, R> mapper) throws IllegalStateException {
+		T entity = entitySupplier.get();
+		if (entity == null) {
+			throw new IllegalStateException("Entity should not be null!");
+		}
+		return mapper.apply(entity);
 	}
 
 }

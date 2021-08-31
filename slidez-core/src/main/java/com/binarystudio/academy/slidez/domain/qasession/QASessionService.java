@@ -39,9 +39,6 @@ public class QASessionService {
 		interactiveElement.setType(InteractiveElementType.QASession);
 
 		qaSession.setInteractiveElement(interactiveElement);
-		// TODO: DUPLICATE CODE: WE SET THAT TO PARENT
-		qaSession.setPresentation(presentation);
-		qaSession.setSlideId(dto.getSlideId());
 		qaSession.setOwner(owner);
 		qaSession.setTitle(dto.getTitle());
 
@@ -50,7 +47,7 @@ public class QASessionService {
 	}
 
 	public Optional<QASession> getBySlideId(String slideId) {
-		return qaSessionRepository.getBySlideIdIs(slideId);
+		return qaSessionRepository.getBySlideId(slideId);
 	}
 
 }
