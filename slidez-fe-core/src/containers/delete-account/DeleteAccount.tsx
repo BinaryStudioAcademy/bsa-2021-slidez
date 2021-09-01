@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
     Dialog,
     DialogTitle,
@@ -10,61 +10,24 @@ import {
     Typography,
 } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
-import httpHelper from '../../services/http/http-helper'
-import { handleNotification } from '../../common/notification/Notification'
-import { Redirect } from 'react-router-dom'
-import { AxiosResponse } from 'axios'
-import { GenericResponse } from '../../../../slidez-shared/src/net/dto/GenericResponse'
-import { UserDetailsDto } from '../user/dto/UserDetailsDto'
+import { deleteAccount } from '../user/store'
+import { useAppDispatch } from '../../hooks'
 
-const DeleteAccount = () => {
-    const JWT = 'jwt'
-    const [showModal, setShowModal] = useState(true)
-    const [token, setToken] = useState('')
-    const [userId, setUserId] = useState('')
+const DeleteAccount = (props: {
+    modalState: boolean
+    handleClose: () => void
+}) => {
+    const dispatch = useAppDispatch()
 
-    useEffect(() => {
-        setToken(window.localStorage.getItem(JWT) || '{}')
-        const dto = {
-            token: token,
-        }
-        getAccessToken(dto, '')
-    })
-
-    const hideDeleteAccountModal = () => {
-        setShowModal(false)
-    }
-
-    const getAccessToken = async (dto: object, route: string) => {
-        const axiosResp: AxiosResponse = await httpHelper.doPost(route, dto)
-        const { data } = axiosResp
-        const resp: GenericResponse<UserDetailsDto, string> = data
-        setUserId(resp.data.id)
-    }
-
-    const handleDeleteAccount = () => {
-        const user = {
-            id: userId,
-        }
-        httpHelper
-            .doDelete('user', user)
-            .then(() => {
-                return <Redirect to='/login' />
-            })
-            .catch(() =>
-                handleNotification(
-                    'Failed',
-                    'Failed to delete account',
-                    'error'
-                )
-            )
+    const handleDeleteAccountClick = () => {
+        dispatch(deleteAccount())
     }
 
     return (
-        <Dialog open={showModal} maxWidth='sm' fullWidth>
+        <Dialog open={props.modalState} maxWidth='sm' fullWidth>
             <DialogTitle>Confirm the action</DialogTitle>
             <Box position='absolute' top={0} right={0}>
-                <IconButton onClick={hideDeleteAccountModal}>
+                <IconButton onClick={props.handleClose}>
                     <Close />
                 </IconButton>
             </Box>
@@ -78,7 +41,7 @@ const DeleteAccount = () => {
                 </Typography>
             </DialogContent>
             <DialogActions>
-                <Button variant='contained' onClick={hideDeleteAccountModal}>
+                <Button variant='contained' onClick={props.handleClose}>
                     Cancel
                 </Button>
                 <Button
@@ -86,7 +49,7 @@ const DeleteAccount = () => {
                         backgroundColor: '#C85250',
                     }}
                     variant='contained'
-                    onClick={handleDeleteAccount}
+                    onClick={handleDeleteAccountClick}
                 >
                     Confirm
                 </Button>
