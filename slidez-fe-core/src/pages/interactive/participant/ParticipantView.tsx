@@ -1,22 +1,22 @@
 import React from 'react'
-import './styles.scss'
-import '../participant-page/participantPage.scss'
-import Header from '../participant-page/Header'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import './participantView.scss'
+import './participantPage.scss'
+import Header from '../Header'
+import { useAppDispatch, useAppSelector } from '../../../hooks'
 import {
     selectConnectionStatus,
     selectCurrentInteractiveElement,
-} from '../../containers/session/store/selectors'
-import { initWebSocketSession } from '../../containers/session/store/store'
+} from '../../../containers/session/store/selectors'
+import { initWebSocketSession } from '../../../containers/session/store/store'
 import {
     InteractiveElement,
     PollDto,
-} from '../../containers/session/dto/InteractiveElement'
-import { InteractiveElementType } from '../../containers/session/enums/InteractiveElementType'
-import { WsConnectionStatus } from '../../containers/session/enums/ws-connection-status'
-import Loader from '../../common/components/loader/Loader'
-import NoEvent from './NoEventPage'
-import { PollInput } from '../../common/components/interactive-elements/poll/PollInput'
+} from '../../../containers/session/dto/InteractiveElement'
+import { InteractiveElementType } from '../../../containers/session/enums/InteractiveElementType'
+import { WsConnectionStatus } from '../../../containers/session/enums/ws-connection-status'
+import Loader from '../../../common/components/loader/Loader'
+import NoEvent from '../NoEventPage'
+import { PollInput } from '../../../common/components/interactive-elements/poll/PollInput'
 import { useParams } from 'react-router-dom'
 
 const pollOptions = [
@@ -91,7 +91,7 @@ const ParticipantView = () => {
     return (
         <div>
             {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
-            <div className='content'>
+            <div className='participant-poll-content'>
                 <Header eventName={eventName} />
                 {getBodyContent(currentInteraction, link || '')}
             </div>

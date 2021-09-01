@@ -1,9 +1,9 @@
 import React from 'react'
-import './styles.scss'
+import './noEvent.scss'
 
 const NoEvent = () => {
     return (
-        <div className='events-page'>
+        <div className='no-event-page'>
             <div className='error-content'>
                 Please wait for the presenter to show the next slide.
             </div>

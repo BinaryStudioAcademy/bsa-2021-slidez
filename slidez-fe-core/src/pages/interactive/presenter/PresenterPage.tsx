@@ -1,31 +1,32 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks'
 import {
     createSessionForPresentation,
     initWebSocketSession,
     requestStartPoll,
-} from '../../containers/session/store/store'
-import { WsConnectionStatus } from '../../containers/session/enums/ws-connection-status'
-import Loader from '../../common/components/loader/Loader'
-import { CreatePresentationSessionDto } from '../../services/session/dto/CreatePresentationSessionDto'
+} from '../../../containers/session/store/store'
+import { WsConnectionStatus } from '../../../containers/session/enums/ws-connection-status'
+import Loader from '../../../common/components/loader/Loader'
+import { CreatePresentationSessionDto } from '../../../services/session/dto/CreatePresentationSessionDto'
 import {
     selectConnectionStatus,
     selectCurrentInteractiveElement,
     selectLink,
-} from '../../containers/session/store/selectors'
+} from '../../../containers/session/store/selectors'
 import {
     createStartPollRequest,
     StartPollRequest,
-} from '../../containers/session/event/FrontendEvent'
-import NoEvent from './NoEventPage'
-import Header from '../participant-page/Header'
+} from '../../../containers/session/event/FrontendEvent'
+import NoEvent from '../NoEventPage'
+import Header from '../Header'
 import {
     InteractiveElement,
     PollDto,
-} from '../../containers/session/dto/InteractiveElement'
-import { InteractiveElementType } from '../../containers/session/enums/InteractiveElementType'
-import Poll from '../../common/components/interactive-elements/poll/Poll'
+} from '../../../containers/session/dto/InteractiveElement'
+import { InteractiveElementType } from '../../../containers/session/enums/InteractiveElementType'
+import Poll from '../../../common/components/interactive-elements/poll/Poll'
+import './presenterPage.scss'
 
 const useEditorParams = () => {
     const params = new URLSearchParams(useLocation().search)
@@ -89,7 +90,7 @@ const PresenterPage: React.FC = () => {
     return (
         <div>
             {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
-            <div className='content'>
+            <div className='presenter-page-content'>
                 <Header eventName={currentInteraction.title} />
                 {getBodyContent(currentInteraction)}
             </div>

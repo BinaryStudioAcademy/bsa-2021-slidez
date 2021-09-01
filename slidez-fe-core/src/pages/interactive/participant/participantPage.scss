@@ -1,39 +1,18 @@
 @import "src/global/global";
 
-.participant-header {
-    position: fixed;
-    top: 5px;
-    width: 100%;
-    display: flex;
-    align-items: flex-end;
-    .logo {
-        a {
-            img {
-                width: 65.03px;
-                height: 44px;
-            }
-        }
-    }
-    .event-name {
-        font-weight: 700;
-        color: $black;
-        font-size: 16px;
-        margin-bottom: 8px;
-        margin-left: 20px;
-    }
-}
-
 .participant-page {
-    margin: 30px;
-    margin-top: 110px;
+    margin: 110px 30px 30px;
+
     .input-block {
         margin-top: 115px;
         margin-bottom: 30px;
+
         div {
             font-size: 12px;
             font-weight: 400;
             margin-bottom: 5px;
         }
+
         .code-input,
         .btn-code {
             font-family: "Rubik";
@@ -42,26 +21,31 @@
             border: none;
             border-radius: 25px;
         }
+
         .code-input {
             background-color: $light-color;
             font-size: 12px;
             padding-left: 20px;
             margin-bottom: 15px;
         }
+
         .btn-code {
             background-color: $main-color;
             color: $white;
             font-size: 16px;
         }
     }
+
     .title {
         font-weight: 700;
         font-size: 16px;
         color: $black;
     }
+
     .page-content {
         margin-top: 20px;
         margin-bottom: 15px;
+
         .event-item {
             width: 100%;
             height: 56px;
@@ -72,9 +56,11 @@
             justify-content: space-between;
             align-items: center;
             border-radius: 5px;
+
             .event-info {
                 display: flex;
                 flex-direction: column;
+
                 .event-info-text {
                     display: flex;
                     align-items: center;
@@ -97,8 +83,10 @@
                     color: $grey-color;
                 }
             }
+
             .event-icon {
                 padding: 10px;
+
                 .angle-right {
                     color: $mint;
                 }
@@ -113,7 +101,6 @@
 
 @media (max-width: 750px) {
     .participant-page {
-        margin: 15px;
-        margin-top: 110px;
+        margin: 110px 15px 15px;
     }
 }

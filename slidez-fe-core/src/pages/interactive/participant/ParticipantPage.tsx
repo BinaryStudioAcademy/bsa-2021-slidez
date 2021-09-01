@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import './participantPage.scss'
-import Header from './Header'
+import Header from '../Header'
 import { MOCK_DATA } from './mock-data'
 import './participantPage.scss'
 import ParticipantNameDialog from './ParticipantNameModal'
-import { ParticipantData } from '../../services/participant/dto/ParticipantData'
-import { getParticipantData } from '../../services/participant/participant-service'
+import { ParticipantData } from '../../../services/participant/dto/ParticipantData'
+import { getParticipantData } from '../../../services/participant/participant-service'
 import { EventItem } from './EventItem'
 
 const ParticipantPage = () => {

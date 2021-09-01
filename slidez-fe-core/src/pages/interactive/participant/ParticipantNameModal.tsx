@@ -4,7 +4,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import * as Yup from 'yup'
 import { Field, Form, Formik, FormikErrors } from 'formik'
-import { saveParticipantData } from '../../services/participant/participant-service'
+import { saveParticipantData } from '../../../services/participant/participant-service'
 
 type ParticipantNameErorrsProps = {
     viewErrors: boolean
