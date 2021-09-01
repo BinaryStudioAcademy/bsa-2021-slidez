@@ -8,9 +8,11 @@ import com.binarystudio.academy.slidez.domain.user.dto.UserPasswordResponse;
 import com.binarystudio.academy.slidez.domain.user.mapper.UserMapper;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -67,5 +69,13 @@ public class UserController {
 		}
 		return new GenericResponse<>(userResponseOptional.get());
 	}
+
+    @GetMapping("me")
+    public GenericResponse<UserDetailsDto, UserResponseCodes> getUserData(Principal principal) {
+        var actor = ((UsernamePasswordAuthenticationToken) principal);
+        var user = ((User) actor.getPrincipal());
+
+        return new GenericResponse<>(UserMapper.INSTANCE.mapUserToUserDetailsDto(user));
+    }
 
 }
