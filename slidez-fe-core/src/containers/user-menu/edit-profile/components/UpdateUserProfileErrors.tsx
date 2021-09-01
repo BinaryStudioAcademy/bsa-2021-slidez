@@ -14,10 +14,8 @@ export const UpdateUserProfileErrors = ({
         errorMessage = 'updateUserProfileError'
     } else if (formikErrors.email) {
         errorMessage = 'Please provide valid email'
-    } else if (formikErrors.firstName) {
-        errorMessage = 'FirstName should be 3-30 characters long'
-    } else if (formikErrors.lastName) {
-        errorMessage = 'FirstName should be 3-30 characters long'
+    } else if (formikErrors.firstName || formikErrors.lastName) {
+        errorMessage = 'First Name and Last Name should be 3-30 characters long'
     }
     return <div className='error-text-user-profile'>{errorMessage}</div>
 }
