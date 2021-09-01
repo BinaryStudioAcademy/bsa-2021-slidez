@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
 import {
     createSessionForPresentation,
@@ -12,7 +12,6 @@ import { CreatePresentationSessionDto } from '../../../services/session/dto/Crea
 import {
     selectConnectionStatus,
     selectCurrentInteractiveElement,
-    selectLink,
 } from '../../../containers/session/store/selectors'
 import {
     createStartPollRequest,
@@ -27,6 +26,7 @@ import {
 import { InteractiveElementType } from '../../../containers/session/enums/InteractiveElementType'
 import PresenterPoll from '../../../common/components/interactive-elements/poll/PresenterPoll'
 import './presenterPage.scss'
+import InteractiveWrapper from '../../../common/components/interactive-elements/interactive-wrapper/InteractiveWrapper'
 
 const useEditorParams = () => {
     const params = new URLSearchParams(useLocation().search)
@@ -55,7 +55,8 @@ const getBodyContent = (interactiveElement: InteractiveElement) => {
 }
 
 const PresenterPage: React.FC = () => {
-    const link = useAppSelector(selectLink)
+    // @ts-ignore
+    const { link } = useParams()
     //TODO: Delete this
     const [startedPoll, setStartedPoll] = useState(false)
     const dispatch = useAppDispatch()
@@ -92,7 +93,9 @@ const PresenterPage: React.FC = () => {
             {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
             <div className='presenter-page-content'>
                 <Header eventName={currentInteraction.title} />
-                {getBodyContent(currentInteraction)}
+                <InteractiveWrapper eventCode={link || ''}>
+                    {getBodyContent(currentInteraction)}
+                </InteractiveWrapper>
             </div>
         </div>
     )
