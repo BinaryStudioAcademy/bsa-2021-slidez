@@ -17,7 +17,7 @@
 }
 .poll-name {
     font-size: 14px;
-    margin:0 10px;
+    margin: 0 10px;
     width: 100%;
 }
 
@@ -33,7 +33,7 @@
 }
 
 .svg-icon {
-    color: $main-color; 
+    color: $main-color;
 }
 
 .back-button {
@@ -49,9 +49,9 @@
     border: 1px $light-color solid;
     background-color: $light-color;
     color: rgba(#1d1d1d, 0.5);
-    padding: 13px 10px;
+    padding: 13px;
     box-sizing: border-box;
-    width: 100%;
+    min-width: 230px;
     margin-top: 5px;
 }
 
@@ -67,13 +67,11 @@
 
 .title-input {
     width: 100%;
-    margin-bottom: 6px;
 }
 .btn-submit {
     border: 2px $main-color solid;
     color: $white;
     background-color: $main-color;
-
     font-weight: 500;
 }
 
@@ -111,7 +109,7 @@
         margin: 3px 10px 5px 0px;
     }
 }
-.btn-add-option::hover {
+.btn-add-option:hover {
     cursor: pointer;
 }
 .options {
@@ -130,5 +128,8 @@
         margin: 22px 5px 3px 5px;
         padding: 12px 5px 5px 7px;
         text-align: center;
+    }
+    .option-delete-btn {
+        margin-bottom: 6px;
     }
 }
