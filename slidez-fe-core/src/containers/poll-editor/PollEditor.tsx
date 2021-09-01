@@ -103,7 +103,6 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
                                                     className='options'
                                                 >
                                                     <div className='label option-label'>
-                                                        {`Option ${index + 1}`}
                                                         <Field
                                                             name={`options.${index}.title`}
                                                             placeholder='Your option'
