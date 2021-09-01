@@ -4,7 +4,7 @@ export default function QACard(props: any) {
     return (
         <button
             type='submit'
-            onClick={() => props.onClick(props.textValue)}
+            onClick={() => props.onClick()}
             className='qaadd-submit'
         >
             Submit

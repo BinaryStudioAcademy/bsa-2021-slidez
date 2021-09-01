@@ -7,15 +7,18 @@ export default function QAAdd(props: any) {
     const [textValue, setTextValue] = useState('')
 
     const charsCount = (e: any) => {
-        var currentText = e.target.value
-        var characterCount = currentText.length
-        setCharsCounterValue(characterCount)
-        setTextValue(currentText)
+        setCharsCounterValue(e.target.value.length)
+        setTextValue(e.target.value)
     }
 
-    const handleSubmit = (e: any) => {
-        setTextValue('')
-        props.onSubmit(e)
+    const handleSubmit = () => {
+        if (textValue.length > 0) {
+            props.onSubmit(textValue)
+            const textField: any = document.getElementById('qaadd-text')
+            textField.value = ''
+            setTextValue('')
+            setCharsCounterValue(0)
+        }
     }
 
     return (
@@ -27,6 +30,7 @@ export default function QAAdd(props: any) {
             <div>
                 <textarea
                     className='qaadd-text'
+                    id='qaadd-text'
                     name='question'
                     onChange={(e) => charsCount(e)}
                 ></textarea>
@@ -34,7 +38,7 @@ export default function QAAdd(props: any) {
             <div className='chars-counter'>{charsCounterValue}</div>
 
             <SubmitButton
-                onClick={(e: any) => props.onSubmit(e)}
+                onClick={handleSubmit}
                 textValue={textValue}
                 value='Save'
             >
