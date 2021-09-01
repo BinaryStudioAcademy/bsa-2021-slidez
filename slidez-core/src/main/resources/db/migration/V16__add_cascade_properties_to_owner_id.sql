@@ -1,0 +1,15 @@
+BEGIN;
+
+ALTER TABLE poll
+    DROP CONSTRAINT fk_poll_user,
+    ADD CONSTRAINT fk_poll_user FOREIGN KEY (owner_id) REFERENCES "user" (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE quiz
+    DROP CONSTRAINT fk_poll_user,
+    ADD CONSTRAINT fk_poll_user FOREIGN KEY (owner_id) REFERENCES "user" (id) ON DELETE CASCADE ON UPDATE CASCADE;;
+
+ALTER TABLE qa_session
+    DROP CONSTRAINT fk_poll_user,
+    ADD CONSTRAINT fk_poll_user FOREIGN KEY (owner_id) REFERENCES "user" (id) ON DELETE CASCADE ON UPDATE CASCADE;;
+
+COMMIT;

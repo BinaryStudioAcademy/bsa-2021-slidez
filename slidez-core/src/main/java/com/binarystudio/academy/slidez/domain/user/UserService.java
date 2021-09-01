@@ -118,4 +118,8 @@ public class UserService {
 		return Optional.of(UserMapper.INSTANCE.mapUserToUserPasswordResponse(this.userRepository.save(updateUser)));
 	}
 
+	public void delete(UUID id) {
+		userRepository.deleteWithId(id);
+	}
+
 }

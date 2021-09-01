@@ -42,7 +42,7 @@ public class Poll {
 	@Column(name = "is_template", nullable = false)
 	private Boolean isTemplate;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "owner_id")
 	private User owner;
 

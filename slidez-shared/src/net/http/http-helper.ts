@@ -72,7 +72,7 @@ class HttpHelper {
 
     public doPost(
         route: string,
-        body: object,
+        body: object = {},
         query: object = {},
         headers: Record<string, string> = {}
     ) {
@@ -81,7 +81,7 @@ class HttpHelper {
 
     public doPut(
         route: string,
-        body: object,
+        body: object = {},
         query: object = {},
         headers: Record<string, string> = {}
     ) {
@@ -90,7 +90,7 @@ class HttpHelper {
 
     public doPatch(
         route: string,
-        body: object,
+        body: object = {},
         query: object = {},
         headers: Record<string, string> = {}
     ) {
@@ -99,7 +99,7 @@ class HttpHelper {
 
     public doDelete(
         route: string,
-        body: object,
+        body: object = {},
         query: object = {},
         headers: Record<string, string> = {}
     ) {

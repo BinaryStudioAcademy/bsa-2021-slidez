@@ -26,8 +26,7 @@ export const editUserProfile = async (dto: UpdateProfileDto) => {
         userDetailsDto: undefined,
     }
     if (resp.data) {
-        const payload: UserDetailsDto = resp.data
-        out.userDetailsDto = payload
+        out.userDetailsDto = resp.data
     }
     setTimeout(function () {
         handleNotification('Saved', 'Profile updated successfully', 'success')
@@ -50,4 +49,8 @@ export const editPassword = async (dto: UpdatePasswordRequest) => {
         handleNotification('Saved', 'Password edited successfully', 'success')
     }, 500)
     return out
+}
+
+export const performDeleteAccount = async () => {
+    httpHelper.doDelete('/users')
 }
