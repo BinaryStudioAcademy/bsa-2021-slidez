@@ -1,20 +1,13 @@
 import React from 'react'
 import {
     Dialog,
-    DialogTitle,
     DialogContent,
     DialogActions,
-    Box,
-    IconButton,
     Typography,
-    Button,
 } from '@material-ui/core'
 import { deleteAccount } from '../../user/store'
 import { useAppDispatch } from '../../../hooks'
-import close_icon from '../../../assets/svgs/close_icon.svg'
 import './deleteAccount.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
 const DeleteAccount = (props: {
     modalState: boolean
