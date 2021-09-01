@@ -17,12 +17,7 @@ const PublicRoute = ({ component: Component, ...rest }) => {
         }
         console.log(route, rest.location)
     }, [hasUser, history])
-    return (
-        <Route {...rest} render={(props) =>
-            <Component {...props} />
-        }
-        />
-    )
+    return <Route {...rest} render={(props) => <Component {...props} />} />
 }
 
 PublicRoute.propTypes = {
