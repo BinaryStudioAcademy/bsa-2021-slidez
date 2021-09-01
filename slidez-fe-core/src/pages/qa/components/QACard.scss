@@ -52,22 +52,13 @@ $likebtnwidth: 62px;
     width: 13px;
     height: 13px;
   }
-  .unliked-icon:hover,
-  .unliked-icon:focus {
-    background-image: url('../../../assets/svgs/thumbs-up-solid.svg');
-  }
 
   .liked-icon {
     margin-right: 5px;
     width: 13px;
     height: 13px;
   }
-  .liked-icon:hover,
-  .liked-icon:focus {
-    background-image: url('../../../assets/svgs/thumbs-up-regular.svg');
-  }
 }
-
 #thumbs-up-solid {
   color: #59d0a5;
 }
