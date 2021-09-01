@@ -1,6 +1,6 @@
 import React from 'react'
 import { PollDto } from '../../../../containers/session/dto/InteractiveElement'
-import './Poll.scss'
+import './presenterPoll.scss'
 
 type PollProps = {
     poll: PollDto
@@ -14,7 +14,7 @@ const getFrequencies = (items: any[]) => {
     }, new Map())
 }
 
-function Poll({ poll, children }: PollProps) {
+const PresenterPoll = ({ poll, children }: PollProps) => {
     const { title, options, answers } = poll
     const frequencies: Map<string, number> = getFrequencies(answers)
     // @ts-ignore
@@ -63,4 +63,4 @@ function Poll({ poll, children }: PollProps) {
     )
 }
 
-export default Poll
+export default PresenterPoll

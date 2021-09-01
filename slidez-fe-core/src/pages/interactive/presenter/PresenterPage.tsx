@@ -25,7 +25,7 @@ import {
     PollDto,
 } from '../../../containers/session/dto/InteractiveElement'
 import { InteractiveElementType } from '../../../containers/session/enums/InteractiveElementType'
-import Poll from '../../../common/components/interactive-elements/poll/Poll'
+import PresenterPoll from '../../../common/components/interactive-elements/poll/PresenterPoll'
 import './presenterPage.scss'
 
 const useEditorParams = () => {
@@ -49,7 +49,7 @@ const noCurrentInteraction = () => {
 
 const getBodyContent = (interactiveElement: InteractiveElement) => {
     if (interactiveElement.type === InteractiveElementType.poll) {
-        return <Poll poll={interactiveElement as PollDto} />
+        return <PresenterPoll poll={interactiveElement as PollDto} />
     }
     return undefined
 }

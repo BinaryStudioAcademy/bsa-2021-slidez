@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     FormControl,
     FormControlLabel,
@@ -8,6 +8,13 @@ import {
 } from '@material-ui/core'
 import { PollDto } from '../../../../containers/session/dto/InteractiveElement'
 import { PollOptionDto } from '../../../../containers/session/dto/PollOptionDto'
+import { useAppDispatch } from '../../../../hooks'
+import { SessionPollAnswer } from '../../../../containers/session/model/SessionPollAnswer'
+import {
+    AnswerPollRequest,
+    createAnswerPollRequest,
+} from '../../../../containers/session/event/FrontendEvent'
+import { answerPoll } from '../../../../containers/session/store/store'
 
 export type ParticipantPollProps = {
     poll: PollDto
@@ -15,6 +22,26 @@ export type ParticipantPollProps = {
 }
 
 const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
+    const [chosenOption, setChosenOption] = useState<PollOptionDto | undefined>(
+        undefined
+    )
+    const dispatch = useAppDispatch()
+
+    const onSendClick = () => {
+        if (!chosenOption) {
+            return
+        }
+        const pollAnswer: SessionPollAnswer = {
+            pollId: poll.id,
+            optionId: chosenOption.id,
+        }
+        const answerPollRequest: AnswerPollRequest = createAnswerPollRequest(
+            link,
+            pollAnswer
+        )
+        dispatch(answerPoll(answerPollRequest))
+    }
+
     return (
         <div className='events-page'>
             <div className='page-content'>
@@ -35,12 +62,17 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
                                     label={option.title}
                                     control={<Radio />}
                                     value={option.title}
+                                    onChange={() => {
+                                        setChosenOption(option)
+                                    }}
                                 />
                             )
                         )}
                     </RadioGroup>
                 </FormControl>
-                <button className='btn-submit'>Submit</button>
+                <button className='btn-submit' onClick={onSendClick}>
+                    Submit
+                </button>
             </div>
         </div>
     )
