@@ -15,7 +15,6 @@ const PublicRoute = ({ component: Component, ...rest }) => {
         if (hasUser) {
             history.push(route)
         }
-        console.log(route, rest.location)
     }, [hasUser, history])
     return <Route {...rest} render={(props) => <Component {...props} />} />
 }
