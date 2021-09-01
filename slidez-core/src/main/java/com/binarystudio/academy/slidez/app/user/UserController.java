@@ -70,18 +70,19 @@ public class UserController {
 		return new GenericResponse<>(userResponseOptional.get());
 	}
 
-    @GetMapping("me")
-    public GenericResponse<UserDetailsDto, UserResponseCodes> getUserData(Principal principal) {
-        var actor = ((UsernamePasswordAuthenticationToken) principal);
-        var user = ((User) actor.getPrincipal());
+	@GetMapping("me")
+	public GenericResponse<UserDetailsDto, UserResponseCodes> getUserData(Principal principal) {
+		var actor = ((UsernamePasswordAuthenticationToken) principal);
+		var user = ((User) actor.getPrincipal());
 
-        return new GenericResponse<>(UserMapper.INSTANCE.mapUserToUserDetailsDto(user));
-    }
+		return new GenericResponse<>(UserMapper.INSTANCE.mapUserToUserDetailsDto(user));
+	}
 
-    @DeleteMapping
-    public void deleteUser(Principal principal) {
-        UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) principal;
-        User user = (User) token.getPrincipal();
-        userService.delete(user.getId());
-    }
+	@DeleteMapping
+	public void deleteUser(Principal principal) {
+		UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) principal;
+		User user = (User) token.getPrincipal();
+		userService.delete(user.getId());
+	}
+
 }
