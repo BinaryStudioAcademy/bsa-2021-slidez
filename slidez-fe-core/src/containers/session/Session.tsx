@@ -1,9 +1,9 @@
 import React from 'react'
-import CloseIcon from '@material-ui/icons/Close'
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import reset_button from '../../assets/svgs/reset_button.svg'
 import pause_button from '../../assets/svgs/pause_button.svg'
 import log_out from '../../assets/svgs/log_out.svg'
+import arrow_back from '../../assets/svgs/arrow_back.svg'
+import close_icon from '../../assets/svgs/close_icon.svg'
 import './session.scss'
 import { logout } from '../user/store'
 import { useAppDispatch } from '../../hooks'
@@ -28,7 +28,7 @@ const Session = () => {
     const handleIcon = openMenu ? (
         <div className='close-button-active'>
             <button className='close-button' onClick={handleCloseMenu}>
-                <CloseIcon style={{ fontSize: 'large' }} />
+                <img src={close_icon} />
             </button>
         </div>
     ) : (
@@ -49,7 +49,7 @@ const Session = () => {
                         <div className='session-id'>{session_id}</div>
                     </div>
                     <button className='arrow-back'>
-                        <ArrowForwardIosIcon style={{ fontSize: 'small' }} />
+                        <img src={arrow_back} />
                     </button>
                 </div>
                 <hr className='border-between-button' />
