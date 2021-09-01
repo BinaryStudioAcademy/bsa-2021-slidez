@@ -10,7 +10,6 @@ import { ApiGateway } from '../http/api-gateway'
 import { CodeDto } from './dto/CodeDto'
 import { AppRoute } from '../../common/routes/app-route'
 import { handleLoginErrorNotification } from '../../common/components/forms/LoginForm'
-import { TokenDto } from './dto/TokenDto'
 
 const JWT = 'jwt'
 const refreshJWT = 'refresh_jwt'
@@ -30,7 +29,7 @@ const sendAuthRequest = async (route: string, body: object = {}) => {
 
 const performSign = async (
     url: string,
-    dto: LogInDto | RegisterDto | CodeDto | TokenDto
+    dto: LogInDto | RegisterDto | CodeDto
 ) => {
     const { data } = await sendAuthRequest(url, dto)
     const genericResponse: GenericResponse<LogInResponseDto, string> = data
@@ -58,10 +57,6 @@ export const performLogIn = async (dto: LogInDto) => {
 
 export const performRegister = async (dto: RegisterDto) => {
     return performSign(constructRoute('register'), dto)
-}
-
-export const performLoginByToken = async (dto: TokenDto) => {
-    return performSign(constructRoute('login-by-token'), dto)
 }
 
 export const performRefreshTokens = async () => {
