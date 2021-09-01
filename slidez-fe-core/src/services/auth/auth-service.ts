@@ -9,6 +9,7 @@ import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
 import { ApiGateway } from '../http/api-gateway'
 import { CodeDto } from './dto/CodeDto'
 import { AppRoute } from '../../common/routes/app-route'
+import { handleLoginErrorNotification } from '../../common/components/forms/LoginForm'
 import { TokenDto } from './dto/TokenDto'
 
 const JWT = 'jwt'
@@ -33,6 +34,11 @@ const performSign = async (
 ) => {
     const { data } = await sendAuthRequest(url, dto)
     const genericResponse: GenericResponse<LogInResponseDto, string> = data
+
+    if ('email' in dto) {
+        handleLoginErrorNotification(genericResponse.error, dto.email)
+    }
+
     const out: LogInResult = {
         error: genericResponse.error,
         userDetailsDto: undefined,
