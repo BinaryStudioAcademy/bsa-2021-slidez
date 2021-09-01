@@ -8,6 +8,7 @@ import Header from './Header'
 import { MOCK_DATA } from './mock-data'
 import './participantPage.scss'
 import ParticipantNameDialog from './ParticipantNameModal'
+import Qa from '../qa/Qa'
 
 const ParticipantPage = () => {
     const [listQuestions, setListQuestions] = useState(MOCK_DATA)
@@ -29,8 +30,21 @@ const ParticipantPage = () => {
         return 'watched ' + diffDate
     }
 
+    const [showQAModal, setShowQAModal] = useState(false)
+
+    const handleQAClose = () => {
+        setShowQAModal(false)
+    }
+    const handleQAShow = () => {
+        setShowQAModal(true)
+    }
+
     return (
         <div className='participant-page'>
+            <button type='button' onClick={() => handleQAShow()}>
+                Open Q&amp;A page
+            </button>
+            <Qa show={showQAModal} handleClose={() => handleQAClose()}></Qa>
             <Header eventName='' />
             {open ? <ParticipantNameDialog /> : ''}
             <div className='input-block'>
