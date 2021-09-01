@@ -15,7 +15,7 @@ public class AuthorizationRequestValidator implements Validator {
 	// (?=.*[!@#$&*]) Ensure string has one special case letter.
 	// (?=.*[0-9]) Ensure string has 1 digits.
 	// .{12,} Ensure string is of length not less 12.
-	private static final String PASSWORD_REGEX = "^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{12,}$";
+	private static final String PASSWORD_REGEX = "^(?=.*^\\S*$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{12,32}$";
 
 	private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
 
