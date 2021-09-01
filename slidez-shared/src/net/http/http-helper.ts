@@ -2,20 +2,15 @@ import { Method } from 'axios'
 import { createDefaultAxios } from './http-util'
 
 class HttpHelper {
-    private readonly getAuthHeaderValue: () => string
-    private readonly performRefreshTokens: () => Promise<any>
-    private readonly baseUrl: string
     private inProcessOfRefreshingTokens = false
+    private retryAfterRefreshTokenCount = 0
 
     constructor(
-        getAuthHeaderValue: () => string,
-        performRefreshTokens: () => Promise<any>,
-        baseUrl: string
-    ) {
-        this.getAuthHeaderValue = getAuthHeaderValue
-        this.performRefreshTokens = performRefreshTokens
-        this.baseUrl = baseUrl
-    }
+        private readonly getAuthHeaderValue: () => string,
+        private readonly performRefreshTokens: () => Promise<any>,
+        private readonly performLogout: () => void,
+        private readonly baseUrl: string
+    ) {}
 
     public sendRequest(
         route: string,
@@ -30,18 +25,27 @@ class HttpHelper {
             (response) => {
                 return response
             },
-            (error) => {
+            async (error) => {
                 if (error.response) {
-                    const status = error.response.status
-                    if (status === 403) {
+                    if (error.response.status === 403) {
+                        if (this.retryAfterRefreshTokenCount != 0) {
+                            this.performLogout()
+                            this.retryAfterRefreshTokenCount = 0
+                            return Promise.reject(error)
+                        }
+                        const originalConfig = error.config
+                        originalConfig._retry = true
                         if (!this.inProcessOfRefreshingTokens) {
                             this.inProcessOfRefreshingTokens = true
-                            this.performRefreshTokens().finally(
-                                () => (this.inProcessOfRefreshingTokens = false)
-                            )
+                            await this.performRefreshTokens()
+                            this.retryAfterRefreshTokenCount++
+                            this.inProcessOfRefreshingTokens = false
                         }
+                        return axiosInstance(originalConfig)
                     }
+                    return Promise.reject(error)
                 }
+                return Promise.reject(error)
             }
         )
 
@@ -68,7 +72,7 @@ class HttpHelper {
 
     public doPost(
         route: string,
-        body: object,
+        body: object = {},
         query: object = {},
         headers: Record<string, string> = {}
     ) {
@@ -77,7 +81,7 @@ class HttpHelper {
 
     public doPut(
         route: string,
-        body: object,
+        body: object = {},
         query: object = {},
         headers: Record<string, string> = {}
     ) {
@@ -86,7 +90,7 @@ class HttpHelper {
 
     public doPatch(
         route: string,
-        body: object,
+        body: object = {},
         query: object = {},
         headers: Record<string, string> = {}
     ) {
@@ -95,7 +99,7 @@ class HttpHelper {
 
     public doDelete(
         route: string,
-        body: object,
+        body: object = {},
         query: object = {},
         headers: Record<string, string> = {}
     ) {

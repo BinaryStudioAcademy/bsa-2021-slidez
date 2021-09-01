@@ -1,0 +1,84 @@
+@import "src/global/global";
+.form-body {
+    .form-inputs {
+        display: flex;
+        flex-direction: column;
+        input {
+            background: #F6F4F8;
+            border-radius: 50px;
+            &:hover {
+                background-color: $mouse-hover-color;
+            }
+        }
+        .MuiOutlinedInput-root {
+            position: relative;
+            border-radius: 50px;
+            width: 429px;
+            height: 45px;
+            margin-bottom: 15px;
+            background-color: #F6F4F8;
+            &:hover {
+                background-color: $mouse-hover-color;
+            }
+        }
+        .MuiOutlinedInput-notchedOutline {
+            border-color: rgba(0, 0, 0, 0); 
+        }
+        .input-item .MuiTextField-root {
+            width: 100%;
+        }
+        .input-icon {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            color: $grey;
+        }
+        .input-icon-password {
+            top: 660px;
+            right: 130px;
+        }
+        .input-icon-confirm-password {
+            top: 740px;
+            right: 130px;
+        }
+        button {
+            color: rgb(255, 255, 255);
+            background: $main-color;
+            align-self: flex-start;
+            text-transform: none;
+            margin-bottom: 35px;
+            border-radius: 50px;
+            width: 116px;
+            height: 45px;
+            display: inline-block;
+        }
+        .title-change-password {
+            font-family: Rubik;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: small;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+        .error-text-user-profile {
+            display: flex;
+            align-items: center;
+            min-height: 5px;
+            color: #f73b48;
+            font-size: 12px;
+            padding-bottom: 5px;
+        }
+        .error-text-edit-password {
+            display: flex;
+            align-items: center;
+            min-height: 5px;
+            color: #f73b48;
+            font-size: 12px;
+            padding-bottom: 5px;
+        }
+    }
+}

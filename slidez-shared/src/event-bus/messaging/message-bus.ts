@@ -82,6 +82,7 @@ export class BasicMessagingBus {
         messageType: ProtocolMessage['type'],
         handler: MessageListener.MessageListener<any>
     ) {
+        console.log('Registering event listener for event type ' + messageType)
         const registeredHandlers = this.messageListeners[messageType] ?? []
         registeredHandlers.push(handler)
         this.messageListeners[messageType] = registeredHandlers

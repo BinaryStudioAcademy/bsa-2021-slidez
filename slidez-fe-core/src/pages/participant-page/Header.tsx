@@ -1,11 +1,20 @@
 import React from 'react'
-import './header.scss'
+import './participantPage.scss'
+import SlidezLogo from '../../../src/logo_Slidez_black.svg'
 
-const Header = () => {
+interface IProps {
+    eventName: string
+}
+
+const Header: React.FC<IProps> = ({ eventName }: IProps) => {
     return (
-        <div className='header'>
-            <a href=''></a>
-            <div className='header-title'> Slidez </div>
+        <div className='participant-header'>
+            <div className='logo'>
+                <a href=''>
+                    <img src={SlidezLogo} alt='Slidez Logo'></img>
+                </a>
+            </div>
+            <div className='event-name'>{eventName}</div>
         </div>
     )
 }

@@ -5,12 +5,13 @@ import { AppRoute } from '../../routes/app-route'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
 import { revealPassword } from './form-utils'
-import { useAppSelector } from '../../../hooks'
-import { selectError } from '../../../containers/user/store'
 import GoogleLogin from 'react-google-login'
 import { GoogleOAuth } from '../../../services/auth/google-oauth'
 import { Field, Form, Formik, FormikErrors } from 'formik'
 import * as Yup from 'yup'
+import { handleNotification } from '../../notification/Notification'
+import { NotificationTypes } from '../../notification/notification-types'
+import { useEffect } from 'react'
 
 type LoginProps = {
     onLogin: Function
@@ -19,7 +20,6 @@ type LoginProps = {
 
 type LoginErorrsProps = {
     viewErrors: boolean
-    loginError: string | undefined
     formikErrors: FormikErrors<{ email: string; password: string }>
 }
 
@@ -28,23 +28,33 @@ const loginFieldsValidation = Yup.object({
     password: Yup.string().required('Required'),
 })
 
-const LoginErrors = ({
-    viewErrors,
-    loginError,
-    formikErrors,
-}: LoginErorrsProps) => {
-    let errorMessage: string | null = null
-    if (!viewErrors) {
-        errorMessage = null
-    } else if (loginError) {
-        errorMessage = "Can't log in: email or password is invalid"
-    } else if (formikErrors.email && formikErrors.password) {
-        errorMessage = 'Please provide email and password'
-    } else if (formikErrors.email) {
-        errorMessage = 'Email is missing'
-    } else if (formikErrors.password) {
-        errorMessage = 'Password is missing'
+export const handleLoginErrorNotification = (
+    loginError: string | undefined,
+    invalidEmail: string
+) => {
+    if (loginError) {
+        handleNotification(
+            'Login Failed',
+            `The user cannot be authenticated with email ${invalidEmail} and the provided password`,
+            NotificationTypes.ERROR
+        )
     }
+}
+
+const LoginErrors = ({ viewErrors, formikErrors }: LoginErorrsProps) => {
+    let errorMessage: string | null = null
+
+    useEffect(() => {
+        if (!viewErrors) {
+            errorMessage = null
+        } else if (formikErrors.email && formikErrors.password) {
+            errorMessage = 'Please provide email and password'
+        } else if (formikErrors.email) {
+            errorMessage = 'Email is missing'
+        } else if (formikErrors.password) {
+            errorMessage = 'Password is missing'
+        }
+    })
 
     return <div className='error-text'>{errorMessage}</div>
 }
@@ -52,7 +62,6 @@ const LoginErrors = ({
 const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
     const [isPasswordRevealed, setIsPasswordRevealed] = React.useState(false)
     const [viewErrors, setViewErrors] = React.useState(false)
-    const loginError = useAppSelector(selectError)
 
     const onRevealClick = () => {
         setIsPasswordRevealed(!isPasswordRevealed)
@@ -62,6 +71,15 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
     const handleLoginWithGoogle = async (googleData: any) => {
         onLoginWithGoogle(googleData)
     }
+
+    const googleLoginFailed = () => {
+        handleNotification(
+            'Google Login Failed',
+            'The provided user account is not registered in the system',
+            NotificationTypes.ERROR
+        )
+    }
+
     return (
         <div className='sign-form'>
             <div className='form-row header-row'>Log In</div>
@@ -89,7 +107,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                                 name='email'
                                 className={
                                     'form-input' +
-                                    (viewErrors && errors.email
+                                    (viewErrors && (errors.email || loginError)
                                         ? ' error-input'
                                         : '')
                                 }
@@ -119,7 +137,8 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                                     name='password'
                                     className={
                                         'form-input input-with-icon' +
-                                        (viewErrors && errors.password
+                                        (viewErrors &&
+                                        (errors.password || loginError)
                                             ? ' error-input'
                                             : '')
                                     }
@@ -144,7 +163,6 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
 
                         <LoginErrors
                             viewErrors={viewErrors}
-                            loginError={loginError}
                             formikErrors={errors}
                         />
 
@@ -167,6 +185,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                     className='form-button login-with-google-button'
                     clientId={GoogleOAuth.GOOGLE_CLIENT_ID}
                     onSuccess={handleLoginWithGoogle}
+                    onFailure={googleLoginFailed}
                     redirectUri={GoogleOAuth.GOOGLE_REDIRECT_URI}
                     cookiePolicy={GoogleOAuth.GOOGLE_COOKIE_POLICY}
                     scope={[

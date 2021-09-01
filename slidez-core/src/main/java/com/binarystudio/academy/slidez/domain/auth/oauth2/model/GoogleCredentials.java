@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -15,7 +16,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "google_credentials")
-public class GoogleCredentials {
+public class GoogleCredentials implements Serializable {
+
+	private static final long serialVersionUID = 2941736471296325337L;
 
 	@Id
 	@GeneratedValue(generator = "UUID")
@@ -23,7 +26,7 @@ public class GoogleCredentials {
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, updatable = false, unique = true)
 	private User user;
 

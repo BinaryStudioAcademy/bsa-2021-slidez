@@ -3,10 +3,13 @@ import { Formik, Form, Field, FieldArray } from 'formik'
 
 import './PollEditor.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
-import { CreatePollDto } from './dto'
-import httpHelper from '../../services/http/http-helper'
-import { handleNotification } from '../../common/notification/Notification'
+import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
+import back_button_icon from '../../assets/svgs/back_button_icon.svg'
+import checked_icon from '../../assets/svgs/checked_icon.svg'
+import drop_down_icon from '../../assets/svgs/drop_down_icon.svg'
+import { useDispatch, useSelector } from 'react-redux'
+import { createPoll } from './store'
+import { RootState } from '../../store'
 
 export type PollEditorProps = {
     pollId?: string | null
@@ -14,53 +17,81 @@ export type PollEditorProps = {
 
 // eslint-disable-next-line react/prop-types
 const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
-    const initialValues: CreatePollDto = {
-        presentationId: '',
+    const dispatch = useDispatch()
+    const presentationId = useSelector(
+        (state: RootState) => state.editor.presentationId
+    )
+
+    const initialValues = {
         title: '',
         options: [],
     }
 
-    const handleSubmit = (values: CreatePollDto) => {
-        httpHelper
-            .doPost('polls', values)
-            .then(() =>
-                handleNotification(
-                    'Saved',
-                    'Poll created successfully',
-                    'success'
-                )
-            )
-            .catch(() =>
-                handleNotification(
-                    'Failed',
-                    'Failed to save a poll :(',
-                    'error'
-                )
-            )
+    const handleSubmit = async (values: typeof initialValues) => {
+        dispatch(
+            createPoll({
+                ...values,
+                //TODO: Move to common function
+                slideId: 'slidez_' + new Date().getTime(),
+                presentationId,
+            })
+        )
     }
 
+    const toggleRemoveClick = (index: number, arrayHelpers: any) => {
+        if (index > 0) {
+            arrayHelpers.remove(index)
+        }
+    }
     return (
         <div className='app'>
-            <h2 className='poll-name'>
-                <FontAwesomeIcon className='check-icon' icon={faCheck} />
-                Live poll
-            </h2>
+            <div>
+                <button
+                    className='back-button'
+                    onClick={() => alert('Not yet realized')}
+                >
+                    <span>
+                        <a href=''>
+                            <img src={back_button_icon} alt='graph'></img>
+                        </a>
+                    </span>
+                </button>
+            </div>
+            <div>
+                <span>
+                    <a href=''>
+                        <img src={checked_icon} alt='graph'></img>
+                    </a>
+                </span>
+                <span className='poll-name'>Live poll</span>
+                <span>
+                    <a href=''>
+                        <img src={drop_down_icon} alt='graph'></img>
+                    </a>
+                </span>
+            </div>
             <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                 {({ values }) => {
                     return (
                         <Form>
                             <div className='field-wrapper mx-auto'>
                                 <div className='form-group'>
-                                    <label>Poll name:</label>
+                                    <label
+                                        htmlFor='title'
+                                        className='label title-label'
+                                    >
+                                        Your question
+                                    </label>
                                     <Field
                                         id='name'
                                         type='text'
                                         name='title'
-                                        className='text-input'
+                                        className='input title-input'
+                                        placeholder='What would you like to ask?'
                                     />
                                 </div>
                             </div>
-                            <label>Options:</label>
+
                             <FieldArray
                                 name='options'
                                 render={(arrayHelpers) => (
@@ -71,22 +102,33 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
                                                     key={index}
                                                     className='options'
                                                 >
-                                                    <Field
-                                                        name={`options.${index}.title`}
-                                                        placeholder='Your option'
-                                                        className='input-options'
-                                                    />
-                                                    <button
-                                                        type='button'
-                                                        className='options-btn'
-                                                        onClick={() =>
-                                                            arrayHelpers.remove(
-                                                                index
-                                                            )
-                                                        }
-                                                    >
-                                                        -
-                                                    </button>
+                                                    <div className='label option-label'>
+                                                        {`Option ${index + 1}`}
+                                                        <Field
+                                                            name={`options.${index}.title`}
+                                                            placeholder='Your option'
+                                                            className='input'
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <button
+                                                            type='button'
+                                                            className='options-btn'
+                                                            onClick={() => {
+                                                                toggleRemoveClick(
+                                                                    index,
+                                                                    arrayHelpers
+                                                                )
+                                                            }}
+                                                        >
+                                                            <FontAwesomeIcon
+                                                                className='option-delete-btn'
+                                                                icon={
+                                                                    faTrashAlt
+                                                                }
+                                                            />
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             )
                                         )}
@@ -98,13 +140,21 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
                                                 arrayHelpers.push({ title: '' })
                                             }
                                         >
-                                            Add option
+                                            <div>
+                                                <span className='add-option-icon'>
+                                                    +
+                                                </span>
+                                                Add option
+                                            </div>
                                         </button>
                                     </div>
                                 )}
                             />
-                            <button type='submit' className='btn-submit'>
-                                Submit
+                            <button
+                                type='submit'
+                                className='btn-submit form-button'
+                            >
+                                Add to presentation
                             </button>
                         </Form>
                     )

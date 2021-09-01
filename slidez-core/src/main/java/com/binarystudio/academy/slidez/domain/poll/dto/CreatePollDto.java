@@ -13,7 +13,13 @@ public class CreatePollDto {
 
 	private String presentationId;
 
+	private String slideId;
+
 	private String title;
+
+	private Boolean isTemplate = Boolean.FALSE;
+
+	private Boolean isMulti = Boolean.FALSE;
 
 	private List<CreatePollOptionDto> options;
 

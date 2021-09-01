@@ -1,0 +1,112 @@
+@import "src/global/global";
+
+.session-page {
+    display: none;
+}
+.addon-menu {
+    cursor: pointer;
+    margin-bottom: 30px;
+    margin: 1rem;
+}
+
+button {
+    border: none;
+}
+
+.session-page-active {
+    position: absolute;
+    width: 320px;
+    height: 900px;
+    background-color: $dark-color;
+    .session-section {
+        display: flex;
+        flex-direction: row;
+        margin-left: 15px;
+        margin-bottom: 20px;
+        align-items: flex-start;
+        .session-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .session-name {
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 17px;
+            color: $white;
+        }
+        
+        .session-id {
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 17px;
+            color: #90989F;
+        }
+        
+        .arrow-back {
+            margin-left: 50px;
+            margin-right: 17px;
+            color: $main-color;
+        }
+    }
+    
+    .border-between-button {
+        border: 1px solid #3D4C5A;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+    
+    .buttons-session-section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 20px;
+        margin-bottom: 50px;
+    }
+    
+    .reset-button, .pause-button, .logout{
+        color: $white;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 17px;
+        margin-left: 10px;
+        padding: 8px 165px 8px 7px;
+    }
+    
+    .reset-button img, .pause-button img, .logout img{
+        margin-right: 11px;
+    }
+    
+    .reset-button:hover, .pause-button:hover, .logout:hover {
+        position: relative;
+        background: #3D4C5A;
+        border-radius: 4px;
+    }
+    
+    .border-between-account {
+        border: 1px solid #EBEBEB;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+    
+    .account-section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 20px;
+    }
+    
+}
+
+.close-button-active {
+    width: 320px;
+    height: 59px;
+    background-color: $dark-color;
+}
+.close-button {
+    color: #90989F;
+    width: 14px;
+    height: 14px;
+    margin-top: 11px;
+    margin-left: 15px;
+}

@@ -6,8 +6,8 @@ env:
   DEPLOY_PACKAGE_NAME: "slidez-app-build.zip"
   AWS_REGION_NAME: "eu-west-1"
   AWS_SPA_S3_BUCKET: "bsa.slidez-fe-spa"
-  REACT_APP_API_GATEWAY: "http://bsa2021slidez-env.eba-b3mmt3yw.eu-west-1.elasticbeanstalk.com/api/v1/"
-  REACT_APP_WEB_SOCKET_ENDPOINT: "http://bsa2021slidez-env.eba-b3mmt3yw.eu-west-1.elasticbeanstalk.com/ws"
+  REACT_APP_API_GATEWAY: "https://bsa2021slidez-env.eba-b3mmt3yw.eu-west-1.elasticbeanstalk.com/api/v1/"
+  REACT_APP_WEB_SOCKET_ENDPOINT: "https://bsa2021slidez-env.eba-b3mmt3yw.eu-west-1.elasticbeanstalk.com/ws"
   REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}
 
 on:
@@ -40,9 +40,12 @@ jobs:
   
       - name: Run the Gradle package task
         run: ./gradlew assemble
+
+      - name: Copy built jar
+        run: cp ./build/libs/slidez-0.0.1-SNAPSHOT.jar .
       
       - name: Create ZIP deployment package
-        run : zip -j ../${{ env.DEPLOY_PACKAGE_NAME }} ./build/libs/slidez-0.0.1-SNAPSHOT.jar .elasticbeanstalk
+        run : zip -r ../${{ env.DEPLOY_PACKAGE_NAME }} ./slidez-0.0.1-SNAPSHOT.jar .elasticbeanstalk .ebextensions
            
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v16

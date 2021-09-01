@@ -5,7 +5,6 @@ import com.binarystudio.academy.slidez.domain.user.UserService;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import com.binarystudio.academy.slidez.domain.user.model.UserRole;
 import com.binarystudio.academy.slidez.infrastructure.security.SecurityProperties;
-import com.sun.istack.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -71,7 +70,6 @@ public class JwtFilter extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 	}
 
-	@Nullable
 	private Optional<String> getTokenFromRequest(HttpServletRequest request) {
 		String bearer = request.getHeader("authorization");
 		if (bearer != null && bearer.startsWith("Bearer ")) {

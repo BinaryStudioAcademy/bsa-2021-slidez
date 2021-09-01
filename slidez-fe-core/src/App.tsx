@@ -5,12 +5,11 @@ import Dashboard from './pages/dashboard/Dashboard'
 import PrivateRoute from './common/routes/PrivateRoute'
 import { AppRoute } from './common/routes/app-route'
 import SignPage from './pages/sign/SignPage'
-import EventPage from './pages/event/EventPage'
 import ReduxToastr from 'react-redux-toastr'
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
 import ParticipantPage from './pages/participant-page/ParticipantPage'
-import UpdatePage from './pages/update/UpdatePage'
 import Addon from './containers/poll-editor/Addon'
+import EventPage from './pages/event/EventPage'
 
 function App() {
     return (
@@ -28,16 +27,12 @@ function App() {
                         component={Dashboard}
                     />
                     <PrivateRoute path={AppRoute.ADDON} component={Addon} />
-                    <Route path={AppRoute.EVENT} component={EventPage} />
                     <Route
-                        path={AppRoute.PARTICIPANT}
+                        exact
+                        path={AppRoute.EVENTS}
                         component={ParticipantPage}
                     />
-                    <PrivateRoute
-                        exact
-                        path={AppRoute.UPDATE_USER}
-                        component={UpdatePage}
-                    />
+                    <Route path={AppRoute.EVENT} component={EventPage} />
                     <Route exact strict path={AppRoute.ANY}>
                         <Redirect to={AppRoute.LOGIN} />
                     </Route>

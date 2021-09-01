@@ -1,5 +1,5 @@
 import React from 'react'
-import { PollDto } from '../../../../containers/presentation_session/dto/PollDto'
+import { PollDto } from '../../../../containers/session/dto/InteractiveElement'
 import './Poll.scss'
 
 type PollProps = {
@@ -15,7 +15,7 @@ const getFrequencies = (items: any[]) => {
 }
 
 function Poll({ poll, children }: PollProps) {
-    const { name, options, answers } = poll
+    const { title, options, answers } = poll
     const frequencies: Map<string, number> = getFrequencies(answers)
     // @ts-ignore
     const winnerId: string = [...frequencies.entries()]
@@ -37,7 +37,7 @@ function Poll({ poll, children }: PollProps) {
 
         return (
             <div key={index} className={'poll-option' + winnerClass}>
-                <div className='poll-option-title'>{option.name}</div>
+                <div className='poll-option-title'>{option.title}</div>
                 <div className='poll-option-votes'>
                     <div
                         className='poll-option-bar'
@@ -54,7 +54,7 @@ function Poll({ poll, children }: PollProps) {
     return (
         <div className='poll'>
             <div className='poll-header'>
-                <div className='poll-name'>{name}</div>
+                <div className='poll-name'>{title}</div>
                 <div className='poll-votes'>{totalVotes} votes</div>
             </div>
             <div className='poll-options'>{mappedOptions}</div>

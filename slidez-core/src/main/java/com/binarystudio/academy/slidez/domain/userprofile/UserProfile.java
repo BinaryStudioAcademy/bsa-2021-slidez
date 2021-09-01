@@ -1,21 +1,23 @@
 package com.binarystudio.academy.slidez.domain.userprofile;
 
 import com.binarystudio.academy.slidez.domain.user.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "user_profile")
-public class UserProfile {
+public class UserProfile implements Serializable {
+
+	private static final long serialVersionUID = -4035825574693260775L;
 
 	@Id
 	@GeneratedValue(generator = "UUID")
@@ -45,6 +47,13 @@ public class UserProfile {
 		this.updatedAt = now;
 		this.firstName = firstName;
 		this.lastName = lastName;
+	}
+
+	public UserProfile(User user) {
+		LocalDateTime now = LocalDateTime.now();
+		this.createdAt = now;
+		this.updatedAt = now;
+		this.user = user;
 	}
 
 }

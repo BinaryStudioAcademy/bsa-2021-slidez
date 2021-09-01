@@ -19,8 +19,19 @@ export class ChromeMultiPortMessageBusDriver implements MessageBusDriver {
         this.ports = []
         this.handler = () => {}
     }
+    handleIncomingMessage(message: any, port: chrome.runtime.Port) {
+        for (const p of this.ports) {
+            if (port === p) {
+                console.log('Not sending message to source port')
+                continue
+            }
+            console.log('Forwarding message to', p)
+            p.postMessage(message)
+        }
+        this.handler(message)
+    }
     addPort(port: chrome.runtime.Port) {
-        port.onMessage.addListener(this.handler)
+        port.onMessage.addListener(this.handleIncomingMessage.bind(this))
         port.onDisconnect.addListener(
             () => (this.ports = this.ports.filter((p) => p !== port))
         )

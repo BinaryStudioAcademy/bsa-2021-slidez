@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.domain.link.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -15,7 +16,9 @@ import org.hibernate.annotations.GenericGenerator;
 @AllArgsConstructor
 @Entity
 @Table(name = "link")
-public class Link {
+public class Link implements Serializable {
+
+	private static final long serialVersionUID = -5967086247202548768L;
 
 	@Id
 	@GeneratedValue(generator = "UUID")
@@ -29,7 +32,7 @@ public class Link {
 	@Column(name = "leased_until")
 	private LocalDateTime leasedUntil;
 
-	@OneToOne(mappedBy = "link")
+	@OneToOne(mappedBy = "link", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Session session;
 
 	@Column(name = "created_at", nullable = false, updatable = false)
