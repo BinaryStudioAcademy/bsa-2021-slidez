@@ -26,8 +26,7 @@ export const editUserProfile = async (dto: UpdateProfileDto) => {
         userDetailsDto: undefined,
     }
     if (resp.data) {
-        const payload: UserDetailsDto = resp.data
-        out.userDetailsDto = payload
+        out.userDetailsDto = resp.data
     }
     setTimeout(function () {
         handleNotification('Saved', 'Profile updated successfully', 'success')
@@ -65,4 +64,8 @@ export const fetchUserData = async () => {
         out.userDetailsDto = payload
     }
     return out
+}
+
+export const performDeleteAccount = async () => {
+    httpHelper.doDelete('/users')
 }

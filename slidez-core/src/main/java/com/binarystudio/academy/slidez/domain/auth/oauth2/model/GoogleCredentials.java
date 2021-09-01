@@ -26,7 +26,7 @@ public class GoogleCredentials implements Serializable {
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, updatable = false, unique = true)
 	private User user;
 

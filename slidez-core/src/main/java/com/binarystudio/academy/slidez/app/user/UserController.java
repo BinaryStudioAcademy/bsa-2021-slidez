@@ -78,4 +78,10 @@ public class UserController {
         return new GenericResponse<>(UserMapper.INSTANCE.mapUserToUserDetailsDto(user));
     }
 
+    @DeleteMapping
+    public void deleteUser(Principal principal) {
+        UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) principal;
+        User user = (User) token.getPrincipal();
+        userService.delete(user.getId());
+    }
 }

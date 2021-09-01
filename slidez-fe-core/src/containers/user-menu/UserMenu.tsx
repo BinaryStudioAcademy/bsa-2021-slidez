@@ -6,7 +6,7 @@ import {
     faTrashAlt,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { logout, selectUserDetals } from '../user/store'
+import { deleteAccount, logout, selectUserDetals } from '../user/store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { handleLogo } from './handleLogo'
 
@@ -52,6 +52,10 @@ const UserMenu: React.FC = () => {
 
     const handleLogout = () => {
         dispatch(logout())
+    }
+
+    const handleDeleteAccountClick = () => {
+        dispatch(deleteAccount())
     }
 
     const viewName = () => {
@@ -120,7 +124,9 @@ const UserMenu: React.FC = () => {
                                                 Profile
                                             </span>
                                         </Button>
-                                        <Button>
+                                        <Button
+                                            onClick={handleDeleteAccountClick}
+                                        >
                                             <FontAwesomeIcon
                                                 className={styles.buttonIcon}
                                                 icon={faTrashAlt}

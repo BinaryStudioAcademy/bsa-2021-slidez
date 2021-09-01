@@ -15,6 +15,7 @@ import { CodeDto } from '../../services/auth/dto/CodeDto'
 import {
     editUserProfile,
     editPassword,
+    performDeleteAccount,
     fetchUserData,
 } from '../../services/user/user-service'
 import { UpdateProfileDto } from '../../services/user/dto/UpdateProfileDto'
@@ -82,6 +83,11 @@ export const registerWithOAuthGoogle = createAsyncThunk(
 export const logout = createAsyncThunk('user/logout', async () =>
     performLogout()
 )
+
+export const deleteAccount = createAsyncThunk('user/delete', async () => {
+    performDeleteAccount()
+    performLogout()
+})
 
 export const userSlice = createSlice({
     name: 'user',
