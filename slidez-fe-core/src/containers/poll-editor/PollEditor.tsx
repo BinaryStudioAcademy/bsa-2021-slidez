@@ -1,15 +1,14 @@
-import React from 'react'
-import { Formik, Form, Field, FieldArray } from 'formik'
-
-import './PollEditor.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Field, FieldArray, Form, Formik } from 'formik'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import back_button_icon from '../../assets/svgs/back_button_icon.svg'
 import checked_icon from '../../assets/svgs/checked_icon.svg'
 import drop_down_icon from '../../assets/svgs/drop_down_icon.svg'
-import { useDispatch, useSelector } from 'react-redux'
-import { createPoll } from './store'
 import { RootState } from '../../store'
+import './PollEditor.scss'
+import { createPoll } from './store'
 
 export type PollEditorProps = {
     pollId?: string | null
@@ -21,12 +20,12 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
     const presentationId = useSelector(
         (state: RootState) => state.editor.presentationId
     )
-
     const initialValues = {
         title: '',
         options: [],
     }
 
+    const [state, setState] = useState({ name: '' })
     const handleSubmit = async (values: typeof initialValues) => {
         dispatch(
             createPoll({
@@ -37,10 +36,18 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
             })
         )
     }
-
-    const toggleRemoveClick = (index: number, arrayHelpers: any) => {
-        if (index > 0) {
+    const onChangeInput = (e: { target: any }) => {
+        setState(e.target.value)
+    }
+    const toggleRemoveClick = (
+        length: number,
+        index: number,
+        arrayHelpers: any
+    ) => {
+        if (length > 1) {
             arrayHelpers.remove(index)
+        } else {
+            setState({ name: '' })
         }
     }
     return (
@@ -107,6 +114,14 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
                                                             name={`options.${index}.title`}
                                                             placeholder='Your option'
                                                             className='input'
+                                                            value={state.name}
+                                                            onChange={(e: {
+                                                                target: {
+                                                                    value: React.SetStateAction<string>
+                                                                }
+                                                            }) =>
+                                                                onChangeInput(e)
+                                                            }
                                                         />
                                                     </div>
                                                     <div>
@@ -115,6 +130,9 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
                                                             className='options-btn'
                                                             onClick={() => {
                                                                 toggleRemoveClick(
+                                                                    values
+                                                                        .options
+                                                                        .length,
                                                                     index,
                                                                     arrayHelpers
                                                                 )
