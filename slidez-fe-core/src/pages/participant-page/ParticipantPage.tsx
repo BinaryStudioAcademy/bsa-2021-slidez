@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './participantPage.scss'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -8,19 +8,16 @@ import Header from './Header'
 import { MOCK_DATA } from './mock-data'
 import './participantPage.scss'
 import ParticipantNameDialog from './ParticipantNameModal'
+import { ParticipantData } from '../../services/participant/dto/ParticipantData'
+import { getParticipantData } from '../../services/participant/participant-service'
 
 const ParticipantPage = () => {
     const [listQuestions, setListQuestions] = useState(MOCK_DATA)
     const [title, setTitle] = useState('Select event')
-    const [open, setOpen] = useState(true)
-
-    useEffect(() => {
-        const userFirstName = window.localStorage.getItem('firstName')
-        const userLastName = window.localStorage.getItem('lastName')
-        if (userFirstName && userLastName) {
-            setOpen(false)
-        }
-    })
+    const participantData: ParticipantData = getParticipantData()
+    const areFirstAndLastNamePresent =
+        participantData.participantFirstName &&
+        participantData.participantLastName
 
     const createEndpoint = (id: number) => '/#/events/' + id
 
@@ -32,7 +29,7 @@ const ParticipantPage = () => {
     return (
         <div className='participant-page'>
             <Header eventName='' />
-            {open ? <ParticipantNameDialog /> : ''}
+            {!areFirstAndLastNamePresent ? <ParticipantNameDialog /> : ''}
             <div className='input-block'>
                 <div>Enter code</div>
                 <input className='code-input' type='text' placeholder='#Code' />
