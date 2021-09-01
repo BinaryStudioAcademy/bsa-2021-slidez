@@ -1,11 +1,9 @@
 @import 'src/global/global';
 
 .qa-header {
-  position: fixed;
   width: 100%;
   border-radius: 14px 14px 0px 0px;
 
-  height: 68px;
   z-index: 10;
   background-color: $white;
 
@@ -18,7 +16,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    height: 28px;
+    height: 38px;
     width: 100%;
     .close-cross-btn {
       padding: 14px;
@@ -30,8 +28,9 @@
 }
 
 .qa-body {
-  margin-top: 58px;
-  margin-bottom: 104px;
+  margin: 0 10px;
+  height: calc(100% - 200px);
+  overflow-y: auto;
 }
 
 @media (max-width: 600px) {

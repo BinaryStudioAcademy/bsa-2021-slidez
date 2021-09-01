@@ -12,8 +12,13 @@ type QACardProps = {
     isLiked: boolean
 }
 
-export default function QACard(props: QACardProps) {
-    const { children, author, likes, likeClick, isLiked } = props
+export default function QACard({
+    children,
+    author,
+    likes,
+    likeClick,
+    isLiked,
+}: QACardProps) {
     const iconImage = isLiked ? likedIconSolid : unlikedIconRegular
     const iconClasss = isLiked ? 'liked-icon' : 'unliked-icon'
 

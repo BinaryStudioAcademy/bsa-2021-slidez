@@ -7,6 +7,7 @@ import CloseButton from './components/CloseButton'
 import { makeStyles } from '@material-ui/styles'
 import './qa.scss'
 import { MOCK_DATA } from './mock-poll-data'
+import { useEffect } from 'react'
 
 type QaProps = {
     handleClose: any
@@ -36,8 +37,12 @@ const Qa = (qaProps: QaProps) => {
     const [listQA, setListQA] = useState(MOCK_DATA)
     const [isRecentSelected, setIsRecentSelected] = useState(true)
 
+    useEffect(() => {
+        handleRecentClick() // Here revecive list of Q&A
+    }, [])
+
     const handleSubmit = (textValue: string) => {
-        let now: string = new Date().toUTCString()
+        const now: string = new Date().toUTCString()
         const newQA = {
             UUID: now,
             isLiked: false,
@@ -46,9 +51,12 @@ const Qa = (qaProps: QaProps) => {
             likes: 0,
             pollContent: textValue,
         }
-        const newList = [...listQA]
-        newList.push(newQA)
-        setListQA(newList)
+
+        if (isRecentSelected) {
+            setListQA([newQA, ...listQA])
+        } else {
+            setListQA([...listQA, newQA])
+        }
     }
 
     const handleLike = (UUID: string) => {

@@ -17,12 +17,15 @@
 }
 
 .qaadd-text {
+  border-radius: 7px;
   width: calc(100% - 6px);
   font-size: 14px;
   background-color: #f6f4f8;
   border: none;
   resize: vertical;
   padding: 5px;
+  max-height: 30vh;
+  min-height: 45px
 }
 
 .qaadd-text:focus,

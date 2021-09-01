@@ -52,19 +52,17 @@ $likebtnwidth: 62px;
     width: 13px;
     height: 13px;
   }
-  .unliked-icon:hover,
-  .unliked-icon:focus {
-    background-image: url('../../../assets/svgs/thumbs-up-solid.svg');
-  }
-
   .liked-icon {
     margin-right: 5px;
     width: 13px;
     height: 13px;
   }
-  .liked-icon:hover,
-  .liked-icon:focus {
-    background-image: url('../../../assets/svgs/thumbs-up-regular.svg');
+}
+
+.like-btn:hover {
+  border: 1px solid #59d0a5;
+  .unliked-icon {
+    background-image: url('../../../assets/svgs/thumbs-up-solid.svg');
   }
 }
 
