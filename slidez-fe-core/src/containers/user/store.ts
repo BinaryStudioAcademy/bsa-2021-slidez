@@ -95,6 +95,12 @@ export const userSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(logIn.pending, (state) => {
+                state.error = undefined
+            })
+            .addCase(logIn.rejected, (state) => {
+                state.error = undefined
+            })
             .addCase(logIn.fulfilled, (state, action) => {
                 state.error = action.payload.error
                 if (action.payload.userDetailsDto) {
