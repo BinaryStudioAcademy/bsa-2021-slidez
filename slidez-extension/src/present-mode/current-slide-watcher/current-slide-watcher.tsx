@@ -96,7 +96,7 @@ class CurrentSlideWatcher {
 
         ReactDOM.render(
             <SlideIframe
-                sourceUrl={`http://localhost:3000/#/event/aaaaaa`}
+                sourceUrl={`http://localhost:3000/#/present/aaaaab`}
                 slideId={this.currentSlideId}
                 presentationId={presentationId}
             />,

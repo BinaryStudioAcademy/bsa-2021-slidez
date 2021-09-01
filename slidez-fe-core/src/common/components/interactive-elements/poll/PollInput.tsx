@@ -18,7 +18,7 @@ type PollInputProps = {
     link: string
 }
 
-function PollInput({ poll, link }: PollInputProps) {
+export const PollInput = ({ poll, link }: PollInputProps) => {
     const [voteSubmitted, setVoteSubmitted] = useState(false)
     const [editMode, setEditMode] = useState(false)
     const [chosenOptionIndex, setChosenOptionIndex] = useState(-1)
@@ -135,5 +135,3 @@ function PollInput({ poll, link }: PollInputProps) {
         </div>
     )
 }
-
-export default PollInput

@@ -18,8 +18,14 @@ import {
     createStartPollRequest,
     StartPollRequest,
 } from '../../containers/session/event/FrontendEvent'
-import { PollDto } from '../../containers/session/dto/InteractiveElement'
+import NoEvent from './NoEventPage'
+import Header from '../participant-page/Header'
+import {
+    InteractiveElement,
+    PollDto,
+} from '../../containers/session/dto/InteractiveElement'
 import { InteractiveElementType } from '../../containers/session/enums/InteractiveElementType'
+import Poll from '../../common/components/interactive-elements/poll/Poll'
 
 const useEditorParams = () => {
     const params = new URLSearchParams(useLocation().search)
@@ -31,18 +37,28 @@ const useEditorParams = () => {
     }
 }
 
-import ParticipantView from './ParticipantView'
-import NoEvent from './NoEventPage'
-import Header from '../participant-page/Header'
+const noCurrentInteraction = () => {
+    return (
+        <div>
+            <Header eventName='' />
+            <NoEvent />
+        </div>
+    )
+}
 
-const EventPage: React.FC = () => {
+const getBodyContent = (interactiveElement: InteractiveElement) => {
+    if (interactiveElement.type === InteractiveElementType.poll) {
+        return <Poll poll={interactiveElement as PollDto} />
+    }
+    return undefined
+}
+
+const PresenterPage: React.FC = () => {
     const link = useAppSelector(selectLink)
     //TODO: Delete this
     const [startedPoll, setStartedPoll] = useState(false)
     const dispatch = useAppDispatch()
     const { presentationLink, slideId } = useEditorParams()
-
-    console.log(presentationLink, slideId)
 
     useEffect(() => {
         const dto: CreatePresentationSessionDto = {
@@ -59,37 +75,26 @@ const EventPage: React.FC = () => {
                 link,
                 slideId
             )
-            setTimeout(() => dispatch(requestStartPoll(params)), 3000)
+            setTimeout(() => dispatch(requestStartPoll(params)), 6000)
         }
     }, 3000)
 
     const connectionStatus = useAppSelector(selectConnectionStatus)
-
     const currentInteraction = useAppSelector(selectCurrentInteractiveElement)
 
-    const activePoll: PollDto | undefined =
-        currentInteraction?.type === InteractiveElementType.poll
-            ? (currentInteraction as PollDto)
-            : undefined
-    const eventName = 'Animate'
-    const body = activePoll ? (
-        <div className='content'>
-            <Header eventName={eventName} />
-            <ParticipantView />
-        </div>
-    ) : (
-        <div>
-            <Header eventName='' />
-            <NoEvent />
-        </div>
-    )
+    if (!currentInteraction) {
+        return noCurrentInteraction()
+    }
 
     return (
         <div>
             {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
-            {body}
+            <div className='content'>
+                <Header eventName={currentInteraction.title} />
+                {getBodyContent(currentInteraction)}
+            </div>
         </div>
     )
 }
 
-export default EventPage
+export default PresenterPage
