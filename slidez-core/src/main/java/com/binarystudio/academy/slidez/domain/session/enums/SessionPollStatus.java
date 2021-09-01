@@ -1,4 +1,4 @@
-package com.binarystudio.academy.slidez.domain.session.data;
+package com.binarystudio.academy.slidez.domain.session.enums;
 
 public enum SessionPollStatus {
 
