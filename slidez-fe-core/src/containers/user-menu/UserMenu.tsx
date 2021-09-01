@@ -17,7 +17,7 @@ import { UserDetailsDto } from '../user/dto/UserDetailsDto'
 import { Button, Dialog, DialogContent } from '@material-ui/core'
 import FormUpdateUserData from './edit-profile/components/FormUpdateUserData'
 import FormUpdatePassword from './edit-profile/components/FormUpdatePassword'
-import DeleteAccount from '../delete-account/DeleteAccount'
+import DeleteAccount from './delete-account/DeleteAccount'
 
 export const initialValuesUserData: UserDetailsDto = {
     id: '',

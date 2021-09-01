@@ -4,14 +4,17 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
-    Button,
     Box,
     IconButton,
     Typography,
+    Button,
 } from '@material-ui/core'
-import { Close } from '@material-ui/icons'
-import { deleteAccount } from '../user/store'
-import { useAppDispatch } from '../../hooks'
+import { deleteAccount } from '../../user/store'
+import { useAppDispatch } from '../../../hooks'
+import close_icon from '../../../assets/svgs/close_icon.svg'
+import './deleteAccount.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
 const DeleteAccount = (props: {
     modalState: boolean
@@ -25,34 +28,26 @@ const DeleteAccount = (props: {
 
     return (
         <Dialog open={props.modalState} maxWidth='sm' fullWidth>
-            <DialogTitle>Confirm the action</DialogTitle>
-            <Box position='absolute' top={0} right={0}>
-                <IconButton onClick={props.handleClose}>
-                    <Close />
-                </IconButton>
-            </Box>
+            <div className='dialog-title'>Confirm the action</div>
             <DialogContent>
-                <Typography>
+                <Typography className='dialog-message'>
                     Are you sure to delete your account and all your
-                    presntations?
+                    presentations?
                 </Typography>
-                <Typography variant='subtitle2'>
+                <Typography variant='subtitle2' className='dialog-message'>
                     This action cannot be undone.
                 </Typography>
             </DialogContent>
             <DialogActions>
-                <Button variant='contained' onClick={props.handleClose}>
+                <button className='cancel-button' onClick={props.handleClose}>
                     Cancel
-                </Button>
-                <Button
-                    style={{
-                        backgroundColor: '#C85250',
-                    }}
-                    variant='contained'
+                </button>
+                <button
+                    className='confirm-button'
                     onClick={handleDeleteAccountClick}
                 >
                     Confirm
-                </Button>
+                </button>
             </DialogActions>
         </Dialog>
     )
