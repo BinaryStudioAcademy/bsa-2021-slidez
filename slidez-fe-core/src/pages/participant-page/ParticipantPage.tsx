@@ -35,11 +35,7 @@ const ParticipantPage = () => {
             {open ? <ParticipantNameDialog /> : ''}
             <div className='input-block'>
                 <div>Enter code</div>
-                <input
-                    className='code-input'
-                    type='text'
-                    placeholder='#Code'
-                ></input>
+                <input className='code-input' type='text' placeholder='#Code' />
                 <button className='btn btn-code'>Join</button>
             </div>
             <div className='title'>Select event</div>
