@@ -12,6 +12,8 @@ import * as Yup from 'yup'
 import { handleNotification } from '../../notification/Notification'
 import { NotificationTypes } from '../../notification/notification-types'
 import { useEffect } from 'react'
+import { useAppSelector } from '../../../hooks'
+import { selectError } from '../../../containers/user/store'
 
 type LoginProps = {
     onLogin: Function
@@ -62,6 +64,7 @@ const LoginErrors = ({ viewErrors, formikErrors }: LoginErorrsProps) => {
 const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
     const [isPasswordRevealed, setIsPasswordRevealed] = React.useState(false)
     const [viewErrors, setViewErrors] = React.useState(false)
+    const loginError = useAppSelector(selectError)
 
     const onRevealClick = () => {
         setIsPasswordRevealed(!isPasswordRevealed)
@@ -95,6 +98,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                 onSubmit={({ email, password }, { setSubmitting }) => {
                     onLogin(email, password)
                     setSubmitting(false)
+                    setViewErrors(true)
                 }}
             >
                 {({ errors }) => (
@@ -169,7 +173,6 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                         <div className='form-row buttons-row'>
                             <button
                                 className='form-button login-button'
-                                onClick={() => setViewErrors(true)}
                                 type='submit'
                             >
                                 Log In
