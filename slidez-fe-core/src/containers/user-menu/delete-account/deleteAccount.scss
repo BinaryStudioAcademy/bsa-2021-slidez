@@ -1,0 +1,39 @@
+@import "src/global/global";
+
+.dialog-title {
+    padding: 5px 24px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 30px 10px;
+}
+
+.dialog-message {
+    font-family: Rubik !important;
+    font-style: normal;
+    font-weight: lighter !important;
+}
+
+.cancel-button {
+    color: rgb(255, 255, 255);
+    background: $main-color;
+    align-self: flex-start;
+    text-transform: none;
+    margin-bottom: 10px;
+    border-radius: 50px;
+    width: 116px;
+    height: 45px;
+    display: inline-block;
+}
+
+.confirm-button {
+    color: rgb(255, 255, 255);
+    background: $error;
+    align-self: flex-start;
+    text-transform: none;
+    margin-bottom: 10px;
+    border-radius: 50px;
+    width: 116px;
+    height: 45px;
+    display: inline-block;
+}
