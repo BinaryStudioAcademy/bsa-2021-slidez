@@ -49,7 +49,6 @@ export const preloadState = createAsyncThunk(
                 `/presentation/${presentationId}/interactions`
             )
         ).data.data
-
         return presentationData
     }
 )

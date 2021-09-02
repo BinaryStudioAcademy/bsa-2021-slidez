@@ -175,4 +175,10 @@ export const selectError = (state: RootState) => state.user.error
 
 export const selectIsLoggedIn = (state: RootState) => state.user.isLoggedIn
 
+let pathname: string | null = null
+export const getPathname = () => pathname
+export const createPath = (addonPath: string) => {
+    pathname = addonPath
+}
+
 export default userSlice.reducer
