@@ -38,13 +38,13 @@
         border-radius: 50%;
         margin-bottom: 40px;
         background-color: #293948;
+
+        img:active {
+           filter: invert(0.08) sepia(1) saturate(14.1) hue-rotate(82.8deg) brightness(0.91);
+        }
     }
 
     .sideIcon:hover {
         background-color: rgba(89, 208, 165, 0.2);
-    }
-
-    #my_presentation:focus {
-        fill: $light-color;
-    }
+    } 
 }
