@@ -159,6 +159,11 @@ export const userSlice = createSlice({
                 state.user = undefined
                 state.isLoggedIn = false
             })
+            .addCase(deleteAccount.fulfilled, (state, action) => {
+                state.error = undefined
+                state.user = undefined
+                state.isLoggedIn = false
+            })
     },
 })
 
