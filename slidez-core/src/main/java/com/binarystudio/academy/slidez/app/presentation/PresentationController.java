@@ -34,10 +34,9 @@ public class PresentationController {
 	}
 
 	@GetMapping("{link}/active-session")
-    public GenericResponse<PresentationSessionDTO, String> getActiveSession(
-        @PathVariable("link") String link
-    ) {
-	    // Null is a part of contract on frontend
-        return new GenericResponse<>(this.presentationService.getActivePresentationSessionData(link));
-    }
+	public GenericResponse<PresentationSessionDTO, String> getActiveSession(@PathVariable("link") String link) {
+		// Null is a part of contract on frontend
+		return new GenericResponse<>(this.presentationService.getActivePresentationSessionData(link));
+	}
+
 }

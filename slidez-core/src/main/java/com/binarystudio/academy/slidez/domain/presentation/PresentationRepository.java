@@ -19,4 +19,5 @@ public interface PresentationRepository extends JpaRepository<Presentation, UUID
 	void update(PresentationUpdateDto dto);
 
 	Optional<Presentation> findByLink(String link);
+
 }

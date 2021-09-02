@@ -12,11 +12,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PresentationSessionDTO {
-    private UUID presentationId;
-    private String presentationName;
-    private String code;
 
-    public static PresentationSessionDTO of(Presentation presentation, Session session){
-        return new PresentationSessionDTO(presentation.getId(), presentation.getName(), session.getLink().getCode());
-    }
+	private UUID presentationId;
+
+	private String presentationName;
+
+	private String code;
+
+	public static PresentationSessionDTO of(Presentation presentation, Session session) {
+		return new PresentationSessionDTO(presentation.getId(), presentation.getName(), session.getLink().getCode());
+	}
+
 }

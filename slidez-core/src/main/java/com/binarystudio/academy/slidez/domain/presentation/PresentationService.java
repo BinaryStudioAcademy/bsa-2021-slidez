@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public class PresentationService {
 
 	private final PresentationRepository presentationRepository;
+
 	private final SessionRepository sessionRepository;
 
 	@Autowired
@@ -54,25 +55,23 @@ public class PresentationService {
 		return presentationRepository.findByLink(id);
 	}
 
-	public PresentationSessionDTO getActivePresentationSessionData(String presentationLink){
-	    //Maybe find presentation
-	    var presentation = this.presentationRepository
-            .findByLink(presentationLink)
-            .orElseThrow(() -> new PresentationNotFoundException("Presentation not found"));
+	public PresentationSessionDTO getActivePresentationSessionData(String presentationLink) {
+		// Maybe find presentation
+		var presentation = this.presentationRepository.findByLink(presentationLink)
+				.orElseThrow(() -> new PresentationNotFoundException("Presentation not found"));
 
-	    //And Maybe find an active session
-	    var activeSessions = this.sessionRepository
-            .getActiveSessionForPresentation(presentation.getId());
+		// And Maybe find an active session
+		var activeSessions = this.sessionRepository.getActiveSessionForPresentation(presentation.getId());
 
-	    if(activeSessions.size() <= 0){
-            throw new SessionNotFoundException("No active session found");
-        }
+		if (activeSessions.size() <= 0) {
+			throw new SessionNotFoundException("No active session found");
+		}
 
-	    var activeSession = activeSessions.get(0);
+		var activeSession = activeSessions.get(0);
 
-	    //And if it is present - create a DTO
-	    return PresentationSessionDTO.of(presentation, activeSession);
-    }
+		// And if it is present - create a DTO
+		return PresentationSessionDTO.of(presentation, activeSession);
+	}
 
 	public Presentation update(PresentationUpdateDto dto) {
 		presentationRepository.update(dto);
