@@ -11,7 +11,7 @@ const SideBar = () => {
         <div className={styles.sidebar}>
             <div className={styles.logo}>
                 <a href=''>
-                    <img src={SlidezLogo} alt='Slidez Logo'></img>
+                    <img src={SlidezLogo} alt='Slidez Logo' />
                 </a>
             </div>
             <div className={styles.navigation}>
@@ -21,13 +21,13 @@ const SideBar = () => {
                             <img
                                 src={create_presentation}
                                 alt='add presentation'
-                            ></img>
+                            />
                         </div>
                     </a>
                 </span>
                 <span>
                     <a href=''>
-                        <div className={styles.bookIcon}>
+                        <div className={styles.sideIcon}>
                             <img
                                 src={my_presentation}
                                 alt='my presentations'
@@ -37,12 +37,16 @@ const SideBar = () => {
                 </span>
                 <span>
                     <a href=''>
-                        <img src={graph_icon} alt='graph'></img>
+                        <div className={styles.sideIcon}>
+                            <img src={graph_icon} alt='graph' />
+                        </div>
                     </a>
                 </span>
                 <span>
                     <a href=''>
-                        <img src={layout_icon} alt='layout'></img>
+                        <div className={styles.sideIcon}>
+                            <img src={layout_icon} alt='layout' />
+                        </div>
                     </a>
                 </span>
             </div>
