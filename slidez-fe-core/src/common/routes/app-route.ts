@@ -4,7 +4,8 @@ const AppRoute = {
     REGISTRATION: '/registration',
     RESTORE_PASSWORD: '/restore-password',
     EVENTS: '/events',
-    EVENT: '/events/:link',
+    EVENTS_WITH_LINK: '/events/:link',
+    PRESENT: '/present/:link',
     DASHBOARD: '/dashboard',
     ADDON: '/addon',
 }

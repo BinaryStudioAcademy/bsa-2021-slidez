@@ -111,7 +111,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                                 name='email'
                                 className={
                                     'form-input' +
-                                    (viewErrors && (errors.email || loginError)
+                                    (viewErrors && errors.email
                                         ? ' error-input'
                                         : '')
                                 }
@@ -141,8 +141,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                                     name='password'
                                     className={
                                         'form-input input-with-icon' +
-                                        (viewErrors &&
-                                        (errors.password || loginError)
+                                        (viewErrors && errors.password
                                             ? ' error-input'
                                             : '')
                                     }

@@ -1,0 +1,19 @@
+@import "src/global/global";
+
+.no-event-page {
+    margin-top: 80px;
+
+    .error-content {
+        color: $black;
+        font-weight: 500;
+        font-size: 16px;
+        text-align: center;
+        margin: 170px 20px 20px;
+    }
+}
+
+@media (max-width: 750px) {
+    .no-event-page {
+        margin: 80px 15px 15px;
+    }
+}
