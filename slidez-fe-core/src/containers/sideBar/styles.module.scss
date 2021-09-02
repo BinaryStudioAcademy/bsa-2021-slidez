@@ -44,7 +44,24 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        .tooltiptext {
+            visibility: hidden;
+            top: -5px;
+            left: 80%;
+            width: 120px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+        }
     }
+
+    .addIcon:hover .tooltiptext {
+        visibility: visible;
+      }
     
     .bookIcon {
         color: $main-color;
