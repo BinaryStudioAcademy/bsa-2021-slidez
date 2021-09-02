@@ -7,6 +7,7 @@ import ParticipantNameDialog from './ParticipantNameModal'
 import { ParticipantData } from '../../../services/participant/dto/ParticipantData'
 import { getParticipantData } from '../../../services/participant/participant-service'
 import { EventItem } from './EventItem'
+import Qa from '../../qa/Qa'
 
 const ParticipantPage = () => {
     const [listQuestions, setListQuestions] = useState(MOCK_DATA)
@@ -14,6 +15,14 @@ const ParticipantPage = () => {
     const areFirstAndLastNamePresent =
         participantData.participantFirstName &&
         participantData.participantLastName
+    const [showQAModal, setShowQAModal] = useState(false)
+
+    const handleQAClose = () => {
+        setShowQAModal(false)
+    }
+    const handleQAShow = () => {
+        setShowQAModal(true)
+    }
 
     return (
         <div className='participant-page'>
@@ -30,6 +39,14 @@ const ParticipantPage = () => {
                     <EventItem event={event} key={event.code} />
                 ))}
             </div>
+            <button
+                className='btn-open-qa'
+                type='button'
+                onClick={() => handleQAShow()}
+            >
+                Open Q&amp;A page
+            </button>
+            <Qa show={showQAModal} handleClose={handleQAClose} />
         </div>
     )
 }

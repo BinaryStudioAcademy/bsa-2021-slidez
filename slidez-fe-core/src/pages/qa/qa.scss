@@ -1,0 +1,46 @@
+@import 'src/global/global';
+
+.qa-header {
+  width: 100%;
+  border-radius: 14px 14px 0px 0px;
+
+  z-index: 10;
+  background-color: $white;
+
+  max-width: 590px;
+  margin-left: 4px !important;
+  margin-top: 0px !important;
+  margin-bottom: 8px !important;
+
+  .qa-title {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 38px;
+    width: 100%;
+    .close-cross-btn {
+      padding: 14px;
+      border-color: white;
+      border-width: 0px;
+      box-shadow: none;
+    }
+  }
+}
+
+.qa-body {
+  margin: 0 10px;
+  height: calc(100% - 200px);
+  overflow-y: auto;
+}
+
+@media (max-width: 600px) {
+  .MuiPaper-root {
+    margin-left: 8px !important;
+    margin-right: 8px !important;
+    max-width: 590px;
+  }
+  .qa-header,
+  .qaadd {
+    width: calc(100% - 24px);
+  }
+}

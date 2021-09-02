@@ -14,18 +14,9 @@ import SideBar from '../../containers/sideBar/SideBar'
 import styles from './styles.module.scss'
 import { MOCK_DATA } from './mock-data'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { useDetectOutsideClick } from './useDetectOutsideClick'
-import { logout } from '../../containers/user/store'
-import { AppRoute } from '../../common/routes/app-route'
 import UserProfile from '../../containers/user-menu/UserMenu'
 import table_sort from '../../../src/assets/svgs/table-sort.svg'
-import {
-    isFetchingUser,
-    loginByToken,
-    selectIsLoggedIn,
-} from '../../containers/user/store'
-import { TokenDto } from '../../services/auth/dto/TokenDto'
-import Loader from '../../common/components/loader/Loader'
+import { fetchUser } from '../../containers/user/store'
 import '../../common/components/loader/Loader.css'
 
 const Dashboard = () => {
@@ -34,22 +25,10 @@ const Dashboard = () => {
     const [filteredPresentations, setFilteredPresentations] =
         useState(MOCK_DATA)
     const dispatch = useAppDispatch()
-    const isFetchingUserData = useAppSelector(isFetchingUser)
-    const isLoggedIn = useAppSelector(selectIsLoggedIn)
-    const JWT = 'jwt'
-    const refreshJWT = 'refresh_jwt'
-    const [token, setToken] = useState('')
 
     useEffect(() => {
-        setToken(window.localStorage.getItem(JWT) || '')
-    })
-
-    const handleToken = (token: string) => {
-        const dto: TokenDto = {
-            token: token,
-        }
-        dispatch(loginByToken(dto))
-    }
+        dispatch(fetchUser())
+    }, [])
 
     const toggleGridView = () => {
         setCurrentView('grid')
@@ -184,70 +163,65 @@ const Dashboard = () => {
             getNoFoundPresentationBlock()
         )
 
-    if (!isFetchingUserData) {
-        handleToken(token)
-        return <Loader />
-    } else {
-        return (
-            <div className={styles.dashboardPage}>
-                <SideBar />
-                <div className={styles.pageContent}>
-                    <div className={styles.header}>
-                        <div className={styles.searchBar}>
-                            <FontAwesomeIcon
-                                className={styles.searchIcon}
-                                icon={faSearch}
-                            />
-                            <input
-                                className={styles.searchInput}
-                                type='search'
-                                placeholder='Search...'
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <UserProfile />
+    return (
+        <div className={styles.dashboardPage}>
+            <SideBar />
+            <div className={styles.pageContent}>
+                <div className={styles.header}>
+                    <div className={styles.searchBar}>
+                        <FontAwesomeIcon
+                            className={styles.searchIcon}
+                            icon={faSearch}
+                        />
+                        <input
+                            className={styles.searchInput}
+                            type='search'
+                            placeholder='Search...'
+                            onChange={handleChange}
+                        />
                     </div>
-                    <div className={styles.content}>
-                        <div className={styles.presentationsSection}>
-                            <div className={styles.presentationHeader}>
-                                <p>Your presentation</p>
-                                <div className={styles.tableGridToggler}>
-                                    <div>
-                                        <FontAwesomeIcon
-                                            onClick={toggleGridView}
-                                            icon={faList}
-                                            className={
-                                                currentView === 'grid'
-                                                    ? styles.viewBtnActive
-                                                    : styles.viewBtn
-                                            }
-                                        />
-                                    </div>
-                                    <div className={styles.verticalLine} />
-                                    <div>
-                                        <FontAwesomeIcon
-                                            onClick={toggleTableView}
-                                            icon={faThLarge}
-                                            className={
-                                                currentView === 'table'
-                                                    ? styles.viewBtnActive
-                                                    : styles.viewBtn
-                                            }
-                                        />
-                                    </div>
+                    <UserProfile />
+                </div>
+                <div className={styles.content}>
+                    <div className={styles.presentationsSection}>
+                        <div className={styles.presentationHeader}>
+                            <p>Your presentation</p>
+                            <div className={styles.tableGridToggler}>
+                                <div>
+                                    <FontAwesomeIcon
+                                        onClick={toggleGridView}
+                                        icon={faList}
+                                        className={
+                                            currentView === 'grid'
+                                                ? styles.viewBtnActive
+                                                : styles.viewBtn
+                                        }
+                                    />
+                                </div>
+                                <div className={styles.verticalLine} />
+                                <div>
+                                    <FontAwesomeIcon
+                                        onClick={toggleTableView}
+                                        icon={faThLarge}
+                                        className={
+                                            currentView === 'table'
+                                                ? styles.viewBtnActive
+                                                : styles.viewBtn
+                                        }
+                                    />
                                 </div>
                             </div>
-                            <div>
-                                {currentView === 'grid'
-                                    ? getTableView()
-                                    : getGridView()}
-                            </div>
+                        </div>
+                        <div>
+                            {currentView === 'grid'
+                                ? getTableView()
+                                : getGridView()}
                         </div>
                     </div>
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
 export default Dashboard

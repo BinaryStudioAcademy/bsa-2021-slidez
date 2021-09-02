@@ -51,6 +51,21 @@ export const editPassword = async (dto: UpdatePasswordRequest) => {
     return out
 }
 
+export const fetchUserData = async () => {
+    const { data } = await httpHelper.doGet(route('me'))
+
+    const resp: GenericResponse<UserDetailsDto, string> = data
+    const out: UpdateResult = {
+        error: resp.error,
+        userDetailsDto: undefined,
+    }
+    if (resp.data) {
+        const payload: UserDetailsDto = resp.data
+        out.userDetailsDto = payload
+    }
+    return out
+}
+
 export const performDeleteAccount = async () => {
     httpHelper.doDelete('/users')
 }

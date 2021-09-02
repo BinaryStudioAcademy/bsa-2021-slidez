@@ -1,0 +1,64 @@
+@import '../../../global/global.scss';
+$likebtnwidth: 62px;
+
+.card {
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+  background: #f6f4f8;
+  border-radius: 5px;
+}
+
+.author {
+  margin: 5px 0;
+  padding-top: 13px;
+  padding-left: 13px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  color: #7b7a7c;
+}
+
+.pool-content {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  padding-left: 13px;
+  margin-right: 12px;
+  margin-bottom: 10px;
+  width: 100%;
+  color: #353535;
+}
+
+.reaction {
+  margin-left: auto;
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.like-btn {
+  color: $main-color;
+  background-color: $white;
+  border-radius: 25px;
+  border: none;
+  border-color: $white;
+  width: $likebtnwidth;
+  height: 35px;
+  margin-right: 5px;
+
+  .unliked-icon {
+    margin-right: 5px;
+    width: 13px;
+    height: 13px;
+  }
+
+  .liked-icon {
+    margin-right: 5px;
+    width: 13px;
+    height: 13px;
+  }
+}
+#thumbs-up-solid {
+  color: #59d0a5;
+}

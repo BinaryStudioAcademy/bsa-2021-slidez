@@ -1,8 +1,7 @@
-@import "src/global/global";
+@import 'src/global/global';
 
 .participant-view-content {
     margin: 30px;
-}
 
 .events-page {
     margin-top: 80px;
@@ -75,7 +74,18 @@
             color: $white;
             font-weight: 500;
             font-size: 16px;
+
         }
+        &:hover {
+          background-color: $light-grey;
+        }
+        &:checked {
+          background-color: rgba(89, 208, 165, 0.4);
+        }
+      }
+      .PrivateSwitchBase-input-4 {
+        color: white;
+      }
     }
 }
 
