@@ -7,17 +7,16 @@ import {
 } from '../../dom/dom-constants'
 import { queryElement } from '../../dom/dom-helpers'
 import SlideIframe from '../../components/slide-iframe/SlideIframe'
+import { IFRAME_HOST_BASE } from '../../env'
 
 class CurrentSlideWatcher {
-    constructor(document: Document) {
-        this.document = document
-        this.interactiveSlides = []
-    }
+    constructor(
+        private readonly document: Document,
+        private readonly eventCode: string,
+        private readonly presentationId: string
+    ) {}
 
-    private document: Document
     public currentSlideId?: string
-    private interactiveSlides: string[]
-
     private slideSwitchMutationObserver?: MutationObserver
 
     init() {
@@ -91,14 +90,11 @@ class CurrentSlideWatcher {
             return
         }
 
-        const idRegex = /presentation\/d\/([\d\w_\.\-]+)\/edit/
-        const presentationId = window.location.href.match(idRegex)?.[1] ?? ''
-
         ReactDOM.render(
             <SlideIframe
-                sourceUrl={`http://localhost:3000/#/event/aaaaaa`}
+                sourceUrl={`${IFRAME_HOST_BASE}/#/event/${this.eventCode}`}
                 slideId={this.currentSlideId}
-                presentationId={presentationId}
+                presentationId={this.presentationId}
             />,
             svgContainer
         )

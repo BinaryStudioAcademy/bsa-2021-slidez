@@ -4,9 +4,12 @@ import com.binarystudio.academy.slidez.domain.interactive_element.dto.Interactiv
 import com.binarystudio.academy.slidez.domain.interactive_element.exception.IllegalElementTypeException;
 import com.binarystudio.academy.slidez.domain.interactive_element.mapper.InteractiveElementMapper;
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
+import com.binarystudio.academy.slidez.domain.presentation.dto.PresentationSessionDTO;
 import com.binarystudio.academy.slidez.domain.presentation.dto.PresentationUpdateDto;
 import com.binarystudio.academy.slidez.domain.presentation.exception.PresentationNotFoundException;
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
+import com.binarystudio.academy.slidez.domain.session.SessionRepository;
+import com.binarystudio.academy.slidez.domain.session.exception.SessionNotFoundException;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,10 +24,12 @@ import java.util.stream.Collectors;
 public class PresentationService {
 
 	private final PresentationRepository presentationRepository;
+	private final SessionRepository sessionRepository;
 
 	@Autowired
-	public PresentationService(PresentationRepository presentationRepository) {
+	public PresentationService(PresentationRepository presentationRepository, SessionRepository sessionRepository) {
 		this.presentationRepository = presentationRepository;
+		this.sessionRepository = sessionRepository;
 	}
 
 	/**
@@ -48,6 +53,26 @@ public class PresentationService {
 	public Optional<Presentation> getByLink(String id) {
 		return presentationRepository.findByLink(id);
 	}
+
+	public PresentationSessionDTO getActivePresentationSessionData(String presentationLink){
+	    //Maybe find presentation
+	    var presentation = this.presentationRepository
+            .findByLink(presentationLink)
+            .orElseThrow(() -> new PresentationNotFoundException("Presentation not found"));
+
+	    //And Maybe find an active session
+	    var activeSessions = this.sessionRepository
+            .getActiveSessionForPresentation(presentation.getId());
+
+	    if(activeSessions.size() <= 0){
+            throw new SessionNotFoundException("No active session found");
+        }
+
+	    var activeSession = activeSessions.get(0);
+
+	    //And if it is present - create a DTO
+	    return PresentationSessionDTO.of(presentation, activeSession);
+    }
 
 	public Presentation update(PresentationUpdateDto dto) {
 		presentationRepository.update(dto);
