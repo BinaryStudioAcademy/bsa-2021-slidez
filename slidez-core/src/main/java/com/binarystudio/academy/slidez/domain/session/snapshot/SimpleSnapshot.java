@@ -11,11 +11,11 @@ public class SimpleSnapshot implements Snapshot {
 
 	private final List<SessionInteractiveElement> sessionInteractiveElements;
 
-    private final String presentationLink;
+	private final String presentationLink;
 
 	public SimpleSnapshot(List<SessionInteractiveElement> sessionInteractiveElements, String presentationLink) {
 		this.sessionInteractiveElements = new ArrayList<>(sessionInteractiveElements);
-        this.presentationLink = presentationLink;
+		this.presentationLink = presentationLink;
 	}
 
 }

@@ -24,18 +24,18 @@ public class PresentationEventStore {
 	@GuardedBy("this")
 	private final State state = new State();
 
-    @GuardedBy("Immutability of java.lang.String + field is final + object is constructed without letting 'this' to escape")
-    private final String presentationLink;
+	@GuardedBy("Immutability of java.lang.String + field is final + object is constructed without letting 'this' to escape")
+	private final String presentationLink;
 
-    public PresentationEventStore(String presentationLink) {
-        this.presentationLink = presentationLink;
-    }
+	public PresentationEventStore(String presentationLink) {
+		this.presentationLink = presentationLink;
+	}
 
-    public String getPresentationLink() {
-        return presentationLink;
-    }
+	public String getPresentationLink() {
+		return presentationLink;
+	}
 
-    public synchronized List<DomainEvent> getEvents() {
+	public synchronized List<DomainEvent> getEvents() {
 		return Collections.unmodifiableList(events);
 	}
 

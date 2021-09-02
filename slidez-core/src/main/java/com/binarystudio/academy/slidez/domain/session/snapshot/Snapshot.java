@@ -9,7 +9,7 @@ public interface Snapshot {
 
 	List<SessionInteractiveElement> getSessionInteractiveElements();
 
-    String getPresentationLink();
+	String getPresentationLink();
 
 	static SimpleSnapshot getSimpleSnapshotFromState(State state, String presentationLink) {
 		return new SimpleSnapshot(state.getSessionInteractiveElements(), presentationLink);
