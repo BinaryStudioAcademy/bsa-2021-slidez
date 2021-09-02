@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import './participantPage.scss'
 import Header from '../Header'
-import { MOCK_DATA } from './mock-data'
 import './participantPage.scss'
 import ParticipantNameDialog from './ParticipantNameModal'
 import { ParticipantData } from '../../../services/participant/dto/ParticipantData'
 import { getParticipantData } from '../../../services/participant/participant-service'
 import { EventItem } from './EventItem'
 import Qa from '../../qa/Qa'
+import { getParticipantEvents } from '../../../services/participant-event/participant-event-service'
 
 const ParticipantPage = () => {
-    const [listQuestions, setListQuestions] = useState(MOCK_DATA)
+    const participantEvents = getParticipantEvents()
     const participantData: ParticipantData = getParticipantData()
     const areFirstAndLastNamePresent =
         participantData.participantFirstName &&
@@ -35,7 +35,7 @@ const ParticipantPage = () => {
             </div>
             <div className='title'>Select event</div>
             <div className='page-content'>
-                {listQuestions.map((event) => (
+                {participantEvents.map((event) => (
                     <EventItem event={event} key={event.code} />
                 ))}
             </div>

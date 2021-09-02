@@ -4,12 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import moment from 'moment'
 import { AppRoute } from '../../../common/routes/app-route'
-import { ParticipantEvent } from '../../../services/participant/dto/ParticipantEvent'
+import { ParticipantEvent } from '../../../services/participant-event/dto/ParticipantEvent'
 
 const createEndpoint = (code: string) => `/#${AppRoute.EVENTS}/${code}`
 
-const lastViewsDate = (date: string) => {
-    const diffDate = moment(date, 'YYYY-MM-DD HH:mm:ss').fromNow()
+const lastViewsDate = (date: Date) => {
+    const diffDate = moment(date).fromNow()
     return 'watched ' + diffDate
 }
 
