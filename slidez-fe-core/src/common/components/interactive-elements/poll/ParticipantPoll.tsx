@@ -25,6 +25,7 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
     const [chosenOption, setChosenOption] = useState<PollOptionDto | undefined>(
         undefined
     )
+    const [isAnswerSent, setIsAnswerSent] = useState<boolean>(false)
     const dispatch = useAppDispatch()
 
     const onSendClick = () => {
@@ -39,7 +40,10 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
             link,
             pollAnswer
         )
-        dispatch(answerPoll(answerPollRequest))
+        if (!isAnswerSent) {
+            setIsAnswerSent(true)
+            dispatch(answerPoll(answerPollRequest))
+        }
     }
 
     return (
