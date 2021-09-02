@@ -10,12 +10,25 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
 import { useState } from 'react'
 import Session from '../session/Session'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons'
 
 const Menu: React.FC = () => {
     const dispatch = useDispatch()
     const handlePollClick = useCallback(() => {
         dispatch(setActiveTab(EditorTab.POLL))
     }, [dispatch])
+    const [isViewMenu, setIsViewMenu] = useState(false)
+
+    const handleArrowUpClick = (event: { stopPropagation: () => void }) => {
+        event.stopPropagation()
+        setIsViewMenu(false)
+    }
+
+    const handleArrowDownClick = (event: { stopPropagation: () => void }) => {
+        event.stopPropagation()
+        setIsViewMenu(true)
+    }
 
     const { polls } = useSelector((state: RootState) => state.editor)
     return (
@@ -27,8 +40,31 @@ const Menu: React.FC = () => {
                     <button className='list-items' onClick={handlePollClick}>
                         <img src={check} alt='check' />
                         <div className='text'>Live poll</div>
+                        <div className='arrow-icon'>
+                            <FontAwesomeIcon
+                                className={
+                                    'arrow-up' +
+                                    (isViewMenu ? ' show-icon' : ' hide-icon')
+                                }
+                                icon={faArrowUp}
+                                onClick={handleArrowUpClick}
+                            />
+                            <FontAwesomeIcon
+                                className={
+                                    'arrow-down' +
+                                    (isViewMenu ? ' hide-icon' : ' show-icon')
+                                }
+                                icon={faArrowDown}
+                                onClick={handleArrowDownClick}
+                            />
+                        </div>
                     </button>
-                    <div className='list-elements'>
+                    <div
+                        className={
+                            'list-elements' +
+                            (isViewMenu ? ' show-menu' : ' hide-menu')
+                        }
+                    >
                         {polls.map((item) => {
                             return (
                                 <div className='list-items' key={item.id}>
