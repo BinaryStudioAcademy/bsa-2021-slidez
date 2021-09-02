@@ -44,13 +44,18 @@ const ParticipantView = () => {
     //@ts-ignore
     const { link } = useParams()
     const dispatch = useAppDispatch()
-    if (link) {
-        dispatch(initWebSocketSession(link))
-    }
+    useEffect(() => {
+        if (link) {
+            dispatch(initWebSocketSession(link))
+        }
+    }, [])
 
     const connectionStatus = useAppSelector(selectConnectionStatus)
     const currentInteraction = useAppSelector(selectCurrentInteractiveElement)
-
+    const snapshot: SnapshotDto | undefined = useAppSelector(selectSnapshot)
+    if (snapshot?.presentationLink) {
+        saveParticipantEvent(link, snapshot.presentationLink)
+    }
     if (!currentInteraction) {
         return noCurrentInteraction
     }
