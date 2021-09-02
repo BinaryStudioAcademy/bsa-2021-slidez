@@ -7,9 +7,10 @@ import { AppRoute } from './common/routes/app-route'
 import SignPage from './pages/sign/SignPage'
 import ReduxToastr from 'react-redux-toastr'
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
-import ParticipantPage from './pages/participant-page/ParticipantPage'
+import ParticipantPage from './pages/interactive/participant/ParticipantPage'
 import Addon from './containers/poll-editor/Addon'
-import EventPage from './pages/event/EventPage'
+import PresenterPage from './pages/interactive/presenter/PresenterPage'
+import ParticipantView from './pages/interactive/participant/ParticipantView'
 
 function App() {
     return (
@@ -32,7 +33,11 @@ function App() {
                         path={AppRoute.EVENTS}
                         component={ParticipantPage}
                     />
-                    <Route path={AppRoute.EVENT} component={EventPage} />
+                    <Route
+                        path={AppRoute.EVENTS_WITH_LINK}
+                        component={ParticipantView}
+                    />
+                    <Route path={AppRoute.PRESENT} component={PresenterPage} />
                     <Route exact strict path={AppRoute.ANY}>
                         <Redirect to={AppRoute.LOGIN} />
                     </Route>

@@ -4,7 +4,6 @@ import com.binarystudio.academy.slidez.domain.exception.DomainException;
 import com.binarystudio.academy.slidez.domain.session.event.DomainEvent;
 import com.binarystudio.academy.slidez.domain.session.data.State;
 import com.binarystudio.academy.slidez.domain.session.snapshot.Snapshot;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
@@ -16,7 +15,6 @@ import java.util.List;
 /**
  * Class supports external synchronization on "this" instance
  */
-@Component
 @ThreadSafe
 public class PresentationEventStore {
 
@@ -25,6 +23,17 @@ public class PresentationEventStore {
 
 	@GuardedBy("this")
 	private final State state = new State();
+
+	@GuardedBy("Immutability of java.lang.String + field is final + object is constructed without letting 'this' to escape")
+	private final String presentationLink;
+
+	public PresentationEventStore(String presentationLink) {
+		this.presentationLink = presentationLink;
+	}
+
+	public String getPresentationLink() {
+		return presentationLink;
+	}
 
 	public synchronized List<DomainEvent> getEvents() {
 		return Collections.unmodifiableList(events);
@@ -39,7 +48,7 @@ public class PresentationEventStore {
 	}
 
 	public synchronized Snapshot snapshot() {
-		return Snapshot.getSimpleSnapshotFromState(state);
+		return Snapshot.getSimpleSnapshotFromState(state, presentationLink);
 	}
 
 	public Snapshot snapshot(LocalDateTime localDateTime) throws DomainException {
@@ -48,7 +57,7 @@ public class PresentationEventStore {
 			events.stream().filter(e -> e.getEventDate().isBefore(localDateTime))
 					.forEach(e -> e.applyEvent(stateForSpecificTime));
 		}
-		return Snapshot.getSimpleSnapshotFromState(stateForSpecificTime);
+		return Snapshot.getSimpleSnapshotFromState(stateForSpecificTime, presentationLink);
 	}
 
 }
