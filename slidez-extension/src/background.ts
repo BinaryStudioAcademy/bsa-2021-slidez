@@ -4,53 +4,19 @@ import {
     isRunningInChrome,
     of,
     EventType,
-    ExtensionAuthenticationSuccess,
+    SetActiveSession,
 } from 'slidez-shared'
+import { ChromeStore, readKey } from './chrome-store'
 
-const checkUserDataInStorage = (eb: BasicMessagingBus) => () => {
-    chrome.storage.local.get(['userData'], ({ userData } = {}) => {
-        if (userData.accessToken) {
-            console.log('User data found, providing token to requester')
-            eb.sendMessageNoCallback({
-                type: EventType.AUTH_DETAILS,
-                data: {
-                    success: true,
-                    accessToken: userData.accessToken,
-                },
-            })
-        } else {
-            console.log('No user data found')
-            eb.sendMessageNoCallback({
-                type: EventType.AUTH_DETAILS,
-                data: {
-                    success: false,
-                    error: 'No token available',
-                },
-            })
-        }
-    })
-}
-
-const setUserDataInStore =
-    (eb: BasicMessagingBus) => (message: ExtensionAuthenticationSuccess) => {
-        console.log('Setting user in store, data:', message.data)
-        chrome.storage.local.set(
-            {
-                userData: {
-                    accessToken: message.data.accessToken,
-                    refreshToken: message.data.refreshToken,
-                },
+const setActiveSession =
+    (eb: BasicMessagingBus) => async (message: SetActiveSession) => {
+        const { presentations } = await readKey<ChromeStore>(['presentations'])
+        chrome.storage.local.set({
+            presentations: {
+                ...(presentations ?? {}),
+                [message.data.presentationId]: message.data.sessionCode,
             },
-            () => {
-                eb.sendMessageNoCallback({
-                    type: EventType.AUTH_DETAILS,
-                    data: {
-                        success: true,
-                        accessToken: message.data.accessToken,
-                    },
-                })
-            }
-        )
+        })
     }
 
 async function background() {
@@ -75,13 +41,8 @@ async function background() {
     const eb = new BasicMessagingBus(driver)
 
     eb.registerEventHandler(
-        EventType.AUTH_REQUESTED,
-        of(checkUserDataInStorage(eb))
-    )
-
-    eb.registerEventHandler(
-        EventType.EXTENSION_AUTH_SUCCESS,
-        of(setUserDataInStore(eb))
+        EventType.SET_ACTIVE_SESSION,
+        of(setActiveSession(eb))
     )
 
     console.log('Event bus is ready and running!')

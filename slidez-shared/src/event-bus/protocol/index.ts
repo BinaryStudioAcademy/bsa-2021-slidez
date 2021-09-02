@@ -4,6 +4,7 @@ export enum EventType {
     EXTENSION_CONNECTED = 'extension_connected',
     INSERT_SLIDE = 'insert_slide',
     INSERT_SLIDE_SUCCESS = 'insert_slide_success',
+    SET_ACTIVE_SESSION = 'set_active_session',
     //DEPRECATED
     AUTH_REQUESTED = 'auth_requested',
     REFRESH_TOKEN = 'refresh_token',
@@ -43,6 +44,14 @@ export type InsertSlideRequestSuccess = {
     insertedId: string
 }
 
+export type SetActiveSession = MessageTemplate<
+    EventType.SET_ACTIVE_SESSION,
+    {
+        presentationId: string
+        sessionCode: string | null
+    }
+>
+
 export type InsertSlide = MessageTemplate<
     EventType.INSERT_SLIDE,
     InsertSlideRequest
@@ -60,3 +69,4 @@ export type ProtocolMessage =
     | ExtensionAuthenticationSuccess
     | InsertSlide
     | InsertSlideSuccess
+    | SetActiveSession
