@@ -4,6 +4,8 @@ import create_presentation from '../../assets/svgs/create_presentation.svg'
 import my_presentation from '../../assets/svgs/my_presentation.svg'
 import graph_icon from '../../assets/svgs/graph_icon.svg'
 import layout_icon from '../../assets/svgs/layout_icon.svg'
+import soon_lable from '../../assets/svgs/soon_lable.svg'
+import soon from '../../assets/svgs/soon.svg'
 import styles from './styles.module.scss'
 
 const SideBar = () => {
@@ -39,6 +41,8 @@ const SideBar = () => {
                     <a href=''>
                         <div className={styles.sideIcon}>
                             <img src={graph_icon} alt='graph' />
+                            <img className={styles.label} src={soon_lable} />
+                            <img className={styles.label} src={soon} />
                         </div>
                     </a>
                 </span>
@@ -46,6 +50,8 @@ const SideBar = () => {
                     <a href=''>
                         <div className={styles.sideIcon}>
                             <img src={layout_icon} alt='layout' />
+                            <img className={styles.label} src={soon_lable} />
+                            <img className={styles.label} src={soon} />
                         </div>
                     </a>
                 </span>
