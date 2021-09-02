@@ -10,6 +10,8 @@ import drop_down_icon from '../../assets/svgs/drop_down_icon.svg'
 import { useDispatch, useSelector } from 'react-redux'
 import { createPoll } from './store'
 import { RootState } from '../../store'
+import { NotificationTypes } from '../../common/notification/notification-types'
+import { handleNotification } from '../../common/notification/Notification'
 
 export type PollEditorProps = {
     pollId?: string | null
@@ -18,6 +20,7 @@ export type PollEditorProps = {
 // eslint-disable-next-line react/prop-types
 const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
     const dispatch = useDispatch()
+    const pollsError = useSelector((state: RootState) => state.editor.error)
     const presentationId = useSelector(
         (state: RootState) => state.editor.presentationId
     )
@@ -36,6 +39,13 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
                 presentationId,
             })
         )
+        if (pollsError !== null) {
+            handleNotification(
+                'Added Failed',
+                'The poll did not added',
+                NotificationTypes.ERROR
+            )
+        }
     }
 
     const toggleRemoveClick = (index: number, arrayHelpers: any) => {
