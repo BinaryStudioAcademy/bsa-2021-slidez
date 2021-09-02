@@ -38,12 +38,13 @@ const useEditorParams = () => {
     }
 }
 
-const noCurrentInteraction = () => {
+const noCurrentInteraction = (link: string) => {
     return (
-        <div>
-            <Header eventName='' />
-            <NoEvent />
-        </div>
+        <InteractiveWrapper eventCode={link}>
+            <div className='presenter-event-loader'>
+                <Loader />
+            </div>
+        </InteractiveWrapper>
     )
 }
 
@@ -55,41 +56,33 @@ const getBodyContent = (interactiveElement: InteractiveElement) => {
 }
 
 const PresenterPage: React.FC = () => {
-    // @ts-ignore
-    const { link } = useParams()
+    const { link = '' } = useParams<{ link: string | undefined }>()
     const dispatch = useAppDispatch()
     const { presentationLink, slideId } = useEditorParams()
-
-    useEffect(() => {
-        const dto: CreatePresentationSessionDto = {
-            presentationLink: presentationLink,
-        }
-        dispatch(createSessionForPresentation(dto))
-    }, [])
-
-    useEffect(() => {
-        setTimeout(() => {
-            dispatch(initWebSocketSession(link))
-            const params: StartPollRequest = createStartPollRequest(
-                link,
-                slideId
-            )
-            setTimeout(() => dispatch(requestStartPoll(params)), 6000)
-        }, 3000)
-    }, [])
-
     const connectionStatus = useAppSelector(selectConnectionStatus)
     const currentInteraction = useAppSelector(selectCurrentInteractiveElement)
 
+    useEffect(() => {
+        dispatch(initWebSocketSession(link))
+        //TODO: Dispatch event to finish current interaction on unmount
+    }, [])
+
+    useEffect(() => {
+        if (connectionStatus !== WsConnectionStatus.CONNECTED) {
+            return
+        }
+        const params: StartPollRequest = createStartPollRequest(link, slideId)
+        setTimeout(() => dispatch(requestStartPoll(params)), 6000)
+    }, [connectionStatus])
+
     if (!currentInteraction) {
-        return noCurrentInteraction()
+        return noCurrentInteraction(link)
     }
 
     return (
         <div>
             {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
             <div className='presenter-page-content'>
-                <Header eventName={currentInteraction.title} />
                 <InteractiveWrapper eventCode={link || ''}>
                     {getBodyContent(currentInteraction)}
                 </InteractiveWrapper>
