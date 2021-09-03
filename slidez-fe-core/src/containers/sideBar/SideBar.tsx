@@ -22,27 +22,43 @@ const SideBar = () => {
                                 src={create_presentation}
                                 alt='add presentation'
                             ></img>
+                            <span className={styles.tooltiptext}>
+                                Create presentation
+                            </span>
                         </div>
                     </a>
                 </span>
                 <span>
                     <a href=''>
-                        <div className={styles.bookIcon}>
+                        <div className={styles.sideIcon}>
                             <img
                                 src={my_presentation}
                                 alt='my presentations'
                             ></img>
+                            <span className={styles.tooltiptext}>
+                                My presentation
+                            </span>
                         </div>
                     </a>
                 </span>
                 <span>
                     <a href=''>
-                        <img src={graph_icon} alt='graph'></img>
+                        <div className={styles.sideIcon}>
+                            <img src={graph_icon} alt='graph'></img>
+                            <span className={styles.tooltiptext}>
+                                Analytics
+                            </span>
+                        </div>
                     </a>
                 </span>
                 <span>
                     <a href=''>
-                        <img src={layout_icon} alt='layout'></img>
+                        <div className={styles.sideIcon}>
+                            <img src={layout_icon} alt='layout'></img>
+                            <span className={styles.tooltiptext}>
+                                Templates
+                            </span>
+                        </div>
                     </a>
                 </span>
             </div>
