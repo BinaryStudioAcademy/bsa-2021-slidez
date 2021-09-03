@@ -30,7 +30,6 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
         options: [],
     }
 
-    const [state, setState] = useState({ name: '' })
     const handleBackClick = useCallback(() => {
         dispatch(setActiveTab(EditorTab.MENU))
     }, [dispatch])
@@ -53,20 +52,6 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
             )
         }
         setIsLoading(false)
-    }
-    const onChangeInput = (e: { target: any }) => {
-        setState(e.target.value)
-    }
-    const toggleRemoveClick = (
-        length: number,
-        index: number,
-        arrayHelpers: any
-    ) => {
-        if (length > 1) {
-            arrayHelpers.remove(index)
-        } else {
-            setState({ name: '' })
-        }
     }
     return (
         <div className='app'>
@@ -156,33 +141,17 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
                                                                     name={`options.${index}.title`}
                                                                     placeholder='Your option'
                                                                     className='input'
-                                                                    value={
-                                                                        state.name
-                                                                    }
-                                                                    onChange={(e: {
-                                                                        target: {
-                                                                            value: React.SetStateAction<string>
-                                                                        }
-                                                                    }) =>
-                                                                        onChangeInput(
-                                                                            e
-                                                                        )
-                                                                    }
                                                                 />
                                                             </div>
                                                             <div>
                                                                 <button
                                                                     type='button'
                                                                     className='options-btn'
-                                                                    onClick={() => {
-                                                                        toggleRemoveClick(
-                                                                            values
-                                                                                .options
-                                                                                .length,
-                                                                            index,
-                                                                            arrayHelpers
+                                                                    onClick={() =>
+                                                                        arrayHelpers.remove(
+                                                                            index
                                                                         )
-                                                                    }}
+                                                                    }
                                                                 >
                                                                     <FontAwesomeIcon
                                                                         className='option-delete-btn'
