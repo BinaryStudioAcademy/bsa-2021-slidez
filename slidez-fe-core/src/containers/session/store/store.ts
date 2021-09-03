@@ -4,9 +4,14 @@ import * as SessionService from '../../../services/session/session-service'
 import { createPresentationSession } from '../../../services/session/session-service'
 import { WsConnectionStatus } from '../enums/ws-connection-status'
 import { responseHandler } from './responseHandler'
-import { InteractiveElement, PollDto } from '../dto/InteractiveElement'
+import {
+    InteractiveElement,
+    PollDto,
+    QASessionDto,
+} from '../dto/InteractiveElement'
 import {
     AnswerPollRequest,
+    AskQuestionRequest,
     createSnapshotRequest,
     SnapshotRequest,
     StartPollRequest,
@@ -14,12 +19,14 @@ import {
 import { CreatePresentationSessionDto } from '../../../services/session/dto/CreatePresentationSessionDto'
 import { SessionPollAnswer } from '../model/SessionPollAnswer'
 import { InteractiveElementType } from '../enums/InteractiveElementType'
+import { QASessionQuestionDto } from '../dto/QASessionQuestionDto'
 
 export interface PresentationSessionState {
     connectionStatus: WsConnectionStatus
     error: string | undefined
     snapshot: SnapshotDto | undefined
     currentInteractiveElement: InteractiveElement | undefined
+    qAndASession: QASessionDto | undefined
     link: string | undefined
 }
 
@@ -28,6 +35,7 @@ const initialState: PresentationSessionState = {
     error: undefined,
     snapshot: undefined,
     currentInteractiveElement: undefined,
+    qAndASession: undefined,
     link: undefined,
 }
 
@@ -85,6 +93,20 @@ export const receiveAnswerPoll = createAsyncThunk(
     }
 )
 
+export const askQuestion = createAsyncThunk(
+    'QandA/ask-question',
+    async (request: AskQuestionRequest) => {
+        SessionService.sendRequest(request.link, request.event)
+    }
+)
+
+export const receiveQuestion = createAsyncThunk(
+    'QandA/receive-question',
+    async (answer: QASessionQuestionDto) => {
+        return answer
+    }
+)
+
 export const initWebSocketSession = createAsyncThunk(
     'presentationSession/initWebSocketSession',
     async (link: string, { dispatch }) => {
@@ -138,6 +160,11 @@ export const presentationSessionSlice = createSlice({
                         state.currentInteractiveElement
                     )
                     poll.answers.push(action.payload)
+                }
+            })
+            .addCase(receiveQuestion.fulfilled, (state, action) => {
+                if (state.qAndASession) {
+                    state.qAndASession.questions.push(action.payload)
                 }
             })
     },

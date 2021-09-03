@@ -19,7 +19,7 @@ $likebtnwidth: 62px;
   color: #7b7a7c;
 }
 
-.pool-content {
+.qa-question-content {
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -41,8 +41,7 @@ $likebtnwidth: 62px;
   color: $main-color;
   background-color: $white;
   border-radius: 25px;
-  border: none;
-  border-color: $white;
+  border: none $white;
   width: $likebtnwidth;
   height: 35px;
   margin-right: 5px;

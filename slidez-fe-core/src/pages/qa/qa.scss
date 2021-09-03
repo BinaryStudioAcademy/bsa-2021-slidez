@@ -31,6 +31,8 @@
   margin: 0 10px;
   height: calc(100% - 200px);
   overflow-y: auto;
+  width: 590px;
+  max-width: 590px;
 }
 
 @media (max-width: 600px) {

@@ -24,5 +24,5 @@ export type QASessionDto = AbstractInteractiveElement & {
     questions: QASessionQuestionDto[]
 }
 
-// Poll | Quiz | QA in the future
-export type InteractiveElement = PollDto | QASessionDto
+// Poll | Quiz in the future
+export type InteractiveElement = PollDto

@@ -33,7 +33,7 @@ export default function QAAdd(props: any) {
                     id='qaadd-text'
                     name='question'
                     onChange={(e) => charsCount(e)}
-                ></textarea>
+                />
             </div>
             <div className='chars-counter'>{charsCounterValue}</div>
 
