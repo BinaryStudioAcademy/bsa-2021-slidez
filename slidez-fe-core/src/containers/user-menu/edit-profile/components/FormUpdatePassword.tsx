@@ -16,7 +16,6 @@ import { UpdatePasswordRequest } from '../../../../services/user/dto/UpdatePassw
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
 import { revealPassword } from '../../../../common/components/forms/form-utils'
-import { UserPasswordField } from '../PasswordField'
 
 export interface Password {
     id: string | undefined
@@ -42,12 +41,12 @@ const FormUpdatePassword = () => {
 
     const onRevealPasswordClick = () => {
         setIsPasswordRevealed(!isPasswordRevealed)
-        revealPassword('register-password-input')
+        revealPassword('update-password-input')
     }
 
     const onRevealConfirmPasswordClick = () => {
         setIsConfirmPasswordRevealed(!isConfirmPasswordRevealed)
-        revealPassword('register-confirmPassword-input')
+        revealPassword('update-confirmPassword-input')
     }
 
     const handleUpdatePassword = async (
@@ -89,11 +88,15 @@ const FormUpdatePassword = () => {
                                 <Field
                                     id='update-password-input'
                                     name='password'
+                                    className={
+                                        'form-input-password' +
+                                        (viewErrors && errors.password
+                                            ? ' error-input'
+                                            : '')
+                                    }
                                     type='password'
                                     autoComplete='new-password'
                                     onClick={() => setViewErrors(false)}
-                                    component={UserPasswordField}
-                                    value={errors.password}
                                     placeholder='Enter new password'
                                 />
                                 <FontAwesomeIcon
@@ -115,9 +118,12 @@ const FormUpdatePassword = () => {
                                 <Field
                                     id='update-confirmPassword-input'
                                     name='confirmPassword'
-                                    className={'form-input'}
-                                    component={UserPasswordField}
-                                    value={errors.confirmPassword}
+                                    className={
+                                        'form-input-password' +
+                                        (viewErrors && errors.password
+                                            ? ' error-input'
+                                            : '')
+                                    }
                                     onClick={() => setViewErrors(false)}
                                     type='password'
                                     autoComplete='new-password'

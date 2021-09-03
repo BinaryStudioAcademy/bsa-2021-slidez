@@ -28,6 +28,26 @@
             width: 100%;  
         }
 
+        .form-input-password {
+            width: 429px;
+            font-size: 14px;
+            border-radius: 50px;
+            border: 1px $light-color solid;
+            background-color: $light-color;
+            color: rgba(#1d1d1d, 0.5);
+            padding: 13px 20px;
+            margin-bottom: 15px;
+        }
+        .form-input-password:focus {
+            outline: none;
+            border: 1px $mint solid;
+            background-color: $light-grey;
+        }
+        
+        .form-input-password::placeholder {
+            color: $grey;
+        }
+
         .input-password {
             display: flex;
             flex-direction:row;
