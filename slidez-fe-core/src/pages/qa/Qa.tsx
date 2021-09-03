@@ -6,9 +6,7 @@ import SelectorPanel from './components/SelectorPanel'
 import CloseButton from './components/CloseButton'
 import { makeStyles } from '@material-ui/styles'
 import './qa.scss'
-import { MOCK_DATA } from './qa-session-mock'
 import { useEffect } from 'react'
-import { QASessionDto } from '../../containers/session/dto/InteractiveElement'
 import {
     createNickName,
     getParticipantData,
@@ -19,8 +17,9 @@ import {
     createAskQuestionRequest,
 } from '../../containers/session/event/FrontendEvent'
 import { useParams } from 'react-router-dom'
-import { useAppDispatch } from '../../hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks'
 import { askQuestion } from '../../containers/session/store/store'
+import { selectQASession } from '../../containers/session/store/selectors'
 
 type QaProps = {
     handleClose: any
@@ -50,7 +49,7 @@ const Qa = (qaProps: QaProps) => {
     const { handleClose, show } = qaProps
     const classes = useStyles()
     const [participantData] = useState(getParticipantData())
-    const qaSession: QASessionDto = MOCK_DATA
+    const qaSession = { ...useAppSelector(selectQASession) }
 
     const [isRecentSelected, setIsRecentSelected] = useState(true)
     const dispatch = useAppDispatch()
@@ -65,6 +64,10 @@ const Qa = (qaProps: QaProps) => {
     })
 
     const handleSubmit = (text: string) => {
+        console.log('QASession: ' + JSON.stringify(qaSession))
+        if (!qaSession || !qaSession.id) {
+            return
+        }
         const nickname = createNickName()
         const askQuestionRequest: AskQuestionRequest = createAskQuestionRequest(
             link,
@@ -76,6 +79,9 @@ const Qa = (qaProps: QaProps) => {
     }
 
     const handleLike = (questionId: string) => {
+        if (!qaSession || !qaSession.questions) {
+            return
+        }
         for (const question of qaSession.questions) {
             if (question.id === questionId) {
                 if (getIsLikedByMe(question)) {
@@ -91,6 +97,9 @@ const Qa = (qaProps: QaProps) => {
     }
 
     const handleRecentClick = () => {
+        if (!qaSession || !qaSession.questions) {
+            return
+        }
         const sorted = [...qaSession.questions]
         sorted.sort((a, b) => {
             return b.createdAt.getTime() - a.createdAt.getTime()
@@ -100,6 +109,9 @@ const Qa = (qaProps: QaProps) => {
     }
 
     const handleTopClick = () => {
+        if (!qaSession || !qaSession.questions) {
+            return
+        }
         const sorted = [...qaSession.questions]
         sorted.sort((a, b) => b.likedBy.length - a.likedBy.length)
         setIsRecentSelected(false)
@@ -126,14 +138,14 @@ const Qa = (qaProps: QaProps) => {
                     <CloseButton onClick={handleClose} />
                 </div>
                 <SelectorPanel
-                    totalQuestions={qaSession.questions.length}
+                    totalQuestions={qaSession?.questions?.length}
                     handleRecentClick={handleRecentClick}
                     handleTopClick={handleTopClick}
                     isRecentSelected={isRecentSelected}
                 />
             </div>
             <div className='qa-body'>
-                {qaSession.questions.map((qaSessionQuestion) => (
+                {qaSession?.questions?.map((qaSessionQuestion) => (
                     <QACard
                         key={qaSessionQuestion.id}
                         author={qaSessionQuestion.authorNickname}

@@ -27,7 +27,7 @@ export const getParticipantData = (): ParticipantData => {
 export const createNickName = (): string => {
     const data: ParticipantData = getParticipantData()
     if (data.participantFirstName && data.participantLastName) {
-        return data.participantFirstName + ' ' + participantLastName
+        return data.participantFirstName + ' ' + data.participantLastName
     }
     return defaultNickname
 }
