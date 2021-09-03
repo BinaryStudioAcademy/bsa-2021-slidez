@@ -32,6 +32,7 @@ export default function QAAdd(props: any) {
                     className='qaadd-text'
                     id='qaadd-text'
                     name='question'
+                    maxLength={300}
                     onChange={(e) => charsCount(e)}
                 ></textarea>
             </div>
