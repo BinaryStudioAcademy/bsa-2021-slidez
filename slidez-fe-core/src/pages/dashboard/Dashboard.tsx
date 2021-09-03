@@ -17,7 +17,6 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import UserProfile from '../../containers/user-menu/UserMenu'
 import table_sort from '../../../src/assets/svgs/table-sort.svg'
 import { fetchUser } from '../../containers/user/store'
-import '../../common/components/loader/Loader.css'
 
 const Dashboard = () => {
     const [currentView, setCurrentView] = useState('table')
