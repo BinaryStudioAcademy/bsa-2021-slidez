@@ -57,16 +57,16 @@
 
     .sideIcon:hover .tooltiptext, .addIcon:hover .tooltiptext, .disableIcons:hover .tooltiptext{
         visibility: visible;
-        color: #fff;
     }
 
     .tooltiptext {
-        // visibility: hidden;
-        left: 7%;
+        visibility: hidden;
+        left: 8.5%;
         width: 100px;
-        background-color: black;
+        background-color: #F6F4F8;
+        border: 1px solid $dark-color;
         font-size: small;
-        color: #fff;
+        color: black;
         text-align: center;
         border-radius: 6px;
         padding: 5px 0;
