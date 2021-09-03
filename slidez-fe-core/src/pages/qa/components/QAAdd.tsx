@@ -8,6 +8,7 @@ export type QAAddProps = {
 
 export default function QAAdd({ onSubmit }: QAAddProps) {
     const [charsCounterValue, setCharsCounterValue] = useState(0)
+    const maxTextLength = 300
     const [text, setText] = useState('')
 
     const handleSettingText = (e: any) => {
@@ -35,6 +36,7 @@ export default function QAAdd({ onSubmit }: QAAddProps) {
                     name='question'
                     onChange={(e) => handleSettingText(e)}
                     value={text}
+                    maxLength={maxTextLength}
                 />
             </div>
             <div className='chars-counter'>{charsCounterValue}</div>

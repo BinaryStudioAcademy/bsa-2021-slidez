@@ -5,8 +5,8 @@ import './Loader.scss'
 
 export const Loader = () => {
     return (
-        <div className='spinner'>
-            <FontAwesomeIcon className='spinner-icon' icon={faSpinner} />
+        <div className='spinner-button'>
+            <FontAwesomeIcon className='icon-spinner' icon={faSpinner} />
         </div>
     )
 }

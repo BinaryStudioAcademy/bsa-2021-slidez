@@ -100,9 +100,12 @@ const Qa = (qaProps: QaProps) => {
         if (!qaSession || !qaSession.questions) {
             return
         }
-        const sorted = [...qaSession.questions]
+        const sorted: QASessionQuestionDto[] = [...qaSession.questions]
         sorted.sort((a, b) => {
-            return b.createdAt.getTime() - a.createdAt.getTime()
+            return (
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            )
         })
         setIsRecentSelected(true)
         qaSession.questions = sorted

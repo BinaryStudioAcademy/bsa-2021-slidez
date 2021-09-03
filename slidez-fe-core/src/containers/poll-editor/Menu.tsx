@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { SyntheticEvent } from 'react'
 import check from '../../assets/svgs/check.svg'
 import q_and_a from '../../assets/svgs/QandA.svg'
 import heart from '../../assets/svgs/reactions.svg'
@@ -20,12 +20,12 @@ const Menu: React.FC = () => {
     }, [dispatch])
     const [isViewMenu, setIsViewMenu] = useState(false)
 
-    const handleArrowUpClick = (event: { stopPropagation: () => void }) => {
+    const handleArrowUpClick = (event: SyntheticEvent) => {
         event.stopPropagation()
         setIsViewMenu(false)
     }
 
-    const handleArrowDownClick = (event: { stopPropagation: () => void }) => {
+    const handleArrowDownClick = (event: SyntheticEvent) => {
         event.stopPropagation()
         setIsViewMenu(true)
     }

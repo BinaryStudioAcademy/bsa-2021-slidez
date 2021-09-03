@@ -148,6 +148,9 @@ export const presentationSessionSlice = createSlice({
                 state.currentInteractiveElement =
                     snapshotDto.currentInteractiveElement
                 state.qAndASession = snapshotDto.currentQASession
+                console.log(
+                    'From snapshot: ' + JSON.stringify(state.qAndASession)
+                )
             })
             .addCase(receiveAnswerPoll.fulfilled, (state, action) => {
                 if (

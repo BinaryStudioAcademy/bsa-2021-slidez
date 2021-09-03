@@ -3,7 +3,7 @@ export interface QASessionQuestionDto {
     qaSessionId: string
     //Array of user ids who liked question
     likedBy: string[]
-    createdAt: Date
+    createdAt: string
     //Nickname = 'FirstName LastName'
     authorNickname: string
     question: string
