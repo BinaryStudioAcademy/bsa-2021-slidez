@@ -32,10 +32,10 @@ public class State {
 				.map(element -> (SessionPoll) element).findFirst().orElseThrow(() -> new PollNotFoundException(
 						String.format("Poll with id %s not found", pollAnswer.getPollId())))
 				.addAnswer(pollAnswer);
-        if (canInteractWithCurrentInteractiveElement(pollAnswer.getPollId(), SessionPoll.class)) {
-            SessionPoll sessionPoll = (SessionPoll) this.currentInteractiveElement;
-            sessionPoll.addAnswer(pollAnswer);
-        }
+		if (canInteractWithCurrentInteractiveElement(pollAnswer.getPollId(), SessionPoll.class)) {
+			SessionPoll sessionPoll = (SessionPoll) this.currentInteractiveElement;
+			sessionPoll.addAnswer(pollAnswer);
+		}
 	}
 
 	public void addAnswerToTheQuiz(SessionQuizAnswer quizAnswer) throws QuizNotFoundException, BadOptionException {
@@ -45,10 +45,10 @@ public class State {
 				.map(element -> (SessionQuiz) element).findFirst().orElseThrow(() -> new QuizNotFoundException(
 						String.format("Quiz with id %s not found", quizAnswer.getQuizId())))
 				.addAnswer(quizAnswer);
-        if (canInteractWithCurrentInteractiveElement(quizAnswer.getQuizId(), SessionQuiz.class)) {
-            SessionQuiz sessionPoll = (SessionQuiz) this.currentInteractiveElement;
-            sessionPoll.addAnswer(quizAnswer);
-        }
+		if (canInteractWithCurrentInteractiveElement(quizAnswer.getQuizId(), SessionQuiz.class)) {
+			SessionQuiz sessionPoll = (SessionQuiz) this.currentInteractiveElement;
+			sessionPoll.addAnswer(quizAnswer);
+		}
 	}
 
 	public void addQuestionToQASession(SessionQAQuestion sessionQAQuestion) {
@@ -61,9 +61,9 @@ public class State {
 				.addQuestion(sessionQAQuestion);
 	}
 
-    private boolean canInteractWithCurrentInteractiveElement(UUID expectedId, Class<?> expectedClass) {
-        return currentInteractiveElement != null && Objects.equals(expectedId, currentInteractiveElement.getId())
-            && Objects.equals(expectedClass, currentInteractiveElement.getClass());
-    }
+	private boolean canInteractWithCurrentInteractiveElement(UUID expectedId, Class<?> expectedClass) {
+		return currentInteractiveElement != null && Objects.equals(expectedId, currentInteractiveElement.getId())
+				&& Objects.equals(expectedClass, currentInteractiveElement.getClass());
+	}
 
 }
