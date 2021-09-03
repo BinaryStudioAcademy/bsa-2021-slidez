@@ -4,6 +4,7 @@ import QRCode from 'react-qr-code'
 import './interactive-wrapper.scss'
 import '../../../../global/styles.scss'
 import { InteractiveLogo } from '../../logo/logo'
+import { QR_CODE_HOST } from '../../../../env'
 
 export type InteractiveWrapperProps = { eventCode: string }
 
@@ -11,7 +12,7 @@ const InteractiveWrapper: React.FC<InteractiveWrapperProps> = ({
     eventCode,
     children,
 }) => {
-    const link = `http://localhost:5000/event/${eventCode}`
+    const link = `${QR_CODE_HOST}/${eventCode}`
     return (
         <div className='wrapper'>
             <div className='wrapped-component'>{children}</div>

@@ -19,7 +19,7 @@ export interface PresentationSessionState {
     connectionStatus: WsConnectionStatus
     error: string | undefined
     snapshot: SnapshotDto | undefined
-    currentInteractiveElement: InteractiveElement | undefined
+    currentInteractiveElement: InteractiveElement | undefined | null
     link: string | undefined
 }
 
@@ -65,9 +65,7 @@ export const requestSnapshot = createAsyncThunk(
 export const receiveSnapshot = createAsyncThunk(
     'snapshot/received',
     async (snapshot: SnapshotDto) => {
-        const out: PresentationSessionState = { ...initialState }
-        out.snapshot = snapshot
-        return out
+        return snapshot
     }
 )
 
@@ -127,7 +125,10 @@ export const presentationSessionSlice = createSlice({
                     action.payload.currentInteractiveElement
             })
             .addCase(receiveSnapshot.fulfilled, (state, action) => {
-                state.snapshot = action.payload.snapshot
+                const snapshotDto: SnapshotDto = action.payload
+                state.snapshot = snapshotDto
+                state.currentInteractiveElement =
+                    snapshotDto.currentInteractiveElement
             })
             .addCase(receiveAnswerPoll.fulfilled, (state, action) => {
                 if (

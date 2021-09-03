@@ -17,6 +17,7 @@ public class StartQuizEvent extends DomainEvent {
 	@Override
 	public void applyEvent(State state) throws DomainException {
 		state.addInteractiveElement(sessionQuiz);
+		state.setCurrentInteractiveElement(sessionQuiz);
 	}
 
 }

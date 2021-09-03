@@ -3,6 +3,7 @@ package com.binarystudio.academy.slidez.domain.session;
 import com.binarystudio.academy.slidez.domain.exception.DomainException;
 import com.binarystudio.academy.slidez.domain.session.event.DomainEvent;
 import com.binarystudio.academy.slidez.domain.session.data.State;
+import com.binarystudio.academy.slidez.domain.session.snapshot.SimpleSnapshot;
 import com.binarystudio.academy.slidez.domain.session.snapshot.Snapshot;
 
 import javax.annotation.concurrent.GuardedBy;
@@ -48,7 +49,7 @@ public class PresentationEventStore {
 	}
 
 	public synchronized Snapshot snapshot() {
-		return Snapshot.getSimpleSnapshotFromState(state, presentationLink);
+		return new SimpleSnapshot(state, presentationLink);
 	}
 
 	public Snapshot snapshot(LocalDateTime localDateTime) throws DomainException {
@@ -57,7 +58,7 @@ public class PresentationEventStore {
 			events.stream().filter(e -> e.getEventDate().isBefore(localDateTime))
 					.forEach(e -> e.applyEvent(stateForSpecificTime));
 		}
-		return Snapshot.getSimpleSnapshotFromState(stateForSpecificTime, presentationLink);
+		return new SimpleSnapshot(stateForSpecificTime, presentationLink);
 	}
 
 }

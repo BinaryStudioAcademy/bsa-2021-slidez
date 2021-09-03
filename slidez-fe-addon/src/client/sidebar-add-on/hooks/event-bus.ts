@@ -64,7 +64,7 @@ export const useEventBus = () => {
         ChromeMessageConnector.connect({
             descriptor: EXTENSION_ID,
         })
-            .then((driver) => {
+            .then(driver => {
                 messageBusState = {
                     connected: EventBusConnectionStatus.CONNECTED,
                     eventBus: new BasicMessagingBus(driver),
@@ -73,7 +73,7 @@ export const useEventBus = () => {
                 return messageBusState.eventBus;
             })
             .then(registerListeners)
-            .catch((error) => {
+            .catch(error => {
                 console.error('Caught message bus init error', error);
                 messageBusState = {
                     connected: EventBusConnectionStatus.FAILED,
@@ -88,12 +88,12 @@ export const useEventBus = () => {
 const registerListeners = (bus: BasicMessagingBus) => {
     bus.registerEventHandler(
         EventType.INSERT_SLIDE,
-        of<InsertSlide>((event) => {
+        of<InsertSlide>(event => {
             console.log('Slide insert request intercepted!');
             runGoogleScript<InsertSlideRequestSuccess>(
                 'insertSlide',
                 event.data
-            ).then((data) =>
+            ).then(data =>
                 bus.sendMessageNoCallback({
                     type: EventType.INSERT_SLIDE_SUCCESS,
                     data,
