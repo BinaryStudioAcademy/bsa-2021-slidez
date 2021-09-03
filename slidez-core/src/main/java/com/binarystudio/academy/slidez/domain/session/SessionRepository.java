@@ -1,7 +1,6 @@
 package com.binarystudio.academy.slidez.domain.session;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import com.binarystudio.academy.slidez.domain.session.model.Session;

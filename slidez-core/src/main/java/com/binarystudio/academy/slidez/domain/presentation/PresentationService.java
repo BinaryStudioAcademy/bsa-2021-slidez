@@ -93,4 +93,9 @@ public class PresentationService {
 				.collect(Collectors.toList());
 	}
 
+	public Presentation getPresentationByShortCode(String shortCode) throws PresentationNotFoundException {
+		return presentationRepository.findByShortCode(shortCode).orElseThrow(() -> new PresentationNotFoundException(
+				String.format("No presentation corresponds to short code %s", shortCode)));
+	}
+
 }
