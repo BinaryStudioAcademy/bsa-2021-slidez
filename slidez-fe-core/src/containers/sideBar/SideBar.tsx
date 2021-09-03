@@ -1,9 +1,9 @@
 import React from 'react'
 import SlidezLogo from '../../../src/logo_Slidez_1.svg'
-import create_presentation from '../../assets/svgs/create_presentation.svg'
-import my_presentation from '../../assets/svgs/my_presentation.svg'
-import graph_icon from '../../assets/svgs/graph_icon.svg'
-import layout_icon from '../../assets/svgs/layout_icon.svg'
+import { ReactComponent as CreatePresentation } from '../../assets/svgs/create_presentation.svg'
+import { ReactComponent as MyPresentation } from '../../assets/svgs/my_presentation.svg'
+import { ReactComponent as GraphIcon } from '../../assets/svgs/graph_icon.svg'
+import { ReactComponent as LayoutIcon } from '../../assets/svgs/layout_icon.svg'
 import soon_lable from '../../assets/svgs/soon_lable.svg'
 import soon from '../../assets/svgs/soon.svg'
 import styles from './styles.module.scss'
@@ -20,10 +20,7 @@ const SideBar = () => {
                 <span>
                     <a href=''>
                         <div className={styles.addIcon}>
-                            <img
-                                src={create_presentation}
-                                alt='add presentation'
-                            />
+                            <CreatePresentation />
                             <span className={styles.tooltiptext}>
                                 Create presentation
                             </span>
@@ -32,7 +29,7 @@ const SideBar = () => {
                 </span>
                 <span>
                     <div className={styles.sideIcon}>
-                        <img src={my_presentation} alt='my presentations'></img>
+                        <MyPresentation />
                         <span className={styles.tooltiptext}>
                             My presentation
                         </span>
@@ -41,7 +38,7 @@ const SideBar = () => {
                 <span>
                     <a href=''>
                         <div className={styles.disableIcons}>
-                            <img src={graph_icon} alt='graph' />
+                            <GraphIcon />
                             <img className={styles.label} src={soon_lable} />
                             <img className={styles.label} src={soon} />
                             <span className={styles.tooltiptext}>
@@ -53,7 +50,7 @@ const SideBar = () => {
                 <span>
                     <a href=''>
                         <div className={styles.disableIcons}>
-                            <img src={layout_icon} alt='layout' />
+                            <LayoutIcon />
                             <img className={styles.label} src={soon_lable} />
                             <img className={styles.label} src={soon} />
                             <span className={styles.tooltiptext}>

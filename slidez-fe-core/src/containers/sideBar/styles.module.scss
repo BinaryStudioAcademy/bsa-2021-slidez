@@ -39,15 +39,20 @@
         margin-bottom: 40px;
         background-color: #293948;
     }
-    .sideIcon img::after {
-        filter: invert(0.08) sepia(1) saturate(14.1) hue-rotate(82.8deg) brightness(0.91);
-     }
+
+    .sideIcon:hover svg path {
+        stroke: #59D0A5;  
+    } 
+
+    .sideIcon svg:active path {
+        stroke: #59D0A5;
+    }
 
     .sideIcon:hover {
         cursor: pointer;
-        filter: invert(0.08) sepia(1) saturate(14.1) hue-rotate(82.8deg) brightness(0.91);
         background-color: rgba(89, 208, 165, 0.2);
-    } 
+    }
+
 
     .label {
         position: absolute;
