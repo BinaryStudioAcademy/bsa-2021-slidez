@@ -31,21 +31,16 @@ const SideBar = () => {
                     </a>
                 </span>
                 <span>
-                    <a href=''>
-                        <div className={styles.sideIcon}>
-                            <img
-                                src={my_presentation}
-                                alt='my presentations'
-                            ></img>
-                            <span className={styles.tooltiptext}>
-                                My presentation
-                            </span>
-                        </div>
-                    </a>
+                    <div className={styles.sideIcon}>
+                        <img src={my_presentation} alt='my presentations'></img>
+                        <span className={styles.tooltiptext}>
+                            My presentation
+                        </span>
+                    </div>
                 </span>
                 <span>
                     <a href=''>
-                        <div className={styles.sideIcon}>
+                        <div className={styles.disableIcons}>
                             <img src={graph_icon} alt='graph' />
                             <img className={styles.label} src={soon_lable} />
                             <img className={styles.label} src={soon} />
@@ -57,7 +52,7 @@ const SideBar = () => {
                 </span>
                 <span>
                     <a href=''>
-                        <div className={styles.sideIcon}>
+                        <div className={styles.disableIcons}>
                             <img src={layout_icon} alt='layout' />
                             <img className={styles.label} src={soon_lable} />
                             <img className={styles.label} src={soon} />
