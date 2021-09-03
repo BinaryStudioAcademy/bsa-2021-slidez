@@ -9,8 +9,18 @@ import './qa.scss'
 import { MOCK_DATA } from './qa-session-mock'
 import { useEffect } from 'react'
 import { QASessionDto } from '../../containers/session/dto/InteractiveElement'
-import { getParticipantData } from '../../services/participant/participant-service'
+import {
+    createNickName,
+    getParticipantData,
+} from '../../services/participant/participant-service'
 import { QASessionQuestionDto } from '../../containers/session/dto/QASessionQuestionDto'
+import {
+    AskQuestionRequest,
+    createAskQuestionRequest,
+} from '../../containers/session/event/FrontendEvent'
+import { useParams } from 'react-router-dom'
+import { useAppDispatch } from '../../hooks'
+import { askQuestion } from '../../containers/session/store/store'
 
 type QaProps = {
     handleClose: any
@@ -35,35 +45,34 @@ const useStyles = makeStyles({
 })
 
 const Qa = (qaProps: QaProps) => {
+    //@ts-ignore
+    const { link } = useParams()
     const { handleClose, show } = qaProps
     const classes = useStyles()
     const [participantData] = useState(getParticipantData())
     const qaSession: QASessionDto = MOCK_DATA
 
     const [isRecentSelected, setIsRecentSelected] = useState(true)
+    const dispatch = useAppDispatch()
 
+    // Need it on every re-render
     useEffect(() => {
-        handleRecentClick() // Here revecive list of Q&A
-    }, [])
-
-    const handleSubmit = (textValue: string) => {
-        const newQuestion: QASessionQuestionDto = {
-            id: 'b2c5620f-ca52-488d-953f-a3fc1c982fb9',
-            question: 'When does life get better?',
-            likedBy: [],
-            createdAt: new Date(),
-            authorNickname:
-                participantData.participantFirstName +
-                ' ' +
-                participantData.participantLastName,
-            qaSessionId: qaSession.id,
-        }
-
         if (isRecentSelected) {
-            qaSession.questions.unshift(newQuestion)
+            handleRecentClick()
         } else {
-            qaSession.questions.push(newQuestion)
+            handleTopClick()
         }
+    })
+
+    const handleSubmit = (text: string) => {
+        const nickname = createNickName()
+        const askQuestionRequest: AskQuestionRequest = createAskQuestionRequest(
+            link,
+            text,
+            nickname,
+            qaSession.id
+        )
+        dispatch(askQuestion(askQuestionRequest))
     }
 
     const handleLike = (questionId: string) => {
