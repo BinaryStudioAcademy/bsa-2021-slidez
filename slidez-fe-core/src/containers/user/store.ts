@@ -95,6 +95,12 @@ export const userSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(logIn.pending, (state) => {
+                state.error = undefined
+            })
+            .addCase(logIn.rejected, (state) => {
+                state.error = undefined
+            })
             .addCase(logIn.fulfilled, (state, action) => {
                 state.error = action.payload.error
                 if (action.payload.userDetailsDto) {
@@ -155,6 +161,11 @@ export const userSlice = createSlice({
                 }
             })
             .addCase(logout.fulfilled, (state, action) => {
+                state.error = undefined
+                state.user = undefined
+                state.isLoggedIn = false
+            })
+            .addCase(deleteAccount.fulfilled, (state, action) => {
                 state.error = undefined
                 state.user = undefined
                 state.isLoggedIn = false

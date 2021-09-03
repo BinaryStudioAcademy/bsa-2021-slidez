@@ -24,6 +24,9 @@ const SideBar = () => {
                                 src={create_presentation}
                                 alt='add presentation'
                             />
+                            <span className={styles.tooltiptext}>
+                                Create presentation
+                            </span>
                         </div>
                     </a>
                 </span>
@@ -34,6 +37,9 @@ const SideBar = () => {
                                 src={my_presentation}
                                 alt='my presentations'
                             ></img>
+                            <span className={styles.tooltiptext}>
+                                My presentation
+                            </span>
                         </div>
                     </a>
                 </span>
@@ -43,6 +49,9 @@ const SideBar = () => {
                             <img src={graph_icon} alt='graph' />
                             <img className={styles.label} src={soon_lable} />
                             <img className={styles.label} src={soon} />
+                            <span className={styles.tooltiptext}>
+                                Analytics
+                            </span>
                         </div>
                     </a>
                 </span>
@@ -52,6 +61,9 @@ const SideBar = () => {
                             <img src={layout_icon} alt='layout' />
                             <img className={styles.label} src={soon_lable} />
                             <img className={styles.label} src={soon} />
+                            <span className={styles.tooltiptext}>
+                                Templates
+                            </span>
                         </div>
                     </a>
                 </span>

@@ -1,7 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { EventType, InsertSlideSuccess } from 'slidez-shared'
+import { handleNotification } from '../../../common/notification/Notification'
 import { getMessageBusUnsafe } from '../../../hooks/event-bus'
 import httpHelper from '../../../services/http/http-helper'
+import { CreatePresentationSessionDto } from '../../../services/session/dto/CreatePresentationSessionDto'
+import { createPresentationSession } from '../../../services/session/session-service'
 import {
     QaInteractiveElement,
     PollInteractiveElement,
@@ -27,12 +30,17 @@ type EditorState = {
     polls: PollInteractiveElement[]
     qaSessions: QaInteractiveElement[]
     quizzes: QuizInteractiveElement[]
+    session: {
+        code: string
+        presentationName: string
+    } | null
 }
 
 const initialState: EditorState = {
     isFetching: false,
     activeTab: null,
     error: null,
+    session: null,
     presentationId: '',
     qaSessions: [],
     quizzes: [],
@@ -50,6 +58,58 @@ export const preloadState = createAsyncThunk(
             )
         ).data.data
         return presentationData
+    }
+)
+
+export const loadActiveSession = createAsyncThunk(
+    'load-active-session',
+    async (presentationId: string, { dispatch }) => {
+        try {
+            const sessionData = await httpHelper.doGet(
+                `/presentation/${presentationId}/active-session`
+            )
+            const sessionCode = sessionData.data.data.code
+            dispatch(setActiveSession(sessionCode))
+
+            getMessageBusUnsafe()!.sendMessageNoCallback({
+                type: EventType.SET_ACTIVE_SESSION,
+                data: { presentationId, sessionCode: sessionCode },
+            })
+        } catch (error) {
+            //remove active session
+            getMessageBusUnsafe()!.sendMessageNoCallback({
+                type: EventType.SET_ACTIVE_SESSION,
+                data: { presentationId, sessionCode: null },
+            })
+            throw error
+        }
+    }
+)
+
+export const createSessionForPresentation = createAsyncThunk(
+    'create-session',
+    async (dto: CreatePresentationSessionDto) => {
+        try {
+            const res = await createPresentationSession(dto)
+            debugger
+            const link = res.link
+
+            setActiveSession(link)
+
+            getMessageBusUnsafe()!.sendMessageNoCallback({
+                type: EventType.SET_ACTIVE_SESSION,
+                data: {
+                    presentationId: dto.presentationLink,
+                    sessionCode: link,
+                },
+            })
+        } catch (error) {
+            handleNotification(
+                'Failed to create session',
+                error.message,
+                'error'
+            )
+        }
     }
 )
 
@@ -90,6 +150,16 @@ const editorSlice = createSlice({
         ) => {
             state.activeTab = payload.payload
         },
+
+        setActiveSession: (
+            state: EditorState,
+            payload: PayloadAction<string>
+        ) => {
+            state.session = {
+                ...(state.session ?? { presentationName: '' }),
+                code: payload.payload,
+            }
+        },
     },
     extraReducers: (builder) =>
         builder
@@ -110,9 +180,13 @@ const editorSlice = createSlice({
             })
             .addCase(preloadState.rejected, (state, errorResponse) => {
                 state.error = errorResponse.error.message ?? null
+            })
+            .addCase(loadActiveSession.rejected, (state, error) => {
+                state.session = null
             }),
 })
 
-export const { setPresentationId, setActiveTab } = editorSlice.actions
+export const { setPresentationId, setActiveTab, setActiveSession } =
+    editorSlice.actions
 
 export default editorSlice.reducer

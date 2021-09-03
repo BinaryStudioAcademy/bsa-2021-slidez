@@ -49,7 +49,33 @@
             .text {
                 font-weight: 500;
                 font-size: 14px;
+                max-width: max-content;
+            }
+            .arrow-icon {
+                cursor: pointer;
+                color: #59D0A5;
+                margin-left: 140px;
+                .hide-icon {
+                    display: none;
+                    color: $mint
+                }
+                .hide-icon{
+                    display: none;
+                    color: $mint
+                
+                }
             }
         }
+    }
+    .show-menu {
+        max-height: max-content;
+    }
+    .hide-menu {
+        max-height: 235px;
+        overflow: hidden;
+    }
+    .button-show-hide-elements {
+        padding-left: 2rem;
+        
     }
 }

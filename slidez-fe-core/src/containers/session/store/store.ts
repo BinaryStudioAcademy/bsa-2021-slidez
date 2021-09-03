@@ -16,7 +16,7 @@ import { SessionPollAnswer } from '../model/SessionPollAnswer'
 import { InteractiveElementType } from '../enums/InteractiveElementType'
 
 export interface PresentationSessionState {
-    connectionStatus: string
+    connectionStatus: WsConnectionStatus
     error: string | undefined
     snapshot: SnapshotDto | undefined
     currentInteractiveElement: InteractiveElement | undefined

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import './styles.scss'
+import './noEvent.scss'
+import './common.scss'
 import Qa from '../qa/Qa'
 
 const NoEvent = () => {
@@ -13,7 +14,7 @@ const NoEvent = () => {
     }
 
     return (
-        <div className='events-page'>
+        <div className='no-event-page'>
             <div className='error-content'>
                 Please wait for the presenter to show the next slide.
             </div>
@@ -24,7 +25,7 @@ const NoEvent = () => {
             >
                 Open Q&amp;A page
             </button>
-            <Qa show={showQAModal} handleClose={handleQAClose}></Qa>
+            <Qa show={showQAModal} handleClose={handleQAClose} />
         </div>
     )
 }

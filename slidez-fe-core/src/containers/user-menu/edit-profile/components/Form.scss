@@ -25,7 +25,7 @@
             border-color: rgba(0, 0, 0, 0); 
         }
         .input-item .MuiTextField-root {
-            width: 100%;
+            width: 100%;  
         }
         .input-icon {
             position: absolute;
@@ -63,6 +63,10 @@
             font-size: small;
             margin-bottom: 5px;
             font-weight: normal;
+
+            .asterisk {
+                color: $error;
+            }
         }
         .error-text-user-profile {
             display: flex;

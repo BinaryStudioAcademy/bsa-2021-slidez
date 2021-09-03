@@ -12,7 +12,6 @@ function throwBadType(type: string): never {
 
 export const responseHandler =
     (dispatch: any) => (response: GenericResponse<SessionResponse, string>) => {
-        console.log(response)
         if (response.error || !response.data) {
             throw new Error(response.error || 'No data')
         }

@@ -53,4 +53,25 @@
         margin-top: 14px;
         margin-left: 17px;
     }
+
+    .sideIcon:hover .tooltiptext, .addIcon:hover .tooltiptext{
+        visibility: visible;
+    }
+
+    #my_presentation:focus {
+        fill: $light-color;
+    }
+
+    .tooltiptext {
+        visibility: hidden;
+        left: 10%;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+    }
 }
