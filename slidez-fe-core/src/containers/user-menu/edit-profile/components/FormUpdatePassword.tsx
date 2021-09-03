@@ -9,7 +9,6 @@ import {
 } from '../../../user/store'
 import { updatePasswordFieldsValidation } from '../validations'
 import './Form.scss'
-import { UserField } from '../Field'
 import { UpdatePasswordErrors } from './UpdatePasswordErrors'
 import { Loader } from './Loader'
 import { useAppDispatch, useAppSelector } from '../../../../hooks'
@@ -17,6 +16,7 @@ import { UpdatePasswordRequest } from '../../../../services/user/dto/UpdatePassw
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
 import { revealPassword } from '../../../../common/components/forms/form-utils'
+import { UserPasswordField } from '../PasswordField'
 
 export interface Password {
     id: string | undefined
@@ -92,7 +92,7 @@ const FormUpdatePassword = () => {
                                     type='password'
                                     autoComplete='new-password'
                                     onClick={() => setViewErrors(false)}
-                                    component={UserField}
+                                    component={UserPasswordField}
                                     value={errors.password}
                                     placeholder='Enter new password'
                                 />
@@ -116,7 +116,7 @@ const FormUpdatePassword = () => {
                                     id='update-confirmPassword-input'
                                     name='confirmPassword'
                                     className={'form-input'}
-                                    component={UserField}
+                                    component={UserPasswordField}
                                     value={errors.confirmPassword}
                                     onClick={() => setViewErrors(false)}
                                     type='password'
