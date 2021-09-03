@@ -9,6 +9,8 @@ import drop_down_icon from '../../assets/svgs/drop_down_icon.svg'
 import './PollEditor.scss'
 import { createPoll, EditorTab, setActiveTab } from './store'
 import { RootState } from '../../store'
+import { NotificationTypes } from '../../common/notification/notification-types'
+import { handleNotification } from '../../common/notification/Notification'
 import Loader from '../../common/components/loader/Loader'
 
 export type PollEditorProps = {
@@ -19,6 +21,7 @@ export type PollEditorProps = {
 const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch()
+    const pollsError = useSelector((state: RootState) => state.editor.error)
     const presentationId = useSelector(
         (state: RootState) => state.editor.presentationId
     )
@@ -42,6 +45,13 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
                 presentationId,
             })
         )
+        if (pollsError !== null) {
+            handleNotification(
+                'Added Failed',
+                'The poll did not added',
+                NotificationTypes.ERROR
+            )
+        }
         setIsLoading(false)
     }
     const onChangeInput = (e: { target: any }) => {
