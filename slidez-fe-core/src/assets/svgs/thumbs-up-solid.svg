@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="Bold" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#59D0A5;}
+</style>
+<path class="st0" d="M37.3,490.7h53.3c20.6,0,37.3-16.7,37.3-37.3V208c0-20.6-16.7-37.3-37.3-37.3H37.3C16.7,170.7,0,187.4,0,208
+	v245.3C0,473.9,16.7,490.7,37.3,490.7z"/>
+<path class="st0" d="M272.7,16c-21.3,0-32,10.7-32,64c0,50.7-49.1,91.5-80.7,112.5v264.3c34.2,15.8,102.5,39.2,208.7,39.2h34.1
+	c41.6,0,77-29.9,84.1-70.8l23.9-138.7c9-52.3-31.1-99.8-84.1-99.8H326c0,0,16-32,16-85.3C342,37.3,294,16,272.7,16L272.7,16z"/>
+</svg>

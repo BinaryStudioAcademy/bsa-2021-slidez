@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import reset_button from '../../assets/svgs/reset_button.svg'
 import pause_button from '../../assets/svgs/pause_button.svg'
 import log_out from '../../assets/svgs/log_out.svg'
@@ -9,18 +9,26 @@ import { logout } from '../user/store'
 import { useAppDispatch } from '../../hooks'
 import { useState } from 'react'
 import menu_icon from '../../assets/svgs/menu-icon.svg'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store'
+import { createSessionForPresentation } from '../poll-editor/store'
 
 const Session = () => {
     const dispatch = useAppDispatch()
+    const { session, presentationId } = useSelector(
+        (state: RootState) => state.editor
+    )
+    const activeSessionLink = session?.code
+
     const [openMenu, setOpenMenu] = useState(false)
-    const session_name = 'Determine Interfaces | Describe'
-    const session_id = '#131324235'
 
     const sideMenuClasses = openMenu ? 'session-page-active' : 'session-page'
 
-    const handleLogout = () => {
-        dispatch(logout())
-    }
+    const handleCreateSession = useCallback(() => {
+        dispatch(
+            createSessionForPresentation({ presentationLink: presentationId })
+        )
+    }, [dispatch])
 
     const handleCloseMenu = () => {
         setOpenMenu(!openMenu)
@@ -44,32 +52,42 @@ const Session = () => {
             {handleIcon}
             <div className={sideMenuClasses}>
                 <div className='session-section'>
-                    <div className='session-text'>
-                        <div className='session-name'>{session_name}</div>
-                        <div className='session-id'>{session_id}</div>
+                    <div className='session-name'>
+                        <div className='session-id'>
+                            {activeSessionLink ?? 'No active session'}
+                        </div>
                     </div>
                     <button className='arrow-back'>
                         <img src={arrow_back} />
                     </button>
                 </div>
                 <hr className='border-between-button' />
+                {activeSessionLink && (
+                    <div className='buttons-session-section'>
+                        <button className='pause-button'>
+                            <img src={pause_button} />
+                            Finish session
+                        </button>
+                    </div>
+                )}
+
                 <div className='buttons-session-section'>
-                    <button className='reset-button'>
+                    <button
+                        className='reset-button'
+                        onClick={handleCreateSession}
+                    >
                         <img src={reset_button} />
-                        Reset session
-                    </button>
-                    <button className='pause-button'>
-                        <img src={pause_button} />
-                        Pause session
+                        Create session
                     </button>
                 </div>
-                <hr className='border-between-account' />
+
+                {/*<hr className='border-between-account' />
                 <div className='account-section'>
                     <button className='logout' onClick={handleLogout}>
                         <img src={log_out} />
                         Log out
                     </button>
-                </div>
+                </div>*/}
             </div>
         </div>
     )

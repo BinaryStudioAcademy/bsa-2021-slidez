@@ -19,12 +19,16 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	private final AllowedOriginProperties allowedOriginProperties;
+
 	private final SecurityProperties securityProperties;
 
 	private final JwtFilter jwtFilter;
 
 	@Autowired
-	public SecurityConfig(SecurityProperties securityProperties, JwtFilter jwtFilter) {
+	public SecurityConfig(AllowedOriginProperties allowedOriginProperties, SecurityProperties securityProperties,
+			JwtFilter jwtFilter) {
+		this.allowedOriginProperties = allowedOriginProperties;
 		this.securityProperties = securityProperties;
 		this.jwtFilter = jwtFilter;
 	}
@@ -46,11 +50,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
 		configuration.applyPermitDefaultValues();
-		configuration.setAllowedOrigins(List.of("*"));
+		String[] allowedOrigins = allowedOriginProperties.getAllowedOrigins();
+		configuration.setAllowedOrigins(List.of(allowedOrigins));
 		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "HEAD"));
 		configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type", "X-Requested-With",
 				"Access-Control-Allow-Headers", "Access-Control-Allow-Origin"));
-		configuration.setAllowCredentials(false);
+		configuration.setAllowCredentials(true);
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
 		return source;

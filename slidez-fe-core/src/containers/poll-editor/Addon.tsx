@@ -8,7 +8,7 @@ import { EventBusConnectionStatus, useEventBus } from '../../hooks/event-bus'
 import { RootState } from '../../store'
 import Menu from './Menu'
 import PollEditor from './PollEditor'
-import { EditorTab, preloadState } from './store'
+import { EditorTab, loadActiveSession, preloadState } from './store'
 
 const useEditorParams = () => {
     const params = new URLSearchParams(useLocation().search)
@@ -27,6 +27,7 @@ const Addon = () => {
 
     useEffect(() => {
         dispatch(preloadState(presentationId))
+        dispatch(loadActiveSession(presentationId))
     }, [])
 
     const eventBus = useEventBus(extensionId)
@@ -37,9 +38,9 @@ const Addon = () => {
         return 'Connecting to extension, please wait...'
     }
 
-    let tab: JSX.Element
+    let tab: JSX.Element = <Menu />
     switch (activeTab) {
-        case null:
+        case null || EditorTab.MENU:
             tab = <Menu />
             break
         case EditorTab.POLL:

@@ -1,0 +1,60 @@
+@import 'src/global/global';
+.qaadd {
+  width: 100%;
+  max-width: 590px;
+  position: fixed;
+  bottom: 25px;
+  z-index: 10;
+  margin: 8px;
+  background-color: white;
+  border-radius: 0px 7px 7px 0px;
+}
+
+.qaadd-title {
+  font-size: 12px;
+  font-style: normal;
+  text-align: left;
+}
+
+.qaadd-text {
+  border-radius: 7px;
+  width: calc(100% - 6px);
+  font-size: 14px;
+  background-color: #f6f4f8;
+  border: none;
+  resize: vertical;
+  padding: 5px;
+  max-height: 30vh;
+  min-height: 45px
+}
+
+.qaadd-text:focus,
+.qaadd-text:focus-visible {
+  border: none;
+  outline: none;
+  height: 60px;
+}
+
+.qaadd-submit {
+  width: calc(100% - 6px);
+  border: 2px $main-color solid;
+  color: $white;
+  background-color: $main-color;
+  font-weight: 500;
+  font-size: 16px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 50px;
+  margin-bottom: 12px;
+}
+
+.chars-counter {
+  font-size: 10px;
+  color: #777777;
+  z-index: 10;
+  flex: auto;
+  position: absolute;
+  right: 18px;
+  bottom: 66px;
+  text-align: right;
+}

@@ -1,5 +1,5 @@
-export const WsConnectionStatus = Object.freeze({
-    CONNECTED: 'CONNECTED',
-    ESTABLISHING: 'ESTABLISHING',
-    INTERRUPTED: 'INTERRUPTED',
-})
+export enum WsConnectionStatus {
+    CONNECTED = 'CONNECTED',
+    ESTABLISHING = 'ESTABLISHING',
+    INTERRUPTED = 'INTERRUPTED',
+}

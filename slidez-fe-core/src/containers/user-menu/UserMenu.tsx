@@ -17,6 +17,7 @@ import { UserDetailsDto } from '../user/dto/UserDetailsDto'
 import { Button, Dialog, DialogContent } from '@material-ui/core'
 import FormUpdateUserData from './edit-profile/components/FormUpdateUserData'
 import FormUpdatePassword from './edit-profile/components/FormUpdatePassword'
+import DeleteAccount from './delete-account/DeleteAccount'
 
 export const initialValuesUserData: UserDetailsDto = {
     id: '',
@@ -28,9 +29,10 @@ export const initialValuesUserData: UserDetailsDto = {
 const UserMenu: React.FC = () => {
     const dispatch = useAppDispatch()
     const dropdownRef = useRef<HTMLInputElement>(null)
-    const [isActive, setIsActive] = useState(false)
+    const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
     const [logo, setLogo] = useState('')
     const [openEditProfile, setOpenEditProfile] = useState(false)
+    const [showModal, setShowModal] = useState(false)
     const userData = useAppSelector(selectUserDetals) || initialValuesUserData
 
     useEffect(() => {
@@ -54,8 +56,11 @@ const UserMenu: React.FC = () => {
         dispatch(logout())
     }
 
-    const handleDeleteAccountClick = () => {
-        dispatch(deleteAccount())
+    const hideDeleteAccountModal = () => {
+        setShowModal(false)
+    }
+    const showDeleteAccountModal = () => {
+        setShowModal(true)
     }
 
     const viewName = () => {
@@ -124,8 +129,12 @@ const UserMenu: React.FC = () => {
                                                 Profile
                                             </span>
                                         </Button>
+                                        <DeleteAccount
+                                            modalState={showModal}
+                                            handleClose={hideDeleteAccountModal}
+                                        />
                                         <Button
-                                            onClick={handleDeleteAccountClick}
+                                            onClick={showDeleteAccountModal}
                                         >
                                             <FontAwesomeIcon
                                                 className={styles.buttonIcon}

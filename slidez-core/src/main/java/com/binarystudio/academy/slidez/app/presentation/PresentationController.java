@@ -3,6 +3,7 @@ package com.binarystudio.academy.slidez.app.presentation;
 import com.binarystudio.academy.slidez.domain.interactive_element.dto.InteractiveElementDto;
 import com.binarystudio.academy.slidez.domain.interactive_element.exception.IllegalElementTypeException;
 import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
+import com.binarystudio.academy.slidez.domain.presentation.dto.PresentationSessionDTO;
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,12 @@ public class PresentationController {
 			throws EntityNotFoundException, IllegalElementTypeException, IllegalStateException {
 		Collection<InteractiveElementDto> interactiveElements = presentationService.getInteractiveElementDtos(link);
 		return new GenericResponse<>(interactiveElements);
+	}
+
+	@GetMapping("{link}/active-session")
+	public GenericResponse<PresentationSessionDTO, String> getActiveSession(@PathVariable("link") String link) {
+		// Null is a part of contract on frontend
+		return new GenericResponse<>(this.presentationService.getActivePresentationSessionData(link));
 	}
 
 }

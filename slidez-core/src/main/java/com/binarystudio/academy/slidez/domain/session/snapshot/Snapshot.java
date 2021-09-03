@@ -9,8 +9,10 @@ public interface Snapshot {
 
 	List<SessionInteractiveElement> getSessionInteractiveElements();
 
-	static SimpleSnapshot getSimpleSnapshotFromState(State state) {
-		return new SimpleSnapshot(state.getSessionInteractiveElements());
+	String getPresentationLink();
+
+	static SimpleSnapshot getSimpleSnapshotFromState(State state, String presentationLink) {
+		return new SimpleSnapshot(state.getSessionInteractiveElements(), presentationLink);
 	}
 
 }

@@ -4,6 +4,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import * as Yup from 'yup'
 import { Field, Form, Formik, FormikErrors } from 'formik'
+import { saveParticipantData } from '../../../services/participant/participant-service'
 
 type ParticipantNameErorrsProps = {
     viewErrors: boolean
@@ -34,8 +35,7 @@ const ParticipantNameDialog = () => {
     const [openModal, setOpenModal] = useState(true)
 
     const handleUserData = (firstName: string, lastName: string) => {
-        window.localStorage.setItem('firstName', firstName)
-        window.localStorage.setItem('lastName', lastName)
+        saveParticipantData(firstName, lastName)
         setOpenModal(false)
     }
 
