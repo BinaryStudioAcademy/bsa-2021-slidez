@@ -14,16 +14,17 @@ import java.util.UUID;
 @AllArgsConstructor
 public class SessionQAQuestion {
 
-    private UUID id = UUID.randomUUID();
+	private UUID id = UUID.randomUUID();
 
 	private UUID qaSessionId;
 
 	private String question;
-    //Array of user ids who liked question
-    private List<UUID> likedBy = new ArrayList<>();
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+	// Array of user ids who liked question
+	private List<UUID> likedBy = new ArrayList<>();
 
-    private String authorNickname = "Anonymous";
+	private LocalDateTime createdAt = LocalDateTime.now();
+
+	private String authorNickname = "Anonymous";
 
 }

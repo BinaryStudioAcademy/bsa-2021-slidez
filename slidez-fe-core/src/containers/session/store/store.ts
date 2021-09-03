@@ -25,8 +25,8 @@ export interface PresentationSessionState {
     connectionStatus: WsConnectionStatus
     error: string | undefined
     snapshot: SnapshotDto | undefined
-    currentInteractiveElement: InteractiveElement | undefined
-    qAndASession: QASessionDto | undefined
+    currentInteractiveElement: InteractiveElement | undefined | null
+    qAndASession: QASessionDto | undefined | null
     link: string | undefined
 }
 
@@ -46,23 +46,6 @@ export const createSessionForPresentation = createAsyncThunk(
     }
 )
 
-export const requestStartPoll = createAsyncThunk(
-    'poll/start',
-    async (params: StartPollRequest) => {
-        SessionService.sendRequest(params.link, params.event)
-    }
-)
-
-export const receiveStartPoll = createAsyncThunk(
-    'poll/received',
-    async (poll: PollDto) => {
-        const out: PresentationSessionState = { ...initialState }
-        out.snapshot?.sessionInteractiveElements.push(poll)
-        out.currentInteractiveElement = poll
-        return out
-    }
-)
-
 export const requestSnapshot = createAsyncThunk(
     'snapshot/get',
     async (params: SnapshotRequest) => {
@@ -74,6 +57,20 @@ export const receiveSnapshot = createAsyncThunk(
     'snapshot/received',
     async (snapshot: SnapshotDto) => {
         return snapshot
+    }
+)
+
+export const requestStartPoll = createAsyncThunk(
+    'poll/start',
+    async (params: StartPollRequest) => {
+        SessionService.sendRequest(params.link, params.event)
+    }
+)
+
+export const receiveStartPoll = createAsyncThunk(
+    'poll/received',
+    async (poll: PollDto) => {
+        return poll
     }
 )
 
@@ -142,15 +139,15 @@ export const presentationSessionSlice = createSlice({
                 }
             )
             .addCase(receiveStartPoll.fulfilled, (state, action) => {
-                state.snapshot = action.payload.snapshot
-                state.currentInteractiveElement =
-                    action.payload.currentInteractiveElement
+                state.snapshot?.sessionInteractiveElements.push(action.payload)
+                state.currentInteractiveElement = action.payload
             })
             .addCase(receiveSnapshot.fulfilled, (state, action) => {
                 const snapshotDto: SnapshotDto = action.payload
                 state.snapshot = snapshotDto
                 state.currentInteractiveElement =
                     snapshotDto.currentInteractiveElement
+                state.qAndASession = snapshotDto.currentQASession
             })
             .addCase(receiveAnswerPoll.fulfilled, (state, action) => {
                 if (

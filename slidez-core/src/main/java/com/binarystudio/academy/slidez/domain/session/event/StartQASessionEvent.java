@@ -5,18 +5,24 @@ import com.binarystudio.academy.slidez.domain.session.data.SessionQASession;
 import com.binarystudio.academy.slidez.domain.session.data.State;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class StartQASessionEvent extends DomainEvent {
 
-	private String slideId;
+    private String shortCode;
 
 	private SessionQASession sessionQASession;
 
-	@Override
+    public StartQASessionEvent(String shortCode) {
+        this.shortCode = shortCode;
+    }
+
+    @Override
 	public void applyEvent(State state) throws DomainException {
-		state.addInteractiveElement(sessionQASession);
+		state.setCurrentQASession(sessionQASession);
 	}
 
 }
