@@ -19,7 +19,7 @@ export interface PresentationSessionState {
     connectionStatus: WsConnectionStatus
     error: string | undefined
     snapshot: SnapshotDto | undefined
-    currentInteractiveElement: InteractiveElement | undefined
+    currentInteractiveElement: InteractiveElement | undefined | null
     link: string | undefined
 }
 
