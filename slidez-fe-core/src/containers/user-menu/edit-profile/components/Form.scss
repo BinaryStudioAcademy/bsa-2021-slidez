@@ -27,19 +27,18 @@
         .input-item .MuiTextField-root {
             width: 100%;  
         }
-        .input-icon {
+
+        .input-password {
+            display: flex;
+            flex-direction:row;
+        }
+        .input-icon-password {
             position: absolute;
             width: 20px;
             height: 20px;
+            margin-top: 10px;
+            right: 130px;
             color: $grey;
-        }
-        .input-icon-password {
-            top: 660px;
-            right: 130px;
-        }
-        .input-icon-confirm-password {
-            top: 740px;
-            right: 130px;
         }
         button {
             color: rgb(255, 255, 255);
