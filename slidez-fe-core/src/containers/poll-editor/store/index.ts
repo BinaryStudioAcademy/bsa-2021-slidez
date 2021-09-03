@@ -92,7 +92,6 @@ export const createSessionForPresentation = createAsyncThunk(
     async (dto: CreatePresentationSessionDto) => {
         try {
             const res = await createPresentationSession(dto)
-            
             const link = res.link
 
             setActiveSession(link)
@@ -107,7 +106,7 @@ export const createSessionForPresentation = createAsyncThunk(
         } catch (error) {
             handleNotification(
                 'Failed to create session',
-                error as string,
+                error.message,
                 'error'
             )
         }
