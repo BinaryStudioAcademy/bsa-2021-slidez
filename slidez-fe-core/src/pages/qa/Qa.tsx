@@ -64,7 +64,6 @@ const Qa = (qaProps: QaProps) => {
     })
 
     const handleSubmit = (text: string) => {
-        console.log('QASession: ' + JSON.stringify(qaSession))
         if (!qaSession || !qaSession.id) {
             return
         }
