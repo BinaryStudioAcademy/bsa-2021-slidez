@@ -4,10 +4,16 @@ import com.binarystudio.academy.slidez.domain.poll.exception.PollNotFoundExcepti
 import com.binarystudio.academy.slidez.domain.quiz.exception.QuizNotFoundException;
 import com.binarystudio.academy.slidez.domain.qasession.exception.QASessionNotFoundException;
 import com.binarystudio.academy.slidez.domain.session.exception.BadOptionException;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.*;
 
 public class State {
+
+	@Getter
+	@Setter
+	private SessionInteractiveElement currentInteractiveElement;
 
 	private final List<SessionInteractiveElement> sessionInteractiveElements = new ArrayList<>();
 
