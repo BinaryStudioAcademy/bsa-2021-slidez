@@ -107,7 +107,7 @@ export const createSessionForPresentation = createAsyncThunk(
         } catch (error) {
             handleNotification(
                 'Failed to create session',
-                error.message,
+                error as string,
                 'error'
             )
         }
