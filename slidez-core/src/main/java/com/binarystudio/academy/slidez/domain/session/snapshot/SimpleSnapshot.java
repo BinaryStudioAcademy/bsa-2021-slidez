@@ -6,13 +6,16 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class SimpleSnapshot implements Snapshot {
 
-	@Getter
 	private final List<SessionInteractiveElement> sessionInteractiveElements;
 
-	public SimpleSnapshot(List<SessionInteractiveElement> sessionInteractiveElements) {
+	private final String presentationLink;
+
+	public SimpleSnapshot(List<SessionInteractiveElement> sessionInteractiveElements, String presentationLink) {
 		this.sessionInteractiveElements = new ArrayList<>(sessionInteractiveElements);
+		this.presentationLink = presentationLink;
 	}
 
 }

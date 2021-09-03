@@ -1,0 +1,16 @@
+@import 'src/global/global';
+
+.btn-open-qa {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    height: 45px;
+    border: 2px solid $main-color;
+    border-radius: 50px;
+    color: $main-color;
+    font-weight: 500;
+    font-size: 16px;
+    font-style: normal;
+    margin-top: 55px;
+}
