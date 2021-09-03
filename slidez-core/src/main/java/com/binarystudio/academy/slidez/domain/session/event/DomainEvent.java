@@ -19,7 +19,8 @@ import java.util.UUID;
 		@JsonSubTypes.Type(value = AddReactionEvent.class, name = "AddReactionEvent"),
 		@JsonSubTypes.Type(value = AnswerQuizEvent.class, name = "AnswerQuizEvent"),
 		@JsonSubTypes.Type(value = StartQASessionEvent.class, name = "StartQASessionEvent"),
-		@JsonSubTypes.Type(value = StartQuizEvent.class, name = "StartQuizEvent") })
+		@JsonSubTypes.Type(value = StartQuizEvent.class, name = "StartQuizEvent"),
+		@JsonSubTypes.Type(value = LikeQuestionEvent.class, name = "LikeQuestionEvent") })
 public abstract class DomainEvent {
 
 	private final UUID id = UUID.randomUUID();

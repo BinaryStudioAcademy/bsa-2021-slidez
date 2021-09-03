@@ -60,6 +60,12 @@ public class State {
 		}
 	}
 
+	public void addLikeToQuestionInQASession(SessionQAQuestionLike questionLike) {
+		if (currentQASession != null) {
+			currentQASession.addLikeToQuestion(questionLike);
+		}
+	}
+
 	private boolean canInteractWithCurrentInteractiveElement(UUID expectedId, Class<?> expectedClass) {
 		return currentInteractiveElement != null && Objects.equals(expectedId, currentInteractiveElement.getId())
 				&& Objects.equals(expectedClass, currentInteractiveElement.getClass());

@@ -13,6 +13,7 @@ import {
     AnswerPollRequest,
     AskQuestionRequest,
     createSnapshotRequest,
+    LikeQuestionRequest,
     SnapshotRequest,
     StartPollRequest,
 } from '../event/FrontendEvent'
@@ -99,6 +100,13 @@ export const receiveQuestion = createAsyncThunk(
     'QandA/receive-question',
     async (answer: QASessionQuestionDto) => {
         return answer
+    }
+)
+
+export const likeQuestion = createAsyncThunk(
+    'QandA/like-question',
+    async (request: LikeQuestionRequest) => {
+        SessionService.sendRequest(request.link, request.event)
     }
 )
 
