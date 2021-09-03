@@ -146,14 +146,18 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
                                                                     name={`options.${index}.title`}
                                                                     placeholder='Your option'
                                                                     className='input'
-                                                                    value={state.name}
-                                                            		onChange={(e: {
-                                                                		target: {
-                                                                    		value: React.SetStateAction<string>
-                                                                		}
-                                                            		}) =>
-                                                                		onChangeInput(e)
-                                                            		}
+                                                                    value={
+                                                                        state.name
+                                                                    }
+                                                                    onChange={(e: {
+                                                                        target: {
+                                                                            value: React.SetStateAction<string>
+                                                                        }
+                                                                    }) =>
+                                                                        onChangeInput(
+                                                                            e
+                                                                        )
+                                                                    }
                                                                 />
                                                             </div>
                                                             <div>
@@ -162,9 +166,9 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
                                                                     className='options-btn'
                                                                     onClick={() => {
                                                                         toggleRemoveClick(
-                                                                        	values
-                                                                        		.options
-                                                                        		.length,
+                                                                            values
+                                                                                .options
+                                                                                .length,
                                                                             index,
                                                                             arrayHelpers
                                                                         )

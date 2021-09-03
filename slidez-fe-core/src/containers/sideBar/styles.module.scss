@@ -36,11 +36,22 @@
         width: 58px;
         height: 58px;
         border-radius: 50%;
-        margin-bottom: 40px;  
+        margin-bottom: 40px;
+        background-color: #293948;
+
+        img:active {
+           filter: invert(0.08) sepia(1) saturate(14.1) hue-rotate(82.8deg) brightness(0.91);
+        }
     }
 
     .sideIcon:hover {
         background-color: rgba(89, 208, 165, 0.2);
+    } 
+
+    .label {
+        position: absolute;
+        margin-top: 14px;
+        margin-left: 17px;
     }
 
     .sideIcon:hover .tooltiptext, .addIcon:hover .tooltiptext{
