@@ -95,7 +95,7 @@ export const isLoggedIn = () => {
 export const performLogout = () => {
     window.localStorage.removeItem(JWT)
     window.localStorage.removeItem(refreshJWT)
-    window.location.assign(AppRoute.LOGIN)
+    window.location.assign(`/#${AppRoute.LOGIN}`)
 }
 
 export const getAuthHeaderValue = () => {
