@@ -1,26 +1,26 @@
-import React, { FC } from 'react';
-import { Formik, Field, FieldArray } from 'formik';
+import React, { FC } from 'react'
+import { Formik, Field, FieldArray } from 'formik'
 
-import server from '../../../utils/server';
-import { Form } from 'react-bootstrap';
-import './styles.scss';
+import server from '../../../utils/server'
+import { Form } from 'react-bootstrap'
+import './styles.scss'
 
-const { serverFunctions } = server;
+const { serverFunctions } = server
 
 const Poll: FC = () => {
     const OptionsArray = () => (
         <div>
             <Formik
                 initialValues={{ options: [''] }}
-                onSubmit={async (values) => {
-                    await new Promise((resolve) => setTimeout(resolve, 500));
-                    alert(JSON.stringify(values, null, 2));
+                onSubmit={async values => {
+                    await new Promise(resolve => setTimeout(resolve, 500))
+                    alert(JSON.stringify(values, null, 2))
                 }}
                 render={({ values }) => (
                     <Form>
                         <FieldArray
                             name='options'
-                            render={(arrayHelpers) => (
+                            render={arrayHelpers => (
                                 <div>
                                     {values.options &&
                                     values.options.length > 0 ? (
@@ -75,21 +75,21 @@ const Poll: FC = () => {
                 )}
             />
         </div>
-    );
+    )
 
     return (
         <div className='app'>
             <h2>Poll</h2>
             <Formik
                 initialValues={{ name: '' }}
-                onSubmit={async (values) => {
-                    await new Promise((resolve) => setTimeout(resolve, 500));
-                    alert(JSON.stringify(values, null, 2));
+                onSubmit={async values => {
+                    await new Promise(resolve => setTimeout(resolve, 500))
+                    alert(JSON.stringify(values, null, 2))
                 }}
             >
-                {(props) => {
+                {props => {
                     // eslint-disable-next-line react/prop-types
-                    const { values, handleChange, handleSubmit } = props;
+                    const { values, handleChange, handleSubmit } = props
                     return (
                         <form onSubmit={handleSubmit}>
                             <Form className='mx-auto'>
@@ -113,10 +113,10 @@ const Poll: FC = () => {
                                 <button type='submit'>Submit</button>
                             </Form>
                         </form>
-                    );
+                    )
                 }}
             </Formik>
         </div>
-    );
-};
-export default Poll;
+    )
+}
+export default Poll

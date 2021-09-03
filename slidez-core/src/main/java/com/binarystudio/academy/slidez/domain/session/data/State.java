@@ -4,10 +4,16 @@ import com.binarystudio.academy.slidez.domain.poll.exception.PollNotFoundExcepti
 import com.binarystudio.academy.slidez.domain.quiz.exception.QuizNotFoundException;
 import com.binarystudio.academy.slidez.domain.qasession.exception.QASessionNotFoundException;
 import com.binarystudio.academy.slidez.domain.session.exception.BadOptionException;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.*;
 
 public class State {
+
+	@Getter
+	@Setter
+	private SessionInteractiveElement currentInteractiveElement;
 
 	private final List<SessionInteractiveElement> sessionInteractiveElements = new ArrayList<>();
 
@@ -26,6 +32,10 @@ public class State {
 				.map(element -> (SessionPoll) element).findFirst().orElseThrow(() -> new PollNotFoundException(
 						String.format("Poll with id %s not found", pollAnswer.getPollId())))
 				.addAnswer(pollAnswer);
+		if (canInteractWithCurrentInteractiveElement(pollAnswer.getPollId(), SessionPoll.class)) {
+			SessionPoll sessionPoll = (SessionPoll) this.currentInteractiveElement;
+			sessionPoll.addAnswer(pollAnswer);
+		}
 	}
 
 	public void addAnswerToTheQuiz(SessionQuizAnswer quizAnswer) throws QuizNotFoundException, BadOptionException {
@@ -35,6 +45,10 @@ public class State {
 				.map(element -> (SessionQuiz) element).findFirst().orElseThrow(() -> new QuizNotFoundException(
 						String.format("Quiz with id %s not found", quizAnswer.getQuizId())))
 				.addAnswer(quizAnswer);
+		if (canInteractWithCurrentInteractiveElement(quizAnswer.getQuizId(), SessionQuiz.class)) {
+			SessionQuiz sessionPoll = (SessionQuiz) this.currentInteractiveElement;
+			sessionPoll.addAnswer(quizAnswer);
+		}
 	}
 
 	public void addQuestionToQASession(SessionQAQuestion sessionQAQuestion) {
@@ -45,6 +59,11 @@ public class State {
 				.orElseThrow(() -> new QASessionNotFoundException(
 						String.format("QASession with id %s not found", sessionQAQuestion.getQaSessionId())))
 				.addQuestion(sessionQAQuestion);
+	}
+
+	private boolean canInteractWithCurrentInteractiveElement(UUID expectedId, Class<?> expectedClass) {
+		return currentInteractiveElement != null && Objects.equals(expectedId, currentInteractiveElement.getId())
+				&& Objects.equals(expectedClass, currentInteractiveElement.getClass());
 	}
 
 }

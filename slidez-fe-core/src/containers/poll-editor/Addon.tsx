@@ -38,9 +38,9 @@ const Addon = () => {
         return 'Connecting to extension, please wait...'
     }
 
-    let tab: JSX.Element
+    let tab: JSX.Element = <Menu />
     switch (activeTab) {
-        case null:
+        case null || EditorTab.MENU:
             tab = <Menu />
             break
         case EditorTab.POLL:

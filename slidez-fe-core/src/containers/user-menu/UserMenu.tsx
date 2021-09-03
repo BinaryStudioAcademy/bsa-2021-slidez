@@ -29,7 +29,7 @@ export const initialValuesUserData: UserDetailsDto = {
 const UserMenu: React.FC = () => {
     const dispatch = useAppDispatch()
     const dropdownRef = useRef<HTMLInputElement>(null)
-    const [isActive, setIsActive] = useState(false)
+    const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
     const [logo, setLogo] = useState('')
     const [openEditProfile, setOpenEditProfile] = useState(false)
     const [showModal, setShowModal] = useState(false)
