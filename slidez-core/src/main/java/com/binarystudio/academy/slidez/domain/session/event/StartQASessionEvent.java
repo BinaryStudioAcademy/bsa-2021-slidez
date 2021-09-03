@@ -12,15 +12,15 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class StartQASessionEvent extends DomainEvent {
 
-    private String shortCode;
+	private String shortCode;
 
 	private SessionQASession sessionQASession;
 
-    public StartQASessionEvent(String shortCode) {
-        this.shortCode = shortCode;
-    }
+	public StartQASessionEvent(String shortCode) {
+		this.shortCode = shortCode;
+	}
 
-    @Override
+	@Override
 	public void applyEvent(State state) throws DomainException {
 		state.setCurrentQASession(sessionQASession);
 	}
