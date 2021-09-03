@@ -20,6 +20,7 @@ export enum EditorTab {
     QA = 'qa',
     POLL = 'poll',
     QUIZ = 'quiz',
+    MENU = 'menu',
 }
 
 type EditorState = {
@@ -91,7 +92,7 @@ export const createSessionForPresentation = createAsyncThunk(
     async (dto: CreatePresentationSessionDto) => {
         try {
             const res = await createPresentationSession(dto)
-            debugger
+            
             const link = res.link
 
             setActiveSession(link)
