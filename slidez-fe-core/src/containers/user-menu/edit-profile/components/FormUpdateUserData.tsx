@@ -40,7 +40,9 @@ const FormUpdateUserData = () => {
                 <Form className='form-body'>
                     <div className='form-inputs'>
                         <div className='input-item'>
-                            <p>Email</p>
+                            <p>
+                                Email<span className='asterisk'>*</span>
+                            </p>
                             <Field
                                 name='email'
                                 className={
@@ -58,7 +60,9 @@ const FormUpdateUserData = () => {
                             />
                         </div>
                         <div className='input-item'>
-                            <p>First Name</p>
+                            <p>
+                                First Name<span className='asterisk'>*</span>
+                            </p>
                             <Field
                                 id='update-firstName-input'
                                 name='firstName'
@@ -77,7 +81,9 @@ const FormUpdateUserData = () => {
                             />
                         </div>
                         <div className='input-item'>
-                            <p>Last Name</p>
+                            <p>
+                                Last Name<span className='asterisk'>*</span>
+                            </p>
                             <Field
                                 id='update-lastName-input'
                                 name='lastName'
