@@ -1,11 +1,13 @@
 import { SessionPollAnswer } from '../model/SessionPollAnswer'
 import { AskQuestionDto } from '../dto/AskQuestionDto'
+import { LikeQuestionDto } from '../dto/LikeQuestionDto'
 
 export enum DomainEventType {
     startPollEvent = 'StartPollEvent',
     snapshotRequestEvent = 'SnapshotRequestedEvent',
     answerPollEvent = 'AnswerPollEvent',
     askQuestionEvent = 'AskQuestionEvent',
+    likeQuestionEvent = 'LikeQuestionEvent',
 }
 
 export type StartPollEvent = {
@@ -27,8 +29,14 @@ export type AskQuestionEvent = {
     question: AskQuestionDto
 }
 
+export type LikeQuestionEvent = {
+    type: DomainEventType.likeQuestionEvent
+    questionLike: LikeQuestionDto
+}
+
 export type DomainEvent =
     | StartPollEvent
     | SnapshotEvent
     | AnswerPollEvent
     | AskQuestionEvent
+    | LikeQuestionEvent

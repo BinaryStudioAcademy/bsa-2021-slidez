@@ -15,10 +15,12 @@ import { QASessionQuestionDto } from '../../containers/session/dto/QASessionQues
 import {
     AskQuestionRequest,
     createAskQuestionRequest,
+    createLikeQuestionRequest,
+    LikeQuestionRequest,
 } from '../../containers/session/event/FrontendEvent'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { askQuestion } from '../../containers/session/store/store'
+import { askQuestion, likeQuestion } from '../../containers/session/store/store'
 import { selectQASession } from '../../containers/session/store/selectors'
 
 type QaProps = {
@@ -78,21 +80,15 @@ const Qa = (qaProps: QaProps) => {
     }
 
     const handleLike = (questionId: string) => {
-        if (!qaSession || !qaSession.questions) {
+        if (!participantData.id) {
             return
         }
-        for (const question of qaSession.questions) {
-            if (question.id === questionId) {
-                if (getIsLikedByMe(question)) {
-                    question.likedBy = question.likedBy.filter(
-                        (id: string) => id !== participantData.id
-                    )
-                } else if (participantData.id) {
-                    question.likedBy.push(participantData.id)
-                }
-                break
-            }
-        }
+        const request: LikeQuestionRequest = createLikeQuestionRequest(
+            link,
+            questionId,
+            participantData.id
+        )
+        dispatch(likeQuestion(request))
     }
 
     const handleRecentClick = () => {

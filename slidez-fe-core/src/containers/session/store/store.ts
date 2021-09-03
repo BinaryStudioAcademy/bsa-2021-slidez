@@ -13,6 +13,7 @@ import {
     AnswerPollRequest,
     AskQuestionRequest,
     createSnapshotRequest,
+    LikeQuestionRequest,
     SnapshotRequest,
     StartPollRequest,
 } from '../event/FrontendEvent'
@@ -20,6 +21,9 @@ import { CreatePresentationSessionDto } from '../../../services/session/dto/Crea
 import { SessionPollAnswer } from '../model/SessionPollAnswer'
 import { InteractiveElementType } from '../enums/InteractiveElementType'
 import { QASessionQuestionDto } from '../dto/QASessionQuestionDto'
+import { LikeQuestionDto } from '../dto/LikeQuestionDto'
+import { ParticipantData } from '../../../services/participant/dto/ParticipantData'
+import { getParticipantData } from '../../../services/participant/participant-service'
 
 export interface PresentationSessionState {
     connectionStatus: WsConnectionStatus
@@ -102,6 +106,20 @@ export const receiveQuestion = createAsyncThunk(
     }
 )
 
+export const likeQuestion = createAsyncThunk(
+    'QandA/like-question',
+    async (request: LikeQuestionRequest) => {
+        SessionService.sendRequest(request.link, request.event)
+    }
+)
+
+export const receiveLikeQuestion = createAsyncThunk(
+    'QandA/receive-like-question',
+    async (answer: LikeQuestionDto) => {
+        return answer
+    }
+)
+
 export const initWebSocketSession = createAsyncThunk(
     'presentationSession/initWebSocketSession',
     async (link: string, { dispatch }) => {
@@ -122,6 +140,28 @@ export const initWebSocketSession = createAsyncThunk(
         return out
     }
 )
+
+const transformQuestionsForLike = (
+    questions: QASessionQuestionDto[],
+    likedQuestionId: string,
+    participantId: string | null
+) => {
+    if (!participantId) {
+        return
+    }
+    for (const question of questions) {
+        if (question.id === likedQuestionId) {
+            if (question.likedBy.includes(participantId)) {
+                question.likedBy = question.likedBy.filter(
+                    (id: string) => id !== participantId
+                )
+            } else {
+                question.likedBy.push(participantId)
+            }
+            break
+        }
+    }
+}
 
 export const presentationSessionSlice = createSlice({
     name: 'presentationSession',
@@ -164,6 +204,17 @@ export const presentationSessionSlice = createSlice({
                 if (state.qAndASession) {
                     state.qAndASession.questions.push(action.payload)
                 }
+            })
+            .addCase(receiveLikeQuestion.fulfilled, (state, action) => {
+                if (!state.qAndASession) {
+                    return
+                }
+                const participantData: ParticipantData = getParticipantData()
+                transformQuestionsForLike(
+                    state.qAndASession.questions,
+                    action.payload.questionId,
+                    participantData.id
+                )
             })
     },
 })
