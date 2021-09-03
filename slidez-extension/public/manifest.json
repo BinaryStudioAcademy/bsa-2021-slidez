@@ -25,7 +25,7 @@
       "scripts": ["js/vendor.js", "js/background.js"]
     },
     "externally_connectable": {
-        "matches": ["https://docs.google.com/*", "*://localhost/*", "https://*.googleusercontent.com/*", "*://dbn5hoh39c7l.cloudfront.net/*"]
+        "matches": ["https://docs.google.com/*", "*://localhost/*", "https://*.googleusercontent.com/*", "*://dbn5hoh39c7l.cloudfront.net/*", "*://slidez.link/*"]
     },
     "permissions": [
         "<all_urls>",
