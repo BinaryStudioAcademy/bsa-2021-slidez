@@ -89,18 +89,6 @@ const Qa = (qaProps: QaProps) => {
             participantData.id
         )
         dispatch(likeQuestion(request))
-        // for (const question of qaSession.questions) {
-        //     if (question.id === questionId) {
-        //         if (getIsLikedByMe(question)) {
-        //             question.likedBy = question.likedBy.filter(
-        //                 (id: string) => id !== participantData.id
-        //             )
-        //         } else if (participantData.id) {
-        //             question.likedBy.push(participantData.id)
-        //         }
-        //         break
-        //     }
-        // }
     }
 
     const handleRecentClick = () => {
