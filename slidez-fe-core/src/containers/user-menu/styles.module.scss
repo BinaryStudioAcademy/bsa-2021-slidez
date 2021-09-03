@@ -5,20 +5,26 @@
     // display: flex;
     // align-items: center;
 
-    .avatar {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 43px;
-        height: 43px;
-        border-radius: 50%;
-        font-size: 14px;
-        color: $light-color;
-        background: $accent-color;
-        &:hover {
-            cursor: pointer;
-        }
+  .avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 43px;
+    height: 43px;
+    border-radius: 50%;
+    font-family: Work Sans !important;
+    font-size: 14px !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    line-height: 16px !important;
+    letter-spacing: 0em !important;
+    text-align: left !important;
+    color: $light-color;
+    background: $accent-color;
+    &:hover {
+      cursor: pointer;
     }
+  }
 }
 
 .MuiDialog-paper {
@@ -99,27 +105,33 @@
 }
 
 .userInfo {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin: 14px;
-    font-weight: 400;
-    .avatar {
-        margin-right: 9px;
-        width: 32px !important;
-        height: 32px !important;
-        font-family: "Work Sans";
-    }
-    .userName {
-        font-size: 14px;
-    }
-    .userEmail {
-        padding-top: 3px;
-        font-size: 12px;
-        line-height: 14px;
-        color: rgba(0, 0, 0, 0.4);
-    }
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 14px;
+  font-weight: 400;
+  .avatar {
+    margin-right: 9px;
+    width: 32px !important;
+    height: 32px !important;
+    font-family: Work Sans !important;
+    font-size: 14px !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    line-height: 16px !important;
+    letter-spacing: 0em !important;
+    text-align: left !important;
+  }
+  .userName {
+    font-size: 14px;
+  }
+  .userEmail {
+    padding-top: 3px;
+    font-size: 12px;
+    line-height: 14px;
+    color: rgba(0, 0, 0, 0.4);
+  }
 }
 
 .editProfile {
