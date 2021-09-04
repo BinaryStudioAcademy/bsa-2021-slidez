@@ -10,24 +10,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
 import { useState } from 'react'
 import Session from '../session/Session'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons'
+import { ReactComponent as DropDownIcon } from '../../assets/svgs/drop_down_icon.svg'
+import { ReactComponent as DropUpIcon } from '../../assets/svgs/arrow_back.svg'
 
 const Menu: React.FC = () => {
     const dispatch = useDispatch()
     const handlePollClick = useCallback(() => {
         dispatch(setActiveTab(EditorTab.POLL))
     }, [dispatch])
-    const [isViewMenu, setIsViewMenu] = useState(false)
+    const [isViewMenu, setIsViewMenu] = useState(true)
 
-    const handleArrowUpClick = (event: SyntheticEvent) => {
+    const handleArrowClick = (event: SyntheticEvent) => {
         event.stopPropagation()
-        setIsViewMenu(false)
-    }
-
-    const handleArrowDownClick = (event: SyntheticEvent) => {
-        event.stopPropagation()
-        setIsViewMenu(true)
+        setIsViewMenu(!isViewMenu)
     }
 
     const { polls } = useSelector((state: RootState) => state.editor)
@@ -40,22 +35,18 @@ const Menu: React.FC = () => {
                     <button className='list-items' onClick={handlePollClick}>
                         <img src={check} alt='check' />
                         <div className='text'>Live poll</div>
-                        <div className='arrow-icon'>
-                            <FontAwesomeIcon
+                        <div className='arrow-icon' onClick={handleArrowClick}>
+                            <DropDownIcon
                                 className={
                                     'arrow-up' +
                                     (isViewMenu ? ' show-icon' : ' hide-icon')
                                 }
-                                icon={faArrowUp}
-                                onClick={handleArrowUpClick}
                             />
-                            <FontAwesomeIcon
+                            <DropUpIcon
                                 className={
                                     'arrow-down' +
                                     (isViewMenu ? ' hide-icon' : ' show-icon')
                                 }
-                                icon={faArrowDown}
-                                onClick={handleArrowDownClick}
                             />
                         </div>
                     </button>

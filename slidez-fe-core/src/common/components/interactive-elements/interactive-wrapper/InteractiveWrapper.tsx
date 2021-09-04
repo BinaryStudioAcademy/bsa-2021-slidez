@@ -23,7 +23,7 @@ const InteractiveWrapper: React.FC<InteractiveWrapperProps> = ({
                 <div className='link-holder'>
                     Join at
                     <a href=''>
-                        <div className='link-domain'>Slidez.com</div>
+                        <div className='link-domain'>Slidez.link</div>
                         <div className='link-code'>{eventCode}</div>
                     </a>
                 </div>
