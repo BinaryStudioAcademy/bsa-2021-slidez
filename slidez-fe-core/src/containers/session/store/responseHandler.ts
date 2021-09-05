@@ -13,6 +13,9 @@ import { PollDto } from '../dto/InteractiveElement'
 import { SessionPollAnswer } from '../model/SessionPollAnswer'
 import { QASessionQuestionDto } from '../dto/QASessionQuestionDto'
 import { LikeQuestionDto } from '../dto/LikeQuestionDto'
+import { handleNotification } from '../../../common/notification/Notification'
+import { NotificationTypes } from '../../../common/notification/notification-types'
+import { AppRoute } from '../../../common/routes/app-route'
 
 function throwBadType(type: string): never {
     throw new Error("Didn't expect to get here")
@@ -21,7 +24,13 @@ function throwBadType(type: string): never {
 export const responseHandler =
     (dispatch: any) => (response: GenericResponse<SessionResponse, string>) => {
         if (response.error || !response.data) {
-            throw new Error(response.error || 'No data')
+            handleNotification(
+                'Error',
+                'Link doesn`t exist',
+                NotificationTypes.ERROR
+            )
+            window.location.assign(`/#${AppRoute.EVENTS}`)
+            return
         }
         switch (response.data.type) {
             case SessionResponseType.snapshot:
