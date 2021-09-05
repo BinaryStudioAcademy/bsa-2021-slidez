@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { faUser, faTimes, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { selectUserDetals } from '../../user/store'
+import { selectUserDetails } from '../../user/store'
 import { useAppSelector } from '../../../hooks'
+
+import { ReactComponent as TrashIcon } from '../../../assets/svgs/trash.svg'
+import { ReactComponent as UserIcon } from '../../../assets/svgs/user.svg'
+import { ReactComponent as CrossIcon } from '../../../assets/svgs/cross.svg'
 
 import styles from './styles.module.scss'
 import '../edit-profile/components/Form.scss'
@@ -30,7 +32,7 @@ const UpdateProfileDialog: React.FC<IProps> = ({
     onDialogClose,
 }: IProps) => {
     const [showModal, setShowModal] = useState(false)
-    const userData = useAppSelector(selectUserDetals) || initialValuesUserData
+    const userData = useAppSelector(selectUserDetails) || initialValuesUserData
 
     const hideDeleteAccountModal = () => {
         setShowModal(false)
@@ -53,10 +55,7 @@ const UpdateProfileDialog: React.FC<IProps> = ({
                         <div className={styles.sideBtns}>
                             <p className={styles.windowName}> Edit profile </p>
                             <Button>
-                                <FontAwesomeIcon
-                                    className={styles.buttonIcon}
-                                    icon={faUser}
-                                />
+                                <UserIcon className={styles.buttonIcon} />
                                 <span className={styles.buttonName}>
                                     Profile
                                 </span>
@@ -66,10 +65,7 @@ const UpdateProfileDialog: React.FC<IProps> = ({
                                 handleClose={hideDeleteAccountModal}
                             />
                             <Button onClick={showDeleteAccountModal}>
-                                <FontAwesomeIcon
-                                    className={styles.buttonIcon}
-                                    icon={faTrashAlt}
-                                />
+                                <TrashIcon className={styles.buttonIcon} />
                                 <span className={styles.buttonName}>
                                     Delete account
                                 </span>
@@ -79,10 +75,7 @@ const UpdateProfileDialog: React.FC<IProps> = ({
                 </DialogContent>
                 <DialogContent className={styles.rightContent}>
                     <Button className={styles.close} onClick={onDialogClose}>
-                        <FontAwesomeIcon
-                            className={styles.closeIicon}
-                            icon={faTimes}
-                        />
+                        <CrossIcon className={styles.closeIcon} />
                     </Button>
                     <div className={styles.formTitle}>Profile info</div>
                     <UserLogo
