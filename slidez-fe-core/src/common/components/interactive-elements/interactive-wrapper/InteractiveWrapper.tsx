@@ -28,7 +28,7 @@ const InteractiveWrapper: React.FC<InteractiveWrapperProps> = ({
                     </a>
                 </div>
                 <div className='qr-code-holder container-with-centered-content'>
-                    <QRCode value={link} fgColor='#59D0A5' />
+                    <QRCode value={link} fgColor='#663999' />
                 </div>
             </div>
         </div>
