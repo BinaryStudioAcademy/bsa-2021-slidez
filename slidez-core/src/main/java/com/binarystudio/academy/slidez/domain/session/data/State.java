@@ -54,6 +54,12 @@ public class State {
 		}
 	}
 
+	public void setVisibilityToQuestionInQASession(SessionQAQuestionVisibility visibility) {
+		if (currentQASession != null) {
+			currentQASession.setVisibilityToQuestion(visibility);
+		}
+	}
+
 	public void addQuestionToQASession(SessionQAQuestion sessionQAQuestion) {
 		if (currentQASession != null) {
 			currentQASession.addQuestion(sessionQAQuestion);
