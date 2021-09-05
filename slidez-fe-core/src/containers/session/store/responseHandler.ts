@@ -2,6 +2,7 @@ import {
     receiveAnswerPoll,
     receiveLikeQuestion,
     receiveQuestion,
+    receiveQuestionVisibility,
     receiveSnapshot,
     receiveStartPoll,
 } from './store'
@@ -13,6 +14,7 @@ import { PollDto } from '../dto/InteractiveElement'
 import { SessionPollAnswer } from '../model/SessionPollAnswer'
 import { QASessionQuestionDto } from '../dto/QASessionQuestionDto'
 import { LikeQuestionDto } from '../dto/LikeQuestionDto'
+import { QuestionVisibilityDto } from '../dto/QuestionVisibilityDto'
 
 function throwBadType(type: string): never {
     throw new Error("Didn't expect to get here")
@@ -49,6 +51,12 @@ export const responseHandler =
                     response.data.data
                 )
                 dispatch(receiveLikeQuestion(questionLike))
+                break
+            case SessionResponseType.setQuestionVisibility:
+                const questionVisibility = <QuestionVisibilityDto>(
+                    response.data.data
+                )
+                dispatch(receiveQuestionVisibility(questionVisibility))
                 break
             default:
                 throwBadType(response.data.type)

@@ -24,7 +24,7 @@ public class SetQuestionVisibilityEventHandler extends AbstractDomainEventHandle
 		final SetQuestionVisibilityEvent event = (SetQuestionVisibilityEvent) domainEvent;
 		super.handle(domainEvent, presentationEventStore);
 		final SessionQAQuestionVisibility visibility = event.getVisibility();
-		SessionResponse sessionResponse = new SessionResponse(ResponseType.SET_VISIBILITY_TO_QUESTION, visibility);
+		SessionResponse sessionResponse = new SessionResponse(ResponseType.SET_QUESTION_VISIBILITY, visibility);
 		return new GenericResponse<>(sessionResponse);
 	}
 

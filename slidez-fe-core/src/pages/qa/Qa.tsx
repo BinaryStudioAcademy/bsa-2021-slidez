@@ -52,7 +52,11 @@ const Qa = (qaProps: QaProps) => {
     const classes = useStyles()
     const [participantData] = useState(getParticipantData())
     const qaSession = { ...useAppSelector(selectQASession) }
-
+    const [questions, setQuestions] = useState(
+        qaSession?.questions?.filter(
+            (question: QASessionQuestionDto) => question.isVisible
+        ) || []
+    )
     const [isRecentSelected, setIsRecentSelected] = useState(true)
     const dispatch = useAppDispatch()
 
@@ -92,10 +96,10 @@ const Qa = (qaProps: QaProps) => {
     }
 
     const handleRecentClick = () => {
-        if (!qaSession || !qaSession.questions) {
+        if (!qaSession || !questions) {
             return
         }
-        const sorted: QASessionQuestionDto[] = [...qaSession.questions]
+        const sorted: QASessionQuestionDto[] = [...questions]
         sorted.sort((a, b) => {
             return (
                 new Date(b.createdAt).getTime() -
@@ -103,17 +107,17 @@ const Qa = (qaProps: QaProps) => {
             )
         })
         setIsRecentSelected(true)
-        qaSession.questions = sorted
+        setQuestions(sorted)
     }
 
     const handleTopClick = () => {
-        if (!qaSession || !qaSession.questions) {
+        if (!qaSession || !questions) {
             return
         }
-        const sorted = [...qaSession.questions]
+        const sorted = [...questions]
         sorted.sort((a, b) => b.likedBy.length - a.likedBy.length)
         setIsRecentSelected(false)
-        qaSession.questions = sorted
+        setQuestions(sorted)
     }
 
     const getIsLikedByMe = (qaSessionQuestion: QASessionQuestionDto) => {
@@ -136,14 +140,14 @@ const Qa = (qaProps: QaProps) => {
                     <CloseButton onClick={handleClose} />
                 </div>
                 <SelectorPanel
-                    totalQuestions={qaSession?.questions?.length}
+                    totalQuestions={questions.length}
                     handleRecentClick={handleRecentClick}
                     handleTopClick={handleTopClick}
                     isRecentSelected={isRecentSelected}
                 />
             </div>
             <div className='qa-body'>
-                {qaSession?.questions?.map((qaSessionQuestion) => (
+                {questions.map((qaSessionQuestion) => (
                     <QACard
                         key={qaSessionQuestion.id}
                         author={qaSessionQuestion.authorNickname}
