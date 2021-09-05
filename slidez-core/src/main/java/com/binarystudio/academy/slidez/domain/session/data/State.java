@@ -2,7 +2,6 @@ package com.binarystudio.academy.slidez.domain.session.data;
 
 import com.binarystudio.academy.slidez.domain.poll.exception.PollNotFoundException;
 import com.binarystudio.academy.slidez.domain.quiz.exception.QuizNotFoundException;
-import com.binarystudio.academy.slidez.domain.qasession.exception.QASessionNotFoundException;
 import com.binarystudio.academy.slidez.domain.session.exception.BadOptionException;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +13,10 @@ public class State {
 	@Getter
 	@Setter
 	private SessionInteractiveElement currentInteractiveElement;
+
+	@Getter
+	@Setter
+	private SessionQASession currentQASession;
 
 	private final List<SessionInteractiveElement> sessionInteractiveElements = new ArrayList<>();
 
@@ -52,13 +55,15 @@ public class State {
 	}
 
 	public void addQuestionToQASession(SessionQAQuestion sessionQAQuestion) {
-		sessionInteractiveElements.stream()
-				.filter(element -> Objects.equals(element.getClass(), SessionQASession.class)
-						&& Objects.equals(element.getId(), sessionQAQuestion.getQaSessionId()))
-				.map(element -> (SessionQASession) element).findFirst()
-				.orElseThrow(() -> new QASessionNotFoundException(
-						String.format("QASession with id %s not found", sessionQAQuestion.getQaSessionId())))
-				.addQuestion(sessionQAQuestion);
+		if (currentQASession != null) {
+			currentQASession.addQuestion(sessionQAQuestion);
+		}
+	}
+
+	public void addLikeToQuestionInQASession(SessionQAQuestionLike questionLike) {
+		if (currentQASession != null) {
+			currentQASession.addLikeToQuestion(questionLike);
+		}
 	}
 
 	private boolean canInteractWithCurrentInteractiveElement(UUID expectedId, Class<?> expectedClass) {

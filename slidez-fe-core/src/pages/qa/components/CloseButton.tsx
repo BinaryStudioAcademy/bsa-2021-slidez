@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react'
+import React from 'react'
 import close_cross_icon from '../../../assets/svgs/close-cross.svg'
 import '../qa.scss'
 
@@ -10,7 +10,7 @@ const CloseButton = (params: any) => {
                     className='close-cross-img'
                     src={close_cross_icon}
                     alt='graph'
-                ></img>
+                />
             </span>
         </button>
     )

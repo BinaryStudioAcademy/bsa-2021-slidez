@@ -1,10 +1,18 @@
-import { receiveAnswerPoll, receiveSnapshot, receiveStartPoll } from './store'
+import {
+    receiveAnswerPoll,
+    receiveLikeQuestion,
+    receiveQuestion,
+    receiveSnapshot,
+    receiveStartPoll,
+} from './store'
 import { SessionResponseType } from '../enums/SessionResponse'
 import { SessionResponse } from '../dto/SessionResponse'
 import { SnapshotDto } from '../dto/SnapshotDto'
 import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
 import { PollDto } from '../dto/InteractiveElement'
 import { SessionPollAnswer } from '../model/SessionPollAnswer'
+import { QASessionQuestionDto } from '../dto/QASessionQuestionDto'
+import { LikeQuestionDto } from '../dto/LikeQuestionDto'
 
 function throwBadType(type: string): never {
     throw new Error("Didn't expect to get here")
@@ -29,6 +37,18 @@ export const responseHandler =
             case SessionResponseType.startedPoll:
                 const poll: PollDto = <PollDto>response.data.data
                 dispatch(receiveStartPoll(poll))
+                break
+            case SessionResponseType.askedQuestion:
+                const question: QASessionQuestionDto = <QASessionQuestionDto>(
+                    response.data.data
+                )
+                dispatch(receiveQuestion(question))
+                break
+            case SessionResponseType.likedQuestion:
+                const questionLike: LikeQuestionDto = <LikeQuestionDto>(
+                    response.data.data
+                )
+                dispatch(receiveLikeQuestion(questionLike))
                 break
             default:
                 throwBadType(response.data.type)

@@ -20,4 +20,8 @@ public interface PresentationRepository extends JpaRepository<Presentation, UUID
 
 	Optional<Presentation> findByLink(String link);
 
+	@Query("SELECT p FROM Presentation p INNER JOIN Session s ON s.presentation = p "
+			+ "INNER JOIN Link link ON s.link = link AND link.code = :shortCode")
+	Optional<Presentation> findByShortCode(String shortCode);
+
 }

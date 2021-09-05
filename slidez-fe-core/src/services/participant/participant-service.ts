@@ -5,6 +5,8 @@ const participantFirstName: string = 'participant_first_name'
 const participantLastName: string = 'participant_last_name'
 const participantId: string = 'participant_id'
 
+const defaultNickname = 'Anonymous'
+
 export const saveParticipantData = (
     firstName: string,
     lastName: string
@@ -20,4 +22,12 @@ export const getParticipantData = (): ParticipantData => {
         participantLastName: window.localStorage.getItem(participantLastName),
         participantFirstName: window.localStorage.getItem(participantFirstName),
     }
+}
+
+export const createNickName = (): string => {
+    const data: ParticipantData = getParticipantData()
+    if (data.participantFirstName && data.participantLastName) {
+        return data.participantFirstName + ' ' + data.participantLastName
+    }
+    return defaultNickname
 }

@@ -1,10 +1,14 @@
 import { SessionPollAnswer } from '../model/SessionPollAnswer'
 import {
-    DomainEventType,
     AnswerPollEvent,
+    AskQuestionEvent,
+    DomainEventType,
+    LikeQuestionEvent,
     SnapshotEvent,
     StartPollEvent,
 } from './DomainEvent'
+
+const defaultAuthorName = 'Anonymous'
 
 export type StartPollRequest = {
     link: string
@@ -19,6 +23,16 @@ export type SnapshotRequest = {
 export type AnswerPollRequest = {
     link: string
     event: AnswerPollEvent
+}
+
+export type AskQuestionRequest = {
+    link: string
+    event: AskQuestionEvent
+}
+
+export type LikeQuestionRequest = {
+    link: string
+    event: LikeQuestionEvent
 }
 
 export const createStartPollRequest = (
@@ -45,5 +59,41 @@ export const createAnswerPollRequest = (
     return {
         link,
         event: { type: DomainEventType.answerPollEvent, pollAnswer },
+    }
+}
+
+export const createAskQuestionRequest = (
+    link: string,
+    question: string,
+    authorNickname: string | undefined | null,
+    qaSessionId: string
+): AskQuestionRequest => {
+    return {
+        link: link,
+        event: {
+            type: DomainEventType.askQuestionEvent,
+            question: {
+                question: question,
+                authorNickname: authorNickname || defaultAuthorName,
+                qaSessionId: qaSessionId,
+            },
+        },
+    }
+}
+
+export const createLikeQuestionRequest = (
+    link: string,
+    questionId: string,
+    participantId: string
+): LikeQuestionRequest => {
+    return {
+        link: link,
+        event: {
+            type: DomainEventType.likeQuestionEvent,
+            questionLike: {
+                questionId: questionId,
+                participantId: participantId,
+            },
+        },
     }
 }

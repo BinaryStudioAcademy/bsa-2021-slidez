@@ -32,11 +32,7 @@ public class StartQASessionHandler extends AbstractDomainEventHandler {
 			PresentationEventStore presentationEventStore) {
 		if (Objects.equals(domainEvent.getClass(), StartQASessionEvent.class)) {
 			StartQASessionEvent startQASessionEvent = (StartQASessionEvent) domainEvent;
-			Optional<QASession> bySlideId = qaSessionService.getBySlideId(startQASessionEvent.getSlideId());
-			if (bySlideId.isEmpty()) {
-				return new GenericResponse<>(null, SessionResponseCodes.COULD_NOT_START_QA_SESSION);
-			}
-			QASession qaSession = bySlideId.get();
+			QASession qaSession = qaSessionService.getBySessionShortLink(startQASessionEvent.getShortCode());
 			SessionQASession sessionQASession = SessionInteractiveElementMapper.INSTANCE
 					.mapQASessionToSessionQASession(qaSession);
 			startQASessionEvent.setSessionQASession(sessionQASession);
