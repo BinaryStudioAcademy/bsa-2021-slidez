@@ -18,17 +18,19 @@ const InteractiveWrapper: React.FC<InteractiveWrapperProps> = ({
             <div className='wrapped-component'>{children}</div>
             <div className='interactive-wrapper-sidebar'>
                 <div className='container-with-centered-content'>
-                    <InteractiveLogo width='60%' />
+                    <InteractiveLogo width='50%' />
                 </div>
                 <div className='link-holder'>
                     Join at
-                    <a href=''>
-                        <div className='link-domain'>Slidez.com</div>
-                        <div className='link-code'>{eventCode}</div>
-                    </a>
+                    <div className='link-domain'>slidez.link/</div>
+                    <div className='link-code'>{eventCode}</div>
                 </div>
-                <div className='qr-code-holder container-with-centered-content'>
-                    <QRCode value={link} fgColor='#59D0A5' />
+                <div className='qr-code-holder'>
+                    <QRCode
+                        className='qr-code'
+                        value={link}
+                        fgColor='#663999'
+                    />
                 </div>
             </div>
         </div>
