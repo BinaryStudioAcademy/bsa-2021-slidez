@@ -56,13 +56,12 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
     const toggleRemoveClick = (
         length: number,
         index: number,
-        arrayHelpers: any,
-        setFieldValue: any
+        arrayHelpers: Function | any,
+        setFieldValue: Function
     ) => {
         if (length > 1) {
             arrayHelpers.remove(index)
         } else {
-            console.log(index)
             setFieldValue(`options.${index}.title`, '')
         }
     }
