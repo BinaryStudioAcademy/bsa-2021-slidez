@@ -11,7 +11,7 @@ import { UpdateProfileDto } from '../../../../services/user/dto/UpdateProfileDto
 import {
     isSavingUser,
     selectError,
-    selectUserDetals,
+    selectUserDetails,
     updateUserProfile,
 } from '../../../user/store'
 import { initialValuesUserData } from '../../UserMenu'
@@ -19,7 +19,7 @@ import { initialValuesUserData } from '../../UserMenu'
 const FormUpdateUserData = () => {
     const isSavingUserData = useAppSelector(isSavingUser)
     const updateUserProfileError = useAppSelector(selectError)
-    const userData = useAppSelector(selectUserDetals) || initialValuesUserData
+    const userData = useAppSelector(selectUserDetails) || initialValuesUserData
     const [viewErrors, setViewErrors] = React.useState(false)
     const dispatch = useAppDispatch()
 

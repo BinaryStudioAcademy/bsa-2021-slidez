@@ -2,6 +2,7 @@ import {
     receiveAnswerPoll,
     receiveLikeQuestion,
     receiveQuestion,
+    receiveQuestionVisibility,
     receiveSnapshot,
     receiveStartPoll,
 } from './store'
@@ -16,6 +17,7 @@ import { LikeQuestionDto } from '../dto/LikeQuestionDto'
 import { handleNotification } from '../../../common/notification/Notification'
 import { NotificationTypes } from '../../../common/notification/notification-types'
 import { AppRoute } from '../../../common/routes/app-route'
+import { QuestionVisibilityDto } from '../dto/QuestionVisibilityDto'
 
 function throwBadType(type: string): never {
     throw new Error("Didn't expect to get here")
@@ -31,6 +33,7 @@ export const responseHandler =
             )
             console.error(response.error)
             window.location.assign(`/#${AppRoute.EVENTS}`)
+        if (!response.data) {
             return
         }
         switch (response.data.type) {
@@ -59,6 +62,12 @@ export const responseHandler =
                     response.data.data
                 )
                 dispatch(receiveLikeQuestion(questionLike))
+                break
+            case SessionResponseType.setQuestionVisibility:
+                const questionVisibility = <QuestionVisibilityDto>(
+                    response.data.data
+                )
+                dispatch(receiveQuestionVisibility(questionVisibility))
                 break
             default:
                 throwBadType(response.data.type)

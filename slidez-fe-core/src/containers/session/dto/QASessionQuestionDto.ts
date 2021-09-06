@@ -6,5 +6,6 @@ export interface QASessionQuestionDto {
     createdAt: string
     //Nickname = 'FirstName LastName'
     authorNickname: string
+    isVisible: boolean
     question: string
 }

@@ -160,7 +160,7 @@ const createIcon = (objectId: string) => {
         objectId,
         'https://dbn5hoh39c7l.cloudfront.net/assets/qr-code.png',
         { height: 125, width: 125 },
-        { X: 550, Y: 250 }
+        { X: 550, Y: 240 }
     );
 };
 
