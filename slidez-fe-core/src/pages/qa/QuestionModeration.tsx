@@ -6,21 +6,27 @@ import { selectQASession } from '../../containers/session/store/selectors'
 import {
     initWebSocketSession,
     setQandAQuestions,
+    setQuestionVisibility,
 } from '../../containers/session/store/store'
 import { QASessionQuestionDto } from '../../containers/session/dto/QASessionQuestionDto'
 import styles from './styles.module.scss'
-import QACard from './components/QACard'
-import SelectorPanel from './components/SelectorPanel'
 import {
     getQuestionsSortedByDate,
     getQuestionsSortedByLikes,
 } from './utils/sorting-utils'
+import ModerationSelectorPanel from './components/ModerationSelectorPanel'
+import ModerationQACard from './components/ModerationQACard'
+import {
+    createSetQuestionVisibilityRequest,
+    SetQuestionVisibilityRequest,
+} from '../../containers/session/event/FrontendEvent'
 
 const QuestionModeration = () => {
     //@ts-ignore
     const { link } = useParams()
     const qaSession = useAppSelector(selectQASession)
     const [isRecentSelected, setIsRecentSelected] = useState(true)
+    const [isShowingHidden, setIsShowingHidden] = useState(false)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
@@ -41,28 +47,48 @@ const QuestionModeration = () => {
         dispatch(setQandAQuestions(sorted))
     }
 
-    const visibleQuestions: QASessionQuestionDto[] =
-        qaSession?.questions?.filter((q) => q.isVisible) || []
+    const handleRevealClick = (question: QASessionQuestionDto) => {
+        const invertedVisible: boolean = !question.isVisible
+        const request: SetQuestionVisibilityRequest =
+            createSetQuestionVisibilityRequest(
+                link,
+                question.id,
+                invertedVisible
+            )
+        dispatch(setQuestionVisibility(request))
+    }
+
+    const displayedQuestions: QASessionQuestionDto[] =
+        qaSession?.questions?.filter((q) => q.isVisible === !isShowingHidden) ||
+        []
     return (
         <div>
-            <SelectorPanel
-                totalQuestions={visibleQuestions.length}
-                handleRecentClick={handleRecentClick}
-                handleTopClick={handleTopClick}
-                isRecentSelected={isRecentSelected}
-            />
+            <div className='qa-header'>
+                <ModerationSelectorPanel
+                    totalQuestions={displayedQuestions.length}
+                    handleRecentClick={handleRecentClick}
+                    handleTopClick={handleTopClick}
+                    isRecentSelected={isRecentSelected}
+                    isShowingHidden={isShowingHidden}
+                    handleChangeVisibilityParameterOfList={() =>
+                        setIsShowingHidden(!isShowingHidden)
+                    }
+                />
+            </div>
             <div className={styles.bodyButton}>
                 <div className='qa-body'>
-                    {visibleQuestions.map((qaSessionQuestion) => (
-                        <QACard
+                    {displayedQuestions.map((qaSessionQuestion) => (
+                        <ModerationQACard
                             key={qaSessionQuestion.id}
                             author={qaSessionQuestion.authorNickname}
                             likeCount={qaSessionQuestion.likedBy.length}
-                            isLiked={false}
-                            likeClick={() => {}}
+                            onRevealClick={() => {
+                                handleRevealClick(qaSessionQuestion)
+                            }}
+                            isVisible={qaSessionQuestion.isVisible}
                         >
                             {qaSessionQuestion.question}
-                        </QACard>
+                        </ModerationQACard>
                     ))}
                 </div>
             </div>

@@ -6,6 +6,12 @@
   justify-content: space-between;
   align-items: center;
 
+  .button-group-holder {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+
   .selector-button {
     font-weight: 500;
     font-size: 14px;
@@ -13,6 +19,21 @@
     min-width: 64px;
     padding: 5px 10px;
     width: 90px;
+  }
+  .show-by-visible-group-button {
+    font-weight: 500;
+    font-size: 14px;
+    border-radius: 4px;
+    min-width: 64px;
+    padding: 5px 10px;
+    width: 180px;
+    color: #7b7a7c;
+  }
+  .q-and-a-icon {
+    width: 30px;
+    height: 30px;
+    margin-left: 5px;
+    margin-right: 10px;
   }
   .selected-button {
     border: 2px $main-color solid;

@@ -120,7 +120,7 @@ const Qa = (qaProps: QaProps) => {
             aria-describedby='alert-dialog-slide-description'
             className={`${classes.root} ${styles.dialog}`}
         >
-            <div className='qa-header'>
+            <div className='qa-header with-qa-max-width'>
                 <div className='qa-title'>
                     <CloseButton onClick={handleClose} />
                 </div>

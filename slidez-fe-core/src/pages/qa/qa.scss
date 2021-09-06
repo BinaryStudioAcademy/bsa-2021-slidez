@@ -1,12 +1,15 @@
 @import 'src/global/global';
 
+.with-qa-max-width {
+    max-width: 590px;
+}
+
 .qa-header {
   width: 100%;
 
   z-index: 10;
   background-color: $white;
 
-  max-width: 590px;
   padding: 0 8px;
   margin-bottom: 10px;
 
