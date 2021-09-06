@@ -1,7 +1,7 @@
 @import "src/global/global";
 
 .addon-components {
-    margin: 1rem;
+    margin: 15px 1rem;
     display: block;
     h2 {
         font-weight: 700;
@@ -21,6 +21,7 @@
                 background-color: $light-color;
                 border-radius: 10px;
                 cursor: pointer;
+
                 img {
                     margin-right: 10px;
                 }
@@ -29,11 +30,16 @@
                     white-space: nowrap;
                     text-overflow: ellipsis;
                     overflow: hidden;
+                    line-height: 20px;
                 }
                 .subtext {
                     font-size: 12px;
                     color: #a6a6a6;
                     white-space: nowrap;
+                    line-height: 20px;
+                }
+                &:last-child {
+                    margin-bottom: 0;
                 }
             }
         }
@@ -54,11 +60,17 @@
                 font-weight: 500;
                 font-size: 14px;
                 max-width: max-content;
+                line-height: 20px;
             }
             .arrow-icon {
                 cursor: pointer;
                 color: #59D0A5;
-                margin-left: 140px;
+                margin-left: 135px;
+                width: 20px;
+                height: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 .hide-icon {
                     display: none;
                     color: $mint
@@ -69,17 +81,27 @@
                 
                 }
             }
+            &:hover {
+                background-color: #EAE9ED;
+            }
         }
     }
     .show-menu {
-        max-height: max-content;
+        max-height: 235px;
+        overflow-y: auto;
+        margin-bottom: 10px;
+        animation: 0.1s linear 0s alternate dropDown;
     }
     .hide-menu {
-        max-height: 235px;
+        height: 0;
         overflow: hidden;
+        animation: 0.1s linear 0s dropUp;
     }
     .button-show-hide-elements {
         padding-left: 2rem;
         
     }
 }
+
+@keyframes dropDown { from { height: 0; } to { height: 235px; }  }
+@keyframes dropUp { from { height: 245px; } to { height: 0px; }  }

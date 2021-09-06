@@ -1,14 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SlidezLogo from '../../../src/logo_Slidez_1.svg'
-import create_presentation from '../../assets/svgs/create_presentation.svg'
-import my_presentation from '../../assets/svgs/my_presentation.svg'
-import graph_icon from '../../assets/svgs/graph_icon.svg'
-import layout_icon from '../../assets/svgs/layout_icon.svg'
+import { ReactComponent as CreatePresentation } from '../../assets/svgs/create_presentation.svg'
+import { ReactComponent as MyPresentation } from '../../assets/svgs/my_presentation.svg'
+import { ReactComponent as GraphIcon } from '../../assets/svgs/graph_icon.svg'
+import { ReactComponent as LayoutIcon } from '../../assets/svgs/layout_icon.svg'
 import soon_lable from '../../assets/svgs/soon_lable.svg'
 import soon from '../../assets/svgs/soon.svg'
 import styles from './styles.module.scss'
+import add_icon from '../../assets/svgs/add_icon.svg'
 
 const SideBar = () => {
+    const [selectedIcon, setSelectedIcon] = useState(false)
+
+    const handleClick = () => {
+        setSelectedIcon(!selectedIcon)
+    }
     return (
         <div className={styles.sidebar}>
             <div className={styles.logo}>
@@ -20,10 +26,8 @@ const SideBar = () => {
                 <span>
                     <a href=''>
                         <div className={styles.addIcon}>
-                            <img
-                                src={create_presentation}
-                                alt='add presentation'
-                            />
+                            <CreatePresentation />
+                            <img src={add_icon} alt='add presentation' />
                             <span className={styles.tooltiptext}>
                                 Create presentation
                             </span>
@@ -31,22 +35,20 @@ const SideBar = () => {
                     </a>
                 </span>
                 <span>
-                    <a href=''>
-                        <div className={styles.sideIcon}>
-                            <img
-                                src={my_presentation}
-                                alt='my presentations'
-                            ></img>
-                            <span className={styles.tooltiptext}>
-                                My presentation
-                            </span>
-                        </div>
-                    </a>
+                    <div className={styles.sideIcon}>
+                        <MyPresentation
+                            className={selectedIcon ? styles.selectedIcon : ''}
+                            onClick={handleClick}
+                        />
+                        <span className={styles.tooltiptext}>
+                            My presentation
+                        </span>
+                    </div>
                 </span>
                 <span>
                     <a href=''>
-                        <div className={styles.sideIcon}>
-                            <img src={graph_icon} alt='graph' />
+                        <div className={styles.disableIcons}>
+                            <GraphIcon />
                             <img className={styles.label} src={soon_lable} />
                             <img className={styles.label} src={soon} />
                             <span className={styles.tooltiptext}>
@@ -57,8 +59,8 @@ const SideBar = () => {
                 </span>
                 <span>
                     <a href=''>
-                        <div className={styles.sideIcon}>
-                            <img src={layout_icon} alt='layout' />
+                        <div className={styles.disableIcons}>
+                            <LayoutIcon />
                             <img className={styles.label} src={soon_lable} />
                             <img className={styles.label} src={soon} />
                             <span className={styles.tooltiptext}>

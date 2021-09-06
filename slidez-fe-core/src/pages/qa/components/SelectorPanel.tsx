@@ -27,7 +27,7 @@ const SelectorPanel = (props: any) => {
                 </button>
             </div>{' '}
             <div className='questions-counter'>
-                <span> {props.totalQuestions} questions</span>
+                <span> {props.totalQuestions ?? 0} questions</span>
             </div>
         </div>
     )

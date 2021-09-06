@@ -12,6 +12,7 @@ import ParticipantPage from './pages/interactive/participant/ParticipantPage'
 import Addon from './containers/poll-editor/Addon'
 import PresenterPage from './pages/interactive/presenter/PresenterPage'
 import ParticipantView from './pages/interactive/participant/ParticipantView'
+import QuestionModeration from './pages/qa/QuestionModeration'
 
 function App() {
     return (
@@ -29,6 +30,10 @@ function App() {
                         component={Dashboard}
                     />
                     <PrivateRoute path={AppRoute.ADDON} component={Addon} />
+                    <PrivateRoute
+                        path={AppRoute.MODERATION}
+                        component={QuestionModeration}
+                    />
                     <Route
                         exact
                         path={AppRoute.EVENTS}

@@ -25,6 +25,8 @@ public class SessionQAQuestion {
 
 	private LocalDateTime createdAt = LocalDateTime.now();
 
+	private Boolean isVisible = Boolean.TRUE;
+
 	private String authorNickname = "Anonymous";
 
 }

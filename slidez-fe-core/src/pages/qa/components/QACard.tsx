@@ -25,7 +25,7 @@ export default function QACard({
     return (
         <div className='card'>
             <div>
-                <div className='author'>{author}</div>
+                <div className='author'>{author.trim() || 'Anonymous'}</div>
                 <div className='qa-question-content'>{children}</div>
             </div>
             <div className='reaction'>

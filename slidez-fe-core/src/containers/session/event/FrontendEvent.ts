@@ -4,6 +4,7 @@ import {
     AskQuestionEvent,
     DomainEventType,
     LikeQuestionEvent,
+    SetQuestionVisibilityEvent,
     SnapshotEvent,
     StartPollEvent,
 } from './DomainEvent'
@@ -33,6 +34,11 @@ export type AskQuestionRequest = {
 export type LikeQuestionRequest = {
     link: string
     event: LikeQuestionEvent
+}
+
+export type SetQuestionVisibilityRequest = {
+    link: string
+    event: SetQuestionVisibilityEvent
 }
 
 export const createStartPollRequest = (
@@ -93,6 +99,23 @@ export const createLikeQuestionRequest = (
             questionLike: {
                 questionId: questionId,
                 participantId: participantId,
+            },
+        },
+    }
+}
+
+export const createSetQuestionVisibilityRequest = (
+    link: string,
+    questionId: string,
+    isVisible: boolean
+): SetQuestionVisibilityRequest => {
+    return {
+        link: link,
+        event: {
+            type: DomainEventType.setQuestionVisibilityEvent,
+            visibility: {
+                questionId: questionId,
+                isVisible: isVisible,
             },
         },
     }

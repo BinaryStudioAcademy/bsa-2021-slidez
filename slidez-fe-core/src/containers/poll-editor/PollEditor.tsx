@@ -4,7 +4,7 @@ import { Field, FieldArray, Form, Formik } from 'formik'
 import React, { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import back_button_icon from '../../assets/svgs/back_button_icon.svg'
-import checked_icon from '../../assets/svgs/checked_icon.svg'
+import checked_icon from '../../assets/svgs/check.svg'
 import drop_down_icon from '../../assets/svgs/drop_down_icon.svg'
 import './PollEditor.scss'
 import { createPoll, EditorTab, setActiveTab } from './store'
@@ -12,13 +12,13 @@ import { RootState } from '../../store'
 import { NotificationTypes } from '../../common/notification/notification-types'
 import { handleNotification } from '../../common/notification/Notification'
 import Loader from '../../common/components/loader/Loader'
+import { ReactComponent as TrashIcon } from '../../assets/svgs/trash.svg'
 
 export type PollEditorProps = {
     pollId?: string | null
 }
 
-// eslint-disable-next-line react/prop-types
-const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
+const PollEditor: React.FC<PollEditorProps> = ({ pollId }: PollEditorProps) => {
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch()
     const pollsError = useSelector((state: RootState) => state.editor.error)
@@ -85,18 +85,16 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
                             </span>
                         </button>
                     </div>
-                    <div>
+                    <div className='poll-name-block'>
                         <span>
                             <a href=''>
                                 <img src={checked_icon} alt='graph'></img>
                             </a>
                         </span>
                         <span className='poll-name'>Live poll</span>
-                        <span>
-                            <a href=''>
-                                <img src={drop_down_icon} alt='graph'></img>
-                            </a>
-                        </span>
+                        <p className='poll-icon'>
+                            <img src={drop_down_icon} alt='graph'></img>
+                        </p>
                     </div>
                     <Formik
                         initialValues={initialValues}
@@ -134,9 +132,6 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
                                                             className='options'
                                                         >
                                                             <div className='label option-label'>
-                                                                {`Option ${
-                                                                    index + 1
-                                                                }`}
                                                                 <Field
                                                                     name={`options.${index}.title`}
                                                                     placeholder='Your option'
@@ -153,12 +148,7 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }) => {
                                                                         )
                                                                     }
                                                                 >
-                                                                    <FontAwesomeIcon
-                                                                        className='option-delete-btn'
-                                                                        icon={
-                                                                            faTrashAlt
-                                                                        }
-                                                                    />
+                                                                    <TrashIcon className='option-delete-btn' />
                                                                 </button>
                                                             </div>
                                                         </div>

@@ -5,6 +5,7 @@ import { SessionPollAnswer } from '../model/SessionPollAnswer'
 import { QASessionQuestionDto } from './QASessionQuestionDto'
 import { LikeQuestionDto } from './LikeQuestionDto'
 import { ReactionDto } from './ReactionDto'
+import { QuestionVisibilityDto } from './QuestionVisibilityDto'
 
 export interface SessionResponse {
     type: SessionResponseType
@@ -15,4 +16,5 @@ export interface SessionResponse {
         | QASessionQuestionDto
         | LikeQuestionDto
         | ReactionDto
+        | QuestionVisibilityDto
 }
