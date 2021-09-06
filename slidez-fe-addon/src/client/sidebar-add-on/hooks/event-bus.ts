@@ -5,9 +5,11 @@ import {
     isRunningInChrome,
     MESSAGING_TOPIC,
     InsertSlide,
+    DeleteSlide,
     EventType,
     of,
     InsertSlideRequestSuccess,
+    DeleteSlideRequestSuccess,
 } from 'slidez-shared';
 import { EXTENSION_ID } from '../env';
 import { runGoogleScript } from '../helpers';
@@ -23,9 +25,9 @@ export type EventBusState =
     | { connected: EventBusConnectionStatus.CONNECTING }
     | { connected: EventBusConnectionStatus.FAILED }
     | {
-          connected: EventBusConnectionStatus.CONNECTED;
-          eventBus: BasicMessagingBus;
-      };
+        connected: EventBusConnectionStatus.CONNECTED;
+        eventBus: BasicMessagingBus;
+    };
 
 let messageBusState: EventBusState = {
     connected: EventBusConnectionStatus.NOT_INITIALIZED,
@@ -101,6 +103,22 @@ const registerListeners = (bus: BasicMessagingBus) => {
             );
         })
     );
+
+    bus.registerEventHandler(
+        EventType.DELETE_SLIDE,
+        of<DeleteSlide>(event => {
+            console.log('Slide delete request intercepted!');
+            runGoogleScript<DeleteSlideRequestSuccess>(
+                'deleteSlide',
+                event.data
+            ).then(data =>
+                bus.sendMessageNoCallback({
+                    type: EventType.DELETE_SLIDE_SUCCESS,
+                    data
+                })
+            )
+        })
+    )
 
     console.log('Registered listeners!');
 };

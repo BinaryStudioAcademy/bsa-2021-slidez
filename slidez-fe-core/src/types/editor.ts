@@ -34,6 +34,7 @@ export type ReadQaSessionDto = {
 export type PollInteractiveElement = {
     id: string
     type: 'POLL'
+    slideId: string
 } & ReadPollDto
 
 //TODO: check type enum values

@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { EventType, InsertSlideSuccess } from 'slidez-shared'
+import {
+    DeleteSlideSuccess,
+    EventType,
+    InsertSlideSuccess,
+} from 'slidez-shared'
 import { handleNotification } from '../../../common/notification/Notification'
 import { getMessageBusUnsafe } from '../../../hooks/event-bus'
 import httpHelper from '../../../services/http/http-helper'
@@ -136,6 +140,26 @@ export const createPoll = createAsyncThunk(
     }
 )
 
+export const deletePoll = createAsyncThunk(
+    'delete-poll',
+    async (pollDto: PollInteractiveElement) => {
+        const data =
+            await getMessageBusUnsafe()!.sendMessageAndListen<DeleteSlideSuccess>(
+                {
+                    type: EventType.DELETE_SLIDE,
+                    data: {
+                        id: pollDto.slideId,
+                    },
+                },
+                EventType.DELETE_SLIDE_SUCCESS,
+                5000
+            )
+        console.log('Deleting poll with id ' + pollDto.id)
+        await httpHelper.doDelete(`/polls/${pollDto.id}`)
+        return pollDto
+    }
+)
+
 const editorSlice = createSlice({
     name: 'editor',
     initialState,
@@ -196,6 +220,18 @@ const editorSlice = createSlice({
                     .filter(isPollInteractiveElement)
             })
             .addCase(createPoll.rejected, (state, errorResponse) => {
+                state.error = errorResponse.error.message ?? null
+            })
+            .addCase(deletePoll.pending, (state) => {
+                state.error = null
+            })
+            .addCase(deletePoll.fulfilled, (state, action) => {
+                state.error = null
+                state.polls = state.polls.filter(
+                    (poll) => poll.id != action.payload.id
+                )
+            })
+            .addCase(deletePoll.rejected, (state, errorResponse) => {
                 state.error = errorResponse.error.message ?? null
             })
             .addCase(loadActiveSession.rejected, (state, error) => {

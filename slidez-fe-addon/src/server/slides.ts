@@ -1,6 +1,8 @@
 import {
     InsertSlideRequest,
     InsertSlideRequestSuccess,
+    DeleteSlideRequest,
+    DeleteSlideRequestSuccess,
 } from '../../../slidez-shared/src/event-bus';
 import { sendCreateSlideRequest } from './slideCreateRequest';
 
@@ -36,3 +38,15 @@ export const insertSlide = (
 
     return { insertedId: data.id };
 };
+
+export const deleteSlide = (
+    data: DeleteSlideRequest
+): DeleteSlideRequestSuccess => {
+    var slide = getPresentation().getSlideById(data.id)
+    try {
+        slide.remove()
+        return { wasDeleted: true }
+    } catch (error) {
+        return { wasDeleted: false }
+    }
+}

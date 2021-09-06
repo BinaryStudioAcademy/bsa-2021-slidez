@@ -3,7 +3,7 @@ import check from '../../assets/svgs/check.svg'
 import q_and_a from '../../assets/svgs/QandA.svg'
 import heart from '../../assets/svgs/reactions.svg'
 import chat from '../../assets/svgs/chat.svg'
-import { EditorTab, setActiveTab } from './store'
+import { deletePoll, EditorTab, setActiveTab } from './store'
 import './Menu.scss'
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,6 +14,7 @@ import { ReactComponent as DropDownIcon } from '../../assets/svgs/drop_down_icon
 import { ReactComponent as DropUpIcon } from '../../assets/svgs/arrow_back.svg'
 import { ReactComponent as TrashIcon } from '../../assets/svgs/trash.svg'
 import httpHelper from '../../services/http/http-helper'
+import { PollInteractiveElement } from '../../types/editor'
 
 const Menu: React.FC = () => {
     const dispatch = useDispatch()
@@ -27,10 +28,12 @@ const Menu: React.FC = () => {
         setIsViewMenu(!isViewMenu)
     }
 
-    const handleDeleteClick = (event: SyntheticEvent, pollId: string) => {
+    const handleDeleteClick = (
+        event: SyntheticEvent,
+        poll: PollInteractiveElement
+    ) => {
         event.preventDefault()
-        httpHelper.doDelete(`/polls/${pollId}`)
-        // console.log('HEHEHEHEHEHEHHEHE')
+        dispatch(deletePoll(poll))
     }
 
     const { polls } = useSelector((state: RootState) => state.editor)
@@ -78,7 +81,7 @@ const Menu: React.FC = () => {
                                     <TrashIcon
                                         className='delete'
                                         onClick={(event) =>
-                                            handleDeleteClick(event, item.id)
+                                            handleDeleteClick(event, item)
                                         }
                                     />
                                 </div>
