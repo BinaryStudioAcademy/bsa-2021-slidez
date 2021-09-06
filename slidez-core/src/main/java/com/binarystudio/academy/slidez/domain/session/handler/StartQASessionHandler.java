@@ -30,16 +30,16 @@ public class StartQASessionHandler extends AbstractDomainEventHandler {
 	@Override
 	public GenericResponse<SessionResponse, SessionResponseCodes> handle(DomainEvent domainEvent,
 			PresentationEventStore presentationEventStore) {
-		if (Objects.equals(domainEvent.getClass(), StartQASessionEvent.class)) {
-			StartQASessionEvent startQASessionEvent = (StartQASessionEvent) domainEvent;
-			QASession qaSession = qaSessionService.getBySessionShortLink(startQASessionEvent.getShortCode());
-			SessionQASession sessionQASession = SessionInteractiveElementMapper.INSTANCE
-					.mapQASessionToSessionQASession(qaSession);
-			startQASessionEvent.setSessionQASession(sessionQASession);
-			super.handle(startQASessionEvent, presentationEventStore);
-			SessionResponse out = new SessionResponse(ResponseType.STARTED_QA_SESSION, sessionQASession);
-			return new GenericResponse<>(out);
-		}
+//		if (Objects.equals(domainEvent.getClass(), StartQASessionEvent.class)) {
+//			StartQASessionEvent startQASessionEvent = (StartQASessionEvent) domainEvent;
+//			QASession qaSession = qaSessionService.getBySessionShortLink(startQASessionEvent.getShortCode());
+//			SessionQASession sessionQASession = SessionInteractiveElementMapper.INSTANCE
+//					.mapQASessionToSessionQASession(qaSession);
+//			startQASessionEvent.setSessionQASession(sessionQASession);
+//			super.handle(startQASessionEvent, presentationEventStore);
+//			SessionResponse out = new SessionResponse(ResponseType.STARTED_QA_SESSION, sessionQASession);
+//			return new GenericResponse<>(out);
+//		}
 		return super.handle(domainEvent, presentationEventStore);
 	}
 
