@@ -8,6 +8,7 @@ const AppRoute = {
     PRESENT: '/present/:link',
     DASHBOARD: '/dashboard',
     ADDON: '/addon',
+    REACTION: '/reaction-overlay/:link',
 }
 
 export { AppRoute }

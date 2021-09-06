@@ -4,4 +4,5 @@ export enum SessionResponseType {
     startedPoll = 'STARTED_POLL',
     askedQuestion = 'ASKED_QUESTION',
     likedQuestion = 'LIKED_QUESTION',
+    reactionAdded = 'REACTION_ADDED',
 }

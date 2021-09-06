@@ -2,11 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {
     CLASS_NAME_PUNCH_VIEWER_SVGPAGE,
+    CLASS_NAME_PUNCH_VIEWER_CONTENT,
     CLASS_NAME_PUNCH_VIEWER_SVGPAGE_SVGCONTAINER,
     INTERACTIVE_PATTERN,
 } from '../../dom/dom-constants'
 import { queryElement } from '../../dom/dom-helpers'
 import SlideIframe from '../../components/slide-iframe/SlideIframe'
+import ReactionOverlayIframe from '../../components/slide-iframe/ReactionOverlayFrame'
 import { IFRAME_HOST_BASE } from '../../env'
 
 class CurrentSlideWatcher {
@@ -20,6 +22,22 @@ class CurrentSlideWatcher {
     private slideSwitchMutationObserver?: MutationObserver
 
     init() {
+        const reactionMount = queryElement(
+            this.document,
+            `.${CLASS_NAME_PUNCH_VIEWER_CONTENT}`
+        )
+        if (reactionMount) {
+            ReactDOM.render(
+                <ReactionOverlayIframe
+                    sourceUrl={`${IFRAME_HOST_BASE}/#/reaction-overlay/${this.eventCode}`}
+                />,
+                reactionMount
+            )
+        } else {
+            console.error(
+                'Failed to init reaction overlay, no mounting point available!'
+            )
+        }
         const svgContainerElem = this.getSvgContainerElem()!
         const gElem = this.getGElem(svgContainerElem)
         this.currentSlideId = gElem.id
