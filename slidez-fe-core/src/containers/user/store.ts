@@ -178,7 +178,7 @@ export const isSavingUser = (state: RootState) => state.user.isSavingUser
 export const isSavingPassword = (state: RootState) =>
     state.user.isSavingPassword
 
-export const selectUserDetals = (state: RootState) => state.user.user
+export const selectUserDetails = (state: RootState) => state.user.user
 
 export const selectId = (state: RootState) => state.user.user?.id
 

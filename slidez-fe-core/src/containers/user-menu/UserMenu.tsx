@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react'
-import { faUser, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { logout, selectUserDetals } from '../user/store'
+import { logout, selectUserDetails } from '../user/store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
+
+import { ReactComponent as UserGreyIcon } from '../../assets/svgs/grey-user.svg'
+import { ReactComponent as ExitIcon } from '../../assets/svgs/exit.svg'
 
 import { useDetectOutsideClick } from '../../pages/dashboard/useDetectOutsideClick'
 import styles from './styles.module.scss'
@@ -23,7 +24,7 @@ const UserMenu: React.FC = () => {
     const dropdownRef = useRef<HTMLInputElement>(null)
     const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
     const [isEditModalOpened, setEditModalOpened] = useState(false)
-    const userData = useAppSelector(selectUserDetals) || initialValuesUserData
+    const userData = useAppSelector(selectUserDetails) || initialValuesUserData
 
     const onOpenEditDialog = () => {
         setEditModalOpened(true)
@@ -83,10 +84,7 @@ const UserMenu: React.FC = () => {
                         className={styles.userProfileMenu}
                         onClick={() => onOpenEditDialog()}
                     >
-                        <FontAwesomeIcon
-                            className={styles.userIcon}
-                            icon={faUser}
-                        />
+                        <UserGreyIcon className={styles.userIcon} />
                         <span className={styles.userProfileMenuName}>
                             Edit profile
                         </span>
@@ -95,10 +93,7 @@ const UserMenu: React.FC = () => {
                         className={styles.userProfileMenu}
                         onClick={() => handleLogout()}
                     >
-                        <FontAwesomeIcon
-                            className={styles.userIcon}
-                            icon={faSignOutAlt}
-                        />
+                        <ExitIcon className={styles.userIcon} />
                         <span className={styles.userProfileMenuName}>
                             Log out
                         </span>
