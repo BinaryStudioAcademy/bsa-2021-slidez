@@ -20,8 +20,11 @@ function throwBadType(type: string): never {
 
 export const responseHandler =
     (dispatch: any) => (response: GenericResponse<SessionResponse, string>) => {
-        if (response.error || !response.data) {
-            throw new Error(response.error || 'No data')
+        if (response.error) {
+            throw new Error(response.error)
+        }
+        if (!response.data) {
+            return
         }
         switch (response.data.type) {
             case SessionResponseType.snapshot:
