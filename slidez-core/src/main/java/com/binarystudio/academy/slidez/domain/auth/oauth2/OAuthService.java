@@ -45,7 +45,8 @@ public class OAuthService {
 		}
 		var data = emailForGoogle.get();
 		var user = userService.getByEmail(data.getEmail()).orElseGet(() -> {
-			var newUser = userService.createByEmailAndUserData(data.getEmail(), data.getName(), data.getFamilyName());
+			var newUser = userService.createByEmailAndUserData(data.getEmail(), data.getGivenName(),
+					data.getFamilyName());
 			return newUser;
 		});
 		tokenManager.saveForUser(user.getId(), tokens);
