@@ -33,4 +33,13 @@ public class SessionQASession extends SessionInteractiveElement {
 		}
 	}
 
+	public void setVisibilityToQuestion(SessionQAQuestionVisibility visibility) {
+		Optional<SessionQAQuestion> questionOptional = questions.stream()
+				.filter(q -> Objects.equals(q.getId(), visibility.getQuestionId())).findAny();
+		if (questionOptional.isPresent()) {
+			SessionQAQuestion question = questionOptional.get();
+			question.setIsVisible(visibility.isVisible());
+		}
+	}
+
 }

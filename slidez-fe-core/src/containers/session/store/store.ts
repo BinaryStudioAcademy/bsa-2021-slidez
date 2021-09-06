@@ -14,6 +14,7 @@ import {
     AskQuestionRequest,
     createSnapshotRequest,
     LikeQuestionRequest,
+    SetQuestionVisibilityRequest,
     SnapshotRequest,
     StartPollRequest,
 } from '../event/FrontendEvent'
@@ -24,6 +25,7 @@ import { QASessionQuestionDto } from '../dto/QASessionQuestionDto'
 import { LikeQuestionDto } from '../dto/LikeQuestionDto'
 import { ParticipantData } from '../../../services/participant/dto/ParticipantData'
 import { getParticipantData } from '../../../services/participant/participant-service'
+import { QuestionVisibilityDto } from '../dto/QuestionVisibilityDto'
 
 export interface PresentationSessionState {
     connectionStatus: WsConnectionStatus
@@ -42,6 +44,13 @@ const initialState: PresentationSessionState = {
     qAndASession: undefined,
     link: undefined,
 }
+
+export const setQandAQuestions = createAsyncThunk(
+    'QandA/set-questions',
+    async (questions: QASessionQuestionDto[]) => {
+        return questions
+    }
+)
 
 export const createSessionForPresentation = createAsyncThunk(
     'sessions/create',
@@ -120,6 +129,20 @@ export const receiveLikeQuestion = createAsyncThunk(
     }
 )
 
+export const setQuestionVisibility = createAsyncThunk(
+    'QandA/set-visibility-to-question',
+    async (request: SetQuestionVisibilityRequest) => {
+        SessionService.sendRequest(request.link, request.event)
+    }
+)
+
+export const receiveQuestionVisibility = createAsyncThunk(
+    'QandA/receive-question-visibility',
+    async (visibility: QuestionVisibilityDto) => {
+        return visibility
+    }
+)
+
 export const initWebSocketSession = createAsyncThunk(
     'presentationSession/initWebSocketSession',
     async (link: string, { dispatch }) => {
@@ -158,6 +181,19 @@ const transformQuestionsForLike = (
             } else {
                 question.likedBy.push(participantId)
             }
+            break
+        }
+    }
+}
+
+const transformQuestionsForVisibility = (
+    questions: QASessionQuestionDto[],
+    idOfQuestionWithChangedVisibility: string,
+    isVisible: boolean
+) => {
+    for (const question of questions) {
+        if (question.id === idOfQuestionWithChangedVisibility) {
+            question.isVisible = isVisible
             break
         }
     }
@@ -215,6 +251,21 @@ export const presentationSessionSlice = createSlice({
                     action.payload.questionId,
                     participantData.id
                 )
+            })
+            .addCase(receiveQuestionVisibility.fulfilled, (state, action) => {
+                if (!state.qAndASession) {
+                    return
+                }
+                transformQuestionsForVisibility(
+                    state.qAndASession.questions,
+                    action.payload.questionId,
+                    action.payload.isVisible
+                )
+            })
+            .addCase(setQandAQuestions.fulfilled, (state, action) => {
+                if (state.qAndASession) {
+                    state.qAndASession.questions = action.payload
+                }
             })
     },
 })
