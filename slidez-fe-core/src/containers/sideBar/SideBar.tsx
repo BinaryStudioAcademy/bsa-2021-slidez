@@ -6,7 +6,6 @@ import { ReactComponent as GraphIcon } from '../../assets/svgs/graph_icon.svg'
 import { ReactComponent as LayoutIcon } from '../../assets/svgs/layout_icon.svg'
 import soon_lable from '../../assets/svgs/soon_lable.svg'
 import soon from '../../assets/svgs/soon.svg'
-import add_icon from '../../assets/svgs/add_icon.svg'
 import styles from './styles.module.scss'
 
 const SideBar = () => {
@@ -27,7 +26,6 @@ const SideBar = () => {
                     <a href=''>
                         <div className={styles.addIcon}>
                             <CreatePresentation />
-                            <img src={add_icon} alt='add presentation' />
                             <span className={styles.tooltiptext}>
                                 Create presentation
                             </span>
