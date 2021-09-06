@@ -6,7 +6,7 @@ import checked_icon from '../../assets/svgs/check.svg'
 import { EditorTab, setActiveTab } from './store'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
-import './qa.scss'
+import './createQAndA.scss'
 
 export type QAndAEditorProps = {
     qandaId?: string | null

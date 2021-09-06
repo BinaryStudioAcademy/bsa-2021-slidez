@@ -1,5 +1,7 @@
 package com.binarystudio.academy.slidez.app.qasession;
 
+import com.binarystudio.academy.slidez.app.poll.PollResponseCodes;
+import com.binarystudio.academy.slidez.domain.poll.dto.PollDto;
 import com.binarystudio.academy.slidez.domain.qasession.QASessionService;
 import com.binarystudio.academy.slidez.domain.qasession.dto.CreateQASessionDto;
 import com.binarystudio.academy.slidez.domain.qasession.dto.QASessionDto;
@@ -7,12 +9,11 @@ import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import com.binarystudio.academy.slidez.domain.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("${v1API}/qa-sessions")
@@ -25,6 +26,15 @@ public class QASessionController {
 		this.qaSessionService = qaSessionService;
 	}
 
+	@GetMapping("/{id}")
+    public GenericResponse<QASessionDto, QASessionResponseCodes> getById(@PathVariable UUID id) {
+        Optional<QASessionDto> qaSessionOptional = qaSessionService.getQASessionDtoById(id);
+        if (qaSessionOptional.isEmpty()) {
+            return new GenericResponse<>(null, QASessionResponseCodes.NOT_FOUND);
+        }
+        return new GenericResponse<>(qaSessionOptional.get());
+    }
+
 	@PostMapping("/new")
 	public GenericResponse<QASessionDto, QASessionResponseCodes> create(@RequestBody CreateQASessionDto dto,
 			Principal principal) {
@@ -33,5 +43,10 @@ public class QASessionController {
 		QASessionDto qaSessionDto = qaSessionService.create(dto, user);
 		return new GenericResponse<>(qaSessionDto);
 	}
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") UUID id) {
+        qaSessionService.remove(id);
+    }
 
 }
