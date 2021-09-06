@@ -2,15 +2,13 @@
 
 .qa-header {
   width: 100%;
-  border-radius: 14px 14px 0px 0px;
 
   z-index: 10;
   background-color: $white;
 
   max-width: 590px;
-  margin-left: 4px !important;
-  margin-top: 0px !important;
-  margin-bottom: 8px !important;
+  padding: 0 8px;
+  margin-bottom: 10px;
 
   .qa-title {
     display: flex;
@@ -19,7 +17,7 @@
     height: 38px;
     width: 100%;
     .close-cross-btn {
-      padding: 14px;
+      margin: 0 5px 0 0;
       border-color: white;
       border-width: 0px;
       box-shadow: none;
@@ -28,11 +26,8 @@
 }
 
 .qa-body {
-  margin: 0 10px;
-  height: calc(100% - 200px);
   overflow-y: auto;
-  width: 590px;
-  max-width: 590px;
+  margin-right: 8px;
 }
 
 @media (max-width: 600px) {
@@ -41,8 +36,7 @@
     margin-right: 8px !important;
     max-width: 590px;
   }
-  .qa-header,
   .qaadd {
-    width: calc(100% - 24px);
+    width: calc(100% - 8px);
   }
 }

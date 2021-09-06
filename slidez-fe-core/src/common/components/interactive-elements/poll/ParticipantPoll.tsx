@@ -72,7 +72,9 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
                         {poll.options.map(
                             (option: PollOptionDto, index: number) => (
                                 <FormControlLabel
-                                    className='radio-item'
+                                    className={`radio-item ${
+                                        chosenOption == option ? 'active' : ''
+                                    }`}
                                     key={index}
                                     label={option.title}
                                     control={<Radio />}
