@@ -6,6 +6,7 @@ const AppRoute = {
     EVENTS: '/events',
     EVENTS_WITH_LINK: '/events/:link',
     PRESENT: '/present/:link',
+    MODERATION: '/presentation/:link/moderation',
     DASHBOARD: '/dashboard',
     ADDON: '/addon',
 }

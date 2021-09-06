@@ -26,6 +26,10 @@ import {
 } from '../../containers/session/store/store'
 import { selectQASession } from '../../containers/session/store/selectors'
 import styles from './styles.module.scss'
+import {
+    getQuestionsSortedByDate,
+    getQuestionsSortedByLikes,
+} from './utils/sorting-utils'
 
 type QaProps = {
     handleClose: any
@@ -86,34 +90,15 @@ const Qa = (qaProps: QaProps) => {
     }
 
     const handleRecentClick = () => {
-        if (!qaSession || !qaSession.questions) {
-            return
-        }
-        const sorted: QASessionQuestionDto[] = [
-            ...(qaSession?.questions?.filter(
-                (question: QASessionQuestionDto) => question.isVisible
-            ) || []),
-        ]
-        sorted.sort((a, b) => {
-            return (
-                new Date(b.createdAt).getTime() -
-                new Date(a.createdAt).getTime()
-            )
-        })
+        const sorted: QASessionQuestionDto[] =
+            getQuestionsSortedByDate(qaSession)
         setIsRecentSelected(true)
         dispatch(setQandAQuestions(sorted))
     }
 
     const handleTopClick = () => {
-        if (!qaSession || !qaSession.questions) {
-            return
-        }
-        const sorted: QASessionQuestionDto[] = [
-            ...(qaSession?.questions?.filter(
-                (question: QASessionQuestionDto) => question.isVisible
-            ) || []),
-        ]
-        sorted.sort((a, b) => b.likedBy.length - a.likedBy.length)
+        const sorted: QASessionQuestionDto[] =
+            getQuestionsSortedByLikes(qaSession)
         setIsRecentSelected(false)
         dispatch(setQandAQuestions(sorted))
     }
