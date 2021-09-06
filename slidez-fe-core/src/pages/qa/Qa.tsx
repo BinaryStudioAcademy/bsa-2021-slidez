@@ -6,7 +6,6 @@ import SelectorPanel from './components/SelectorPanel'
 import CloseButton from './components/CloseButton'
 import { makeStyles } from '@material-ui/styles'
 import './qa.scss'
-import { useEffect } from 'react'
 import {
     createNickName,
     getParticipantData,
@@ -20,7 +19,11 @@ import {
 } from '../../containers/session/event/FrontendEvent'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { askQuestion, likeQuestion } from '../../containers/session/store/store'
+import {
+    askQuestion,
+    likeQuestion,
+    setQandAQuestions,
+} from '../../containers/session/store/store'
 import { selectQASession } from '../../containers/session/store/selectors'
 import styles from './styles.module.scss'
 
@@ -52,23 +55,9 @@ const Qa = (qaProps: QaProps) => {
     const { handleClose, show } = qaProps
     const classes = useStyles()
     const [participantData] = useState(getParticipantData())
-    const qaSession = { ...useAppSelector(selectQASession) }
-    const [questions, setQuestions] = useState(
-        qaSession?.questions?.filter(
-            (question: QASessionQuestionDto) => question.isVisible
-        ) || []
-    )
+    const qaSession = useAppSelector(selectQASession)
     const [isRecentSelected, setIsRecentSelected] = useState(true)
     const dispatch = useAppDispatch()
-
-    // Need it on every re-render
-    useEffect(() => {
-        if (isRecentSelected) {
-            handleRecentClick()
-        } else {
-            handleTopClick()
-        }
-    })
 
     const handleSubmit = (text: string) => {
         if (!qaSession || !qaSession.id) {
@@ -100,7 +89,11 @@ const Qa = (qaProps: QaProps) => {
         if (!qaSession || !qaSession.questions) {
             return
         }
-        const sorted: QASessionQuestionDto[] = [...questions]
+        const sorted: QASessionQuestionDto[] = [
+            ...(qaSession?.questions?.filter(
+                (question: QASessionQuestionDto) => question.isVisible
+            ) || []),
+        ]
         sorted.sort((a, b) => {
             return (
                 new Date(b.createdAt).getTime() -
@@ -108,17 +101,21 @@ const Qa = (qaProps: QaProps) => {
             )
         })
         setIsRecentSelected(true)
-        setQuestions(sorted)
+        dispatch(setQandAQuestions(sorted))
     }
 
     const handleTopClick = () => {
         if (!qaSession || !qaSession.questions) {
             return
         }
-        const sorted = [...questions]
+        const sorted: QASessionQuestionDto[] = [
+            ...(qaSession?.questions?.filter(
+                (question: QASessionQuestionDto) => question.isVisible
+            ) || []),
+        ]
         sorted.sort((a, b) => b.likedBy.length - a.likedBy.length)
         setIsRecentSelected(false)
-        setQuestions(sorted)
+        dispatch(setQandAQuestions(sorted))
     }
 
     const getIsLikedByMe = (qaSessionQuestion: QASessionQuestionDto) => {
@@ -128,6 +125,8 @@ const Qa = (qaProps: QaProps) => {
         return qaSessionQuestion.likedBy.includes(participantData.id)
     }
 
+    const visibleQuestions: QASessionQuestionDto[] =
+        qaSession?.questions?.filter((q) => q.isVisible) || []
     return (
         <Dialog
             open={show}
@@ -141,7 +140,7 @@ const Qa = (qaProps: QaProps) => {
                     <CloseButton onClick={handleClose} />
                 </div>
                 <SelectorPanel
-                    totalQuestions={questions.length}
+                    totalQuestions={visibleQuestions.length}
                     handleRecentClick={handleRecentClick}
                     handleTopClick={handleTopClick}
                     isRecentSelected={isRecentSelected}
@@ -149,7 +148,7 @@ const Qa = (qaProps: QaProps) => {
             </div>
             <div className={styles.bodyButton}>
                 <div className='qa-body'>
-                    {questions.map((qaSessionQuestion) => (
+                    {visibleQuestions.map((qaSessionQuestion) => (
                         <QACard
                             key={qaSessionQuestion.id}
                             author={qaSessionQuestion.authorNickname}

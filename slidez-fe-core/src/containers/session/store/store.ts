@@ -45,6 +45,13 @@ const initialState: PresentationSessionState = {
     link: undefined,
 }
 
+export const setQandAQuestions = createAsyncThunk(
+    'QandA/set-questions',
+    async (questions: QASessionQuestionDto[]) => {
+        return questions
+    }
+)
+
 export const createSessionForPresentation = createAsyncThunk(
     'sessions/create',
     async (dto: CreatePresentationSessionDto) => {
@@ -254,6 +261,11 @@ export const presentationSessionSlice = createSlice({
                     action.payload.questionId,
                     action.payload.isVisible
                 )
+            })
+            .addCase(setQandAQuestions.fulfilled, (state, action) => {
+                if (state.qAndASession) {
+                    state.qAndASession.questions = action.payload
+                }
             })
     },
 })
