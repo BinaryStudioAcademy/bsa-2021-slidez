@@ -10,7 +10,7 @@ import PollEditor from './PollEditor'
 import { EditorTab, loadActiveSession, preloadState } from './store'
 import styles from './addonstyles.module.scss'
 import Loader from '../../common/components/loader/Loader'
-import CreateQA from '../qa-session/CreateQA'
+import CreateQA from '../qa-session/QASession'
 
 const useEditorParams = () => {
     const params = new URLSearchParams(useLocation().search)

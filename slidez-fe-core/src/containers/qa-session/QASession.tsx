@@ -6,7 +6,7 @@ import checked_icon from '../../assets/svgs/check.svg'
 import { createQA, EditorTab, setActiveTab } from '../poll-editor/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
-import './createQA.scss'
+import './QASession.scss'
 import { handleNotification } from '../../common/notification/Notification'
 import { NotificationTypes } from '../../common/notification/notification-types'
 
