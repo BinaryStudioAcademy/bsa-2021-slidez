@@ -3,9 +3,11 @@ package com.binarystudio.academy.slidez.domain.qasession;
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElementType;
 import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
+import com.binarystudio.academy.slidez.domain.presentation.exception.PresentationNotFoundException;
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
 import com.binarystudio.academy.slidez.domain.qasession.dto.CreateQASessionDto;
 import com.binarystudio.academy.slidez.domain.qasession.dto.QASessionDto;
+import com.binarystudio.academy.slidez.domain.qasession.exception.QASessionNotFoundException;
 import com.binarystudio.academy.slidez.domain.qasession.mapper.QASessionMapper;
 import com.binarystudio.academy.slidez.domain.qasession.model.QASession;
 import com.binarystudio.academy.slidez.domain.user.model.User;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -48,6 +51,14 @@ public class QASessionService {
 
 	public Optional<QASession> getBySlideId(String slideId) {
 		return qaSessionRepository.getBySlideId(slideId);
+	}
+
+	public Optional<QASession> getBySessionShortLink(String shortCode)
+			throws PresentationNotFoundException, QASessionNotFoundException {
+		Presentation presentation = presentationService.getPresentationByShortCode(shortCode);
+		return presentation.getInteractiveElements().stream()
+				.filter(e -> Objects.equals(e.getType(), InteractiveElementType.QASession)).findAny()
+				.map(InteractiveElement::getQaSession);
 	}
 
 }

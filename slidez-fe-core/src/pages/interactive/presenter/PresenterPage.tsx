@@ -2,13 +2,11 @@ import React, { useEffect } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
 import {
-    createSessionForPresentation,
     initWebSocketSession,
     requestStartPoll,
 } from '../../../containers/session/store/store'
 import { WsConnectionStatus } from '../../../containers/session/enums/ws-connection-status'
 import Loader from '../../../common/components/loader/Loader'
-import { CreatePresentationSessionDto } from '../../../services/session/dto/CreatePresentationSessionDto'
 import {
     selectConnectionStatus,
     selectCurrentInteractiveElement,
@@ -17,8 +15,6 @@ import {
     createStartPollRequest,
     StartPollRequest,
 } from '../../../containers/session/event/FrontendEvent'
-import NoEvent from '../NoEventPage'
-import Header from '../Header'
 import {
     InteractiveElement,
     PollDto,

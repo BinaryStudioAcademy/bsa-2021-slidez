@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useState } from 'react'
+import React, { useState } from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import QACard from './components/QACard'
 import QAAdd from './components/QAAdd'
@@ -6,8 +6,26 @@ import SelectorPanel from './components/SelectorPanel'
 import CloseButton from './components/CloseButton'
 import { makeStyles } from '@material-ui/styles'
 import './qa.scss'
-import { MOCK_DATA } from './mock-poll-data'
-import { useEffect } from 'react'
+import {
+    createNickName,
+    getParticipantData,
+} from '../../services/participant/participant-service'
+import { QASessionQuestionDto } from '../../containers/session/dto/QASessionQuestionDto'
+import {
+    AskQuestionRequest,
+    createAskQuestionRequest,
+    createLikeQuestionRequest,
+    LikeQuestionRequest,
+} from '../../containers/session/event/FrontendEvent'
+import { useParams } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../../hooks'
+import {
+    askQuestion,
+    likeQuestion,
+    setQandAQuestions,
+} from '../../containers/session/store/store'
+import { selectQASession } from '../../containers/session/store/selectors'
+import styles from './styles.module.scss'
 
 type QaProps = {
     handleClose: any
@@ -32,101 +50,118 @@ const useStyles = makeStyles({
 })
 
 const Qa = (qaProps: QaProps) => {
+    //@ts-ignore
+    const { link } = useParams()
     const { handleClose, show } = qaProps
     const classes = useStyles()
-    const [listQA, setListQA] = useState(MOCK_DATA)
+    const [participantData] = useState(getParticipantData())
+    const qaSession = useAppSelector(selectQASession)
     const [isRecentSelected, setIsRecentSelected] = useState(true)
+    const dispatch = useAppDispatch()
 
-    useEffect(() => {
-        handleRecentClick() // Here revecive list of Q&A
-    }, [])
-
-    const handleSubmit = (textValue: string) => {
-        const now: string = new Date().toUTCString()
-        const newQA = {
-            UUID: now,
-            isLiked: false,
-            createdAt: now,
-            author: 'Principal',
-            likes: 0,
-            pollContent: textValue,
+    const handleSubmit = (text: string) => {
+        if (!qaSession || !qaSession.id) {
+            return
         }
-
-        if (isRecentSelected) {
-            setListQA([newQA, ...listQA])
-        } else {
-            setListQA([...listQA, newQA])
-        }
+        const nickname = createNickName()
+        const askQuestionRequest: AskQuestionRequest = createAskQuestionRequest(
+            link,
+            text,
+            nickname,
+            qaSession.id
+        )
+        dispatch(askQuestion(askQuestionRequest))
     }
 
-    const handleLike = (UUID: string) => {
-        const newItems = [...listQA]
-        newItems.map((item) => {
-            if (item.UUID === UUID) {
-                if (item.isLiked) {
-                    item.isLiked = false
-                    item.likes = item.likes - 1
-                } else {
-                    item.isLiked = true
-                    item.likes = item.likes + 1
-                }
-            }
-            return item
-        })
-        setListQA(newItems)
+    const handleLike = (questionId: string) => {
+        if (!participantData.id) {
+            return
+        }
+        const request: LikeQuestionRequest = createLikeQuestionRequest(
+            link,
+            questionId,
+            participantData.id
+        )
+        dispatch(likeQuestion(request))
     }
 
     const handleRecentClick = () => {
-        const sorted = [...listQA]
+        if (!qaSession || !qaSession.questions) {
+            return
+        }
+        const sorted: QASessionQuestionDto[] = [
+            ...(qaSession?.questions?.filter(
+                (question: QASessionQuestionDto) => question.isVisible
+            ) || []),
+        ]
         sorted.sort((a, b) => {
-            let y = new Date(a.createdAt)
-            let x = new Date(b.createdAt)
-            return x < y ? -1 : x > y ? 1 : 0
+            return (
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            )
         })
         setIsRecentSelected(true)
-        setListQA(sorted)
+        dispatch(setQandAQuestions(sorted))
     }
 
     const handleTopClick = () => {
-        const sorted = [...listQA]
-        sorted.sort((a, b) => b.likes - a.likes)
+        if (!qaSession || !qaSession.questions) {
+            return
+        }
+        const sorted: QASessionQuestionDto[] = [
+            ...(qaSession?.questions?.filter(
+                (question: QASessionQuestionDto) => question.isVisible
+            ) || []),
+        ]
+        sorted.sort((a, b) => b.likedBy.length - a.likedBy.length)
         setIsRecentSelected(false)
-        setListQA(sorted)
+        dispatch(setQandAQuestions(sorted))
     }
 
+    const getIsLikedByMe = (qaSessionQuestion: QASessionQuestionDto) => {
+        if (!participantData.id) {
+            return false
+        }
+        return qaSessionQuestion.likedBy.includes(participantData.id)
+    }
+
+    const visibleQuestions: QASessionQuestionDto[] =
+        qaSession?.questions?.filter((q) => q.isVisible) || []
     return (
         <Dialog
             open={show}
             keepMounted
             aria-labelledby='alert-dialog-slide-title'
             aria-describedby='alert-dialog-slide-description'
-            className={classes.root}
+            className={`${classes.root} ${styles.dialog}`}
         >
             <div className='qa-header'>
                 <div className='qa-title'>
                     <CloseButton onClick={handleClose} />
                 </div>
                 <SelectorPanel
-                    totalQuestions={listQA.length}
+                    totalQuestions={visibleQuestions.length}
                     handleRecentClick={handleRecentClick}
                     handleTopClick={handleTopClick}
                     isRecentSelected={isRecentSelected}
                 />
             </div>
-            <div className='qa-body'>
-                {listQA.map((qaItem) => (
-                    <QACard
-                        key={qaItem.UUID}
-                        author={qaItem.author}
-                        likes={qaItem.likes}
-                        isLiked={qaItem.isLiked}
-                        likeClick={() => handleLike(qaItem.UUID)}
-                    >
-                        {qaItem.pollContent}
-                    </QACard>
-                ))}
+            <div className={styles.bodyButton}>
+                <div className='qa-body'>
+                    {visibleQuestions.map((qaSessionQuestion) => (
+                        <QACard
+                            key={qaSessionQuestion.id}
+                            author={qaSessionQuestion.authorNickname}
+                            likeCount={qaSessionQuestion.likedBy.length}
+                            isLiked={getIsLikedByMe(qaSessionQuestion)}
+                            likeClick={() => handleLike(qaSessionQuestion.id)}
+                        >
+                            {qaSessionQuestion.question}
+                        </QACard>
+                    ))}
+                </div>
+                <QAAdd onSubmit={handleSubmit} />
             </div>
-            <QAAdd onSubmit={handleSubmit} />
         </Dialog>
     )
 }

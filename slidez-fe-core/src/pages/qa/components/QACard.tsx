@@ -7,7 +7,7 @@ import { MouseEventHandler } from 'react'
 type QACardProps = {
     children: string
     author: string
-    likes: number
+    likeCount: number
     likeClick: MouseEventHandler
     isLiked: boolean
 }
@@ -15,7 +15,7 @@ type QACardProps = {
 export default function QACard({
     children,
     author,
-    likes,
+    likeCount,
     likeClick,
     isLiked,
 }: QACardProps) {
@@ -25,13 +25,13 @@ export default function QACard({
     return (
         <div className='card'>
             <div>
-                <div className='author'>{author}</div>
-                <div className='pool-content'>{children}</div>
+                <div className='author'>{author.trim() || 'Anonymous'}</div>
+                <div className='qa-question-content'>{children}</div>
             </div>
             <div className='reaction'>
                 <button onClick={likeClick} className='like-btn'>
-                    <img className={iconClasss} src={iconImage}></img>
-                    {likes}
+                    <img className={iconClasss} src={iconImage} />
+                    {likeCount}
                 </button>
             </div>
         </div>

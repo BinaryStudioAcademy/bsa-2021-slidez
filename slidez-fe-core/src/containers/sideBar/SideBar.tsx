@@ -26,6 +26,7 @@ const SideBar = () => {
                     <a href=''>
                         <div className={styles.addIcon}>
                             <CreatePresentation />
+                            <img src={add_icon} alt='add presentation' />
                             <span className={styles.tooltiptext}>
                                 Create presentation
                             </span>

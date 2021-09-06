@@ -9,11 +9,13 @@ import {
 } from '../../../user/store'
 import { updatePasswordFieldsValidation } from '../validations'
 import './Form.scss'
-import { UserField } from '../Field'
 import { UpdatePasswordErrors } from './UpdatePasswordErrors'
 import { Loader } from './Loader'
 import { useAppDispatch, useAppSelector } from '../../../../hooks'
 import { UpdatePasswordRequest } from '../../../../services/user/dto/UpdatePasswordRequest'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
+import { revealPassword } from '../../../../common/components/forms/form-utils'
 
 export interface Password {
     id: string | undefined
@@ -29,10 +31,23 @@ const initialValuesPassword: Password = {
 
 const FormUpdatePassword = () => {
     const [viewErrors, setViewErrors] = React.useState(false)
+    const [isPasswordRevealed, setIsPasswordRevealed] = React.useState(false)
+    const [isConfirmPasswordRevealed, setIsConfirmPasswordRevealed] =
+        React.useState(false)
     const isSavingPasswordData = useAppSelector(isSavingPassword)
     const updatePasswordError = useAppSelector(selectError)
     const userId = useAppSelector(selectId)
     const dispatch = useAppDispatch()
+
+    const onRevealPasswordClick = () => {
+        setIsPasswordRevealed(!isPasswordRevealed)
+        revealPassword('update-password-input')
+    }
+
+    const onRevealConfirmPasswordClick = () => {
+        setIsConfirmPasswordRevealed(!isConfirmPasswordRevealed)
+        revealPassword('update-confirmPassword-input')
+    }
 
     const handleUpdatePassword = async (
         id: string | undefined,
@@ -69,30 +84,65 @@ const FormUpdatePassword = () => {
                         </span>
                         <div className='input-item'>
                             <p>New password</p>
-                            <Field
-                                id='update-password-input'
-                                name='password'
-                                type='password'
-                                autoComplete='new-password'
-                                onClick={() => setViewErrors(false)}
-                                component={UserField}
-                                value={errors.password}
-                                placeholder='Enter new password'
-                            />
+                            <div className='input-password'>
+                                <Field
+                                    id='update-password-input'
+                                    name='password'
+                                    className={
+                                        'form-input-password' +
+                                        (viewErrors && errors.password
+                                            ? ' error-input'
+                                            : '')
+                                    }
+                                    type='password'
+                                    autoComplete='new-password'
+                                    onClick={() => setViewErrors(false)}
+                                    placeholder='Enter new password'
+                                />
+                                <FontAwesomeIcon
+                                    className={`input-icon-password ${
+                                        isPasswordRevealed
+                                            ? 'icon-eye'
+                                            : 'icon-eye-slash'
+                                    }`}
+                                    icon={
+                                        isPasswordRevealed ? faEye : faEyeSlash
+                                    }
+                                    onClick={onRevealPasswordClick}
+                                />
+                            </div>
                         </div>
                         <div className='input-item'>
                             <p>Confirm password</p>
-                            <Field
-                                id='update-confirmPassword-input'
-                                name='confirmPassword'
-                                className={'form-input'}
-                                component={UserField}
-                                value={errors.confirmPassword}
-                                onClick={() => setViewErrors(false)}
-                                type='password'
-                                autoComplete='new-password'
-                                placeholder='Enter confirm password'
-                            />
+                            <div className='input-password'>
+                                <Field
+                                    id='update-confirmPassword-input'
+                                    name='confirmPassword'
+                                    className={
+                                        'form-input-password' +
+                                        (viewErrors && errors.password
+                                            ? ' error-input'
+                                            : '')
+                                    }
+                                    onClick={() => setViewErrors(false)}
+                                    type='password'
+                                    autoComplete='new-password'
+                                    placeholder='Enter confirm password'
+                                />
+                                <FontAwesomeIcon
+                                    className={`input-icon-password ${
+                                        isConfirmPasswordRevealed
+                                            ? 'icon-eye'
+                                            : 'icon-eye-slash'
+                                    }`}
+                                    icon={
+                                        isConfirmPasswordRevealed
+                                            ? faEye
+                                            : faEyeSlash
+                                    }
+                                    onClick={onRevealConfirmPasswordClick}
+                                />
+                            </div>
                         </div>
 
                         <UpdatePasswordErrors

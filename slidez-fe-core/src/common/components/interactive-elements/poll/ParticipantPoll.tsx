@@ -6,6 +6,7 @@ import {
     Radio,
     RadioGroup,
 } from '@material-ui/core'
+import check from '../../../../assets/svgs/checked_icon.svg'
 import { PollDto } from '../../../../containers/session/dto/InteractiveElement'
 import { PollOptionDto } from '../../../../containers/session/dto/PollOptionDto'
 import { useAppDispatch } from '../../../../hooks'
@@ -15,6 +16,7 @@ import {
     createAnswerPollRequest,
 } from '../../../../containers/session/event/FrontendEvent'
 import { answerPoll } from '../../../../containers/session/store/store'
+import Loader from '../../loader/Loader'
 
 export type ParticipantPollProps = {
     poll: PollDto
@@ -26,6 +28,7 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
         undefined
     )
     const [isAnswerSent, setIsAnswerSent] = useState<boolean>(false)
+    const [showLoader, setShowLoader] = useState<boolean>(true)
     const dispatch = useAppDispatch()
 
     const onSendClick = () => {
@@ -42,9 +45,17 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
         )
         if (!isAnswerSent) {
             setIsAnswerSent(true)
+            setShowLoader(true)
+            setTimeout(() => setShowLoader(false), 2000)
             dispatch(answerPoll(answerPollRequest))
         }
     }
+
+    const loaderOrCheck = showLoader ? (
+        <Loader />
+    ) : (
+        <img src={check} alt='check' />
+    )
 
     return (
         <div className='events-page'>
@@ -61,7 +72,9 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
                         {poll.options.map(
                             (option: PollOptionDto, index: number) => (
                                 <FormControlLabel
-                                    className='radio-item'
+                                    className={`radio-item ${
+                                        chosenOption == option ? 'active' : ''
+                                    }`}
                                     key={index}
                                     label={option.title}
                                     control={<Radio />}
@@ -75,7 +88,10 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
                     </RadioGroup>
                 </FormControl>
                 <button className='btn-submit' onClick={onSendClick}>
-                    Submit
+                    <div className='btn-submit-text'>Submit</div>
+                    <div className='btn-submit-icon'>
+                        {isAnswerSent && loaderOrCheck}
+                    </div>
                 </button>
             </div>
         </div>

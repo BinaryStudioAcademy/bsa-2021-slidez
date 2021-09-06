@@ -11,6 +11,7 @@ import com.binarystudio.academy.slidez.domain.session.dto.CreateSessionRequestDt
 import com.binarystudio.academy.slidez.domain.session.dto.CreateSessionResponseDto;
 import com.binarystudio.academy.slidez.domain.session.dto.SessionResponse;
 import com.binarystudio.academy.slidez.domain.session.event.DomainEvent;
+import com.binarystudio.academy.slidez.domain.session.event.StartQASessionEvent;
 import com.binarystudio.academy.slidez.domain.session.handler.DomainEventHandler;
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
@@ -58,6 +59,7 @@ public class SessionService {
 		String shortcode = session.getLink().getCode();
 		PresentationEventStore presentationEventStore = new PresentationEventStore(dto.getPresentationLink());
 		if (inMemoryPresentationEventStoreRepository.add(shortcode, presentationEventStore)) {
+			handleEvent(shortcode, new StartQASessionEvent(shortcode));
 			return Optional.of(new CreateSessionResponseDto(shortcode));
 		}
 		return Optional.empty();
