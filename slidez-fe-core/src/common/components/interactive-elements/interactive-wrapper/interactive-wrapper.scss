@@ -5,12 +5,11 @@
   background-color: #f6f4f8;
   border-radius: 37px;
   padding: 50px;
-  height: 80hv !important;
 }
 
 .wrapped-component {
   flex: 1;
-  background-color: white;
+  background-color: white !important;
 }
 
 .interactive-wrapper-sidebar {
@@ -28,7 +27,9 @@
   align-items: center;
   justify-content: center;
 }
-
+.logo-holder {
+  height: 40%;
+}
 .link-holder {
   font-size: 34px;
   font-weight: 400;

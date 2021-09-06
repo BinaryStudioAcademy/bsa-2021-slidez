@@ -1,14 +1,14 @@
 html,
 body,
 #root {
-  height: 100%;
-  max-height: 800px;
+  height: 100vh;
+  overflow: auto;
 }
 
 .wrapper {
   margin: 1rem;
   background-color: #f6f4f8;
-  height: 90%;
+  height: 96vh;
 }
 .presenter-event-loader {
   display: flex;
@@ -16,4 +16,5 @@ body,
   justify-content: center;
   align-self: center;
   align-content: center;
+  height: 96vh;
 }

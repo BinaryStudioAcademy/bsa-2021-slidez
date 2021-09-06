@@ -1,42 +1,48 @@
-@import "../../../../global/global.scss";
+@import '../../../../global/global.scss';
 
 .poll {
-    height: 100%;
-    border-radius: 10px;
-    background-color: $light-color;
+  height: 100%;
+  border-radius: 10px;
+  background-color: white;
 
-    &-header {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px 15px;
-        border-bottom: 2px solid $grey;
-    }
-    &-name {
-        font-weight: bold;
-    }
-    &-options {
-        padding: 25px;
-    }
-    &-option {
-        margin-bottom: 25px;
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 15px;
+    border-bottom: 2px solid $grey;
+  }
+  &-icon {
+    margin-right: 1rem;
+  }
+  &-name {
+    font-weight: bold;
+    font-size: 2.5rem;
+  }
+  &-options {
+    padding: 25px;
+  }
+  &-option {
+    margin-bottom: 25px;
+    font-style: italic;
+    font-size: 1.5rem;
 
-        &-votes {
-            display: flex;
-            margin-top: 5px;
-        }
-        &-bar {
-            min-width: 30px;
-            background-color: $grey;
-            border-radius: 10px;
-        }
-        &-percent {
-            margin-left: 10px;
-        }
-        &-winner &-bar {
-            background-color: $main-color;
-        }
-        &-winner &-percent {
-            color: $main-color;
-        }
+    &-votes {
+      display: flex;
+      margin-top: 5px;
     }
+    &-bar {
+      min-width: 30px;
+      background-color: $grey;
+      border-radius: 10px;
+    }
+    &-percent {
+      margin-left: 10px;
+    }
+    &-winner &-bar {
+      background-color: $main-color;
+    }
+    &-winner &-percent {
+      color: $main-color;
+    }
+  }
 }

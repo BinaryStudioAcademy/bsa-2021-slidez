@@ -4,12 +4,16 @@ import { ReactComponent as InteractiveSlidezLogo } from '../../../assets/svgs/in
 
 interface LogoProps {
     width: string | number
+    height?: string | number
 }
 
-export const Logo: FC<LogoProps> = ({ width }: LogoProps) => {
-    return <SlidezLogo width={width} />
+export const Logo: FC<LogoProps> = ({ width, height }: LogoProps) => {
+    return <SlidezLogo width={width} height={height} />
 }
 
-export const InteractiveLogo: FC<LogoProps> = ({ width }: LogoProps) => {
-    return <InteractiveSlidezLogo width={width} />
+export const InteractiveLogo: FC<LogoProps> = ({
+    width,
+    height,
+}: LogoProps) => {
+    return <InteractiveSlidezLogo width={width} height={height} />
 }

@@ -18,7 +18,7 @@ const InteractiveWrapper: React.FC<InteractiveWrapperProps> = ({
             <div className='wrapped-component'>{children}</div>
             <div className='interactive-wrapper-sidebar'>
                 <div className='container-with-centered-content'>
-                    <InteractiveLogo width='50%' />
+                    <InteractiveLogo width='100%' height='350px' />
                 </div>
                 <div className='link-holder'>
                     Join at
@@ -29,6 +29,7 @@ const InteractiveWrapper: React.FC<InteractiveWrapperProps> = ({
                     <QRCode
                         className='qr-code'
                         value={link}
+                        size={256}
                         fgColor='#663999'
                     />
                 </div>
