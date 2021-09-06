@@ -1,7 +1,5 @@
 package com.binarystudio.academy.slidez.app.qasession;
 
-import com.binarystudio.academy.slidez.app.poll.PollResponseCodes;
-import com.binarystudio.academy.slidez.domain.poll.dto.PollDto;
 import com.binarystudio.academy.slidez.domain.qasession.QASessionService;
 import com.binarystudio.academy.slidez.domain.qasession.dto.CreateQASessionDto;
 import com.binarystudio.academy.slidez.domain.qasession.dto.QASessionDto;
@@ -27,13 +25,13 @@ public class QASessionController {
 	}
 
 	@GetMapping("/{id}")
-    public GenericResponse<QASessionDto, QASessionResponseCodes> getById(@PathVariable UUID id) {
-        Optional<QASessionDto> qaSessionOptional = qaSessionService.getQASessionDtoById(id);
-        if (qaSessionOptional.isEmpty()) {
-            return new GenericResponse<>(null, QASessionResponseCodes.NOT_FOUND);
-        }
-        return new GenericResponse<>(qaSessionOptional.get());
-    }
+	public GenericResponse<QASessionDto, QASessionResponseCodes> getById(@PathVariable UUID id) {
+		Optional<QASessionDto> qaSessionOptional = qaSessionService.getQASessionDtoById(id);
+		if (qaSessionOptional.isEmpty()) {
+			return new GenericResponse<>(null, QASessionResponseCodes.NOT_FOUND);
+		}
+		return new GenericResponse<>(qaSessionOptional.get());
+	}
 
 	@PostMapping("/new")
 	public GenericResponse<QASessionDto, QASessionResponseCodes> create(@RequestBody CreateQASessionDto dto,
@@ -44,9 +42,9 @@ public class QASessionController {
 		return new GenericResponse<>(qaSessionDto);
 	}
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") UUID id) {
-        qaSessionService.remove(id);
-    }
+	@DeleteMapping("/{id}")
+	public void delete(@PathVariable("id") UUID id) {
+		qaSessionService.remove(id);
+	}
 
 }

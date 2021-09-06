@@ -3,7 +3,6 @@ import { useEffect } from 'react'
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { QandA } from '../../common/components/interactive-elements/q-and-a/QandA'
 import { EventBusConnectionStatus, useEventBus } from '../../hooks/event-bus'
 import { RootState } from '../../store'
 import Menu from './Menu'
@@ -11,6 +10,7 @@ import PollEditor from './PollEditor'
 import { EditorTab, loadActiveSession, preloadState } from './store'
 import styles from './addonstyles.module.scss'
 import Loader from '../../common/components/loader/Loader'
+import CreateQA from '../qa-session/CreateQA'
 
 const useEditorParams = () => {
     const params = new URLSearchParams(useLocation().search)
@@ -57,7 +57,7 @@ const Addon = () => {
             tab = <PollEditor />
             break
         case EditorTab.QA:
-            tab = <QandA />
+            tab = <CreateQA />
             break
         case EditorTab.QUIZ:
             tab = <>Not supported yet</>

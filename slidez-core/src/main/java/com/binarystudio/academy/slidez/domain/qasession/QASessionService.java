@@ -2,9 +2,6 @@ package com.binarystudio.academy.slidez.domain.qasession;
 
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElementType;
-import com.binarystudio.academy.slidez.domain.poll.dto.PollDto;
-import com.binarystudio.academy.slidez.domain.poll.mapper.PollMapper;
-import com.binarystudio.academy.slidez.domain.poll.model.Poll;
 import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
 import com.binarystudio.academy.slidez.domain.presentation.exception.PresentationNotFoundException;
 import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
@@ -53,10 +50,10 @@ public class QASessionService {
 		return QASessionMapper.INSTANCE.qaSessionToDto(out);
 	}
 
-    @Transactional
-    public void remove(UUID id) {
-        qaSessionRepository.deleteById(id);
-    }
+	@Transactional
+	public void remove(UUID id) {
+		qaSessionRepository.deleteById(id);
+	}
 
 	public Optional<QASession> getBySlideId(String slideId) {
 		return qaSessionRepository.getBySlideId(slideId);
@@ -70,13 +67,13 @@ public class QASessionService {
 				.map(InteractiveElement::getQaSession);
 	}
 
-    public Optional<QASessionDto> getQASessionDtoById(UUID id) {
-        Optional<QASession> qaSessionOptional = qaSessionRepository.findById(id);
-        if (qaSessionOptional.isEmpty()) {
-            return Optional.empty();
-        }
-        QASessionDto out = QASessionMapper.INSTANCE.qaSessionToDto(qaSessionOptional.get());
-        return Optional.of(out);
-    }
+	public Optional<QASessionDto> getQASessionDtoById(UUID id) {
+		Optional<QASession> qaSessionOptional = qaSessionRepository.findById(id);
+		if (qaSessionOptional.isEmpty()) {
+			return Optional.empty();
+		}
+		QASessionDto out = QASessionMapper.INSTANCE.qaSessionToDto(qaSessionOptional.get());
+		return Optional.of(out);
+	}
 
 }

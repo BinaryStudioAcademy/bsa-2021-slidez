@@ -3,20 +3,21 @@ import React, { useState, useCallback } from 'react'
 import Loader from '../../common/components/loader/Loader'
 import back_button_icon from '../../assets/svgs/back_button_icon.svg'
 import checked_icon from '../../assets/svgs/check.svg'
-import { EditorTab, setActiveTab } from './store'
+import { createQA, EditorTab, setActiveTab } from '../poll-editor/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
-import './createQAndA.scss'
+import './createQA.scss'
+import { handleNotification } from '../../common/notification/Notification'
+import { NotificationTypes } from '../../common/notification/notification-types'
 
-export type QAndAEditorProps = {
-    qandaId?: string | null
+export type QAEditorProps = {
+    qaId?: string | null
 }
 
-const CreateQAndA: React.FC<QAndAEditorProps> = ({
-    qandaId,
-}: QAndAEditorProps) => {
+const CreateQA: React.FC<QAEditorProps> = ({ qaId }: QAEditorProps) => {
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch()
+    const qaError = useSelector((state: RootState) => state.editor.error)
     const presentationId = useSelector(
         (state: RootState) => state.editor.presentationId
     )
@@ -28,7 +29,24 @@ const CreateQAndA: React.FC<QAndAEditorProps> = ({
     const initialValues = {
         title: '',
     }
-    const handleSubmit = async (values: typeof initialValues) => {}
+    const handleSubmit = async (values: typeof initialValues) => {
+        setIsLoading(true)
+        dispatch(
+            createQA({
+                ...values,
+                slideId: 'slidez_' + new Date().getTime(),
+                presentationId,
+            })
+        )
+        if (qaError !== null) {
+            handleNotification(
+                'Added Failed',
+                'The question did not added',
+                NotificationTypes.ERROR
+            )
+        }
+        setIsLoading(false)
+    }
 
     return (
         <div className='app'>
@@ -111,4 +129,4 @@ const CreateQAndA: React.FC<QAndAEditorProps> = ({
     )
 }
 
-export default CreateQAndA
+export default CreateQA
