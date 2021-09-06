@@ -1,42 +1,51 @@
-@import "../../../../global/global.scss";
+@import '../../../../global/global.scss';
 
 .poll {
-    height: 100%;
-    border-radius: 10px;
-    background-color: $light-color;
+  height: 100%;
+  border-radius: 10px;
+  background-color: white;
 
-    &-header {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px 15px;
-        border-bottom: 2px solid $grey;
-    }
-    &-name {
-        font-weight: bold;
-    }
-    &-options {
-        padding: 25px;
-    }
-    &-option {
-        margin-bottom: 25px;
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 15px;
+    border-bottom: 2px solid #f6f4f8;
+    align-items: center;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  &-icon {
+    margin-right: 1rem;
+  }
+  &-name {
+    font-weight: bold;
+    font-size: 1.5rem;
+    font-weight: 400;
+  }
+  &-options {
+    padding: 25px;
+  }
+  &-option {
+    margin-bottom: 25px;
+    font-style: italic;
 
-        &-votes {
-            display: flex;
-            margin-top: 5px;
-        }
-        &-bar {
-            min-width: 30px;
-            background-color: $grey;
-            border-radius: 10px;
-        }
-        &-percent {
-            margin-left: 10px;
-        }
-        &-winner &-bar {
-            background-color: $main-color;
-        }
-        &-winner &-percent {
-            color: $main-color;
-        }
+    &-votes {
+      display: flex;
+      margin-top: 5px;
     }
+    &-bar {
+      min-width: 30px;
+      background-color: $grey;
+      border-radius: 10px;
+    }
+    &-percent {
+      margin-left: 10px;
+    }
+    &-winner &-bar {
+      background-color: $main-color;
+    }
+    &-winner &-percent {
+      color: $main-color;
+    }
+  }
 }

@@ -36,11 +36,13 @@ const useEditorParams = () => {
 
 const noCurrentInteraction = (link: string) => {
     return (
-        <InteractiveWrapper eventCode={link}>
-            <div className='presenter-event-loader'>
-                <Loader />
-            </div>
-        </InteractiveWrapper>
+        <div className='interactive-wrapper'>
+            <InteractiveWrapper eventCode={link}>
+                <div className='presenter-event-loader'>
+                    <Loader />
+                </div>
+            </InteractiveWrapper>
+        </div>
     )
 }
 
@@ -77,8 +79,12 @@ const PresenterPage: React.FC = () => {
 
     return (
         <div>
-            {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
             <div className='presenter-page-content'>
+                {connectionStatus !== WsConnectionStatus.CONNECTED && (
+                    <div className='presenter-event-loader'>
+                        <Loader />
+                    </div>
+                )}
                 <InteractiveWrapper eventCode={link || ''}>
                     {getBodyContent(currentInteraction)}
                 </InteractiveWrapper>

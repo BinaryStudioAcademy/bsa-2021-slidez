@@ -2,6 +2,7 @@ import React from 'react'
 import { PollDto } from '../../../../containers/session/dto/InteractiveElement'
 import './presenterPoll.scss'
 import { PollAnswerDto } from '../../../../containers/session/dto/PollAnswerDto'
+import checked_icon from '../../../../assets/svgs/check.svg'
 
 type PollProps = {
     poll: PollDto
@@ -66,7 +67,12 @@ const PresenterPoll = ({ poll, children }: PollProps) => {
     return (
         <div className='poll'>
             <div className='poll-header'>
-                <div className='poll-name'>{poll.title}</div>
+                <div className='poll-name'>
+                    <span className='poll-icon'>
+                        <img src={checked_icon} alt='graph'></img>
+                    </span>
+                    {poll.title}
+                </div>
                 <div className='poll-votes'>{totalVotes} votes</div>
             </div>
             <div className='poll-options'>{mappedOptions}</div>
