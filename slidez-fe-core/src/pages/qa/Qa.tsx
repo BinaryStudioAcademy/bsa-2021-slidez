@@ -22,6 +22,7 @@ import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { askQuestion, likeQuestion } from '../../containers/session/store/store'
 import { selectQASession } from '../../containers/session/store/selectors'
+import styles from './styles.module.scss'
 
 type QaProps = {
     handleClose: any
@@ -92,6 +93,7 @@ const Qa = (qaProps: QaProps) => {
     }
 
     const handleRecentClick = () => {
+        setIsRecentSelected(true)
         if (!qaSession || !qaSession.questions) {
             return
         }
@@ -102,17 +104,16 @@ const Qa = (qaProps: QaProps) => {
                 new Date(a.createdAt).getTime()
             )
         })
-        setIsRecentSelected(true)
         qaSession.questions = sorted
     }
 
     const handleTopClick = () => {
+        setIsRecentSelected(false)
         if (!qaSession || !qaSession.questions) {
             return
         }
         const sorted = [...qaSession.questions]
         sorted.sort((a, b) => b.likedBy.length - a.likedBy.length)
-        setIsRecentSelected(false)
         qaSession.questions = sorted
     }
 
@@ -129,7 +130,7 @@ const Qa = (qaProps: QaProps) => {
             keepMounted
             aria-labelledby='alert-dialog-slide-title'
             aria-describedby='alert-dialog-slide-description'
-            className={classes.root}
+            className={`${classes.root} ${styles.dialog}`}
         >
             <div className='qa-header'>
                 <div className='qa-title'>
@@ -142,20 +143,22 @@ const Qa = (qaProps: QaProps) => {
                     isRecentSelected={isRecentSelected}
                 />
             </div>
-            <div className='qa-body'>
-                {qaSession?.questions?.map((qaSessionQuestion) => (
-                    <QACard
-                        key={qaSessionQuestion.id}
-                        author={qaSessionQuestion.authorNickname}
-                        likeCount={qaSessionQuestion.likedBy.length}
-                        isLiked={getIsLikedByMe(qaSessionQuestion)}
-                        likeClick={() => handleLike(qaSessionQuestion.id)}
-                    >
-                        {qaSessionQuestion.question}
-                    </QACard>
-                ))}
+            <div className={styles.bodyButton}>
+                <div className='qa-body'>
+                    {qaSession?.questions?.map((qaSessionQuestion) => (
+                        <QACard
+                            key={qaSessionQuestion.id}
+                            author={qaSessionQuestion.authorNickname}
+                            likeCount={qaSessionQuestion.likedBy.length}
+                            isLiked={getIsLikedByMe(qaSessionQuestion)}
+                            likeClick={() => handleLike(qaSessionQuestion.id)}
+                        >
+                            {qaSessionQuestion.question}
+                        </QACard>
+                    ))}
+                </div>
+                <QAAdd onSubmit={handleSubmit} />
             </div>
-            <QAAdd onSubmit={handleSubmit} />
         </Dialog>
     )
 }

@@ -1,0 +1,17 @@
+.dialog {
+    :global(.MuiDialog-container) {
+        justify-content: flex-end;
+        align-items: flex-end;
+
+        :global(.MuiPaper-root) {
+            border-radius: 15px 15px 0 0;
+            width: 100%;
+        }
+    }
+
+    .bodyButton {
+        height: calc(100vh - 143px);
+        display: grid;
+        grid-template-rows: 1fr min-content;
+    }
+}

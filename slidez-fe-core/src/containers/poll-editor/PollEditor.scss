@@ -1,10 +1,13 @@
 @import "src/global/global";
 
 .app {
-    margin: 0.5rem 1rem 1rem 1rem;
+    margin: 15px;
     font-family: "Rubik";
     font-weight: 500;
     font-style: normal;
+    button {
+        font-family: 'Rubik';
+    }
 }
 
 .text-input {
@@ -15,10 +18,18 @@
         margin-right: 5px;
     }
 }
-.poll-name {
-    font-size: 14px;
-    margin: 0 10px;
-    width: 100%;
+.poll-name-block {
+    display: flex;
+    align-items: center;
+
+    .poll-name {
+        font-size: 14px;
+        margin: 0 10px;
+    }
+    .poll-icon {
+        margin-top: -3px;
+        cursor: pointer;
+    }
 }
 
 .label {
@@ -40,7 +51,7 @@
     color: $main-color;
     background-color: $white;
     border: 0px $white solid;
-    margin-bottom: 1rem;
+    margin-bottom: 31px;
 }
 
 .input {
@@ -114,9 +125,8 @@
 .options {
     display: flex;
     align-items: center;
-    .option-label {
-        margin: 18px 0px 5px 0px;
-    }
+    margin-top: 15px;
+
     .options-btn {
         font-size: 22px;
         box-shadow: none;
@@ -124,11 +134,8 @@
         color: rgba(102, 102, 102, 0.7);
 
         width: 25px;
-        margin: 22px 5px 3px 5px;
-        padding: 12px 5px 5px 7px;
+        margin: 0;
+        padding-left: 8px;
         text-align: center;
-    }
-    .option-delete-btn {
-        margin-bottom: 6px;
     }
 }

@@ -20,7 +20,12 @@ const DeleteAccount = (props: {
     }
 
     return (
-        <Dialog open={props.modalState} maxWidth='sm' fullWidth>
+        <Dialog
+            open={props.modalState}
+            maxWidth='sm'
+            fullWidth
+            className='delete-dialog'
+        >
             <div className='dialog-title'>Confirm the action</div>
             <DialogContent>
                 <Typography className='dialog-message'>

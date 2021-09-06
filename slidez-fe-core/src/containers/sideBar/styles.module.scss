@@ -23,9 +23,14 @@
     align-items: center;
 
     .addIcon {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         background-size: 30px;
         margin-bottom: 40px;
+        background-color: $main-color;
+        border-radius: 50%;
+        padding: 14px;
     }
 
     .sideIcon {
@@ -63,6 +68,7 @@
     }
 
     .tooltiptext {
+        font-size: 14px;
         visibility: hidden;
         left: 10%;
         width: 120px;
