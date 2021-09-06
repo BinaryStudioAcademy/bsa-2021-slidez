@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SlidezLogo from '../../../src/logo_Slidez_1.svg'
 import { ReactComponent as CreatePresentation } from '../../assets/svgs/create_presentation.svg'
 import { ReactComponent as MyPresentation } from '../../assets/svgs/my_presentation.svg'
@@ -9,6 +9,11 @@ import soon from '../../assets/svgs/soon.svg'
 import styles from './styles.module.scss'
 
 const SideBar = () => {
+    const [selectedIcon, setSelectedIcon] = useState(false)
+
+    const handleClick = () => {
+        setSelectedIcon(!selectedIcon)
+    }
     return (
         <div className={styles.sidebar}>
             <div className={styles.logo}>
@@ -29,7 +34,10 @@ const SideBar = () => {
                 </span>
                 <span>
                     <div className={styles.sideIcon}>
-                        <MyPresentation />
+                        <MyPresentation
+                            className={selectedIcon ? styles.selectedIcon : ''}
+                            onClick={handleClick}
+                        />
                         <span className={styles.tooltiptext}>
                             My presentation
                         </span>

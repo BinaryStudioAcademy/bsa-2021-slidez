@@ -44,7 +44,7 @@
         stroke: #59D0A5;  
     } 
 
-    .sideIcon svg:active path {
+    .selectedIcon path {
         stroke: #59D0A5;
     }
 
@@ -53,14 +53,15 @@
         background-color: rgba(89, 208, 165, 0.2);
     }
 
-
     .label {
         position: absolute;
         margin-top: 14px;
         margin-left: 17px;
     }
 
-    .sideIcon:hover .tooltiptext, .addIcon:hover .tooltiptext, .disableIcons:hover .tooltiptext{
+    .sideIcon:hover .tooltiptext, 
+    .addIcon:hover .tooltiptext, 
+    .disableIcons:hover .tooltiptext {
         visibility: visible;
     }
 
@@ -68,13 +69,13 @@
         visibility: hidden;
         left: 8.5%;
         width: 100px;
-        background-color: #F6F4F8;
+        background-color: $light-color;
         border: 1px solid $dark-color;
-        font-size: small;
-        color: black;
+        font-size: 13px;
+        color: $black;
         text-align: center;
         border-radius: 6px;
-        padding: 5px 0;
+        padding: 5px 3px;
         position: absolute;
         z-index: 1;
     }
