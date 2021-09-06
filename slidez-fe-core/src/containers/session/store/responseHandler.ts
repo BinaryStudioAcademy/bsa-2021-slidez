@@ -29,6 +29,7 @@ export const responseHandler =
                 'Link doesn`t exist',
                 NotificationTypes.ERROR
             )
+            console.error(response.error)
             window.location.assign(`/#${AppRoute.EVENTS}`)
             return
         }
