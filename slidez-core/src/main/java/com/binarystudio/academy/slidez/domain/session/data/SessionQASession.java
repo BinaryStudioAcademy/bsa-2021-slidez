@@ -38,7 +38,7 @@ public class SessionQASession extends SessionInteractiveElement {
 				.filter(q -> Objects.equals(q.getId(), visibility.getQuestionId())).findAny();
 		if (questionOptional.isPresent()) {
 			SessionQAQuestion question = questionOptional.get();
-			question.setIsVisible(visibility.isVisible());
+			question.setIsVisible(visibility.getIsVisible());
 		}
 	}
 

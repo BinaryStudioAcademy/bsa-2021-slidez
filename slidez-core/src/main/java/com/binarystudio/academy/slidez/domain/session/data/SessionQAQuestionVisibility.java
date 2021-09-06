@@ -9,6 +9,6 @@ public class SessionQAQuestionVisibility {
 
 	private UUID questionId;
 
-	private boolean isVisible;
+	private Boolean isVisible;
 
 }

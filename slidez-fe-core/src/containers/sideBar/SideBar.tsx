@@ -7,6 +7,7 @@ import { ReactComponent as LayoutIcon } from '../../assets/svgs/layout_icon.svg'
 import soon_lable from '../../assets/svgs/soon_lable.svg'
 import soon from '../../assets/svgs/soon.svg'
 import styles from './styles.module.scss'
+import add_icon from '../../assets/svgs/add_icon.svg'
 
 const SideBar = () => {
     const [selectedIcon, setSelectedIcon] = useState(false)

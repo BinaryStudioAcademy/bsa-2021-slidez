@@ -28,6 +28,33 @@ $likebtnwidth: 62px;
   word-break: break-all;
 }
 
+.element-in-stack-holder {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+
+.change-visibility-icon {
+    height: 18px;
+    width: 18px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-right: 5px;
+}
+
+.moderation-like-count-holder {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-right: 5px;
+    font-weight: 300;
+    font-size: 18px;
+    color: $main-color;
+}
+
+.change-visibility-icon:hover {
+    cursor: pointer;
+}
+
 .like-btn {
   color: $main-color;
   background-color: $white;
@@ -39,14 +66,14 @@ $likebtnwidth: 62px;
 
   .unliked-icon {
     margin-right: 5px;
-    width: 13px;
-    height: 13px;
+    width: 15px;
+    height: 15px;
   }
 
   .liked-icon {
     margin-right: 5px;
-    width: 13px;
-    height: 13px;
+    width: 15px;
+    height: 15px;
   }
 }
 #thumbs-up-solid {
