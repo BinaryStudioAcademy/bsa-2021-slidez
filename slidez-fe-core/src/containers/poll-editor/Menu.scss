@@ -9,7 +9,7 @@
         margin-bottom: 20px;
     }
     .menu-list {
-        .list-elements{
+        .list-elements {
             padding-left: 2rem;
             .list-items {
                 display: flex;
@@ -21,7 +21,6 @@
                 background-color: $light-color;
                 border-radius: 10px;
                 cursor: pointer;
-
                 img {
                     margin-right: 10px;
                 }
@@ -37,6 +36,14 @@
                     color: #a6a6a6;
                     white-space: nowrap;
                     line-height: 20px;
+                }
+                .delete {
+                    margin-left: 5px;
+                    &:hover {
+                        path {
+                            fill: red;
+                        }
+                    }
                 }
                 &:last-child {
                     margin-bottom: 0;
@@ -64,7 +71,7 @@
             }
             .arrow-icon {
                 cursor: pointer;
-                color: #59D0A5;
+                color: #59d0a5;
                 margin-left: 135px;
                 width: 20px;
                 height: 20px;
@@ -73,16 +80,15 @@
                 align-items: center;
                 .hide-icon {
                     display: none;
-                    color: $mint
+                    color: $mint;
                 }
-                .hide-icon{
+                .hide-icon {
                     display: none;
-                    color: $mint
-                
+                    color: $mint;
                 }
             }
             &:hover {
-                background-color: #EAE9ED;
+                background-color: #eae9ed;
             }
         }
     }
@@ -99,9 +105,22 @@
     }
     .button-show-hide-elements {
         padding-left: 2rem;
-        
     }
 }
 
-@keyframes dropDown { from { height: 0; } to { height: 235px; }  }
-@keyframes dropUp { from { height: 245px; } to { height: 0px; }  }
+@keyframes dropDown {
+    from {
+        height: 0;
+    }
+    to {
+        height: 235px;
+    }
+}
+@keyframes dropUp {
+    from {
+        height: 245px;
+    }
+    to {
+        height: 0px;
+    }
+}

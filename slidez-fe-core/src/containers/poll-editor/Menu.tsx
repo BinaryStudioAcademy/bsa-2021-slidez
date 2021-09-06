@@ -12,6 +12,8 @@ import { useState } from 'react'
 import Session from '../session/Session'
 import { ReactComponent as DropDownIcon } from '../../assets/svgs/drop_down_icon.svg'
 import { ReactComponent as DropUpIcon } from '../../assets/svgs/arrow_back.svg'
+import { ReactComponent as TrashIcon } from '../../assets/svgs/trash.svg'
+import httpHelper from '../../services/http/http-helper'
 
 const Menu: React.FC = () => {
     const dispatch = useDispatch()
@@ -23,6 +25,12 @@ const Menu: React.FC = () => {
     const handleArrowClick = (event: SyntheticEvent) => {
         event.stopPropagation()
         setIsViewMenu(!isViewMenu)
+    }
+
+    const handleDeleteClick = (event: SyntheticEvent, pollId: string) => {
+        event.preventDefault()
+        httpHelper.doDelete(`/polls/${pollId}`)
+        // console.log('HEHEHEHEHEHEHHEHE')
     }
 
     const { polls } = useSelector((state: RootState) => state.editor)
@@ -59,10 +67,20 @@ const Menu: React.FC = () => {
                         {polls.map((item) => {
                             return (
                                 <div className='list-items' key={item.id}>
-                                    <img src={check} alt='check' />
+                                    <img
+                                        className='check'
+                                        src={check}
+                                        alt='check'
+                                    />
                                     <div className='text'>{item.title}</div>
                                     &nbsp;
                                     <span className='subtext'>{`[${item.pollOptions.length} options]`}</span>
+                                    <TrashIcon
+                                        className='delete'
+                                        onClick={(event) =>
+                                            handleDeleteClick(event, item.id)
+                                        }
+                                    />
                                 </div>
                             )
                         })}
