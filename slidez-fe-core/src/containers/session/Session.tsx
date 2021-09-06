@@ -1,11 +1,9 @@
 import React, { useCallback } from 'react'
 import reset_button from '../../assets/svgs/reset_button.svg'
 import pause_button from '../../assets/svgs/pause_button.svg'
-import log_out from '../../assets/svgs/log_out.svg'
 import arrow_back from '../../assets/svgs/arrow_back.svg'
-import close_icon from '../../assets/svgs/close_icon.svg'
+import { ReactComponent as CloseIcon } from '../../assets/svgs/close_icon.svg'
 import './session.scss'
-import { logout } from '../user/store'
 import { useAppDispatch } from '../../hooks'
 import { useState } from 'react'
 import menu_icon from '../../assets/svgs/menu-icon.svg'
@@ -36,7 +34,7 @@ const Session = () => {
     const handleIcon = openMenu ? (
         <div className='close-button-active'>
             <button className='close-button' onClick={handleCloseMenu}>
-                <img src={close_icon} />
+                <CloseIcon width='16' height='16' />
             </button>
         </div>
     ) : (
@@ -50,7 +48,10 @@ const Session = () => {
     return (
         <div>
             {handleIcon}
-            <div className={sideMenuClasses}>
+            <div
+                className={sideMenuClasses}
+                style={{ height: `calc(${window.innerHeight}px - 59px)` }}
+            >
                 <div className='session-section'>
                     <div className='session-name'>
                         <div className='session-id'>
@@ -81,13 +82,13 @@ const Session = () => {
                     </button>
                 </div>
 
-                {/*<hr className='border-between-account' />
+                {/* <hr className='border-between-account' />
                 <div className='account-section'>
-                    <button className='logout' onClick={handleLogout}>
+                    <button className='logout'>
                         <img src={log_out} />
                         Log out
                     </button>
-                </div>*/}
+                </div> */}
             </div>
         </div>
     )

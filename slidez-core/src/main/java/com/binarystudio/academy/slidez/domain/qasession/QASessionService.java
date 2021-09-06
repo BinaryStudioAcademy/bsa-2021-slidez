@@ -53,13 +53,12 @@ public class QASessionService {
 		return qaSessionRepository.getBySlideId(slideId);
 	}
 
-	public QASession getBySessionShortLink(String shortCode)
+	public Optional<QASession> getBySessionShortLink(String shortCode)
 			throws PresentationNotFoundException, QASessionNotFoundException {
 		Presentation presentation = presentationService.getPresentationByShortCode(shortCode);
 		return presentation.getInteractiveElements().stream()
 				.filter(e -> Objects.equals(e.getType(), InteractiveElementType.QASession)).findAny()
-				.map(InteractiveElement::getQaSession).orElseThrow(() -> new QASessionNotFoundException(
-						String.format("No qa sessions found in presentation with short code %s", shortCode)));
+				.map(InteractiveElement::getQaSession);
 	}
 
 }

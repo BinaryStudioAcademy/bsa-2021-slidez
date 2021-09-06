@@ -4,7 +4,8 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import * as Yup from 'yup'
 import { Field, Form, Formik, FormikErrors } from 'formik'
-import { saveParticipantData } from '../../../services/participant/participant-service'
+import { saveParticipantData } from '../../../../services/participant/participant-service'
+import styles from './styles.module.scss'
 
 type ParticipantNameErorrsProps = {
     viewErrors: boolean
@@ -46,7 +47,11 @@ const ParticipantNameDialog = () => {
         lastName: Yup.string().required('Required').min(2, '2 symbols minimum'),
     })
     return (
-        <Dialog open={openModal} aria-labelledby='form-dialog-title'>
+        <Dialog
+            open={openModal}
+            aria-labelledby='form-dialog-title'
+            className={styles.dialog}
+        >
             <DialogTitle id='form-dialog-title'>How to name you?</DialogTitle>
             <DialogContent>
                 <Formik

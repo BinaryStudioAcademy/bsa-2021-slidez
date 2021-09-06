@@ -1,6 +1,6 @@
 import React from 'react'
 import SlidezLogo from '../../../src/logo_Slidez_1.svg'
-import create_presentation from '../../assets/svgs/create_presentation.svg'
+import add_icon from '../../assets/svgs/add_icon.svg'
 import my_presentation from '../../assets/svgs/my_presentation.svg'
 import graph_icon from '../../assets/svgs/graph_icon.svg'
 import layout_icon from '../../assets/svgs/layout_icon.svg'
@@ -20,10 +20,7 @@ const SideBar = () => {
                 <span>
                     <a href=''>
                         <div className={styles.addIcon}>
-                            <img
-                                src={create_presentation}
-                                alt='add presentation'
-                            />
+                            <img src={add_icon} alt='add presentation' />
                             <span className={styles.tooltiptext}>
                                 Create presentation
                             </span>

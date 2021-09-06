@@ -41,7 +41,7 @@ const App = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     flexGrow: 1,
-                    minHeight: '600px',
+                    minHeight: window.innerHeight,
                     justifyContent: 'center',
                     textAlign: 'center',
                     width: '100%',
@@ -49,8 +49,8 @@ const App = () => {
                     overflow: 'hidden',
                 }}
             >
-                <Loader />
-                Connecting to extension, please wait..
+                <Loader width='100%' height='200px' />
+                <p style={{ marginBottom: 50 }}>Connecting to extension, please wait...</p>
             </div>
         )
     }
@@ -61,7 +61,7 @@ const App = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     flexGrow: 1,
-                    minHeight: '600px',
+                    minHeight: window.innerHeight,
                     justifyContent: 'center',
                     textAlign: 'center',
                     width: '100%',
@@ -69,7 +69,7 @@ const App = () => {
                     overflow: 'hidden',
                 }}
             >
-                <Loader />
+                <Loader width='100%' height='200px' />
                 Connecting to extension, please wait....
             </div>
         )
@@ -89,7 +89,7 @@ const App = () => {
                     border: 'none',
                     margin: 0,
                     padding: 0,
-                    minHeight: '600px',
+                    minHeight: window.innerHeight,
                 }}
                 src={`${IFRAME_HOST}/#/addon?presentationId=${presentationId}&extensionId=${EXTENSION_ID}`}
             ></iframe>

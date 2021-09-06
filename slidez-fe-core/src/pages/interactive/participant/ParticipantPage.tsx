@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './participantPage.scss'
 import Header from '../Header'
 import './participantPage.scss'
-import ParticipantNameDialog from './ParticipantNameModal'
+import ParticipantNameDialog from './ParticipantNameModal/ParticipantNameModal'
 import { ParticipantData } from '../../../services/participant/dto/ParticipantData'
 import { getParticipantData } from '../../../services/participant/participant-service'
 import { EventItem } from './EventItem'
-import Qa from '../../qa/Qa'
 import { getParticipantEvents } from '../../../services/participant-event/participant-event-service'
 
 const ParticipantPage = () => {
@@ -15,14 +14,6 @@ const ParticipantPage = () => {
     const areFirstAndLastNamePresent =
         participantData.participantFirstName &&
         participantData.participantLastName
-    const [showQAModal, setShowQAModal] = useState(false)
-
-    const handleQAClose = () => {
-        setShowQAModal(false)
-    }
-    const handleQAShow = () => {
-        setShowQAModal(true)
-    }
 
     return (
         <div className='participant-page'>
@@ -33,20 +24,18 @@ const ParticipantPage = () => {
                 <input className='code-input' type='text' placeholder='#Code' />
                 <button className='btn btn-code'>Join</button>
             </div>
-            <div className='title'>Select event</div>
-            <div className='page-content'>
-                {participantEvents.map((event) => (
-                    <EventItem event={event} key={event.code} />
-                ))}
-            </div>
-            <button
-                className='btn-open-qa'
-                type='button'
-                onClick={() => handleQAShow()}
-            >
-                Open Q&amp;A page
-            </button>
-            <Qa show={showQAModal} handleClose={handleQAClose} />
+            {participantEvents?.length > 0 ? (
+                <div className='visited-events'>
+                    <div className='title'>Select event</div>
+                    <div className='page-content'>
+                        {participantEvents.map((event) => (
+                            <EventItem event={event} key={event.code} />
+                        ))}
+                    </div>
+                </div>
+            ) : (
+                ''
+            )}
         </div>
     )
 }

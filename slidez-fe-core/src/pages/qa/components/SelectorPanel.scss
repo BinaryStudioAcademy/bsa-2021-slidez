@@ -3,9 +3,8 @@
 .selector-panel {
   display: flex;
   width: 100%;
-  padding-left: 10px;
   justify-content: space-between;
-  flex: 0 0 30px;
+  align-items: center;
 
   .selector-button {
     font-weight: 500;
@@ -28,7 +27,5 @@
     font-weight: 500;
     font-size: 12px;
     color: #7b7a7c;
-    padding-right: 10px;
-    padding-top: 5px;
   }
 }
