@@ -33,6 +33,7 @@ export const responseHandler =
             )
             console.error(response.error)
             window.location.assign(`/#${AppRoute.EVENTS}`)
+        }
         if (!response.data) {
             return
         }
