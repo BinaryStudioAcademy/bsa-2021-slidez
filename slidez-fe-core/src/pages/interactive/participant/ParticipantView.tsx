@@ -71,7 +71,7 @@ const ParticipantView = () => {
         return noCurrentInteraction
     }
 
-    const presentationName = 'Animate'
+    const presentationName = snapshot?.presentationName ?? 'Unnamed'
     return (
         <div>
             {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}

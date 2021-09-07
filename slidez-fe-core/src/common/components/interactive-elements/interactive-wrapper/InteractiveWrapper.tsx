@@ -31,6 +31,7 @@ const InteractiveWrapper: React.FC<InteractiveWrapperProps> = ({
                         value={link}
                         size={256}
                         fgColor='#663999'
+                        bgColor='#f6f4f8'
                     />
                 </div>
             </div>
