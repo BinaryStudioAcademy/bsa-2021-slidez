@@ -18,20 +18,16 @@ const SideBar = () => {
     return (
         <div className={styles.sidebar}>
             <div className={styles.logo}>
-                <a href=''>
-                    <img src={SlidezLogo} alt='Slidez Logo' />
-                </a>
+                <img src={SlidezLogo} alt='Slidez Logo' />
             </div>
             <div className={styles.navigation}>
                 <span>
-                    <a href=''>
-                        <div className={styles.addIcon}>
-                            <CreatePresentation />
-                            <span className={styles.tooltiptext}>
-                                Create presentation
-                            </span>
-                        </div>
-                    </a>
+                    <div className={styles.addIcon}>
+                        <CreatePresentation />
+                        <span className={styles.tooltiptext}>
+                            Create presentation
+                        </span>
+                    </div>
                 </span>
                 <span>
                     <div className={styles.sideIcon}>
@@ -45,28 +41,20 @@ const SideBar = () => {
                     </div>
                 </span>
                 <span>
-                    <a href=''>
-                        <div className={styles.disableIcons}>
-                            <GraphIcon />
-                            <img className={styles.label} src={soon_lable} />
-                            <img className={styles.label} src={soon} />
-                            <span className={styles.tooltiptext}>
-                                Analytics
-                            </span>
-                        </div>
-                    </a>
+                    <div className={styles.disableIcons}>
+                        <GraphIcon />
+                        <img className={styles.label} src={soon_lable} />
+                        <img className={styles.label} src={soon} />
+                        <span className={styles.tooltiptext}>Analytics</span>
+                    </div>
                 </span>
                 <span>
-                    <a href=''>
-                        <div className={styles.disableIcons}>
-                            <LayoutIcon />
-                            <img className={styles.label} src={soon_lable} />
-                            <img className={styles.label} src={soon} />
-                            <span className={styles.tooltiptext}>
-                                Templates
-                            </span>
-                        </div>
-                    </a>
+                    <div className={styles.disableIcons}>
+                        <LayoutIcon />
+                        <img className={styles.label} src={soon_lable} />
+                        <img className={styles.label} src={soon} />
+                        <span className={styles.tooltiptext}>Templates</span>
+                    </div>
                 </span>
             </div>
         </div>
