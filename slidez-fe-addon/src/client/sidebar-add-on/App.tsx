@@ -10,11 +10,16 @@ import './App.scss'
 const App = () => {
     const eventBus = useEventBus()
     const [presentationId, setPresentationId] = useState<string | null>(null)
+    const [presentationName, setPresentationName] = useState<string | null>(null)
     useEffect(() => {
         runGoogleScript<string>('getPresentationId', null).then(
             setPresentationId
         )
+        runGoogleScript<string>('getPresentationName', null).then(
+            setPresentationName
+        )
     })
+    console.log('name presenttaion  ' + presentationName)
     if (eventBus.connected === EventBusConnectionStatus.FAILED) {
         return (
             <div
@@ -91,7 +96,7 @@ const App = () => {
                     padding: 0,
                     minHeight: window.innerHeight,
                 }}
-                src={`${IFRAME_HOST}/#/addon?presentationId=${presentationId}&extensionId=${EXTENSION_ID}`}
+                src={`${IFRAME_HOST}/#/addon?presentationId=${presentationId}&extensionId=${EXTENSION_ID}&presentationName=${presentationName}`}
             ></iframe>
         </div>
     )

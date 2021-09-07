@@ -7,3 +7,4 @@ import * as publicSlidesFunctions from './slides';
 (global as any).openSidebar = publicUiFunctions.openSidebar;
 (global as any).insertSlide = publicSlidesFunctions.insertSlide;
 (global as any).getPresentationId = publicSlidesFunctions.getPresentationId;
+(global as any).getPresentationName = publicSlidesFunctions.getPresentationName;

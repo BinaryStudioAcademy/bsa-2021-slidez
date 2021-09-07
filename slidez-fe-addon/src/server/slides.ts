@@ -12,6 +12,10 @@ export const getPresentationId = () => {
     return getPresentation().getId();
 };
 
+export const getPresentationName = () => {
+    return getPresentation().getName();
+};
+
 export const insertText = (text: string) => {
     var slide = getPresentation().getSlides()[0];
     slide.insertTextBox(text);
