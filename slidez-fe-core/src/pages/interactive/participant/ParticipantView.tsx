@@ -71,12 +71,12 @@ const ParticipantView = () => {
         return noCurrentInteraction
     }
 
-    const eventName = 'Animate'
+    const presentationName = 'Animate'
     return (
         <div>
             {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
             <div className='participant-view-content'>
-                <Header eventName={eventName} />
+                <Header eventName={presentationName} />
                 {getBodyContent(currentInteraction, link || '')}
                 {Boolean(currentQASession) && (
                     <button

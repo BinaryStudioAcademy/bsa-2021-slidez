@@ -5,7 +5,7 @@
   border-radius: 10px;
   background-color: white;
 
-  &-header {
+  .poll-header {
     display: flex;
     justify-content: space-between;
     padding: 20px 15px;
@@ -13,21 +13,29 @@
     align-items: center;
     margin-left: 10px;
     margin-right: 10px;
+
+    .poll-name {
+      font-weight: 400;
+      font-size: 26px;
+      display: flex;
+      
+      img {
+        display: block;
+        width: 24px;
+        margin-right: 1rem;
+      }
+    }
   }
-  &-icon {
-    margin-right: 1rem;
-  }
-  &-name {
-    font-weight: bold;
-    font-size: 1.5rem;
-    font-weight: 400;
-  }
-  &-options {
+  .poll-options {
     padding: 25px;
   }
-  &-option {
+  .poll-option {
     margin-bottom: 25px;
     font-style: italic;
+    .poll-option-title {
+      font-size: 24px;
+    }
+
 
     &-votes {
       display: flex;

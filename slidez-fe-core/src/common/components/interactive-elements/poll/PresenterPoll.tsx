@@ -68,9 +68,7 @@ const PresenterPoll = ({ poll, children }: PollProps) => {
         <div className='poll'>
             <div className='poll-header'>
                 <div className='poll-name'>
-                    <span className='poll-icon'>
-                        <img src={checked_icon} alt='graph'></img>
-                    </span>
+                    <img src={checked_icon} alt='graph'></img>
                     {poll.title}
                 </div>
                 <div className='poll-votes'>{totalVotes} votes</div>
