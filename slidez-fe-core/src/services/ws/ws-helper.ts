@@ -18,6 +18,7 @@ export const WsHelper = (() => {
 
     let socket: WebSocket | undefined = undefined
     let stompClient: Client | undefined = undefined
+    let reconnectMillis: number = 250
 
     const _start = AbstractXHRObject.prototype._start
 
@@ -44,15 +45,22 @@ export const WsHelper = (() => {
         stompClient = Stomp.over(socket)
         stompClient.debug = () => {}
         return new Promise((resolve, reject) => {
-            stompClient!.connect(
+            stompClient?.connect(
                 {},
                 (frame) => {
                     if (stompClient && stompClient.connected) {
                         resolve(true)
                     }
+                    reconnectMillis = 250
                 },
                 (error) => {
-                    reject(error)
+                    console.log(
+                        `Connection has failed. Reconnect in ${reconnectMillis} ms`
+                    )
+                    setTimeout(() => {
+                        return connect(url)
+                    }, reconnectMillis)
+                    reconnectMillis = Math.min(60_000, reconnectMillis * 2)
                 }
             )
         })
