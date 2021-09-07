@@ -40,8 +40,8 @@ const CreateQA: React.FC<QAEditorProps> = ({ qaId }: QAEditorProps) => {
         )
         if (qaError !== null) {
             handleNotification(
-                'Added Failed',
-                'The question did not added',
+                'Q&A creation failed',
+                'The Q&A component was not added',
                 NotificationTypes.ERROR
             )
         }
