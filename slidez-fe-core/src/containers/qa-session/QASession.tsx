@@ -51,20 +51,7 @@ const CreateQA: React.FC<QAEditorProps> = ({ qaId }: QAEditorProps) => {
     return (
         <div className='app'>
             {isLoading ? (
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        flexGrow: 1,
-                        minHeight: '600px',
-                        justifyContent: 'center',
-                        textAlign: 'center',
-                        width: '100%',
-                        height: '100%',
-                        overflow: 'hidden',
-                        padding: '3rem',
-                    }}
-                >
+                <div className='qa-loader'>
                     <Loader />
                     Saving, please wait..
                 </div>

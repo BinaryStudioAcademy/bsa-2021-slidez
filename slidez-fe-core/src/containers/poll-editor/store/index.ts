@@ -146,7 +146,7 @@ export const createQA = createAsyncThunk(
                     type: EventType.INSERT_SLIDE,
                     data: {
                         id: qaWriteDto.slideId,
-                        title: `Quesion: ${qaWriteDto.title}`,
+                        title: `Question: ${qaWriteDto.title}`,
                     },
                 },
                 EventType.INSERT_SLIDE_SUCCESS,
