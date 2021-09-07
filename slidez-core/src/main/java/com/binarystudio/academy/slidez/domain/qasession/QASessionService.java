@@ -22,58 +22,57 @@ import java.util.UUID;
 @Service
 public class QASessionService {
 
-	private final PresentationService presentationService;
+    private final PresentationService presentationService;
 
-	private final QASessionRepository qaSessionRepository;
+    private final QASessionRepository qaSessionRepository;
 
-	@Autowired
-	public QASessionService(PresentationService presentationService, QASessionRepository qaSessionRepository) {
-		this.presentationService = presentationService;
-		this.qaSessionRepository = qaSessionRepository;
-	}
+    @Autowired
+    public QASessionService(PresentationService presentationService, QASessionRepository qaSessionRepository) {
+        this.presentationService = presentationService;
+        this.qaSessionRepository = qaSessionRepository;
+    }
 
-	@Transactional
-	public QASessionDto create(CreateQASessionDto dto, User owner) {
-		Presentation presentation = presentationService.assertPresentationExists(dto.getPresentationLink(), owner);
+    @Transactional
+    public QASessionDto create(CreateQASessionDto dto, User owner) {
+        Presentation presentation = presentationService.assertPresentationExists(dto.getPresentationLink(), dto.getPresentationName(), owner);
+        QASession qaSession = new QASession();
+        InteractiveElement interactiveElement = new InteractiveElement();
+        interactiveElement.setPresentation(presentation);
+        interactiveElement.setSlideId(dto.getSlideId());
+        interactiveElement.setType(InteractiveElementType.QASession);
 
-		QASession qaSession = new QASession();
-		InteractiveElement interactiveElement = new InteractiveElement();
-		interactiveElement.setPresentation(presentation);
-		interactiveElement.setSlideId(dto.getSlideId());
-		interactiveElement.setType(InteractiveElementType.QASession);
+        qaSession.setInteractiveElement(interactiveElement);
+        qaSession.setOwner(owner);
+        qaSession.setTitle(dto.getTitle());
 
-		qaSession.setInteractiveElement(interactiveElement);
-		qaSession.setOwner(owner);
-		qaSession.setTitle(dto.getTitle());
+        QASession out = qaSessionRepository.save(qaSession);
+        return QASessionMapper.INSTANCE.qaSessionToDto(out);
+    }
 
-		QASession out = qaSessionRepository.save(qaSession);
-		return QASessionMapper.INSTANCE.qaSessionToDto(out);
-	}
+    @Transactional
+    public void remove(UUID id) {
+        qaSessionRepository.deleteById(id);
+    }
 
-	@Transactional
-	public void remove(UUID id) {
-		qaSessionRepository.deleteById(id);
-	}
+    public Optional<QASession> getBySlideId(String slideId) {
+        return qaSessionRepository.getBySlideId(slideId);
+    }
 
-	public Optional<QASession> getBySlideId(String slideId) {
-		return qaSessionRepository.getBySlideId(slideId);
-	}
+    public Optional<QASession> getBySessionShortLink(String shortCode)
+        throws PresentationNotFoundException, QASessionNotFoundException {
+        Presentation presentation = presentationService.getPresentationByShortCode(shortCode);
+        return presentation.getInteractiveElements().stream()
+            .filter(e -> Objects.equals(e.getType(), InteractiveElementType.QASession)).findAny()
+            .map(InteractiveElement::getQaSession);
+    }
 
-	public Optional<QASession> getBySessionShortLink(String shortCode)
-			throws PresentationNotFoundException, QASessionNotFoundException {
-		Presentation presentation = presentationService.getPresentationByShortCode(shortCode);
-		return presentation.getInteractiveElements().stream()
-				.filter(e -> Objects.equals(e.getType(), InteractiveElementType.QASession)).findAny()
-				.map(InteractiveElement::getQaSession);
-	}
-
-	public Optional<QASessionDto> getQASessionDtoById(UUID id) {
-		Optional<QASession> qaSessionOptional = qaSessionRepository.findById(id);
-		if (qaSessionOptional.isEmpty()) {
-			return Optional.empty();
-		}
-		QASessionDto out = QASessionMapper.INSTANCE.qaSessionToDto(qaSessionOptional.get());
-		return Optional.of(out);
-	}
+    public Optional<QASessionDto> getQASessionDtoById(UUID id) {
+        Optional<QASession> qaSessionOptional = qaSessionRepository.findById(id);
+        if (qaSessionOptional.isEmpty()) {
+            return Optional.empty();
+        }
+        QASessionDto out = QASessionMapper.INSTANCE.qaSessionToDto(qaSessionOptional.get());
+        return Optional.of(out);
+    }
 
 }

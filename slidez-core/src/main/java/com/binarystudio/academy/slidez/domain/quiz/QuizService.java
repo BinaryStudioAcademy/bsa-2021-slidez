@@ -14,45 +14,46 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class QuizService {
 
-	private final PresentationService presentationService;
+    private final PresentationService presentationService;
 
-	private final QuizRepository quizRepository;
+    private final QuizRepository quizRepository;
 
-	@Autowired
-	public QuizService(PresentationService presentationService, QuizRepository quizRepository) {
-		this.presentationService = presentationService;
-		this.quizRepository = quizRepository;
-	}
+    @Autowired
+    public QuizService(PresentationService presentationService, QuizRepository quizRepository) {
+        this.presentationService = presentationService;
+        this.quizRepository = quizRepository;
+    }
 
-	public QuizDto create(CreateQuizDto dto, User owner) {
-		Presentation presentation = presentationService.assertPresentationExists(dto.getPresentationLink(), owner);
-		InteractiveElement interactiveElement = new InteractiveElement();
-		interactiveElement.setType(InteractiveElementType.QUIZ);
-		interactiveElement.setPresentation(presentation);
-		interactiveElement.setSlideId(dto.getSlideId());
+    public QuizDto create(CreateQuizDto dto, User owner) {
+        Presentation presentation = presentationService.assertPresentationExists(dto.getPresentationLink(), dto.getPresentationName(), owner);
+        InteractiveElement interactiveElement = new InteractiveElement();
+        interactiveElement.setType(InteractiveElementType.QUIZ);
+        interactiveElement.setPresentation(presentation);
+        interactiveElement.setSlideId(dto.getSlideId());
 
-		Quiz quiz = new Quiz();
-		List<QuizAnswer> answers = dto.getAnswers().stream()
-				.map(e -> new QuizAnswer(null, e.getTitle(), e.getIsCorrect())).collect(Collectors.toList());
-		quiz.setAnswers(answers);
-		quiz.setInteractiveElement(interactiveElement);
-		quiz.setOwner(owner);
-		quiz.setIsMulti(dto.getIsMulti());
-		quiz.setTitle(dto.getTitle());
-		quiz.setIsTemplate(dto.getIsTemplate());
+        Quiz quiz = new Quiz();
+        List<QuizAnswer> answers = dto.getAnswers().stream()
+            .map(e -> new QuizAnswer(null, e.getTitle(), e.getIsCorrect())).collect(Collectors.toList());
+        quiz.setAnswers(answers);
+        quiz.setInteractiveElement(interactiveElement);
+        quiz.setOwner(owner);
+        quiz.setIsMulti(dto.getIsMulti());
+        quiz.setTitle(dto.getTitle());
+        quiz.setIsTemplate(dto.getIsTemplate());
 
-		Quiz saved = quizRepository.save(quiz);
-		return QuizMapper.INSTANCE.quizToQuizDto(saved);
-	}
+        Quiz saved = quizRepository.save(quiz);
+        return QuizMapper.INSTANCE.quizToQuizDto(saved);
+    }
 
-	public Optional<Quiz> findBySlideId(String slideId) {
-		return quizRepository.findBySlideId(slideId);
-	}
+    public Optional<Quiz> findBySlideId(String slideId) {
+        return quizRepository.findBySlideId(slideId);
+    }
 
 }

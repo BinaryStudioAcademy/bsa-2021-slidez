@@ -9,10 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CreateQASessionDto {
 
-	private String presentationLink;
+    private String presentationLink;
 
-	private String slideId;
+    private String presentationName;
 
-	private String title;
+    private String slideId;
+
+    private String title;
 
 }

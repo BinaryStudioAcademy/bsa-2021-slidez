@@ -13,6 +13,8 @@ public class CreateQuizDto {
 
 	private String presentationLink;
 
+	private String presentationName;
+
 	private String slideId;
 
 	private String title;

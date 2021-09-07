@@ -34,7 +34,7 @@ public class PollService {
 
 	@Transactional
 	public PollDto create(CreatePollDto pollDto, User owner) {
-		Presentation presentation = presentationService.assertPresentationExists(pollDto.getPresentationId(), owner);
+		Presentation presentation = presentationService.assertPresentationExists(pollDto.getPresentationId(), pollDto.getPresentationName(), owner);
 
 		InteractiveElement ie = new InteractiveElement();
 		ie.setPresentation(presentation);

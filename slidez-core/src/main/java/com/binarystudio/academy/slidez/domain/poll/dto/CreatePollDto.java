@@ -13,6 +13,8 @@ public class CreatePollDto {
 
 	private String presentationId;
 
+	private String presentationName;
+
 	private String slideId;
 
 	private String title;
