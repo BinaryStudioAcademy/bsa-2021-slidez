@@ -1,7 +1,6 @@
 import React from 'react'
 import './participantPage.scss'
 import Header from '../Header'
-import './participantPage.scss'
 import ParticipantNameDialog from './ParticipantNameModal/ParticipantNameModal'
 import { ParticipantData } from '../../../services/participant/dto/ParticipantData'
 import { getParticipantData } from '../../../services/participant/participant-service'
