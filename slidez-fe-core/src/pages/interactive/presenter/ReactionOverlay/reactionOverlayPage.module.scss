@@ -4,9 +4,34 @@
     position: absolute;
 
     .reactionContainer{
-        opacity: 1;
         position: fixed;
-        bottom: 5%;
-        left: 50%;
+        bottom: 25%;
+        animation-name: reactionAppearence;
+        animation-duration: 0.3s;
+        animation-timing-function: cubic-bezier(0.4, 0.45, 0.5, 0.5);
+        transform: scale(1.2) rotate(-10deg);
+    }
+}
+
+@keyframes reactionAppearence {
+    0% { 
+        opacity: 0;
+        transform: scale(1) rotate(0deg);
+        bottom: -10%; 
+    }
+    10% {
+        opacity: 0;
+        bottom: 0%;
+        transform: scale(1) rotate(0deg);
+    }
+    40% {
+        opacity: 1;
+    }
+    60% {
+        bottom: 25%;
+        transform: scale(1) rotate(0deg);
+    }
+    80% {
+        transform: scale(1.2) rotate(-10deg);
     }
 }

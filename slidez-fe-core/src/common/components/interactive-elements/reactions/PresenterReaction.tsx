@@ -1,12 +1,9 @@
 import React from 'react'
-import like from '../../../../assets/svgs/like_reaction.svg'
-import thumb_up from '../../../../assets/svgs/thumb_up_reaction.svg'
-import './reaction.scss'
+import like from '../../../../assets/svgs/reactions/heart.svg'
+import thumb_up from '../../../../assets/svgs/reactions/thumbUp.svg'
 import 'animate.css'
 
-const reaction = (src: string) => (
-    <img src={src} className='animate__animated animate__slideInUp' />
-)
+const reaction = (src: string) => <img src={src} width={50} />
 
 export const Like = () => reaction(like)
 

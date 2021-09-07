@@ -16,6 +16,8 @@ export const ReactionOverlay = () => {
     const { connectionStatus, reactions } = useSelector(
         (state: RootState) => state.reactions
     )
+    const [left, setLeft] = useState(Math.random() * 17 + 51)
+
     const dispatch = useDispatch()
     const [currentReaction, setCurrentReaction] = useState<Reactions | null>(
         null
@@ -30,10 +32,11 @@ export const ReactionOverlay = () => {
         if (currentReaction || reactions.length === 0) {
             return
         }
-
+        console.log('au', currentReaction)
         setCurrentReaction(reactions[0])
         dispatch(pullReaction())
         setTimeout(() => {
+            setLeft(Math.random() * 20 + 50)
             setCurrentReaction(null)
         }, 1300)
     }, [reactions, currentReaction])
@@ -52,16 +55,23 @@ export const ReactionOverlay = () => {
     let body: JSX.Element | null = null
     switch (currentReaction) {
         case Reactions.LIKE:
-            body = <ThumbUp />
+            body = (
+                <div className={`${styles.reactionContainer}`}>
+                    <ThumbUp />
+                </div>
+            )
             break
         case Reactions.LOVE:
-            body = <Like />
+            body = (
+                <div
+                    className={`${styles.reactionContainer}`}
+                    style={{ left: `${left}%` }}
+                >
+                    <Like />
+                </div>
+            )
             break
     }
 
-    return (
-        <div className={styles.reactionOverlay}>
-            <div className={`${styles.reactionContainer} fadeOut`}>{body}</div>
-        </div>
-    )
+    return <div className={styles.reactionOverlay}>{body}</div>
 }
