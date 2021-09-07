@@ -18,7 +18,7 @@ export const WsHelper = (() => {
 
     let socket: WebSocket | undefined = undefined
     let stompClient: Client | undefined = undefined
-    let reconnectMillis: number = 250
+    let reconnectMillis: number = 500
 
     const _start = AbstractXHRObject.prototype._start
 
@@ -51,7 +51,7 @@ export const WsHelper = (() => {
                     if (stompClient && stompClient.connected) {
                         resolve(true)
                     }
-                    reconnectMillis = 250
+                    reconnectMillis = 500
                 },
                 (error) => {
                     console.log(
