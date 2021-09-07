@@ -21,8 +21,11 @@ public class AnswerPollHandler extends AbstractDomainEventHandler {
 		if (Objects.equals(domainEvent.getClass(), AnswerPollEvent.class)) {
 			super.handle(domainEvent, presentationEventStore);
 			AnswerPollEvent event = (AnswerPollEvent) domainEvent;
-			SessionResponse out = new SessionResponse(ResponseType.ANSWERED_POLL, event.getPollAnswer());
-			return new GenericResponse<>(out);
+			if (event.isAddedSuccessfully()) {
+				SessionResponse out = new SessionResponse(ResponseType.ANSWERED_POLL, event.getPollAnswer());
+				return new GenericResponse<>(out);
+			}
+			return super.handle(domainEvent, presentationEventStore);
 		}
 		return super.handle(domainEvent, presentationEventStore);
 	}
