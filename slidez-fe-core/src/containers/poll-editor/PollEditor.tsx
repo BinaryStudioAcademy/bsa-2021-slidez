@@ -87,9 +87,7 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }: PollEditorProps) => {
                     </div>
                     <div className='poll-name-block'>
                         <span>
-                            <a href=''>
-                                <img src={checked_icon} alt='graph'></img>
-                            </a>
+                            <img src={checked_icon} alt='graph'></img>
                         </span>
                         <span className='poll-name'>Live poll</span>
                         <p className='poll-icon'>

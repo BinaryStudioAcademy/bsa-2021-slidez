@@ -69,9 +69,7 @@ const CreateQA: React.FC<QAEditorProps> = ({ qaId }: QAEditorProps) => {
                     </div>
                     <div className='qanda-name-block'>
                         <span>
-                            <a href=''>
-                                <img src={checked_icon} alt='graph'></img>
-                            </a>
+                            <img src={checked_icon} alt='graph'></img>
                         </span>
                         <span className='qanda-name'>Audience Q&#38;A</span>
                     </div>
