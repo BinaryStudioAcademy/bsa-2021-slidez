@@ -1,3 +1,4 @@
+@import "src/global/global";
 
 .qa-loader {
     display: flex;
@@ -21,6 +22,16 @@
     margin: 0 10px;
 }
 
-.qanda-form-group {
-    margin-bottom: 25px;
+.qa-error-input {
+    border-color: $error !important;
+}
+
+
+.qa-error-text {
+    display: flex;
+    align-items: flex-end;
+    min-height: 30px;
+    margin-bottom: 15px;
+    color: $error;
+    font-size: 12px;
 }
