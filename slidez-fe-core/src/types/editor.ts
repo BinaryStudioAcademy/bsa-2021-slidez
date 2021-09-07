@@ -63,6 +63,12 @@ export type WritePollDto = {
     options: { title: string }[]
 }
 
+export type WriteQADto = {
+    presentationId: string
+    slideId: string
+    title: string
+}
+
 export const isPollInteractiveElement = (
     ie: InteractiveElement
 ): ie is PollInteractiveElement => {

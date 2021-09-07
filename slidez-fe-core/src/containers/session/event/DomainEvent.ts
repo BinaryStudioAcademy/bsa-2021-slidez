@@ -1,9 +1,15 @@
 import { SessionPollAnswer } from '../model/SessionPollAnswer'
+import { AskQuestionDto } from '../dto/AskQuestionDto'
+import { LikeQuestionDto } from '../dto/LikeQuestionDto'
+import { QuestionVisibilityDto } from '../dto/QuestionVisibilityDto'
 
 export enum DomainEventType {
     startPollEvent = 'StartPollEvent',
     snapshotRequestEvent = 'SnapshotRequestedEvent',
     answerPollEvent = 'AnswerPollEvent',
+    askQuestionEvent = 'AskQuestionEvent',
+    likeQuestionEvent = 'LikeQuestionEvent',
+    setQuestionVisibilityEvent = 'SetQuestionVisibilityEvent',
 }
 
 export type StartPollEvent = {
@@ -20,4 +26,25 @@ export type AnswerPollEvent = {
     pollAnswer: SessionPollAnswer
 }
 
-export type DomainEvent = StartPollEvent | SnapshotEvent | AnswerPollEvent
+export type AskQuestionEvent = {
+    type: DomainEventType.askQuestionEvent
+    question: AskQuestionDto
+}
+
+export type LikeQuestionEvent = {
+    type: DomainEventType.likeQuestionEvent
+    questionLike: LikeQuestionDto
+}
+
+export type SetQuestionVisibilityEvent = {
+    type: DomainEventType.setQuestionVisibilityEvent
+    visibility: QuestionVisibilityDto
+}
+
+export type DomainEvent =
+    | StartPollEvent
+    | SnapshotEvent
+    | AnswerPollEvent
+    | AskQuestionEvent
+    | LikeQuestionEvent
+    | SetQuestionVisibilityEvent

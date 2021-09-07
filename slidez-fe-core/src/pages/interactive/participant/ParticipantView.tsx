@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './participantView.scss'
 import Header from '../Header'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
@@ -20,6 +20,7 @@ import { useParams } from 'react-router-dom'
 import ParticipantPoll from '../../../common/components/interactive-elements/poll/ParticipantPoll'
 import { saveParticipantEvent } from '../../../services/participant-event/participant-event-service'
 import { SnapshotDto } from '../../../containers/session/dto/SnapshotDto'
+import Qa from '../../qa/Qa'
 
 const noCurrentInteraction = (
     <div>
@@ -44,6 +45,14 @@ const ParticipantView = () => {
     //@ts-ignore
     const { link } = useParams()
     const dispatch = useAppDispatch()
+    const [showQAModal, setShowQAModal] = useState(false)
+
+    const handleQAClose = () => {
+        setShowQAModal(false)
+    }
+    const handleQAShow = () => {
+        setShowQAModal(true)
+    }
     useEffect(() => {
         if (link) {
             dispatch(initWebSocketSession(link))
@@ -67,6 +76,14 @@ const ParticipantView = () => {
             <div className='participant-view-content'>
                 <Header eventName={eventName} />
                 {getBodyContent(currentInteraction, link || '')}
+                <button
+                    className='btn-open-qa'
+                    type='button'
+                    onClick={() => handleQAShow()}
+                >
+                    Open Q&amp;A page
+                </button>
+                <Qa show={showQAModal} handleClose={handleQAClose} />
             </div>
         </div>
     )

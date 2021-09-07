@@ -2,13 +2,11 @@ import React, { useEffect } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
 import {
-    createSessionForPresentation,
     initWebSocketSession,
     requestStartPoll,
 } from '../../../containers/session/store/store'
 import { WsConnectionStatus } from '../../../containers/session/enums/ws-connection-status'
 import Loader from '../../../common/components/loader/Loader'
-import { CreatePresentationSessionDto } from '../../../services/session/dto/CreatePresentationSessionDto'
 import {
     selectConnectionStatus,
     selectCurrentInteractiveElement,
@@ -17,8 +15,6 @@ import {
     createStartPollRequest,
     StartPollRequest,
 } from '../../../containers/session/event/FrontendEvent'
-import NoEvent from '../NoEventPage'
-import Header from '../Header'
 import {
     InteractiveElement,
     PollDto,
@@ -40,11 +36,13 @@ const useEditorParams = () => {
 
 const noCurrentInteraction = (link: string) => {
     return (
-        <InteractiveWrapper eventCode={link}>
-            <div className='presenter-event-loader'>
-                <Loader />
-            </div>
-        </InteractiveWrapper>
+        <div className='interactive-wrapper'>
+            <InteractiveWrapper eventCode={link}>
+                <div className='presenter-event-loader'>
+                    <Loader />
+                </div>
+            </InteractiveWrapper>
+        </div>
     )
 }
 
@@ -81,8 +79,12 @@ const PresenterPage: React.FC = () => {
 
     return (
         <div>
-            {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
             <div className='presenter-page-content'>
+                {connectionStatus !== WsConnectionStatus.CONNECTED && (
+                    <div className='presenter-event-loader'>
+                        <Loader />
+                    </div>
+                )}
                 <InteractiveWrapper eventCode={link || ''}>
                     {getBodyContent(currentInteraction)}
                 </InteractiveWrapper>

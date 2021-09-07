@@ -14,6 +14,7 @@ import {
     isQaSessionElement,
     isQuizInteractiveElement,
     WritePollDto,
+    WriteQADto,
 } from '../../../types/editor'
 
 export enum EditorTab {
@@ -115,7 +116,7 @@ export const createSessionForPresentation = createAsyncThunk(
 
 export const createPoll = createAsyncThunk(
     'create-poll',
-    async (pollWriteDto: WritePollDto) => {
+    async (pollWriteDto: WritePollDto, { dispatch }) => {
         const data =
             await getMessageBusUnsafe()!.sendMessageAndListen<InsertSlideSuccess>(
                 {
@@ -128,8 +129,34 @@ export const createPoll = createAsyncThunk(
                 EventType.INSERT_SLIDE_SUCCESS,
                 5000
             )
+        const presentationData: FetchInteractiveElementsResponse = (
+            await httpHelper.doPost('/polls', pollWriteDto)
+        ).data.data
+        dispatch(setActiveTab(null))
+        return presentationData
+    }
+)
 
-        await httpHelper.doPost('/polls', pollWriteDto)
+export const createQA = createAsyncThunk(
+    'create-qa',
+    async (qaWriteDto: WriteQADto, { dispatch }) => {
+        const data =
+            await getMessageBusUnsafe()!.sendMessageAndListen<InsertSlideSuccess>(
+                {
+                    type: EventType.INSERT_SLIDE,
+                    data: {
+                        id: qaWriteDto.slideId,
+                        title: `Question: ${qaWriteDto.title}`,
+                    },
+                },
+                EventType.INSERT_SLIDE_SUCCESS,
+                5000
+            )
+        const presentationData: FetchInteractiveElementsResponse = (
+            await httpHelper.doPost('/qa-sessions/new', qaWriteDto)
+        ).data.data
+        dispatch(setActiveTab(null))
+        return presentationData
     }
 )
 
@@ -179,6 +206,34 @@ const editorSlice = createSlice({
                 )
             })
             .addCase(preloadState.rejected, (state, errorResponse) => {
+                state.error = errorResponse.error.message ?? null
+            })
+            .addCase(createPoll.pending, (state) => {
+                state.isFetching = true
+                state.error = null
+            })
+            .addCase(createPoll.fulfilled, (state, action) => {
+                state.isFetching = false
+                state.error = null
+                state.polls = state.polls
+                    .concat(action.payload as PollInteractiveElement[])
+                    .filter(isPollInteractiveElement)
+            })
+            .addCase(createPoll.rejected, (state, errorResponse) => {
+                state.error = errorResponse.error.message ?? null
+            })
+            .addCase(createQA.pending, (state) => {
+                state.isFetching = true
+                state.error = null
+            })
+            .addCase(createQA.fulfilled, (state, action) => {
+                state.isFetching = false
+                state.error = null
+                state.qaSessions = state.qaSessions
+                    .concat(action.payload as QaInteractiveElement[])
+                    .filter(isQuizInteractiveElement)
+            })
+            .addCase(createQA.rejected, (state, errorResponse) => {
                 state.error = errorResponse.error.message ?? null
             })
             .addCase(loadActiveSession.rejected, (state, error) => {

@@ -3,12 +3,14 @@ import { useEffect } from 'react'
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { QandA } from '../../common/components/interactive-elements/q-and-a/QandA'
 import { EventBusConnectionStatus, useEventBus } from '../../hooks/event-bus'
 import { RootState } from '../../store'
 import Menu from './Menu'
 import PollEditor from './PollEditor'
 import { EditorTab, loadActiveSession, preloadState } from './store'
+import styles from './addonstyles.module.scss'
+import Loader from '../../common/components/loader/Loader'
+import CreateQA from '../qa-session/QASession'
 
 const useEditorParams = () => {
     const params = new URLSearchParams(useLocation().search)
@@ -35,7 +37,15 @@ const Addon = () => {
         return 'Failed to connect to extension, please install extension first'
     }
     if (eventBus.connected !== EventBusConnectionStatus.CONNECTED) {
-        return 'Connecting to extension, please wait...'
+        return (
+            <div
+                className={styles.loadingPage}
+                style={{ height: window.innerHeight }}
+            >
+                <Loader width='100%' height='200px' />
+                <p>Connecting to extension, please wait...</p>
+            </div>
+        )
     }
 
     let tab: JSX.Element = <Menu />
@@ -47,7 +57,7 @@ const Addon = () => {
             tab = <PollEditor />
             break
         case EditorTab.QA:
-            tab = <QandA />
+            tab = <CreateQA />
             break
         case EditorTab.QUIZ:
             tab = <>Not supported yet</>

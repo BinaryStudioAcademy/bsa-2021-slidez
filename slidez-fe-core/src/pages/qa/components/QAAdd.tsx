@@ -2,21 +2,24 @@ import React, { useState } from 'react'
 import SubmitButton from './SubmitButton'
 import './QAAdd.scss'
 
-export default function QAAdd(props: any) {
-    const [charsCounterValue, setCharsCounterValue] = useState(0)
-    const [textValue, setTextValue] = useState('')
+export type QAAddProps = {
+    onSubmit: (text: string) => void
+}
 
-    const charsCount = (e: any) => {
+export default function QAAdd({ onSubmit }: QAAddProps) {
+    const [charsCounterValue, setCharsCounterValue] = useState(0)
+    const maxTextLength = 300
+    const [text, setText] = useState('')
+
+    const handleSettingText = (e: any) => {
         setCharsCounterValue(e.target.value.length)
-        setTextValue(e.target.value)
+        setText(e.target.value)
     }
 
     const handleSubmit = () => {
-        if (textValue.length > 0) {
-            props.onSubmit(textValue)
-            const textField: any = document.getElementById('qaadd-text')
-            textField.value = ''
-            setTextValue('')
+        if (text.length > 0) {
+            onSubmit(text)
+            setText('')
             setCharsCounterValue(0)
         }
     }
@@ -30,18 +33,15 @@ export default function QAAdd(props: any) {
             <div>
                 <textarea
                     className='qaadd-text'
-                    id='qaadd-text'
                     name='question'
-                    onChange={(e) => charsCount(e)}
-                ></textarea>
+                    onChange={(e) => handleSettingText(e)}
+                    value={text}
+                    maxLength={maxTextLength}
+                />
             </div>
             <div className='chars-counter'>{charsCounterValue}</div>
 
-            <SubmitButton
-                onClick={handleSubmit}
-                textValue={textValue}
-                value='Save'
-            >
+            <SubmitButton onClick={handleSubmit} textValue={text} value='Save'>
                 Submit
             </SubmitButton>
         </div>

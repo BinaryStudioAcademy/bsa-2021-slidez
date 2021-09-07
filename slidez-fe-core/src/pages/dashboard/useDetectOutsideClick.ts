@@ -13,7 +13,7 @@ export const useDetectOutsideClick = (
                 el.current !== null &&
                 !el.current.contains(e.target)
             ) {
-                setIsActive(!isActive)
+                setIsActive(false)
             }
         }
 

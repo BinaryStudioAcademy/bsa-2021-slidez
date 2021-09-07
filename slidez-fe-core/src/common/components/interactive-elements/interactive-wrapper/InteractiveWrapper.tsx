@@ -4,6 +4,7 @@ import QRCode from 'react-qr-code'
 import './interactive-wrapper.scss'
 import '../../../../global/styles.scss'
 import { InteractiveLogo } from '../../logo/logo'
+import { QR_CODE_HOST } from '../../../../env'
 
 export type InteractiveWrapperProps = { eventCode: string }
 
@@ -11,23 +12,26 @@ const InteractiveWrapper: React.FC<InteractiveWrapperProps> = ({
     eventCode,
     children,
 }) => {
-    const link = `http://localhost:5000/event/${eventCode}`
+    const link = `${QR_CODE_HOST}/${eventCode}`
     return (
         <div className='wrapper'>
             <div className='wrapped-component'>{children}</div>
             <div className='interactive-wrapper-sidebar'>
                 <div className='container-with-centered-content'>
-                    <InteractiveLogo width='60%' />
+                    <InteractiveLogo width='100%' height='350px' />
                 </div>
                 <div className='link-holder'>
                     Join at
-                    <a href=''>
-                        <div className='link-domain'>Slidez.com</div>
-                        <div className='link-code'>{eventCode}</div>
-                    </a>
+                    <div className='link-domain'>slidez.link/</div>
+                    <div className='link-code'>{eventCode}</div>
                 </div>
-                <div className='qr-code-holder container-with-centered-content'>
-                    <QRCode value={link} fgColor='#59D0A5' />
+                <div className='qr-code-holder'>
+                    <QRCode
+                        className='qr-code'
+                        value={link}
+                        size={256}
+                        fgColor='#663999'
+                    />
                 </div>
             </div>
         </div>

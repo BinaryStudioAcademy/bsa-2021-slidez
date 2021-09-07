@@ -32,17 +32,18 @@ public class StartQASessionHandler extends AbstractDomainEventHandler {
 			PresentationEventStore presentationEventStore) {
 		if (Objects.equals(domainEvent.getClass(), StartQASessionEvent.class)) {
 			StartQASessionEvent startQASessionEvent = (StartQASessionEvent) domainEvent;
-			Optional<QASession> bySlideId = qaSessionService.getBySlideId(startQASessionEvent.getSlideId());
-			if (bySlideId.isEmpty()) {
-				return new GenericResponse<>(null, SessionResponseCodes.COULD_NOT_START_QA_SESSION);
+			Optional<QASession> qaSessionOptional = qaSessionService
+					.getBySessionShortLink(startQASessionEvent.getShortCode());
+			if (qaSessionOptional.isPresent()) {
+				QASession qaSession = qaSessionOptional.get();
+				SessionQASession sessionQASession = SessionInteractiveElementMapper.INSTANCE
+						.mapQASessionToSessionQASession(qaSession);
+				startQASessionEvent.setSessionQASession(sessionQASession);
+				super.handle(startQASessionEvent, presentationEventStore);
+				SessionResponse out = new SessionResponse(ResponseType.STARTED_QA_SESSION, sessionQASession);
+				return new GenericResponse<>(out);
 			}
-			QASession qaSession = bySlideId.get();
-			SessionQASession sessionQASession = SessionInteractiveElementMapper.INSTANCE
-					.mapQASessionToSessionQASession(qaSession);
-			startQASessionEvent.setSessionQASession(sessionQASession);
-			super.handle(startQASessionEvent, presentationEventStore);
-			SessionResponse out = new SessionResponse(ResponseType.STARTED_QA_SESSION, sessionQASession);
-			return new GenericResponse<>(out);
+			return super.handle(domainEvent, presentationEventStore);
 		}
 		return super.handle(domainEvent, presentationEventStore);
 	}

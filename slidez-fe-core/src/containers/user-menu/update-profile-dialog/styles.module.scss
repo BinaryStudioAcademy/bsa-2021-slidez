@@ -1,0 +1,214 @@
+@import "src/global/global";
+
+.userProfile {
+    margin-right: 51px;
+}
+
+.dialog {
+    :global(.MuiPaper-root) {
+        border-radius: 15px;
+    }
+}
+
+.dropdownContent {
+    visibility: hidden;
+    position: absolute;
+    background-color: $white;
+    border: 0.5px solid #f5f4f6;
+    box-shadow: 0px 4px 6px rgba(189, 189, 189, 0.1);
+    border-radius: 7px;
+    margin-top: 14px;
+    min-width: 191px;
+    overflow: auto;
+    z-index: 1;
+    left: auto !important;
+    right: 51px !important;
+    .userProfileMenu {
+        color: $black;
+        padding: 10px 0 10px 15px;
+        text-decoration: none;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 14px;
+        .userProfileMenuName {
+            font-family: "Rubik", sans-serif;
+            font-weight: lighter;
+        }
+        &:hover {
+            color: $accent-color;
+            cursor: pointer;
+            background-color: $light-grey;
+            .user-profile-menu-name {
+                font-weight: normal;
+            }
+        }
+    }
+    a {
+        color: $black;
+        margin: 13px 0 25px 18px;
+        text-decoration: none;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 14px;
+        &:hover {
+            color: $accent-color;
+        }
+    }
+    .userIcon {
+        margin-right: 12px;
+    }
+    hr {
+        color: #999999;
+        margin-right: 15px;
+        margin-left: 15px;
+        opacity: 0.2;
+    }
+
+    &.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+}
+
+.userAvatar {   
+    .logo {
+        cursor: pointer;
+    }
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 14px;
+  .userInfoText {
+    font-weight: 400;
+    margin-left: 10px;
+  }
+  .userName {
+    font-size: 14px;
+  }
+  .userEmail {
+    padding-top: 3px;
+    font-size: 12px;
+    line-height: 14px;
+    color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+.editProfile {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    max-width: 877px;
+    border-radius: 15px;
+    .sideBtns {
+        padding: 19px 20px 0 47px;
+        .windowName {
+            width: 132px;
+            font-weight: bold;
+            font-size: 24px;
+            line-height: 28px;
+            padding-bottom: 44px;
+        }
+        button {
+            text-transform: none;
+            border-radius: 50px;
+            margin: 6px;
+            padding: 5px 15px;
+            margin-left: 0;
+            font-size: 18px;
+            font-weight: 500;
+            background: rgba(89, 208, 165, 0.15);
+            color: #59d0a5;
+            justify-content: flex-start;
+            align-items: center;
+            width: 197px;
+            height: 40px;
+            border: none;
+            box-shadow: none;
+            outline: none;
+            .buttonIcon {
+                margin-right: 11px;
+                margin-left: 8px;
+            }
+            &:last-child {
+                background: none;
+                color: $grey;
+            }
+            &:last-child:hover {
+                background: $hover-color;
+            }
+            > span > span {
+                line-height: 12px;
+            }
+        }
+    }
+    .leftContent {
+        background-color: #F6F4F8;
+        padding: 0;
+        min-width: 291px;
+        flex: 0 0 291px;
+        .left-content-fixed {
+            position: fixed;
+            width: 291px;
+        }
+    }
+    .rightContent {
+        min-width: 583px;
+        padding: 0 0 20px 47px;
+        overflow: auto;
+        max-height: calc(100vh - 70px);
+        .formTitle {
+            font-style: normal;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 107px;
+            margin-bottom: 20px;
+        }
+        .avatarEditProfile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 102px;
+            height: 102px;
+            margin-top: 20px;
+            border-radius: 50%;
+            font-size: 50px;
+            color: $light-color;
+            background: $accent-color;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+    .MuiButton-root {
+        padding: 0;
+        min-width: 0;
+    }
+    .form {
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        margin-top: 20px;
+    }
+    .close {
+        width: 35px;
+        height: 35px;
+        border-radius: 50px;
+        position: absolute;
+        min-width: 35px;
+        max-width: 35px;
+        font-size: 14px;
+        top: 34px;
+        right: 47px;
+        z-index: 100;
+        .closeIcon {
+            color: $black;
+            position: fixed;
+        }
+    }
+}

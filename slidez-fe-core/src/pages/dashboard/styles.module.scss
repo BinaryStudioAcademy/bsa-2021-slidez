@@ -25,15 +25,19 @@
 		background: $light-color;
 		color: $black;
 		border-radius: 50px;
-		outline: none;
 		border: none;
+		outline: none;
 		padding: 0 10px 0 47px;
 		font-size: 13px;
 		line-height: 14px;
+		border: 1px solid $light-color;
+		&:focus {
+			border: 1px solid $main-color;
+		}
 	}
 	
 	.searchIcon {
-		margin: 13px 16px 13px;
+		margin: 13px 19px 13px;
 		position: absolute;
 		background: none;
 		border: none;

@@ -1,23 +1,16 @@
-import React, { useState, useRef, useEffect } from 'react'
-import {
-    faUser,
-    faSignOutAlt,
-    faTimes,
-    faTrashAlt,
-} from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { deleteAccount, logout, selectUserDetals } from '../user/store'
+import React, { useState, useRef } from 'react'
+import { logout, selectUserDetails } from '../user/store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { handleLogo } from './handleLogo'
+
+import { ReactComponent as UserGreyIcon } from '../../assets/svgs/grey-user.svg'
+import { ReactComponent as ExitIcon } from '../../assets/svgs/exit.svg'
 
 import { useDetectOutsideClick } from '../../pages/dashboard/useDetectOutsideClick'
 import styles from './styles.module.scss'
 import './edit-profile/components/Form.scss'
 import { UserDetailsDto } from '../user/dto/UserDetailsDto'
-import { Button, Dialog, DialogContent } from '@material-ui/core'
-import FormUpdateUserData from './edit-profile/components/FormUpdateUserData'
-import FormUpdatePassword from './edit-profile/components/FormUpdatePassword'
-import DeleteAccount from './delete-account/DeleteAccount'
+import { UserLogo } from '../../common/components/user-logo/UserLogo'
+import UpdateProfileDialog from './update-profile-dialog/UpdateProfileDialog'
 
 export const initialValuesUserData: UserDetailsDto = {
     id: '',
@@ -30,37 +23,21 @@ const UserMenu: React.FC = () => {
     const dispatch = useAppDispatch()
     const dropdownRef = useRef<HTMLInputElement>(null)
     const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
-    const [logo, setLogo] = useState('')
-    const [openEditProfile, setOpenEditProfile] = useState(false)
-    const [showModal, setShowModal] = useState(false)
-    const userData = useAppSelector(selectUserDetals) || initialValuesUserData
-
-    useEffect(() => {
-        setLogo(handleLogo(userData))
-    }, [userData])
+    const [isEditModalOpened, setEditModalOpened] = useState(false)
+    const userData = useAppSelector(selectUserDetails) || initialValuesUserData
 
     const onOpenEditDialog = () => {
-        setOpenEditProfile(true)
+        setEditModalOpened(true)
         handleDropDown()
     }
 
-    const onCloseEditDialog = () => {
-        setOpenEditProfile(false)
-    }
-
     const handleDropDown = () => {
+        console.log(isActive, isEditModalOpened)
         setIsActive(!isActive)
     }
 
     const handleLogout = () => {
         dispatch(logout())
-    }
-
-    const hideDeleteAccountModal = () => {
-        setShowModal(false)
-    }
-    const showDeleteAccountModal = () => {
-        setShowModal(true)
     }
 
     const viewName = () => {
@@ -73,21 +50,29 @@ const UserMenu: React.FC = () => {
         }
     }
 
+    const logoComponent = (
+        <UserLogo
+            email={userData.email}
+            firstName={userData.firstName}
+            lastName={userData.lastName}
+            width={43}
+        />
+    )
+
     return (
         <div className={styles.userProfile}>
-            <div className={styles.userAvatar}>
-                <div onClick={handleDropDown} className={styles.avatar}>
-                    {logo}
+            <div className={styles.userAvatar} ref={dropdownRef}>
+                <div onClick={handleDropDown} className={styles.logo}>
+                    {logoComponent}
                 </div>
                 <div
-                    ref={dropdownRef}
                     className={`${styles.dropdownContent} ${
                         isActive ? styles.active : styles.inactive
                     }`}
                 >
                     <div className={styles.userInfo}>
-                        <div className={styles.avatar}> {logo} </div>
-                        <div>
+                        {logoComponent}
+                        <div className={styles.userInfoText}>
                             {viewName()}
                             <div className={styles.userEmail}>
                                 {userData.email}
@@ -99,91 +84,26 @@ const UserMenu: React.FC = () => {
                         className={styles.userProfileMenu}
                         onClick={() => onOpenEditDialog()}
                     >
-                        <FontAwesomeIcon
-                            className={styles.userIcon}
-                            icon={faUser}
-                        />
+                        <UserGreyIcon className={styles.userIcon} />
                         <span className={styles.userProfileMenuName}>
                             Edit profile
                         </span>
                     </div>
-                    <Dialog
-                        open={openEditProfile}
-                        onClose={onCloseEditDialog}
-                        aria-labelledby='form-dialog-title'
-                        maxWidth={false}
-                    >
-                        <div className={styles.editProfile}>
-                            <DialogContent className={styles.leftContent}>
-                                <div className={styles.leftContentFixed}>
-                                    <div className={styles.sideBtns}>
-                                        <span className={styles.windowName}>
-                                            Edit profile
-                                        </span>
-                                        <Button>
-                                            <FontAwesomeIcon
-                                                className={styles.buttonIcon}
-                                                icon={faUser}
-                                            />
-                                            <span className={styles.buttonName}>
-                                                Profile
-                                            </span>
-                                        </Button>
-                                        <DeleteAccount
-                                            modalState={showModal}
-                                            handleClose={hideDeleteAccountModal}
-                                        />
-                                        <Button
-                                            onClick={showDeleteAccountModal}
-                                        >
-                                            <FontAwesomeIcon
-                                                className={styles.buttonIcon}
-                                                icon={faTrashAlt}
-                                            />
-                                            <span className={styles.buttonName}>
-                                                Delete account
-                                            </span>
-                                        </Button>
-                                    </div>
-                                </div>
-                            </DialogContent>
-                            <DialogContent className={styles.rightContent}>
-                                <Button
-                                    className={styles.close}
-                                    onClick={onCloseEditDialog}
-                                >
-                                    <FontAwesomeIcon
-                                        className={styles.closeIicon}
-                                        icon={faTimes}
-                                    />
-                                </Button>
-                                <div className={styles.formTitle}>
-                                    Profile info
-                                </div>
-                                <div className={styles.avatarEditProfile}>
-                                    {logo}
-                                </div>
-                                <div className={styles.form}>
-                                    <FormUpdateUserData />
-                                    <FormUpdatePassword />
-                                </div>
-                            </DialogContent>
-                        </div>
-                    </Dialog>
                     <div
                         className={styles.userProfileMenu}
                         onClick={() => handleLogout()}
                     >
-                        <FontAwesomeIcon
-                            className={styles.userIcon}
-                            icon={faSignOutAlt}
-                        />
+                        <ExitIcon className={styles.userIcon} />
                         <span className={styles.userProfileMenuName}>
                             Log out
                         </span>
                     </div>
                 </div>
             </div>
+            <UpdateProfileDialog
+                isDialogOpened={isEditModalOpened}
+                onDialogClose={() => setEditModalOpened(false)}
+            />
         </div>
     )
 }

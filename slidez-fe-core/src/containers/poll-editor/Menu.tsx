@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { SyntheticEvent } from 'react'
 import check from '../../assets/svgs/check.svg'
 import q_and_a from '../../assets/svgs/QandA.svg'
 import heart from '../../assets/svgs/reactions.svg'
@@ -10,25 +10,24 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
 import { useState } from 'react'
 import Session from '../session/Session'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons'
+import { ReactComponent as DropDownIcon } from '../../assets/svgs/drop_down_icon.svg'
+import { ReactComponent as DropUpIcon } from '../../assets/svgs/arrow_back.svg'
 
 const Menu: React.FC = () => {
     const dispatch = useDispatch()
     const handlePollClick = useCallback(() => {
         dispatch(setActiveTab(EditorTab.POLL))
     }, [dispatch])
-    const [isViewMenu, setIsViewMenu] = useState(false)
+    const [isViewMenu, setIsViewMenu] = useState(true)
 
-    const handleArrowUpClick = (event: { stopPropagation: () => void }) => {
+    const handleArrowClick = (event: SyntheticEvent) => {
         event.stopPropagation()
-        setIsViewMenu(false)
+        setIsViewMenu(!isViewMenu)
     }
 
-    const handleArrowDownClick = (event: { stopPropagation: () => void }) => {
-        event.stopPropagation()
-        setIsViewMenu(true)
-    }
+    const handleQAndAClick = useCallback(() => {
+        dispatch(setActiveTab(EditorTab.QA))
+    }, [dispatch])
 
     const { polls } = useSelector((state: RootState) => state.editor)
     return (
@@ -40,22 +39,18 @@ const Menu: React.FC = () => {
                     <button className='list-items' onClick={handlePollClick}>
                         <img src={check} alt='check' />
                         <div className='text'>Live poll</div>
-                        <div className='arrow-icon'>
-                            <FontAwesomeIcon
+                        <div className='arrow-icon' onClick={handleArrowClick}>
+                            <DropDownIcon
                                 className={
                                     'arrow-up' +
                                     (isViewMenu ? ' show-icon' : ' hide-icon')
                                 }
-                                icon={faArrowUp}
-                                onClick={handleArrowUpClick}
                             />
-                            <FontAwesomeIcon
+                            <DropUpIcon
                                 className={
                                     'arrow-down' +
                                     (isViewMenu ? ' hide-icon' : ' show-icon')
                                 }
-                                icon={faArrowDown}
-                                onClick={handleArrowDownClick}
                             />
                         </div>
                     </button>
@@ -76,7 +71,7 @@ const Menu: React.FC = () => {
                             )
                         })}
                     </div>
-                    <button className='list-items'>
+                    <button className='list-items' onClick={handleQAndAClick}>
                         <img src={q_and_a} alt='q_and_a' />
                         <div className='text'>Audience Q&#38;A</div>
                     </button>
