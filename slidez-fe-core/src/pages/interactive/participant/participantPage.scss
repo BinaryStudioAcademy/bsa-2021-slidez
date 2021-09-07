@@ -1,7 +1,6 @@
 @import 'src/global/global';
 
 .participant-page {
-
   .input-block {
     margin: 65px 15px 30px 15px;
 
@@ -28,7 +27,11 @@
       margin-bottom: 15px;
       outline: none;
     }
-
+    .code-input:active,
+    .code-input:focus-visible {
+      outline: none;
+      border: 1px #59d0a5 solid;
+    }
     .btn-code {
       background-color: $main-color;
       color: $white;
