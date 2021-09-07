@@ -33,13 +33,13 @@ export const connectToInteractiveEvents = (
 ) => {
     return WsHelper.getInstance()
         .connect(WsEndpoint.ENDPOINT)
-        .then(() => onConnectionSuccess())
         .then(() =>
             WsHelper.getInstance().subscribe(
                 `${WsEndpoint.TOPIC_EVENT}/${sessionLink}`,
                 (message: Message) => onResponse(JSON.parse(message.body))
             )
         )
+        .then(() => onConnectionSuccess())
         .catch((error: any) => console.log(error))
 }
 

@@ -2,7 +2,6 @@ import { Button, ButtonGroup, Popover } from '@material-ui/core'
 import React, { useState } from 'react'
 import like from '../../../../assets/svgs/like_reaction.svg'
 import thumb_up from '../../../../assets/svgs/thumb_up_reaction.svg'
-import 'animate.css'
 import './reaction.scss'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -20,7 +19,7 @@ const Reaction = ({ anchor }: ButtonProps) => {
                 {show ? (
                     <img
                         src={src}
-                        className='animate__animated animate__slideInUp'
+                        className='animate__animated animate__slideInUp fadeOut'
                     />
                 ) : (
                     ''

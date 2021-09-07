@@ -28,6 +28,7 @@ export const responseHandler =
         if (!response.data) {
             return
         }
+        console.log(response.data)
         switch (response.data.type) {
             case SessionResponseType.snapshot:
                 const snapshot: SnapshotDto = <SnapshotDto>response.data.data
@@ -60,6 +61,8 @@ export const responseHandler =
                     response.data.data
                 )
                 dispatch(receiveQuestionVisibility(questionVisibility))
+                break
+            case SessionResponseType.reactionAdded:
                 break
             default:
                 throwBadType(response.data.type)

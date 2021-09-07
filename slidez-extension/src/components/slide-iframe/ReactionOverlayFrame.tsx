@@ -12,6 +12,7 @@ function SlideIframe({ sourceUrl }: ReactionOverlayFrameProps) {
             className={CLASS_NAME_INTERACTIVE_SLIDE_IFRAME}
             src={sourceUrl}
             title='Reaction overlay element'
+            allowTransparency
         ></iframe>
     )
 }

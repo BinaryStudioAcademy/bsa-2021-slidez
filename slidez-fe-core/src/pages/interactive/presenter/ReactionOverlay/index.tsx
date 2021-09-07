@@ -4,11 +4,15 @@ import {
     Like,
     ThumbUp,
 } from '../../../../common/components/interactive-elements/reactions/PresenterReaction'
+import { initReactionWebSocketSession } from './store'
 import { RootState } from '../../../../store'
 import { Reactions } from '../../../../types/reactions'
 import { pullReaction } from './store'
+import styles from './reactionOverlayPage.module.scss'
+import { useParams } from 'react-router-dom'
 
 export const ReactionOverlay = () => {
+    const { link } = useParams<{ link: string }>()
     const { connectionStatus, reactions } = useSelector(
         (state: RootState) => state.reactions
     )
@@ -18,15 +22,32 @@ export const ReactionOverlay = () => {
     )
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentReaction(null)
-            if (reactions.length > 0) {
-                setCurrentReaction(reactions[0])
-                dispatch(pullReaction())
-            }
-        }, 1000)
-        return () => clearInterval(timer)
+        dispatch(initReactionWebSocketSession(link))
     }, [])
+
+    useEffect(() => {
+        //if we have a reaction - don't poll
+        if (currentReaction || reactions.length === 0) {
+            return
+        }
+
+        setCurrentReaction(reactions[0])
+        dispatch(pullReaction())
+        setTimeout(() => {
+            setCurrentReaction(null)
+        }, 1300)
+    }, [reactions, currentReaction])
+
+    useEffect(() => {
+        const bgColor = document.body.style.backgroundColor
+        const overflow = document.body.style.overflow
+        document.body.style.backgroundColor = 'transparent'
+        document.body.style.overflow = 'hidden'
+        return () => {
+            document.body.style.backgroundColor = bgColor
+            document.body.style.overflow = overflow
+        }
+    })
 
     let body: JSX.Element | null = null
     switch (currentReaction) {
@@ -38,5 +59,9 @@ export const ReactionOverlay = () => {
             break
     }
 
-    return <div className='reaction-overlay'>{body}</div>
+    return (
+        <div className={styles.reactionOverlay}>
+            <div className={`${styles.reactionContainer} fadeOut`}>{body}</div>
+        </div>
+    )
 }

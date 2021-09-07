@@ -22,11 +22,17 @@ class CurrentSlideWatcher {
     private slideSwitchMutationObserver?: MutationObserver
 
     init() {
-        const reactionMount = queryElement(
+        const reactionMountBase = queryElement(
             this.document,
             `.${CLASS_NAME_PUNCH_VIEWER_CONTENT}`
         )
-        if (reactionMount) {
+        if (reactionMountBase) {
+            const reactionMount = document.createElement('div')
+            reactionMount.className = 'react-reaction-mount'
+            reactionMount.style.width = '100%'
+            reactionMount.style.height = '100%'
+            reactionMount.style.position = 'absolute'
+            reactionMountBase.appendChild(reactionMount)
             ReactDOM.render(
                 <ReactionOverlayIframe
                     sourceUrl={`${IFRAME_HOST_BASE}/#/reaction-overlay/${this.eventCode}`}

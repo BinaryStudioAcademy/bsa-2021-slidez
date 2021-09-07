@@ -1,5 +1,6 @@
 import { Reactions } from '../../../types/reactions'
 
-export interface ReactionDto {
+export interface AddReactionDto {
+    username: string
     reactionType: Reactions
 }

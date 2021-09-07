@@ -17,16 +17,19 @@ const responseHandler =
         if (response.error || !response.data) {
             throw new Error(response.error || 'No data')
         }
+        console.log('registered overlay event', response.data.data)
         switch (response.data.type) {
             case SessionResponseType.reactionAdded:
                 dispatch(
-                    addReaction((response.data.data as ReactionDto).reaction)
+                    addReaction(
+                        (response.data.data as ReactionDto).reactionType
+                    )
                 )
         }
     }
 
 export const initReactionWebSocketSession = createAsyncThunk(
-    'presentationSession/initWebSocketSession',
+    'reactionOverlay/initWebSocketSession',
     async (link: string, { dispatch }) => {
         const onConnectionSuccess = () => {
             dispatch(connectionSuccess())
