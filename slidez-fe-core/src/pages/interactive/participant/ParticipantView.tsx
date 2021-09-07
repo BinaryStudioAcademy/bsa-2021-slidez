@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks'
 import {
     selectConnectionStatus,
     selectCurrentInteractiveElement,
+    selectQASession,
     selectSnapshot,
 } from '../../../containers/session/store/selectors'
 import { initWebSocketSession } from '../../../containers/session/store/store'
@@ -46,6 +47,7 @@ const ParticipantView = () => {
     const { link } = useParams()
     const dispatch = useAppDispatch()
     const [showQAModal, setShowQAModal] = useState(false)
+    const currentQASession = useAppSelector(selectQASession)
 
     const handleQAClose = () => {
         setShowQAModal(false)
@@ -76,13 +78,15 @@ const ParticipantView = () => {
             <div className='participant-view-content'>
                 <Header eventName={eventName} />
                 {getBodyContent(currentInteraction, link || '')}
-                <button
-                    className='btn-open-qa'
-                    type='button'
-                    onClick={() => handleQAShow()}
-                >
-                    Open Q&amp;A page
-                </button>
+                {Boolean(currentQASession) && (
+                    <button
+                        className='btn-open-qa'
+                        type='button'
+                        onClick={() => handleQAShow()}
+                    >
+                        Open Q&amp;A page
+                    </button>
+                )}
                 <Qa show={showQAModal} handleClose={handleQAClose} />
             </div>
         </div>
