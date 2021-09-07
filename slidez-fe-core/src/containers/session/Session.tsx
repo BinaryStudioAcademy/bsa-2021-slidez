@@ -1,17 +1,17 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import reset_button from '../../assets/svgs/reset_button.svg'
 import pause_button from '../../assets/svgs/pause_button.svg'
 import arrow_back from '../../assets/svgs/arrow_back.svg'
 import log_out from '../../assets/svgs/log_out.svg'
 import { ReactComponent as CloseIcon } from '../../assets/svgs/close_icon.svg'
 import './session.scss'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import { useAppDispatch } from '../../hooks'
 import menu_icon from '../../assets/svgs/menu-icon.svg'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store'
 import { createSessionForPresentation } from '../poll-editor/store'
 import { UserLogo } from '../../common/components/user-logo/UserLogo'
-import { logout, selectUserDetails } from '../user/store'
+import { fetchUser, logout, selectUserDetails } from '../user/store'
 import { UserDetailsDto } from '../user/dto/UserDetailsDto'
 
 export const initialValuesUserData: UserDetailsDto = {
@@ -23,7 +23,7 @@ export const initialValuesUserData: UserDetailsDto = {
 
 const Session = () => {
     const dispatch = useAppDispatch()
-    const userData = useAppSelector(selectUserDetails) || initialValuesUserData
+    const userData = useSelector(selectUserDetails) || initialValuesUserData
     const { session, presentationId } = useSelector(
         (state: RootState) => state.editor
     )
@@ -32,6 +32,10 @@ const Session = () => {
     const [openMenu, setOpenMenu] = useState(false)
 
     const sideMenuClasses = openMenu ? 'session-page-active' : 'session-page'
+
+    useEffect(() => {
+        dispatch(fetchUser())
+    }, [])
 
     const handleCreateSession = useCallback(() => {
         dispatch(
