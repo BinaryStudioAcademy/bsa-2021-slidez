@@ -40,10 +40,10 @@ public class StartQuizEventHandler extends AbstractDomainEventHandler {
 		}
 		Quiz quiz = bySlideId.get();
 		SessionInteractiveElementMapper mapper = SessionInteractiveElementMapper.INSTANCE;
-		SessionQuiz sessionQuiz = mapper.mapQuizToSessionQuiz(quiz);
-		event.setSessionQuiz(sessionQuiz);
+		event.setSessionQuiz(mapper.mapQuizToSessionQuiz(quiz));
 		super.handle(event, presentationEventStore);
-		SessionResponse sessionResponse = new SessionResponse(ResponseType.STARTED_QUIZ, sessionQuiz);
+		SessionQuiz outGoingQuiz = event.getSessionQuiz();
+		SessionResponse sessionResponse = new SessionResponse(ResponseType.STARTED_QUIZ, outGoingQuiz);
 		return new GenericResponse<>(sessionResponse);
 	}
 
