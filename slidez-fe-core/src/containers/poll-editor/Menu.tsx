@@ -25,6 +25,10 @@ const Menu: React.FC = () => {
         setIsViewMenu(!isViewMenu)
     }
 
+    const handleQAndAClick = useCallback(() => {
+        dispatch(setActiveTab(EditorTab.QA))
+    }, [dispatch])
+
     const { polls } = useSelector((state: RootState) => state.editor)
     return (
         <div className='main-page-addon'>
@@ -67,7 +71,7 @@ const Menu: React.FC = () => {
                             )
                         })}
                     </div>
-                    <button className='list-items'>
+                    <button className='list-items' onClick={handleQAndAClick}>
                         <img src={q_and_a} alt='q_and_a' />
                         <div className='text'>Audience Q&#38;A</div>
                     </button>
