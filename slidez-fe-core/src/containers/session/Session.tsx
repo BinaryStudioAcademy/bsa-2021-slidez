@@ -1,18 +1,29 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import reset_button from '../../assets/svgs/reset_button.svg'
 import pause_button from '../../assets/svgs/pause_button.svg'
 import arrow_back from '../../assets/svgs/arrow_back.svg'
+import log_out from '../../assets/svgs/log_out.svg'
 import { ReactComponent as CloseIcon } from '../../assets/svgs/close_icon.svg'
 import './session.scss'
-import { useAppDispatch } from '../../hooks'
-import { useState } from 'react'
+import { useAppDispatch, useAppSelector } from '../../hooks'
 import menu_icon from '../../assets/svgs/menu-icon.svg'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store'
 import { createSessionForPresentation } from '../poll-editor/store'
+import { UserLogo } from '../../common/components/user-logo/UserLogo'
+import { logout, selectUserDetails } from '../user/store'
+import { UserDetailsDto } from '../user/dto/UserDetailsDto'
+
+export const initialValuesUserData: UserDetailsDto = {
+    id: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+}
 
 const Session = () => {
     const dispatch = useAppDispatch()
+    const userData = useAppSelector(selectUserDetails) || initialValuesUserData
     const { session, presentationId } = useSelector(
         (state: RootState) => state.editor
     )
@@ -31,6 +42,10 @@ const Session = () => {
     const handleCloseMenu = () => {
         setOpenMenu(!openMenu)
     }
+
+    const handleLogout = () => {
+        dispatch(logout())
+    }
     const handleIcon = openMenu ? (
         <div className='close-button-active'>
             <button className='close-button' onClick={handleCloseMenu}>
@@ -44,6 +59,25 @@ const Session = () => {
             </button>
         </div>
     )
+
+    const logoComponent = (
+        <UserLogo
+            email={userData.email}
+            firstName={userData.firstName}
+            lastName={userData.lastName}
+            width={43}
+        />
+    )
+
+    const viewName = () => {
+        if (userData.firstName && userData.lastName) {
+            return (
+                <div className='userName'>
+                    {`${userData.firstName} ${userData.lastName}`}
+                </div>
+            )
+        }
+    }
 
     return (
         <div>
@@ -82,13 +116,20 @@ const Session = () => {
                     </button>
                 </div>
 
-                {/* <hr className='border-between-account' />
+                <hr className='border-between-account' />
                 <div className='account-section'>
-                    <button className='logout'>
+                    <div className='userInfo'>
+                        {logoComponent}
+                        <div className='userInfoText'>
+                            {viewName()}
+                            <div className='userEmail'>{userData.email}</div>
+                        </div>
+                    </div>
+                    <button className='logout' onClick={handleLogout}>
                         <img src={log_out} />
                         Log out
                     </button>
-                </div> */}
+                </div>
             </div>
         </div>
     )
