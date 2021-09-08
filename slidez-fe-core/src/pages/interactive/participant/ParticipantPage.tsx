@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import './participantPage.scss'
 import Header from '../Header'
-import ParticipantNameDialog from './ParticipantNameModal/ParticipantNameModal'
-import { ParticipantData } from '../../../services/participant/dto/ParticipantData'
-import { getParticipantData } from '../../../services/participant/participant-service'
 import { EventItem } from './EventItem'
 import { getParticipantEvents } from '../../../services/participant-event/participant-event-service'
 import { AppRoute } from '../../../common/routes/app-route'
@@ -25,10 +22,6 @@ const EventLinkError = ({ hasError }: EventLinkError) => {
 
 const ParticipantPage = () => {
     const participantEvents = getParticipantEvents()
-    const participantData: ParticipantData = getParticipantData()
-    const areFirstAndLastNamePresent =
-        participantData.participantFirstName &&
-        participantData.participantLastName
     const [eventLink, setEventLink] = useState('')
     const [hasError, setHasError] = useState(false)
 
@@ -54,7 +47,6 @@ const ParticipantPage = () => {
     return (
         <div className='participant-page'>
             <Header eventName='' />
-            {!areFirstAndLastNamePresent ? <ParticipantNameDialog /> : ''}
             <div className='input-block'>
                 <div>Enter code</div>
                 <input
