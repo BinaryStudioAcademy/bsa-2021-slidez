@@ -3,7 +3,7 @@ import { useLocation, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
 import {
     initWebSocketSession,
-    requestStartPoll,
+    requestDisplayInteraction,
 } from '../../../containers/session/store/store'
 import { WsConnectionStatus } from '../../../containers/session/enums/ws-connection-status'
 import Loader from '../../../common/components/loader/Loader'
@@ -13,8 +13,8 @@ import {
     selectQASession,
 } from '../../../containers/session/store/selectors'
 import {
-    createStartPollRequest,
-    StartPollRequest,
+    createDisplayInteractionRequest,
+    DisplayInteractionRequest,
 } from '../../../containers/session/event/FrontendEvent'
 import {
     InteractiveElement,
@@ -74,8 +74,11 @@ const PresenterPage: React.FC = () => {
         if (connectionStatus !== WsConnectionStatus.CONNECTED) {
             return
         }
-        const params: StartPollRequest = createStartPollRequest(link, slideId)
-        setTimeout(() => dispatch(requestStartPoll(params)), 6000)
+        if (currentInteraction?.slideId != slideId) {
+            const params: DisplayInteractionRequest =
+                createDisplayInteractionRequest(link, slideId)
+            setTimeout(() => dispatch(requestDisplayInteraction(params)), 1000)
+        }
     }, [connectionStatus])
 
     if (!currentInteraction && !currentQASession) {
