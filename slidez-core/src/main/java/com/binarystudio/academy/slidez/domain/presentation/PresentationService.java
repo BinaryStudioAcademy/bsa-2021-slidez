@@ -44,8 +44,8 @@ public class PresentationService {
         });
     }
 
-    public List<Presentation> getAll() {
-        return this.presentationRepository.findAll();
+    public List getInfo() {
+        return this.presentationRepository.getInfo();
     }
 
     public Optional<Presentation> get(UUID id) {
