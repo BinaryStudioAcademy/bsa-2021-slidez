@@ -22,7 +22,7 @@ const InteractiveWrapper: React.FC<InteractiveWrapperProps> = ({
                 </div>
                 <div className='link-holder'>
                     Join at
-                    <div className='link-domain'>slidez.link/</div>
+                    <div className='link-domain'>slidez.link</div>
                     <div className='link-code'>{eventCode}</div>
                 </div>
                 <div className='qr-code-holder'>
@@ -31,6 +31,7 @@ const InteractiveWrapper: React.FC<InteractiveWrapperProps> = ({
                         value={link}
                         size={256}
                         fgColor='#663999'
+                        bgColor='#f6f4f8'
                     />
                 </div>
             </div>

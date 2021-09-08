@@ -1,4 +1,4 @@
-import { Field, Form, Formik } from 'formik'
+import { Field, Form, Formik, FormikErrors } from 'formik'
 import React, { useState, useCallback } from 'react'
 import Loader from '../../common/components/loader/Loader'
 import back_button_icon from '../../assets/svgs/back_button_icon.svg'
@@ -6,6 +6,7 @@ import checked_icon from '../../assets/svgs/check.svg'
 import { createQA, EditorTab, setActiveTab } from '../poll-editor/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
+import * as Yup from 'yup'
 import './QASession.scss'
 import { handleNotification } from '../../common/notification/Notification'
 import { NotificationTypes } from '../../common/notification/notification-types'
@@ -14,8 +15,30 @@ export type QAEditorProps = {
     qaId?: string | null
 }
 
+type QAErorrsProps = {
+    viewErrors: boolean
+    formikErrors: FormikErrors<{
+        title: string
+    }>
+}
+
+const qaValidation = Yup.object({
+    title: Yup.string().required('Required'),
+})
+
+const QAErrors = ({ viewErrors, formikErrors }: QAErorrsProps) => {
+    let errorMessage: string | null = null
+    if (!viewErrors) {
+        errorMessage = null
+    } else if (formikErrors.title) {
+        errorMessage = 'Please enter your question'
+    }
+    return <div className='qa-error-text'>{errorMessage}</div>
+}
+
 const CreateQA: React.FC<QAEditorProps> = ({ qaId }: QAEditorProps) => {
     const [isLoading, setIsLoading] = useState(false)
+    const [viewErrors, setViewErrors] = useState(false)
     const dispatch = useDispatch()
     const qaError = useSelector((state: RootState) => state.editor.error)
     const presentationId = useSelector(
@@ -74,9 +97,10 @@ const CreateQA: React.FC<QAEditorProps> = ({ qaId }: QAEditorProps) => {
                     </div>
                     <Formik
                         initialValues={initialValues}
+                        validationSchema={qaValidation}
                         onSubmit={handleSubmit}
                     >
-                        {({ values }) => {
+                        {({ errors }) => {
                             return (
                                 <Form>
                                     <div className='field-wrapper mx-auto'>
@@ -91,15 +115,27 @@ const CreateQA: React.FC<QAEditorProps> = ({ qaId }: QAEditorProps) => {
                                                 id='name'
                                                 type='text'
                                                 name='title'
-                                                className='input title-input'
+                                                onClick={() =>
+                                                    setViewErrors(false)
+                                                }
+                                                className={
+                                                    'input title-input' +
+                                                    (viewErrors && errors.title
+                                                        ? ' qa-error-input'
+                                                        : '')
+                                                }
                                                 placeholder='What would you like to ask?'
                                             />
                                         </div>
                                     </div>
-
+                                    <QAErrors
+                                        viewErrors={viewErrors}
+                                        formikErrors={errors}
+                                    />
                                     <button
                                         type='submit'
                                         className='btn-submit form-button'
+                                        onClick={() => setViewErrors(true)}
                                     >
                                         Add to presentation
                                     </button>

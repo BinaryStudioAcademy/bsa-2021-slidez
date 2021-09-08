@@ -41,24 +41,26 @@ public class State {
 		return this.currentQASession;
 	}
 
-	public void addAnswerToThePoll(SessionPollAnswer pollAnswer) throws PollNotFoundException, BadOptionException {
+	public boolean addAnswerToThePoll(SessionPollAnswer pollAnswer) throws PollNotFoundException, BadOptionException {
 		SessionPoll poll = getInteractiveElement(pollAnswer.getPollId(), SessionPoll.class).orElseThrow(
 				() -> new PollNotFoundException(String.format("Poll with id %s not found", pollAnswer.getPollId())));
-		poll.addAnswer(pollAnswer);
+		boolean addedToPoll = poll.addAnswer(pollAnswer);
 		if (canInteractWithCurrentInteractiveElement(pollAnswer.getPollId(), SessionPoll.class)) {
 			SessionPoll sessionPoll = (SessionPoll) this.currentInteractiveElement;
 			sessionPoll.addAnswer(pollAnswer);
 		}
+		return addedToPoll;
 	}
 
-	public void addAnswerToTheQuiz(SessionQuizAnswer quizAnswer) throws QuizNotFoundException, BadOptionException {
+	public boolean addAnswerToTheQuiz(SessionQuizAnswer quizAnswer) throws QuizNotFoundException, BadOptionException {
 		SessionQuiz sessionQuiz = getInteractiveElement(quizAnswer.getQuizId(), SessionQuiz.class).orElseThrow(
 				() -> new QuizNotFoundException(String.format("Quiz with id %s not found", quizAnswer.getQuizId())));
-		sessionQuiz.addAnswer(quizAnswer);
+		boolean addedToQuiz = sessionQuiz.addAnswer(quizAnswer);
 		if (canInteractWithCurrentInteractiveElement(quizAnswer.getQuizId(), SessionQuiz.class)) {
 			SessionQuiz sessionPoll = (SessionQuiz) this.currentInteractiveElement;
 			sessionPoll.addAnswer(quizAnswer);
 		}
+		return addedToQuiz;
 	}
 
 	@SuppressWarnings("unchecked")

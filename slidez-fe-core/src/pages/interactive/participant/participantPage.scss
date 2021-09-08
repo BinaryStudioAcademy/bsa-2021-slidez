@@ -19,6 +19,10 @@
       border-radius: 25px;
     }
 
+    .code-input:focus {
+    border: 1px $mint solid;
+    }
+
     .code-input,
     .code-input:focus-visible {
       background-color: $light-color;
@@ -71,7 +75,7 @@
           .event-info-name {
             margin-right: 5px;
             font-weight: 500;
-            max-width: 200px;
+            max-width: calc(100vw - 140px);
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;

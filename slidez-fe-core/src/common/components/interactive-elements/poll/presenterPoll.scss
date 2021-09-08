@@ -30,30 +30,38 @@
     padding: 25px;
   }
   .poll-option {
-    margin-bottom: 25px;
-    font-style: italic;
+    margin-bottom: 35px;
+
     .poll-option-title {
       font-size: 24px;
+      margin-bottom: 12px;
     }
 
-
-    &-votes {
+    .poll-option-votes {
       display: flex;
-      margin-top: 5px;
+      font-size: 24px;
+
+      .poll-option-bar {
+        min-width: 40px;
+        background: url('../../../../assets/images/PollBack.png') repeat-x;
+        border-radius: 20px;
+      }
     }
-    &-bar {
-      min-width: 30px;
-      background-color: $grey;
-      border-radius: 10px;
-    }
-    &-percent {
+
+    .poll-option-percent {
       margin-left: 10px;
     }
-    &-winner &-bar {
-      background-color: $main-color;
-    }
-    &-winner &-percent {
-      color: $main-color;
+    
+    &.poll-option-winner {
+      .poll-option-bar {
+        min-width: 40px;
+        background: url('../../../../assets/images/PollMaxBack.png') repeat-x;
+        border-radius: 20px;
+      }
+  
+      .poll-option-percent {
+        color: $main-color;
+      }
     }
   }
 }

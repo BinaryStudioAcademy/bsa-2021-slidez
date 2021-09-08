@@ -21,6 +21,7 @@ import { useParams } from 'react-router-dom'
 import ParticipantPoll from '../../../common/components/interactive-elements/poll/ParticipantPoll'
 import { saveParticipantEvent } from '../../../services/participant-event/participant-event-service'
 import { SnapshotDto } from '../../../containers/session/dto/SnapshotDto'
+import ParticipantReactionBar from './ParticipantReactionButton'
 import Qa from '../../qa/Qa'
 
 const noCurrentInteraction = (
@@ -64,14 +65,14 @@ const ParticipantView = () => {
     const connectionStatus = useAppSelector(selectConnectionStatus)
     const currentInteraction = useAppSelector(selectCurrentInteractiveElement)
     const snapshot: SnapshotDto | undefined = useAppSelector(selectSnapshot)
-    if (snapshot?.presentationLink) {
-        saveParticipantEvent(link, snapshot.presentationLink)
+    if (snapshot?.presentationName) {
+        saveParticipantEvent(link, snapshot.presentationName)
     }
     if (!currentInteraction) {
         return noCurrentInteraction
     }
 
-    const presentationName = 'Animate'
+    const presentationName = snapshot?.presentationName ?? 'Unnamed'
     return (
         <div>
             {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
@@ -88,6 +89,7 @@ const ParticipantView = () => {
                     </button>
                 )}
                 <Qa show={showQAModal} handleClose={handleQAClose} />
+                <ParticipantReactionBar link={link ?? ''} />
             </div>
         </div>
     )

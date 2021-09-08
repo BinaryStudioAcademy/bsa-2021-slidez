@@ -2,6 +2,7 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import userReducer from '../containers/user/store'
 import presentationReducer from '../containers/session/store/store'
 import editorReducer from '../containers/poll-editor/store'
+import reactionReducer from '../pages/interactive/presenter/ReactionOverlay/store'
 import { reducer as toastrReducer } from 'react-redux-toastr'
 
 export const store = configureStore({
@@ -10,6 +11,7 @@ export const store = configureStore({
         presentationSession: presentationReducer,
         toastr: toastrReducer,
         editor: editorReducer,
+        reactions: reactionReducer,
     },
 })
 

@@ -15,4 +15,6 @@ public class SessionQuizAnswer {
 
 	private UUID answerId;
 
+	private UUID answeredBy;
+
 }
