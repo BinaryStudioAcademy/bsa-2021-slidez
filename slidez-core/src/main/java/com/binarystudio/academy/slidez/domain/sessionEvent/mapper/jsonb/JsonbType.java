@@ -72,16 +72,14 @@ public class JsonbType implements UserType {
 
 	@Override
 	public Object deepCopy(final Object value) throws HibernateException {
-		try {
+		try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(bos);
+				ByteArrayInputStream bais = new ByteArrayInputStream(bos.toByteArray())) {
 			// use serialization to create a deep copy
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(bos);
+
 			oos.writeObject(value);
 			oos.flush();
-			oos.close();
-			bos.close();
 
-			ByteArrayInputStream bais = new ByteArrayInputStream(bos.toByteArray());
 			return new ObjectInputStream(bais).readObject();
 		}
 		catch (ClassNotFoundException | IOException ex) {
