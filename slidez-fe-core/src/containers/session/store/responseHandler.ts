@@ -14,20 +14,31 @@ import { PollDto } from '../dto/InteractiveElement'
 import { SessionPollAnswer } from '../model/SessionPollAnswer'
 import { QASessionQuestionDto } from '../dto/QASessionQuestionDto'
 import { LikeQuestionDto } from '../dto/LikeQuestionDto'
+import { handleNotification } from '../../../common/notification/Notification'
+import { NotificationTypes } from '../../../common/notification/notification-types'
+import { AppRoute } from '../../../common/routes/app-route'
 import { QuestionVisibilityDto } from '../dto/QuestionVisibilityDto'
 
 function throwBadType(type: string): never {
-    throw new Error("Didn't expect to get here")
+    throw new Error(`Didn't expect to get here with type: ${type}`)
 }
 
 export const responseHandler =
     (dispatch: any) => (response: GenericResponse<SessionResponse, string>) => {
         if (response.error) {
-            throw new Error(response.error)
+            handleNotification(
+                'Error',
+                'Link doesn`t exist',
+                NotificationTypes.ERROR
+            )
+            console.error(response.error)
+            window.location.assign(`/#${AppRoute.EVENTS}`)
+            return
         }
         if (!response.data) {
             return
         }
+        console.log(response.data)
         switch (response.data.type) {
             case SessionResponseType.snapshot:
                 const snapshot: SnapshotDto = <SnapshotDto>response.data.data
@@ -60,6 +71,9 @@ export const responseHandler =
                     response.data.data
                 )
                 dispatch(receiveQuestionVisibility(questionVisibility))
+                break
+            case SessionResponseType.reactionAdded:
+            case SessionResponseType.displayedQASession:
                 break
             default:
                 throwBadType(response.data.type)

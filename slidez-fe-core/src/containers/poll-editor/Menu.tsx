@@ -46,6 +46,9 @@ const Menu: React.FC = () => {
         dispatch(setPollToUpdate(poll))
         dispatch(setActiveTab(EditorTab.POLL))
     }
+    const handleQAndAClick = useCallback(() => {
+        dispatch(setActiveTab(EditorTab.QA))
+    }, [dispatch])
 
     const { polls } = useSelector((state: RootState) => state.editor)
     return (
@@ -55,8 +58,10 @@ const Menu: React.FC = () => {
                 <h2>Create new interaction</h2>
                 <div className='menu-list'>
                     <button className='list-items' onClick={handlePollClick}>
-                        <img src={check} alt='check' />
-                        <div className='text'>Live poll</div>
+                        <div>
+                            <img src={check} alt='check' />
+                        </div>
+                        <div className='text pool-name'>Live poll</div>
                         <div className='arrow-icon' onClick={handleArrowClick}>
                             <DropDownIcon
                                 className={
@@ -107,7 +112,7 @@ const Menu: React.FC = () => {
                             )
                         })}
                     </div>
-                    <button className='list-items'>
+                    <button className='list-items' onClick={handleQAndAClick}>
                         <img src={q_and_a} alt='q_and_a' />
                         <div className='text'>Audience Q&#38;A</div>
                     </button>

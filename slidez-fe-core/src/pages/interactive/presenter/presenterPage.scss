@@ -1,0 +1,20 @@
+html,
+body,
+#root {
+  height: 100vh;
+  overflow: auto;
+}
+
+.wrapper {
+  margin: 1rem;
+  background-color: #f6f4f8;
+  height: 96vh;
+}
+.presenter-event-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  align-content: center;
+  height: 100%;
+}

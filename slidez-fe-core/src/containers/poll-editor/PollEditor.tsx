@@ -68,6 +68,20 @@ const PollEditor: React.FC<PollEditorProps> = ({ poll }: PollEditorProps) => {
         }
         setIsLoading(false)
     }
+
+    const toggleRemoveClick = (
+        length: number,
+        index: number,
+        arrayHelpers: Function | any,
+        setFieldValue: Function
+    ) => {
+        if (length > 1) {
+            arrayHelpers.remove(index)
+        } else {
+            setFieldValue(`options.${index}.title`, '')
+        }
+    }
+
     return (
         <div className='app'>
             {isLoading ? (
@@ -102,9 +116,7 @@ const PollEditor: React.FC<PollEditorProps> = ({ poll }: PollEditorProps) => {
                     </div>
                     <div className='poll-name-block'>
                         <span>
-                            <a href=''>
-                                <img src={checked_icon} alt='graph'></img>
-                            </a>
+                            <img src={checked_icon} alt='graph'></img>
                         </span>
                         <span className='poll-name'>Live poll</span>
                         <p className='poll-icon'>
@@ -115,7 +127,7 @@ const PollEditor: React.FC<PollEditorProps> = ({ poll }: PollEditorProps) => {
                         initialValues={initialValues}
                         onSubmit={(values) => handleSubmit(values)}
                     >
-                        {({ values }) => {
+                        {({ values, setFieldValue }) => {
                             return (
                                 <Form>
                                     <div className='field-wrapper mx-auto'>
@@ -148,6 +160,7 @@ const PollEditor: React.FC<PollEditorProps> = ({ poll }: PollEditorProps) => {
                                                         >
                                                             <div className='label option-label'>
                                                                 <Field
+                                                                    field='field'
                                                                     name={`options.${index}.title`}
                                                                     placeholder='Your option'
                                                                     className='input'
@@ -158,8 +171,13 @@ const PollEditor: React.FC<PollEditorProps> = ({ poll }: PollEditorProps) => {
                                                                     type='button'
                                                                     className='options-btn'
                                                                     onClick={() =>
-                                                                        arrayHelpers.remove(
-                                                                            index
+                                                                        toggleRemoveClick(
+                                                                            values
+                                                                                .options
+                                                                                .length,
+                                                                            index,
+                                                                            arrayHelpers,
+                                                                            setFieldValue
                                                                         )
                                                                     }
                                                                 >

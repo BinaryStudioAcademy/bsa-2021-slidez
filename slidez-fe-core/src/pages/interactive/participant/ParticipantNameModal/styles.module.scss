@@ -1,15 +1,44 @@
+body,
+button {
+  -webkit-user-select: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  touch-action: none !important;
+  -webkit-touch-callout: none !important;
+  user-select: none !important;
+}
 .dialog {
-    :global(.MuiPaper-root) {
-        border-radius: 15px;
-        min-width: 320px;
-        :global(.MuiTypography-h6) {
-            font-family: 'Rubik';
-        }
+  :global(.MuiPaper-root) {
+    border-radius: 15px;
+    min-width: 320px;
+    :global(.MuiTypography-h6) {
+      font-family: 'Rubik';
     }
-    :global(.MuiTypography-root) {
-        font-weight: 400;
-    }
-    button {
-        font-family: 'Rubik';
-    }
+  }
+  :global(.MuiTypography-root) {
+    font-weight: 400;
+  }
+  button,
+  button:focus-visible {
+    font-family: 'Rubik';
+    border: none !important;
+    outline: none !important;
+    background-color: white !important;
+  }
+}
+
+.form-button,
+.login-button,
+.form-row,
+.buttons-row,
+.form-button:touch,
+.login-button:touch,
+.form-row:touch,
+.buttons-row:touch,
+.form-button:focus-visible,
+.login-button:focus-visible,
+.form-row:focus-visible,
+.buttons-row:focus-visible {
+  border: none !important;
+  outline: none !important;
+  margin-top: 1rem;
 }

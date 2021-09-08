@@ -2,6 +2,7 @@ import React from 'react'
 import { PollDto } from '../../../../containers/session/dto/InteractiveElement'
 import './presenterPoll.scss'
 import { PollAnswerDto } from '../../../../containers/session/dto/PollAnswerDto'
+import checked_icon from '../../../../assets/svgs/check.svg'
 
 type PollProps = {
     poll: PollDto
@@ -40,6 +41,7 @@ const PresenterPoll = ({ poll, children }: PollProps) => {
     const winnerId: string = getItemWithBiggestCount(itemsToItemsCount)
 
     const totalVotes: number = poll.answers.length
+
     const mappedOptions = poll.options.map((option, index) => {
         const optionCount: number = itemsToItemsCount.get(option.id) || 0
         const percentage: number =
@@ -66,7 +68,10 @@ const PresenterPoll = ({ poll, children }: PollProps) => {
     return (
         <div className='poll'>
             <div className='poll-header'>
-                <div className='poll-name'>{poll.title}</div>
+                <div className='poll-name'>
+                    <img src={checked_icon} alt='graph'></img>
+                    {poll.title}
+                </div>
                 <div className='poll-votes'>{totalVotes} votes</div>
             </div>
             <div className='poll-options'>{mappedOptions}</div>

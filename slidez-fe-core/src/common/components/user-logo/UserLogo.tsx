@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { ReactComponent as SlidezLogo } from '../../../assets/svgs/logo.svg'
-import { UserDetailsDto } from '../../../containers/user/dto/UserDetailsDto'
 import styles from './styles.module.scss'
 
 interface IProps {

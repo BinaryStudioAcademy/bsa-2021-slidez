@@ -1,42 +1,67 @@
-@import "../../../../global/global.scss";
+@import '../../../../global/global.scss';
 
 .poll {
-    height: 100%;
-    border-radius: 10px;
-    background-color: $light-color;
+  height: 100%;
+  border-radius: 10px;
+  background-color: white;
 
-    &-header {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px 15px;
-        border-bottom: 2px solid $grey;
-    }
-    &-name {
-        font-weight: bold;
-    }
-    &-options {
-        padding: 25px;
-    }
-    &-option {
-        margin-bottom: 25px;
+  .poll-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 15px;
+    border-bottom: 2px solid #f6f4f8;
+    align-items: center;
+    margin-left: 10px;
+    margin-right: 10px;
 
-        &-votes {
-            display: flex;
-            margin-top: 5px;
-        }
-        &-bar {
-            min-width: 30px;
-            background-color: $grey;
-            border-radius: 10px;
-        }
-        &-percent {
-            margin-left: 10px;
-        }
-        &-winner &-bar {
-            background-color: $main-color;
-        }
-        &-winner &-percent {
-            color: $main-color;
-        }
+    .poll-name {
+      font-weight: 400;
+      font-size: 26px;
+      display: flex;
+      
+      img {
+        display: block;
+        width: 24px;
+        margin-right: 1rem;
+      }
     }
+  }
+  .poll-options {
+    padding: 25px;
+  }
+  .poll-option {
+    margin-bottom: 35px;
+
+    .poll-option-title {
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    .poll-option-votes {
+      display: flex;
+      font-size: 24px;
+
+      .poll-option-bar {
+        min-width: 40px;
+        background: url('../../../../assets/images/PollBack.png') repeat-x;
+        border-radius: 20px;
+      }
+    }
+
+    .poll-option-percent {
+      margin-left: 10px;
+    }
+    
+    &.poll-option-winner {
+      .poll-option-bar {
+        min-width: 40px;
+        background: url('../../../../assets/images/PollMaxBack.png') repeat-x;
+        border-radius: 20px;
+      }
+  
+      .poll-option-percent {
+        color: $main-color;
+      }
+    }
+  }
 }

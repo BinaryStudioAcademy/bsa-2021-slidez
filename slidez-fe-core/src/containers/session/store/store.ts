@@ -10,9 +10,11 @@ import {
     QASessionDto,
 } from '../dto/InteractiveElement'
 import {
+    AddReactionRequest,
     AnswerPollRequest,
     AskQuestionRequest,
     createSnapshotRequest,
+    DisplayInteractionRequest,
     LikeQuestionRequest,
     SetQuestionVisibilityRequest,
     SnapshotRequest,
@@ -73,9 +75,9 @@ export const receiveSnapshot = createAsyncThunk(
     }
 )
 
-export const requestStartPoll = createAsyncThunk(
-    'poll/start',
-    async (params: StartPollRequest) => {
+export const requestDisplayInteraction = createAsyncThunk(
+    'interaction/request',
+    async (params: DisplayInteractionRequest) => {
         SessionService.sendRequest(params.link, params.event)
     }
 )
@@ -90,6 +92,13 @@ export const receiveStartPoll = createAsyncThunk(
 export const answerPoll = createAsyncThunk(
     'poll/answer',
     async (request: AnswerPollRequest) => {
+        SessionService.sendRequest(request.link, request.event)
+    }
+)
+
+export const addReaction = createAsyncThunk(
+    'reactions/add',
+    async (request: AddReactionRequest) => {
         SessionService.sendRequest(request.link, request.event)
     }
 )

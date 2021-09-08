@@ -1,11 +1,14 @@
+import { Reactions } from '../../../types/reactions'
 import { SessionPollAnswer } from '../model/SessionPollAnswer'
 import {
+    AddReactionEvent,
     AnswerPollEvent,
     AskQuestionEvent,
     DomainEventType,
     LikeQuestionEvent,
     SetQuestionVisibilityEvent,
     SnapshotEvent,
+    DisplayInteractionEvent,
     StartPollEvent,
 } from './DomainEvent'
 
@@ -39,6 +42,26 @@ export type LikeQuestionRequest = {
 export type SetQuestionVisibilityRequest = {
     link: string
     event: SetQuestionVisibilityEvent
+}
+
+export type AddReactionRequest = {
+    link: string
+    event: AddReactionEvent
+}
+
+export type DisplayInteractionRequest = {
+    link: string
+    event: DisplayInteractionEvent
+}
+
+export const createDisplayInteractionRequest = (
+    link: string,
+    slideId: string
+): DisplayInteractionRequest => {
+    return {
+        link,
+        event: { type: DomainEventType.displayInteractionEvent, slideId },
+    }
 }
 
 export const createStartPollRequest = (
@@ -116,6 +139,23 @@ export const createSetQuestionVisibilityRequest = (
             visibility: {
                 questionId: questionId,
                 isVisible: isVisible,
+            },
+        },
+    }
+}
+
+export const createAddReactionEvent = (
+    link: string,
+    reactionType: Reactions,
+    username: string
+): AddReactionRequest => {
+    return {
+        link,
+        event: {
+            type: DomainEventType.addReactionEvent,
+            reaction: {
+                reactionType,
+                username,
             },
         },
     }

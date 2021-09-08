@@ -19,6 +19,7 @@ import {
     isQaSessionElement,
     isQuizInteractiveElement,
     WritePollDto,
+    WriteQADto,
 } from '../../../types/editor'
 import { UpdatePollDto } from '../dto'
 
@@ -165,7 +166,7 @@ export const deletePoll = createAsyncThunk(
 
 export const updatePoll = createAsyncThunk(
     'update-poll',
-    async (pollUpdateDto: UpdatePollDto) => {
+    async (pollUpdateDto: UpdatePollDto, { dispatch }) => {
         const data =
             await getMessageBusUnsafe()!.sendMessageAndListen<UpdateSlideSuccess>(
                 {
@@ -179,7 +180,30 @@ export const updatePoll = createAsyncThunk(
                 5000
             )
         await httpHelper.doPatch(`/polls/${pollUpdateDto.id}`, pollUpdateDto)
+        dispatch(setActiveTab(null))
         return pollUpdateDto
+    }
+)
+export const createQA = createAsyncThunk(
+    'create-qa',
+    async (qaWriteDto: WriteQADto, { dispatch }) => {
+        const data =
+            await getMessageBusUnsafe()!.sendMessageAndListen<InsertSlideSuccess>(
+                {
+                    type: EventType.INSERT_SLIDE,
+                    data: {
+                        id: qaWriteDto.slideId,
+                        title: `Question: ${qaWriteDto.title}`,
+                    },
+                },
+                EventType.INSERT_SLIDE_SUCCESS,
+                5000
+            )
+        const presentationData: FetchInteractiveElementsResponse = (
+            await httpHelper.doPost('/qa-sessions/new', qaWriteDto)
+        ).data.data
+        dispatch(setActiveTab(null))
+        return presentationData
     }
 )
 
@@ -278,6 +302,20 @@ const editorSlice = createSlice({
                           }
                         : poll
                 )
+            })
+            .addCase(createQA.pending, (state) => {
+                state.isFetching = true
+                state.error = null
+            })
+            .addCase(createQA.fulfilled, (state, action) => {
+                state.isFetching = false
+                state.error = null
+                state.qaSessions = state.qaSessions
+                    .concat(action.payload as QaInteractiveElement[])
+                    .filter(isQaSessionElement)
+            })
+            .addCase(createQA.rejected, (state, errorResponse) => {
+                state.error = errorResponse.error.message ?? null
             })
             .addCase(loadActiveSession.rejected, (state, error) => {
                 state.session = null
