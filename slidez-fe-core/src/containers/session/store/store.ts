@@ -14,6 +14,7 @@ import {
     AnswerPollRequest,
     AskQuestionRequest,
     createSnapshotRequest,
+    DisplayInteractionRequest,
     LikeQuestionRequest,
     SetQuestionVisibilityRequest,
     SnapshotRequest,
@@ -74,9 +75,9 @@ export const receiveSnapshot = createAsyncThunk(
     }
 )
 
-export const requestStartPoll = createAsyncThunk(
-    'poll/start',
-    async (params: StartPollRequest) => {
+export const requestDisplayInteraction = createAsyncThunk(
+    'interaction/request',
+    async (params: DisplayInteractionRequest) => {
         SessionService.sendRequest(params.link, params.event)
     }
 )

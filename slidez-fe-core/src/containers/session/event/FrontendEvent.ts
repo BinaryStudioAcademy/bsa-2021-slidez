@@ -8,6 +8,7 @@ import {
     LikeQuestionEvent,
     SetQuestionVisibilityEvent,
     SnapshotEvent,
+    DisplayInteractionEvent,
     StartPollEvent,
 } from './DomainEvent'
 
@@ -46,6 +47,21 @@ export type SetQuestionVisibilityRequest = {
 export type AddReactionRequest = {
     link: string
     event: AddReactionEvent
+}
+
+export type DisplayInteractionRequest = {
+    link: string
+    event: DisplayInteractionEvent
+}
+
+export const createDisplayInteractionRequest = (
+    link: string,
+    slideId: string
+): DisplayInteractionRequest => {
+    return {
+        link,
+        event: { type: DomainEventType.displayInteractionEvent, slideId },
+    }
 }
 
 export const createStartPollRequest = (

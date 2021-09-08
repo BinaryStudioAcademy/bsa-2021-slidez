@@ -20,7 +20,7 @@ const makeReactionHandler =
 
 const ParticipantReactionButton: React.FC<ParticipantReactionProps> = ({
     link,
-}) => {
+}: ParticipantReactionProps) => {
     const dispatch = useDispatch()
     const handleLikeClick = React.useCallback(
         makeReactionHandler(dispatch, link, Reactions.LIKE, ''),
