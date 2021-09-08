@@ -12,9 +12,11 @@ public class AnswerPollEvent extends DomainEvent {
 
 	private SessionPollAnswer pollAnswer;
 
+	private boolean addedSuccessfully;
+
 	@Override
 	public void applyEvent(State state) throws DomainException {
-		state.addAnswerToThePoll(pollAnswer);
+		this.addedSuccessfully = state.addAnswerToThePoll(pollAnswer);
 	}
 
 }

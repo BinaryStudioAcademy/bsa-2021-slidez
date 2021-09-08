@@ -45,9 +45,8 @@ export type QuizInteractiveElement = {
 
 export type QaInteractiveElement = {
     id: string
-    type: 'QA'
-    qaSession: ReadQaSessionDto
-}
+    type: 'QASession'
+} & ReadQaSessionDto
 
 export type InteractiveElement =
     | PollInteractiveElement
@@ -85,5 +84,5 @@ export const isQuizInteractiveElement = (
 export const isQaSessionElement = (
     ie: InteractiveElement
 ): ie is QaInteractiveElement => {
-    return ie.type === 'QA'
+    return ie.type === 'QASession'
 }

@@ -9,6 +9,7 @@ const AppRoute = {
     MODERATION: '/presentation/:link/moderation',
     DASHBOARD: '/dashboard',
     ADDON: '/addon',
+    REACTION: '/reaction-overlay/:link',
 }
 
 export { AppRoute }

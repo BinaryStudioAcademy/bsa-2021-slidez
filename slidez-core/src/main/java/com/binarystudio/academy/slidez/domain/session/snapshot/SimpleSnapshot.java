@@ -15,13 +15,13 @@ public class SimpleSnapshot implements Snapshot {
 
 	private final List<SessionInteractiveElement> sessionInteractiveElements;
 
-	private final String presentationLink;
+	private final String presentationName;
 
-	public SimpleSnapshot(State state, String presentationLink) {
+	public SimpleSnapshot(State state, String presentationName) {
 		this.currentQASession = state.getCurrentQASession();
 		this.currentInteractiveElement = state.getCurrentInteractiveElement();
 		this.sessionInteractiveElements = new ArrayList<>(state.getSessionInteractiveElements());
-		this.presentationLink = presentationLink;
+		this.presentationName = presentationName;
 	}
 
 	@Override
@@ -40,8 +40,8 @@ public class SimpleSnapshot implements Snapshot {
 	}
 
 	@Override
-	public String getPresentationLink() {
-		return presentationLink;
+	public String getPresentationName() {
+		return presentationName;
 	}
 
 }

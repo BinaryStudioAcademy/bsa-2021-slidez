@@ -1,5 +1,7 @@
+import { Reactions } from '../../../types/reactions'
 import { SessionPollAnswer } from '../model/SessionPollAnswer'
 import {
+    AddReactionEvent,
     AnswerPollEvent,
     AskQuestionEvent,
     DomainEventType,
@@ -39,6 +41,11 @@ export type LikeQuestionRequest = {
 export type SetQuestionVisibilityRequest = {
     link: string
     event: SetQuestionVisibilityEvent
+}
+
+export type AddReactionRequest = {
+    link: string
+    event: AddReactionEvent
 }
 
 export const createStartPollRequest = (
@@ -116,6 +123,23 @@ export const createSetQuestionVisibilityRequest = (
             visibility: {
                 questionId: questionId,
                 isVisible: isVisible,
+            },
+        },
+    }
+}
+
+export const createAddReactionEvent = (
+    link: string,
+    reactionType: Reactions,
+    username: string
+): AddReactionRequest => {
+    return {
+        link,
+        event: {
+            type: DomainEventType.addReactionEvent,
+            reaction: {
+                reactionType,
+                username,
             },
         },
     }

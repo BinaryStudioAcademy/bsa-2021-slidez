@@ -13,6 +13,6 @@ public interface Snapshot {
 
 	List<SessionInteractiveElement> getSessionInteractiveElements();
 
-	String getPresentationLink();
+	String getPresentationName();
 
 }

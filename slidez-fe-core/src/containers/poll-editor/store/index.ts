@@ -232,7 +232,7 @@ const editorSlice = createSlice({
                 state.error = null
                 state.qaSessions = state.qaSessions
                     .concat(action.payload as QaInteractiveElement[])
-                    .filter(isQuizInteractiveElement)
+                    .filter(isQaSessionElement)
             })
             .addCase(createQA.rejected, (state, errorResponse) => {
                 state.error = errorResponse.error.message ?? null

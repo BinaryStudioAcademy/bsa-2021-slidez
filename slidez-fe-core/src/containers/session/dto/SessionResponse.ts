@@ -4,6 +4,7 @@ import { PollDto } from './InteractiveElement'
 import { SessionPollAnswer } from '../model/SessionPollAnswer'
 import { QASessionQuestionDto } from './QASessionQuestionDto'
 import { LikeQuestionDto } from './LikeQuestionDto'
+import { ReactionDto } from './ReactionDto'
 import { QuestionVisibilityDto } from './QuestionVisibilityDto'
 
 export interface SessionResponse {
@@ -14,5 +15,6 @@ export interface SessionResponse {
         | SessionPollAnswer
         | QASessionQuestionDto
         | LikeQuestionDto
+        | ReactionDto
         | QuestionVisibilityDto
 }

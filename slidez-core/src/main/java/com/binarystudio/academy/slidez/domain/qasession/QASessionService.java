@@ -32,14 +32,9 @@ public class QASessionService {
         this.qaSessionRepository = qaSessionRepository;
     }
 
-    @Transactional
-    public QASessionDto create(CreateQASessionDto dto, User owner) {
-        Presentation presentation = presentationService.assertPresentationExists(dto.getPresentationLink(), dto.getPresentationName(), owner);
-        QASession qaSession = new QASession();
-        InteractiveElement interactiveElement = new InteractiveElement();
-        interactiveElement.setPresentation(presentation);
-        interactiveElement.setSlideId(dto.getSlideId());
-        interactiveElement.setType(InteractiveElementType.QASession);
+	@Transactional
+	public QASessionDto create(CreateQASessionDto dto, User owner) {
+		Presentation presentation = presentationService.assertPresentationExists(dto.getPresentationId(), dto.getPresentationName(), owner);
 
         qaSession.setInteractiveElement(interactiveElement);
         qaSession.setOwner(owner);

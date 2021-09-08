@@ -1,0 +1,60 @@
+@import "../../../../global/global.scss";
+
+.reactions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .openedBlock {
+        display: flex;
+        background-color: $light-color;
+        border: 1px solid $main-color;
+        border-radius: 30px;
+        padding: 5px;
+
+        button {
+            outline: none;
+            margin-right: 10px;
+            padding: 10px;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            svg {
+                transition: width 0.2s;
+                transition: height 0.2s;
+
+            }
+            &:hover {
+                svg {
+                    transform: scale(1.2);
+                }
+            }
+        }
+        :last-child {
+            margin-right: 0;
+        }
+    }
+
+    .closedBlock {
+        cursor: pointer;
+        position: fixed;
+        bottom: 22px;
+        right: 26px;
+        &.hidden {
+            display: none;   
+        }
+    }
+
+    @media (max-width: 800px) {
+        .openedBlock {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            z-index: 10;
+        }
+    }
+}
