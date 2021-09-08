@@ -7,4 +7,5 @@ import * as publicSlidesFunctions from './slides';
 (global as any).openSidebar = publicUiFunctions.openSidebar;
 (global as any).insertSlide = publicSlidesFunctions.insertSlide;
 (global as any).deleteSlide = publicSlidesFunctions.deleteSlide;
+(global as any).updateSlide = publicSlidesFunctions.updateSlide;
 (global as any).getPresentationId = publicSlidesFunctions.getPresentationId;

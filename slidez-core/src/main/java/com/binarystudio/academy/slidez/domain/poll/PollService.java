@@ -4,6 +4,7 @@ import com.binarystudio.academy.slidez.domain.interactive_element.model.Interact
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElementType;
 import com.binarystudio.academy.slidez.domain.poll.dto.CreatePollDto;
 import com.binarystudio.academy.slidez.domain.poll.dto.PollDto;
+import com.binarystudio.academy.slidez.domain.poll.dto.UpdatePollDto;
 import com.binarystudio.academy.slidez.domain.poll.mapper.PollMapper;
 import com.binarystudio.academy.slidez.domain.poll.model.Poll;
 import com.binarystudio.academy.slidez.domain.poll.model.PollOption;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -52,6 +55,20 @@ public class PollService {
 		poll.setOwner(owner);
 
 		pollRepository.save(poll);
+		return PollMapper.INSTANCE.pollToPollDto(poll);
+	}
+
+	@Transactional
+	public PollDto patch(UpdatePollDto updatePollDto) {
+		Poll poll = pollRepository.getById(updatePollDto.getId());
+		poll.setTitle(updatePollDto.getTitle());
+		poll.getOptions().clear();
+        var pollOptions = poll.getOptions();
+        for (var pollOption : updatePollDto.getOptions()) {
+            pollOptions.add(new PollOption(pollOption.getId(), pollOption.getTitle()));
+        }
+		pollRepository.save(poll);
+
 		return PollMapper.INSTANCE.pollToPollDto(poll);
 	}
 

@@ -23,7 +23,9 @@ const useEditorParams = () => {
 
 const Addon = () => {
     const dispatch = useDispatch()
-    const { activeTab } = useSelector((state: RootState) => state.editor)
+    const { activeTab, pollToUpdate } = useSelector(
+        (state: RootState) => state.editor
+    )
 
     const { extensionId, presentationId } = useEditorParams()
 
@@ -54,7 +56,7 @@ const Addon = () => {
             tab = <Menu />
             break
         case EditorTab.POLL:
-            tab = <PollEditor />
+            tab = <PollEditor poll={pollToUpdate} />
             break
         case EditorTab.QA:
             tab = <QandA />

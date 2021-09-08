@@ -6,10 +6,12 @@ import {
     MESSAGING_TOPIC,
     InsertSlide,
     DeleteSlide,
+    UpdateSlide,
     EventType,
     of,
     InsertSlideRequestSuccess,
     DeleteSlideRequestSuccess,
+    UpdateSlideRequestSuccess,
 } from 'slidez-shared';
 import { EXTENSION_ID } from '../env';
 import { runGoogleScript } from '../helpers';
@@ -114,6 +116,22 @@ const registerListeners = (bus: BasicMessagingBus) => {
             ).then(data =>
                 bus.sendMessageNoCallback({
                     type: EventType.DELETE_SLIDE_SUCCESS,
+                    data
+                })
+            )
+        })
+    )
+
+    bus.registerEventHandler(
+        EventType.UPDATE_SLIDE,
+        of<UpdateSlide>(event => {
+            console.log('Slide update request intercepted!');
+            runGoogleScript<UpdateSlideRequestSuccess>(
+                'updateSlide',
+                event.data
+            ).then(data =>
+                bus.sendMessageNoCallback({
+                    type: EventType.UPDATE_SLIDE_SUCCESS,
                     data
                 })
             )

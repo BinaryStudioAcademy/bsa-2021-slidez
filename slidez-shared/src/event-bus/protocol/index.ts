@@ -6,6 +6,8 @@ export enum EventType {
     INSERT_SLIDE_SUCCESS = 'insert_slide_success',
     DELETE_SLIDE = 'delete_slide',
     DELETE_SLIDE_SUCCESS = 'delete_slide_success',
+    UPDATE_SLIDE = 'update_slide',
+    UPDATE_SLIDE_SUCCESS = 'update_slide_success',
     SET_ACTIVE_SESSION = 'set_active_session',
     //DEPRECATED
     AUTH_REQUESTED = 'auth_requested',
@@ -54,6 +56,15 @@ export type DeleteSlideRequestSuccess = {
     wasDeleted: boolean
 }
 
+export type UpdateSlideRequest = {
+    id: string
+    title: string
+}
+
+export type UpdateSlideRequestSuccess = {
+    wasUpdated: boolean
+}
+
 export type SetActiveSession = MessageTemplate<
     EventType.SET_ACTIVE_SESSION,
     {
@@ -82,6 +93,16 @@ export type DeleteSlideSuccess = MessageTemplate<
     DeleteSlideRequestSuccess
 >
 
+export type UpdateSlide = MessageTemplate<
+    EventType.UPDATE_SLIDE,
+    UpdateSlideRequest
+>
+
+export type UpdateSlideSuccess = MessageTemplate<
+    EventType.UPDATE_SLIDE_SUCCESS,
+    UpdateSlideRequestSuccess
+>
+
 export type ProtocolMessage =
     | ExtensionConnected
     | AuthenticationRequested
@@ -92,4 +113,6 @@ export type ProtocolMessage =
     | InsertSlideSuccess
     | DeleteSlide
     | DeleteSlideSuccess
+    | UpdateSlide
+    | UpdateSlideSuccess
     | SetActiveSession

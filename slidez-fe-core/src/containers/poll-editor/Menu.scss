@@ -39,9 +39,12 @@
                 }
                 .delete {
                     margin-left: 5px;
-                    &:hover {
-                        path {
-                            fill: red;
+
+                    &-icon {
+                        &:hover {
+                            path {
+                                fill: red;
+                            }
                         }
                     }
                 }

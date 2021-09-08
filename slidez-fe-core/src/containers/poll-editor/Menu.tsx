@@ -3,7 +3,7 @@ import check from '../../assets/svgs/check.svg'
 import q_and_a from '../../assets/svgs/QandA.svg'
 import heart from '../../assets/svgs/reactions.svg'
 import chat from '../../assets/svgs/chat.svg'
-import { deletePoll, EditorTab, setActiveTab } from './store'
+import { deletePoll, EditorTab, setActiveTab, setPollToUpdate } from './store'
 import './Menu.scss'
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,12 +13,13 @@ import Session from '../session/Session'
 import { ReactComponent as DropDownIcon } from '../../assets/svgs/drop_down_icon.svg'
 import { ReactComponent as DropUpIcon } from '../../assets/svgs/arrow_back.svg'
 import { ReactComponent as TrashIcon } from '../../assets/svgs/trash.svg'
-import httpHelper from '../../services/http/http-helper'
 import { PollInteractiveElement } from '../../types/editor'
 
 const Menu: React.FC = () => {
     const dispatch = useDispatch()
+
     const handlePollClick = useCallback(() => {
+        dispatch(setPollToUpdate(null))
         dispatch(setActiveTab(EditorTab.POLL))
     }, [dispatch])
     const [isViewMenu, setIsViewMenu] = useState(true)
@@ -33,7 +34,17 @@ const Menu: React.FC = () => {
         poll: PollInteractiveElement
     ) => {
         event.preventDefault()
+        event.stopPropagation()
         dispatch(deletePoll(poll))
+    }
+
+    const handlePresentPollClick = (
+        event: SyntheticEvent,
+        poll: PollInteractiveElement
+    ) => {
+        event.preventDefault()
+        dispatch(setPollToUpdate(poll))
+        dispatch(setActiveTab(EditorTab.POLL))
     }
 
     const { polls } = useSelector((state: RootState) => state.editor)
@@ -69,7 +80,13 @@ const Menu: React.FC = () => {
                     >
                         {polls.map((item) => {
                             return (
-                                <div className='list-items' key={item.id}>
+                                <div
+                                    className='list-items'
+                                    key={item.id}
+                                    onClick={(event) =>
+                                        handlePresentPollClick(event, item)
+                                    }
+                                >
                                     <img
                                         className='check'
                                         src={check}
@@ -78,12 +95,14 @@ const Menu: React.FC = () => {
                                     <div className='text'>{item.title}</div>
                                     &nbsp;
                                     <span className='subtext'>{`[${item.pollOptions.length} options]`}</span>
-                                    <TrashIcon
-                                        className='delete'
-                                        onClick={(event) =>
-                                            handleDeleteClick(event, item)
-                                        }
-                                    />
+                                    <div className='delete'>
+                                        <TrashIcon
+                                            className='delete-icon'
+                                            onClick={(event) =>
+                                                handleDeleteClick(event, item)
+                                            }
+                                        />
+                                    </div>
                                 </div>
                             )
                         })}

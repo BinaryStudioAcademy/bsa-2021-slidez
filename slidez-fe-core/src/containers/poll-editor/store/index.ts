@@ -3,6 +3,7 @@ import {
     DeleteSlideSuccess,
     EventType,
     InsertSlideSuccess,
+    UpdateSlideSuccess,
 } from 'slidez-shared'
 import { handleNotification } from '../../../common/notification/Notification'
 import { getMessageBusUnsafe } from '../../../hooks/event-bus'
@@ -19,6 +20,7 @@ import {
     isQuizInteractiveElement,
     WritePollDto,
 } from '../../../types/editor'
+import { UpdatePollDto } from '../dto'
 
 export enum EditorTab {
     QA = 'qa',
@@ -39,6 +41,7 @@ type EditorState = {
         code: string
         presentationName: string
     } | null
+    pollToUpdate: PollInteractiveElement | null
 }
 
 const initialState: EditorState = {
@@ -50,6 +53,7 @@ const initialState: EditorState = {
     qaSessions: [],
     quizzes: [],
     polls: [],
+    pollToUpdate: null,
 }
 
 export const preloadState = createAsyncThunk(
@@ -154,9 +158,28 @@ export const deletePoll = createAsyncThunk(
                 EventType.DELETE_SLIDE_SUCCESS,
                 5000
             )
-        console.log('Deleting poll with id ' + pollDto.id)
         await httpHelper.doDelete(`/polls/${pollDto.id}`)
         return pollDto
+    }
+)
+
+export const updatePoll = createAsyncThunk(
+    'update-poll',
+    async (pollUpdateDto: UpdatePollDto) => {
+        const data =
+            await getMessageBusUnsafe()!.sendMessageAndListen<UpdateSlideSuccess>(
+                {
+                    type: EventType.UPDATE_SLIDE,
+                    data: {
+                        id: pollUpdateDto.slideId,
+                        title: pollUpdateDto.title,
+                    },
+                },
+                EventType.UPDATE_SLIDE_SUCCESS,
+                5000
+            )
+        await httpHelper.doPatch(`/polls/${pollUpdateDto.id}`, pollUpdateDto)
+        return pollUpdateDto
     }
 )
 
@@ -186,6 +209,13 @@ const editorSlice = createSlice({
                 ...(state.session ?? { presentationName: '' }),
                 code: payload.payload,
             }
+        },
+
+        setPollToUpdate: (
+            state: EditorState,
+            payload: PayloadAction<PollInteractiveElement | null>
+        ) => {
+            state.pollToUpdate = payload.payload
         },
     },
     extraReducers: (builder) =>
@@ -234,12 +264,31 @@ const editorSlice = createSlice({
             .addCase(deletePoll.rejected, (state, errorResponse) => {
                 state.error = errorResponse.error.message ?? null
             })
+            .addCase(updatePoll.pending, (state) => {
+                state.error = null
+            })
+            .addCase(updatePoll.fulfilled, (state, action) => {
+                state.error = null
+                state.polls = state.polls.map((poll) =>
+                    poll.id === action.payload.id
+                        ? {
+                              ...poll,
+                              title: action.payload.title,
+                              pollOptions: action.payload.options,
+                          }
+                        : poll
+                )
+            })
             .addCase(loadActiveSession.rejected, (state, error) => {
                 state.session = null
             }),
 })
 
-export const { setPresentationId, setActiveTab, setActiveSession } =
-    editorSlice.actions
+export const {
+    setPresentationId,
+    setActiveTab,
+    setActiveSession,
+    setPollToUpdate,
+} = editorSlice.actions
 
 export default editorSlice.reducer
