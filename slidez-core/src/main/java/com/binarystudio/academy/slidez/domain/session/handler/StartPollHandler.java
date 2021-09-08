@@ -42,10 +42,10 @@ public class StartPollHandler extends AbstractDomainEventHandler {
 			}
 			Poll poll = pollOptional.get();
 			SessionInteractiveElementMapper mapper = SessionInteractiveElementMapper.INSTANCE;
-			SessionPoll sessionPoll = mapper.mapPollToSessionPoll(poll);
-			event.setSessionPoll(sessionPoll);
+			event.setSessionPoll(mapper.mapPollToSessionPoll(poll));
 			super.handle(domainEvent, eventStore);
-			SessionResponse out = new SessionResponse(ResponseType.STARTED_POLL, sessionPoll);
+			SessionPoll outGoingPoll = event.getSessionPoll();
+			SessionResponse out = new SessionResponse(ResponseType.STARTED_POLL, outGoingPoll);
 			return new GenericResponse<>(out);
 		}
 		return super.handle(domainEvent, eventStore);

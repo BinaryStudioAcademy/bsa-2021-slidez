@@ -16,8 +16,9 @@ public class StartPollEvent extends DomainEvent {
 
 	@Override
 	public void applyEvent(State state) throws DomainException {
-		state.addInteractiveElement(sessionPoll);
-		state.setCurrentInteractiveElement(sessionPoll);
+		SessionPoll pollFromState = state.assertInteractiveElementAdded(sessionPoll);
+		this.sessionPoll = pollFromState;
+		state.setCurrentInteractiveElement(pollFromState);
 	}
 
 }

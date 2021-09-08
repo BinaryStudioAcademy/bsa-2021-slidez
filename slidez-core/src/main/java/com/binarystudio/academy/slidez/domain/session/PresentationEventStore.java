@@ -26,14 +26,14 @@ public class PresentationEventStore {
 	private final State state = new State();
 
 	@GuardedBy("Immutability of java.lang.String + field is final + object is constructed without letting 'this' to escape")
-	private final String presentationLink;
+	private final String presentationName;
 
-	public PresentationEventStore(String presentationLink) {
-		this.presentationLink = presentationLink;
+	public PresentationEventStore(String presentationName) {
+		this.presentationName = presentationName;
 	}
 
-	public String getPresentationLink() {
-		return presentationLink;
+	public String getPresentationName() {
+		return presentationName;
 	}
 
 	public synchronized List<DomainEvent> getEvents() {
@@ -49,7 +49,7 @@ public class PresentationEventStore {
 	}
 
 	public synchronized Snapshot snapshot() {
-		return new SimpleSnapshot(state, presentationLink);
+		return new SimpleSnapshot(state, presentationName);
 	}
 
 	public Snapshot snapshot(LocalDateTime localDateTime) throws DomainException {
@@ -58,7 +58,7 @@ public class PresentationEventStore {
 			events.stream().filter(e -> e.getEventDate().isBefore(localDateTime))
 					.forEach(e -> e.applyEvent(stateForSpecificTime));
 		}
-		return new SimpleSnapshot(stateForSpecificTime, presentationLink);
+		return new SimpleSnapshot(stateForSpecificTime, presentationName);
 	}
 
 }

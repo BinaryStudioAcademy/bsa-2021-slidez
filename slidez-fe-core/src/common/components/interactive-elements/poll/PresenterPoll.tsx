@@ -41,6 +41,7 @@ const PresenterPoll = ({ poll, children }: PollProps) => {
     const winnerId: string = getItemWithBiggestCount(itemsToItemsCount)
 
     const totalVotes: number = poll.answers.length
+
     const mappedOptions = poll.options.map((option, index) => {
         const optionCount: number = itemsToItemsCount.get(option.id) || 0
         const percentage: number =
@@ -68,9 +69,7 @@ const PresenterPoll = ({ poll, children }: PollProps) => {
         <div className='poll'>
             <div className='poll-header'>
                 <div className='poll-name'>
-                    <span className='poll-icon'>
-                        <img src={checked_icon} alt='graph'></img>
-                    </span>
+                    <img src={checked_icon} alt='graph'></img>
                     {poll.title}
                 </div>
                 <div className='poll-votes'>{totalVotes} votes</div>

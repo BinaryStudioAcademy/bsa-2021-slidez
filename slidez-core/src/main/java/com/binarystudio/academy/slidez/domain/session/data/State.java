@@ -24,34 +24,44 @@ public class State {
 		return Collections.unmodifiableList(sessionInteractiveElements);
 	}
 
-	public void addInteractiveElement(SessionInteractiveElement sessionInteractiveElement) {
-		sessionInteractiveElements.add(sessionInteractiveElement);
+	@SuppressWarnings("unchecked")
+	public <T extends SessionInteractiveElement> T assertInteractiveElementAdded(final T element) {
+		Optional<? extends SessionInteractiveElement> outHolder = getInteractiveElement(element.getId(),
+				element.getClass());
+		if (outHolder.isEmpty()) {
+			sessionInteractiveElements.add(element);
+			return element;
+		}
+		return (T) outHolder.get();
 	}
 
-	public void addAnswerToThePoll(SessionPollAnswer pollAnswer) throws PollNotFoundException, BadOptionException {
-		sessionInteractiveElements.stream()
-				.filter(element -> Objects.equals(element.getClass(), SessionPoll.class)
-						&& Objects.equals(element.getId(), pollAnswer.getPollId()))
-				.map(element -> (SessionPoll) element).findFirst().orElseThrow(() -> new PollNotFoundException(
-						String.format("Poll with id %s not found", pollAnswer.getPollId())))
-				.addAnswer(pollAnswer);
+	public boolean addAnswerToThePoll(SessionPollAnswer pollAnswer) throws PollNotFoundException, BadOptionException {
+		SessionPoll poll = getInteractiveElement(pollAnswer.getPollId(), SessionPoll.class).orElseThrow(
+				() -> new PollNotFoundException(String.format("Poll with id %s not found", pollAnswer.getPollId())));
+		boolean addedToPoll = poll.addAnswer(pollAnswer);
 		if (canInteractWithCurrentInteractiveElement(pollAnswer.getPollId(), SessionPoll.class)) {
 			SessionPoll sessionPoll = (SessionPoll) this.currentInteractiveElement;
 			sessionPoll.addAnswer(pollAnswer);
 		}
+		return addedToPoll;
 	}
 
-	public void addAnswerToTheQuiz(SessionQuizAnswer quizAnswer) throws QuizNotFoundException, BadOptionException {
-		sessionInteractiveElements.stream()
-				.filter(element -> Objects.equals(element.getClass(), SessionQuiz.class)
-						&& Objects.equals(element.getId(), quizAnswer.getQuizId()))
-				.map(element -> (SessionQuiz) element).findFirst().orElseThrow(() -> new QuizNotFoundException(
-						String.format("Quiz with id %s not found", quizAnswer.getQuizId())))
-				.addAnswer(quizAnswer);
+	public boolean addAnswerToTheQuiz(SessionQuizAnswer quizAnswer) throws QuizNotFoundException, BadOptionException {
+		SessionQuiz sessionQuiz = getInteractiveElement(quizAnswer.getQuizId(), SessionQuiz.class).orElseThrow(
+				() -> new QuizNotFoundException(String.format("Quiz with id %s not found", quizAnswer.getQuizId())));
+		boolean addedToQuiz = sessionQuiz.addAnswer(quizAnswer);
 		if (canInteractWithCurrentInteractiveElement(quizAnswer.getQuizId(), SessionQuiz.class)) {
 			SessionQuiz sessionPoll = (SessionQuiz) this.currentInteractiveElement;
 			sessionPoll.addAnswer(quizAnswer);
 		}
+		return addedToQuiz;
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T extends SessionInteractiveElement> Optional<T> getInteractiveElement(UUID id, Class<T> expectedClass) {
+		return sessionInteractiveElements.stream().filter(
+				element -> Objects.equals(element.getClass(), expectedClass) && Objects.equals(element.getId(), id))
+				.map(element -> (T) element).findFirst();
 	}
 
 	public void setVisibilityToQuestionInQASession(SessionQAQuestionVisibility visibility) {

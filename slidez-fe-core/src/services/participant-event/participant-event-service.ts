@@ -9,7 +9,7 @@ const writeEvents = (events: ParticipantEvent[]) => {
 
 export const saveParticipantEvent = (
     link: string,
-    presentationLink: string
+    presentationName: string
 ): void => {
     const events: ParticipantEvent[] = getParticipantEvents()
     let found: boolean = false
@@ -23,7 +23,7 @@ export const saveParticipantEvent = (
     if (!found) {
         const event: ParticipantEvent = {
             code: link,
-            name: presentationLink,
+            name: presentationName,
             viewsDate: new Date(),
         }
         events.push(event)

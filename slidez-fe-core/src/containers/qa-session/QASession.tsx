@@ -63,8 +63,8 @@ const CreateQA: React.FC<QAEditorProps> = ({ qaId }: QAEditorProps) => {
         )
         if (qaError !== null) {
             handleNotification(
-                'Added Failed',
-                'The question was not added',
+                'Q&A creation failed',
+                'The Q&A component was not added',
                 NotificationTypes.ERROR
             )
         }
@@ -92,9 +92,7 @@ const CreateQA: React.FC<QAEditorProps> = ({ qaId }: QAEditorProps) => {
                     </div>
                     <div className='qanda-name-block'>
                         <span>
-                            <a href=''>
-                                <img src={checked_icon} alt='graph'></img>
-                            </a>
+                            <img src={checked_icon} alt='graph'></img>
                         </span>
                         <span className='qanda-name'>Audience Q&#38;A</span>
                     </div>

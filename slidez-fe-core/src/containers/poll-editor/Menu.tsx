@@ -37,8 +37,10 @@ const Menu: React.FC = () => {
                 <h2>Create new interaction</h2>
                 <div className='menu-list'>
                     <button className='list-items' onClick={handlePollClick}>
-                        <img src={check} alt='check' />
-                        <div className='text'>Live poll</div>
+                        <div>
+                            <img src={check} alt='check' />
+                        </div>
+                        <div className='text pool-name'>Live poll</div>
                         <div className='arrow-icon' onClick={handleArrowClick}>
                             <DropDownIcon
                                 className={

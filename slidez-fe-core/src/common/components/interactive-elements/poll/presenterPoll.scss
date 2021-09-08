@@ -5,7 +5,7 @@
   border-radius: 10px;
   background-color: white;
 
-  &-header {
+  .poll-header {
     display: flex;
     justify-content: space-between;
     padding: 20px 15px;
@@ -13,39 +13,55 @@
     align-items: center;
     margin-left: 10px;
     margin-right: 10px;
+
+    .poll-name {
+      font-weight: 400;
+      font-size: 26px;
+      display: flex;
+      
+      img {
+        display: block;
+        width: 24px;
+        margin-right: 1rem;
+      }
+    }
   }
-  &-icon {
-    margin-right: 1rem;
-  }
-  &-name {
-    font-weight: bold;
-    font-size: 1.5rem;
-    font-weight: 400;
-  }
-  &-options {
+  .poll-options {
     padding: 25px;
   }
-  &-option {
-    margin-bottom: 25px;
-    font-style: italic;
+  .poll-option {
+    margin-bottom: 35px;
 
-    &-votes {
+    .poll-option-title {
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    .poll-option-votes {
       display: flex;
-      margin-top: 5px;
+      font-size: 24px;
+
+      .poll-option-bar {
+        min-width: 40px;
+        background: url('../../../../assets/images/PollBack.png') repeat-x;
+        border-radius: 20px;
+      }
     }
-    &-bar {
-      min-width: 30px;
-      background-color: $grey;
-      border-radius: 10px;
-    }
-    &-percent {
+
+    .poll-option-percent {
       margin-left: 10px;
     }
-    &-winner &-bar {
-      background-color: $main-color;
-    }
-    &-winner &-percent {
-      color: $main-color;
+    
+    &.poll-option-winner {
+      .poll-option-bar {
+        min-width: 40px;
+        background: url('../../../../assets/images/PollMaxBack.png') repeat-x;
+        border-radius: 20px;
+      }
+  
+      .poll-option-percent {
+        color: $main-color;
+      }
     }
   }
 }

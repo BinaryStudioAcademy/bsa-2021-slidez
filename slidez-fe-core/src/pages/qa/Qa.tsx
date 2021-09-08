@@ -132,19 +132,27 @@ const Qa = (qaProps: QaProps) => {
                 />
             </div>
             <div className={styles.bodyButton}>
-                <div className='qa-body'>
-                    {visibleQuestions.map((qaSessionQuestion) => (
-                        <QACard
-                            key={qaSessionQuestion.id}
-                            author={qaSessionQuestion.authorNickname}
-                            likeCount={qaSessionQuestion.likedBy.length}
-                            isLiked={getIsLikedByMe(qaSessionQuestion)}
-                            likeClick={() => handleLike(qaSessionQuestion.id)}
-                        >
-                            {qaSessionQuestion.question}
-                        </QACard>
-                    ))}
-                </div>
+                {visibleQuestions.length > 0 ? (
+                    <div className='qa-body'>
+                        {visibleQuestions.map((qaSessionQuestion) => (
+                            <QACard
+                                key={qaSessionQuestion.id}
+                                author={qaSessionQuestion.authorNickname}
+                                likeCount={qaSessionQuestion.likedBy.length}
+                                isLiked={getIsLikedByMe(qaSessionQuestion)}
+                                likeClick={() =>
+                                    handleLike(qaSessionQuestion.id)
+                                }
+                            >
+                                {qaSessionQuestion.question}
+                            </QACard>
+                        ))}
+                    </div>
+                ) : (
+                    <div className={styles.noQuestions}>
+                        No questions for now. You can be the first one
+                    </div>
+                )}
                 <QAAdd onSubmit={handleSubmit} />
             </div>
         </Dialog>
