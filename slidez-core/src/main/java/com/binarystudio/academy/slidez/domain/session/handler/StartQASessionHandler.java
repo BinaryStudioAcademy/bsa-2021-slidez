@@ -40,7 +40,8 @@ public class StartQASessionHandler extends AbstractDomainEventHandler {
 						.mapQASessionToSessionQASession(qaSession);
 				startQASessionEvent.setSessionQASession(sessionQASession);
 				super.handle(startQASessionEvent, presentationEventStore);
-				SessionResponse out = new SessionResponse(ResponseType.STARTED_QA_SESSION, sessionQASession);
+				SessionQASession outGoingSession = startQASessionEvent.getSessionQASession();
+				SessionResponse out = new SessionResponse(ResponseType.STARTED_QA_SESSION, outGoingSession);
 				return new GenericResponse<>(out);
 			}
 			return super.handle(domainEvent, presentationEventStore);

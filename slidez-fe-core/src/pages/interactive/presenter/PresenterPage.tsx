@@ -10,6 +10,7 @@ import Loader from '../../../common/components/loader/Loader'
 import {
     selectConnectionStatus,
     selectCurrentInteractiveElement,
+    selectQASession,
 } from '../../../containers/session/store/selectors'
 import {
     createStartPollRequest,
@@ -18,11 +19,13 @@ import {
 import {
     InteractiveElement,
     PollDto,
+    QASessionDto,
 } from '../../../containers/session/dto/InteractiveElement'
 import { InteractiveElementType } from '../../../containers/session/enums/InteractiveElementType'
 import PresenterPoll from '../../../common/components/interactive-elements/poll/PresenterPoll'
 import './presenterPage.scss'
 import InteractiveWrapper from '../../../common/components/interactive-elements/interactive-wrapper/InteractiveWrapper'
+import { QandA } from '../../../common/components/interactive-elements/q-and-a/QandA'
 
 const useEditorParams = () => {
     const params = new URLSearchParams(useLocation().search)
@@ -46,7 +49,7 @@ const noCurrentInteraction = (link: string) => {
     )
 }
 
-const getBodyContent = (interactiveElement: InteractiveElement) => {
+const getInteractiveContent = (interactiveElement: InteractiveElement) => {
     if (interactiveElement.type === InteractiveElementType.poll) {
         return <PresenterPoll poll={interactiveElement as PollDto} />
     }
@@ -59,6 +62,8 @@ const PresenterPage: React.FC = () => {
     const { presentationLink, slideId } = useEditorParams()
     const connectionStatus = useAppSelector(selectConnectionStatus)
     const currentInteraction = useAppSelector(selectCurrentInteractiveElement)
+    const currentQASession: QASessionDto | undefined | null =
+        useAppSelector(selectQASession)
 
     useEffect(() => {
         dispatch(initWebSocketSession(link))
@@ -73,8 +78,18 @@ const PresenterPage: React.FC = () => {
         setTimeout(() => dispatch(requestStartPoll(params)), 6000)
     }, [connectionStatus])
 
-    if (!currentInteraction) {
+    if (!currentInteraction && !currentQASession) {
         return noCurrentInteraction(link)
+    }
+
+    const getBodyContent = () => {
+        if (slideId && currentQASession?.slideId === slideId) {
+            return <QandA />
+        }
+        if (currentInteraction) {
+            return getInteractiveContent(currentInteraction)
+        }
+        return null
     }
 
     return (
@@ -86,7 +101,7 @@ const PresenterPage: React.FC = () => {
                     </div>
                 )}
                 <InteractiveWrapper eventCode={link || ''}>
-                    {getBodyContent(currentInteraction)}
+                    {getBodyContent()}
                 </InteractiveWrapper>
             </div>
         </div>

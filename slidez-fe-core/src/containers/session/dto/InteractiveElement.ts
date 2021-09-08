@@ -25,4 +25,4 @@ export type QASessionDto = AbstractInteractiveElement & {
 }
 
 // Poll | Quiz in the future
-export type InteractiveElement = PollDto
+export type InteractiveElement = PollDto | QASessionDto
