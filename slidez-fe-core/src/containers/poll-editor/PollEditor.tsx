@@ -51,7 +51,6 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }: PollEditorProps) => {
                 NotificationTypes.ERROR
             )
         }
-        setIsLoading(false)
     }
     const toggleRemoveClick = (
         length: number,
