@@ -24,6 +24,8 @@ const SideBar = () => {
                 <span>
                     <div className={styles.addIcon}>
                         <CreatePresentation />
+                        <img className={styles.label} src={soon_lable} />
+                        <img className={styles.label} src={soon} />
                         <span className={styles.tooltiptext}>
                             Create presentation
                         </span>
