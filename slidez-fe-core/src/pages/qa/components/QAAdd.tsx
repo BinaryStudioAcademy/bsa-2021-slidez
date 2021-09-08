@@ -24,13 +24,12 @@ export default function QAAdd({ onSubmit }: QAAddProps) {
         }
     }
 
-    const onKeyDown = (
-        event: React.KeyboardEvent<HTMLTextAreaElement>
-    ): void => {
+    const onKeyDown = (event: any): void => {
         if (event.key === 'Enter') {
             event.preventDefault()
             event.stopPropagation()
             handleSubmit()
+            event.target.blur()
         }
     }
 
@@ -47,7 +46,7 @@ export default function QAAdd({ onSubmit }: QAAddProps) {
                     onChange={(e) => handleSettingText(e)}
                     value={text}
                     maxLength={maxTextLength}
-                    onKeyDown={onKeyDown}
+                    onKeyDown={(e) => onKeyDown(e)}
                 />
             </div>
             <div className='chars-counter'>{charsCounterValue}</div>
