@@ -47,35 +47,39 @@ const ParticipantPage = () => {
     return (
         <div className='participant-page'>
             <Header eventName='' />
-            <div className='input-block'>
-                <div>Enter code</div>
-                <input
-                    className='code-input'
-                    type='text'
-                    onChange={(event) => handleEventLink(event.target.value)}
-                    placeholder='#Code (6 characters)'
-                />
-                <EventLinkError hasError={hasError} />
-                <button
-                    className='btn btn-code'
-                    type='submit'
-                    onClick={onRedirectClick}
-                >
-                    Join
-                </button>
-            </div>
-            {participantEvents?.length > 0 ? (
-                <div className='visited-events'>
-                    <div className='title'>Select event</div>
-                    <div className='page-content'>
-                        {participantEvents.map((event) => (
-                            <EventItem event={event} key={event.code} />
-                        ))}
-                    </div>
+            <div className='participant-page-content'>
+                <div className='input-block'>
+                    <div>Enter code</div>
+                    <input
+                        className='code-input'
+                        type='text'
+                        onChange={(event) =>
+                            handleEventLink(event.target.value)
+                        }
+                        placeholder='#Code (6 characters)'
+                    />
+                    <EventLinkError hasError={hasError} />
+                    <button
+                        className='btn btn-code'
+                        type='submit'
+                        onClick={onRedirectClick}
+                    >
+                        Join
+                    </button>
                 </div>
-            ) : (
-                ''
-            )}
+                {participantEvents?.length > 0 ? (
+                    <div className='visited-events'>
+                        <div className='title'>Select event</div>
+                        <div className='page-content'>
+                            {participantEvents.map((event) => (
+                                <EventItem event={event} key={event.code} />
+                            ))}
+                        </div>
+                    </div>
+                ) : (
+                    ''
+                )}
+            </div>
         </div>
     )
 }

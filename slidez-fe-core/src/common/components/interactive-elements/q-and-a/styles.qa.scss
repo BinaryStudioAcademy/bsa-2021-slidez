@@ -2,6 +2,16 @@
 
 .q-and-a {
     margin: 60px;
+    
+    .noQuestions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 8px;
+        text-align: center;
+        height: calc(100vh - 300px);
+        padding-bottom: 30px;
+    }
 }
 
 .q-and-a-header {
@@ -21,6 +31,8 @@
 }
 
 .question-container {
+    height: calc(100vh - 300px);
+    overflow: auto;
     display: flex;
     flex-direction: column;
     margin-top: 25px;

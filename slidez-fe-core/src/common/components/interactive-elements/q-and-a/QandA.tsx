@@ -16,9 +16,13 @@ export const QandA = () => {
     return (
         <div className='q-and-a'>
             <QandAHeader questionCount={currentQASession.questions.length} />
-            {currentQASession.questions.map((q) => (
-                <Question questionDto={q} key={uuidv4()} />
-            ))}
+            {currentQASession.questions.length > 0 ? (
+                currentQASession.questions.map((q) => (
+                    <Question questionDto={q} key={uuidv4()} />
+                ))
+            ) : (
+                <div className='noQuestions'>No questions for now</div>
+            )}
         </div>
     )
 }
