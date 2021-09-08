@@ -19,6 +19,10 @@
       border-radius: 25px;
     }
 
+    .code-input:focus {
+    border: 1px $mint solid;
+    }
+
     .code-input,
     .code-input:focus-visible {
       background-color: $light-color;
