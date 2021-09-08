@@ -45,19 +45,15 @@ export const handleLoginErrorNotification = (
 
 const LoginErrors = ({ viewErrors, formikErrors }: LoginErorrsProps) => {
     let errorMessage: string | null = null
-
-    useEffect(() => {
-        if (!viewErrors) {
-            errorMessage = null
-        } else if (formikErrors.email && formikErrors.password) {
-            errorMessage = 'Please provide email and password'
-        } else if (formikErrors.email) {
-            errorMessage = 'Email is missing'
-        } else if (formikErrors.password) {
-            errorMessage = 'Password is missing'
-        }
-    })
-
+    if (!viewErrors) {
+        errorMessage = null
+    } else if (formikErrors.email && formikErrors.password) {
+        errorMessage = 'Please provide email and password'
+    } else if (formikErrors.email) {
+        errorMessage = 'Email is missing'
+    } else if (formikErrors.password) {
+        errorMessage = 'Password is missing'
+    }
     return <div className='error-text'>{errorMessage}</div>
 }
 
@@ -111,7 +107,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                                 name='email'
                                 className={
                                     'form-input' +
-                                    (viewErrors && errors.email
+                                    (viewErrors && (errors.email || loginError)
                                         ? ' error-input'
                                         : '')
                                 }
@@ -141,7 +137,8 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                                     name='password'
                                     className={
                                         'form-input input-with-icon' +
-                                        (viewErrors && errors.password
+                                        (viewErrors &&
+                                        (errors.password || loginError)
                                             ? ' error-input'
                                             : '')
                                     }
@@ -172,6 +169,7 @@ const LoginForm = ({ onLogin, onLoginWithGoogle }: LoginProps) => {
                         <div className='form-row buttons-row'>
                             <button
                                 className='form-button login-button'
+                                onClick={() => setViewErrors(true)}
                                 type='submit'
                             >
                                 Log In
