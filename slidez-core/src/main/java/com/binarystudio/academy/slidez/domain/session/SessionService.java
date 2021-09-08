@@ -16,15 +16,20 @@ import com.binarystudio.academy.slidez.domain.session.handler.DomainEventHandler
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import com.binarystudio.academy.slidez.domain.session.model.Session;
 
+import com.binarystudio.academy.slidez.domain.sessionEvent.SessionEventService;
+import com.binarystudio.academy.slidez.domain.sessionEvent.model.SessionEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class SessionService {
 
 	private final SessionRepository sessionRepository;
+
+    private final SessionEventService sessionEventService;
 
 	private final PresentationService presentationService;
 
@@ -35,11 +40,12 @@ public class SessionService {
 	private final DomainEventHandler eventHandler;
 
 	@Autowired
-	public SessionService(SessionRepository sessionRepository, PresentationService presentationService,
-			LinkService linkService, InMemoryPresentationEventStoreRepository inMemoryPresentationEventStoreRepository,
-			DomainEventHandler eventHandler) {
+	public SessionService(SessionRepository sessionRepository, SessionEventService sessionEventService, PresentationService presentationService,
+                          LinkService linkService, InMemoryPresentationEventStoreRepository inMemoryPresentationEventStoreRepository,
+                          DomainEventHandler eventHandler) {
 		this.sessionRepository = sessionRepository;
-		this.presentationService = presentationService;
+        this.sessionEventService = sessionEventService;
+        this.presentationService = presentationService;
 		this.linkService = linkService;
 		this.inMemoryPresentationEventStoreRepository = inMemoryPresentationEventStoreRepository;
 		this.eventHandler = eventHandler;
@@ -48,7 +54,16 @@ public class SessionService {
 	public GenericResponse<SessionResponse, SessionResponseCodes> handleEvent(String link, DomainEvent domainEvent) {
 		Optional<PresentationEventStore> eventStore = inMemoryPresentationEventStoreRepository.get(link);
 		if (eventStore.isEmpty()) {
-			return new GenericResponse<>(null, SessionResponseCodes.NO_SESSION_WITH_SUCH_LINK);
+            List <SessionEvent> sessionEvents = sessionEventService.getSessionEventBySessionId(link);
+
+            if (sessionEvents.isEmpty()) {
+                return new GenericResponse<>(null, SessionResponseCodes.NO_SESSION_WITH_SUCH_LINK);
+            }
+            Optional<PresentationEventStore> loadingEventStore = Optional.of(new PresentationEventStore(link));
+            sessionEvents
+                .forEach(event -> loadingEventStore.get().applyEvent(event.getSessionEvent()));
+            inMemoryPresentationEventStoreRepository.set(link, loadingEventStore.get());
+            return eventHandler.handle(domainEvent, loadingEventStore.get());
 		}
 		return eventHandler.handle(domainEvent, eventStore.get());
 	}

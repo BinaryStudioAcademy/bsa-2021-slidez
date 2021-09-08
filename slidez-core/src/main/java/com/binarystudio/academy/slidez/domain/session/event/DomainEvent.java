@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -22,7 +23,7 @@ import java.util.UUID;
 		@JsonSubTypes.Type(value = StartQuizEvent.class, name = "StartQuizEvent"),
 		@JsonSubTypes.Type(value = LikeQuestionEvent.class, name = "LikeQuestionEvent"),
 		@JsonSubTypes.Type(value = SetQuestionVisibilityEvent.class, name = "SetQuestionVisibilityEvent") })
-public abstract class DomainEvent {
+public abstract class DomainEvent implements Serializable {
 
 	private final UUID id = UUID.randomUUID();
 
