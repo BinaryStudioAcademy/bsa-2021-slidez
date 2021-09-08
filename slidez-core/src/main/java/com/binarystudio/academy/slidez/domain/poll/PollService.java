@@ -63,10 +63,10 @@ public class PollService {
 		Poll poll = pollRepository.getById(updatePollDto.getId());
 		poll.setTitle(updatePollDto.getTitle());
 		poll.getOptions().clear();
-        var pollOptions = poll.getOptions();
-        for (var pollOption : updatePollDto.getOptions()) {
-            pollOptions.add(new PollOption(pollOption.getId(), pollOption.getTitle()));
-        }
+		var pollOptions = poll.getOptions();
+		for (var pollOption : updatePollDto.getOptions()) {
+			pollOptions.add(new PollOption(pollOption.getId(), pollOption.getTitle()));
+		}
 		pollRepository.save(poll);
 
 		return PollMapper.INSTANCE.pollToPollDto(poll);
