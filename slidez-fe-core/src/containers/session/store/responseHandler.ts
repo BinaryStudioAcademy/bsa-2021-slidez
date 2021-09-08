@@ -20,20 +20,20 @@ import { AppRoute } from '../../../common/routes/app-route'
 import { QuestionVisibilityDto } from '../dto/QuestionVisibilityDto'
 
 function throwBadType(type: string): never {
-    throw new Error("Didn't expect to get here")
+    throw new Error(`Didn't expect to get here with type: ${type}`)
 }
 
 export const responseHandler =
     (dispatch: any) => (response: GenericResponse<SessionResponse, string>) => {
         if (response.error) {
+            handleNotification(
+                'Error',
+                'Link doesn`t exist',
+                NotificationTypes.ERROR
+            )
+            console.error(response.error)
+            window.location.assign(`/#${AppRoute.EVENTS}`)
             return
-            // handleNotification(
-            //     'Error',
-            //     'Link doesn`t exist',
-            //     NotificationTypes.ERROR
-            // )
-            // console.error(response.error)
-            // window.location.assign(`/#${AppRoute.EVENTS}`)
         }
         if (!response.data) {
             return
@@ -73,6 +73,7 @@ export const responseHandler =
                 dispatch(receiveQuestionVisibility(questionVisibility))
                 break
             case SessionResponseType.reactionAdded:
+            case SessionResponseType.displayedQASession:
                 break
             default:
                 throwBadType(response.data.type)

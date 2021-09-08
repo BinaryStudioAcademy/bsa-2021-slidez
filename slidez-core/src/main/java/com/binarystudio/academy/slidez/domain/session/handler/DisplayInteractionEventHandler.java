@@ -17,12 +17,12 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Component
-public class StartInteractionEventHandler extends AbstractDomainEventHandler {
+public class DisplayInteractionEventHandler extends AbstractDomainEventHandler {
 
 	private final InteractiveElementRepository interactiveElementRepository;
 
 	@Autowired
-	public StartInteractionEventHandler(InteractiveElementRepository interactiveElementRepository) {
+	public DisplayInteractionEventHandler(InteractiveElementRepository interactiveElementRepository) {
 		this.interactiveElementRepository = interactiveElementRepository;
 	}
 

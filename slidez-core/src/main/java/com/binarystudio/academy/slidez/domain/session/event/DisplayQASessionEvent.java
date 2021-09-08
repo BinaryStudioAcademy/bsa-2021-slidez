@@ -19,7 +19,7 @@ public class DisplayQASessionEvent extends DomainEvent {
 	@Override
 	public void applyEvent(State state) throws DomainException {
 		SessionQASession qaSession = state.getCurrentQASession();
-		if (!Objects.equals(qaSession.getSlideId(), slideId)) {
+		if (Objects.equals(qaSession.getSlideId(), slideId)) {
 			this.currentQASession = qaSession;
 		}
 	}
