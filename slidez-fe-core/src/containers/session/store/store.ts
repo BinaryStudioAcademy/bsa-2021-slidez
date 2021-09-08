@@ -10,6 +10,7 @@ import {
     QASessionDto,
 } from '../dto/InteractiveElement'
 import {
+    AddReactionRequest,
     AnswerPollRequest,
     AskQuestionRequest,
     createSnapshotRequest,
@@ -90,6 +91,13 @@ export const receiveStartPoll = createAsyncThunk(
 export const answerPoll = createAsyncThunk(
     'poll/answer',
     async (request: AnswerPollRequest) => {
+        SessionService.sendRequest(request.link, request.event)
+    }
+)
+
+export const addReaction = createAsyncThunk(
+    'reactions/add',
+    async (request: AddReactionRequest) => {
         SessionService.sendRequest(request.link, request.event)
     }
 )
