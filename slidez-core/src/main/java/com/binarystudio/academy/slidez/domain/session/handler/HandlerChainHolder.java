@@ -21,8 +21,8 @@ public class HandlerChainHolder implements ApplicationContextAware {
 	public AbstractDomainEventHandler eventHandler() {
 		SnapshotRequestHandler snapshotRequestHandler = applicationContext.getBean("snapshotRequestHandler",
 				SnapshotRequestHandler.class);
-		PersistDomainEventInDbHandler persistDomainEventInDbHandler= applicationContext.getBean("persistDomainEventInDbHandler",
-            PersistDomainEventInDbHandler.class);
+		PersistDomainEventInDbHandler persistDomainEventInDbHandler = applicationContext
+				.getBean("persistDomainEventInDbHandler", PersistDomainEventInDbHandler.class);
 		StartPollHandler startPollHandler = applicationContext.getBean("startPollHandler", StartPollHandler.class);
 		AnswerPollHandler answerPollHandler = applicationContext.getBean("answerPollHandler", AnswerPollHandler.class);
 		StartQASessionHandler startQASessionHandler = applicationContext.getBean("startQASessionHandler",
@@ -41,10 +41,11 @@ public class HandlerChainHolder implements ApplicationContextAware {
 				.getBean("setQuestionVisibilityEventHandler", SetQuestionVisibilityEventHandler.class);
 		DefaultEventHandler defaultEventHandler = applicationContext.getBean("defaultEventHandler",
 				DefaultEventHandler.class);
-        snapshotRequestHandler.setNext(persistDomainEventInDbHandler).setNext(startPollHandler).setNext(answerPollHandler).setNext(startQASessionHandler)
-				.setNext(askQuestionEventHandler).setNext(startQuizEventHandler).setNext(answerQuizEventHandler)
-				.setNext(addReactionEventHandler).setNext(likeQuestionEventHandler)
-				.setNext(setQuestionVisibilityEventHandler).setNext(defaultEventHandler);
+		snapshotRequestHandler.setNext(persistDomainEventInDbHandler).setNext(startPollHandler)
+				.setNext(answerPollHandler).setNext(startQASessionHandler).setNext(askQuestionEventHandler)
+				.setNext(startQuizEventHandler).setNext(answerQuizEventHandler).setNext(addReactionEventHandler)
+				.setNext(likeQuestionEventHandler).setNext(setQuestionVisibilityEventHandler)
+				.setNext(defaultEventHandler);
 		return snapshotRequestHandler;
 	}
 

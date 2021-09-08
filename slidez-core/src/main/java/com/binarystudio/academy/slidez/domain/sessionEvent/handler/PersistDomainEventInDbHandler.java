@@ -18,20 +18,20 @@ import java.util.Objects;
 @Component
 public class PersistDomainEventInDbHandler extends AbstractDomainEventHandler {
 
+	private final SessionEventService sessionEventService;
 
-    private final SessionEventService sessionEventService;
+	@Autowired
+	public PersistDomainEventInDbHandler(SessionEventService sessionEventService) {
+		this.sessionEventService = sessionEventService;
+	}
 
-    @Autowired
-    public PersistDomainEventInDbHandler(SessionEventService sessionEventService) {
-        this.sessionEventService = sessionEventService;
-    }
+	@Override
+	public GenericResponse<SessionResponse, SessionResponseCodes> handle(DomainEvent domainEvent,
+			PresentationEventStore presentationEventStore) {
+		if (!Objects.equals(domainEvent.getClass(), SnapshotRequestedEvent.class)) {
+			sessionEventService.create(presentationEventStore.getPresentationLink(), domainEvent);
+		}
+		return super.handle(domainEvent, presentationEventStore);
+	}
 
-    @Override
-    public GenericResponse<SessionResponse, SessionResponseCodes> handle(DomainEvent domainEvent,
-                                                                         PresentationEventStore presentationEventStore) {
-        if (!Objects.equals(domainEvent.getClass(), SnapshotRequestedEvent.class)) {
-            sessionEventService.create(presentationEventStore.getPresentationLink(), domainEvent);
-        }
-        return super.handle(domainEvent, presentationEventStore);
-    }
 }

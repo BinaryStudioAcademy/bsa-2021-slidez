@@ -20,21 +20,22 @@ import java.util.UUID;
 @Table(name = "session_event")
 public class SessionEvent implements Serializable {
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+	@Id
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(name = "id", updatable = false, nullable = false)
+	private UUID id;
 
-    @Column(name = "session_id")
-    private String sessionId;
+	@Column(name = "session_id")
+	private String sessionId;
 
-    @Column(name = "session_events")
-    @Type(type = "JsonbType")
-    private DomainEvent sessionEvent;
+	@Column(name = "session_events")
+	@Type(type = "JsonbType")
+	private DomainEvent sessionEvent;
 
-    public SessionEvent(String sessionId, DomainEvent sessionEvent) {
-        this.sessionId = sessionId;
-        this.sessionEvent = sessionEvent;
-    }
+	public SessionEvent(String sessionId, DomainEvent sessionEvent) {
+		this.sessionId = sessionId;
+		this.sessionEvent = sessionEvent;
+	}
+
 }

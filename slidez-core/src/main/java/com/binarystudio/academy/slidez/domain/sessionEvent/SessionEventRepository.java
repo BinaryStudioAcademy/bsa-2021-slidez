@@ -8,5 +8,6 @@ import java.util.UUID;
 
 public interface SessionEventRepository extends JpaRepository<SessionEvent, UUID> {
 
-    List<SessionEvent> getSessionEventBySessionId(String link);
+	List<SessionEvent> getSessionEventBySessionId(String link);
+
 }

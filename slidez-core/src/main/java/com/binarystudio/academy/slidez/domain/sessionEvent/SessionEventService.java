@@ -10,20 +10,20 @@ import java.util.List;
 @Service
 public class SessionEventService {
 
-    private final SessionEventRepository sessionEventRepository;
+	private final SessionEventRepository sessionEventRepository;
 
 	@Autowired
 	public SessionEventService(SessionEventRepository sessionEventRepository) {
-        this.sessionEventRepository = sessionEventRepository;
+		this.sessionEventRepository = sessionEventRepository;
 	}
 
-	public List <SessionEvent> getSessionEventBySessionId(String link) {
-        return sessionEventRepository.getSessionEventBySessionId(link);
+	public List<SessionEvent> getSessionEventBySessionId(String link) {
+		return sessionEventRepository.getSessionEventBySessionId(link);
 	}
 
-    public SessionEvent create(String sessionId, DomainEvent domainEvent) {
-        SessionEvent sessionEvent = new SessionEvent(sessionId, domainEvent);
-        return sessionEventRepository.save(sessionEvent);
-    }
+	public SessionEvent create(String sessionId, DomainEvent domainEvent) {
+		SessionEvent sessionEvent = new SessionEvent(sessionId, domainEvent);
+		return sessionEventRepository.save(sessionEvent);
+	}
 
 }
