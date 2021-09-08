@@ -19,7 +19,6 @@ const App = () => {
             setPresentationName
         )
     })
-    console.log('name presenttaion  ' + presentationName)
     if (eventBus.connected === EventBusConnectionStatus.FAILED) {
         return (
             <div

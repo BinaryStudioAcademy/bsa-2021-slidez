@@ -58,6 +58,7 @@ export type FetchInteractiveElementsResponse = InteractiveElement[]
 
 export type WritePollDto = {
     presentationId: string
+    presentationName: string
     slideId: string
     title: string
     options: { title: string }[]

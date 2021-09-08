@@ -1,18 +1,17 @@
-import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Field, FieldArray, Form, Formik } from 'formik'
-import React, { useState, useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import back_button_icon from '../../assets/svgs/back_button_icon.svg'
 import checked_icon from '../../assets/svgs/check.svg'
 import drop_down_icon from '../../assets/svgs/drop_down_icon.svg'
+import { ReactComponent as TrashIcon } from '../../assets/svgs/trash.svg'
+import Loader from '../../common/components/loader/Loader'
+import { handleNotification } from '../../common/notification/Notification'
+import { NotificationTypes } from '../../common/notification/notification-types'
+import { RootState } from '../../store'
 import './PollEditor.scss'
 import { createPoll, EditorTab, setActiveTab } from './store'
-import { RootState } from '../../store'
-import { NotificationTypes } from '../../common/notification/notification-types'
-import { handleNotification } from '../../common/notification/Notification'
-import Loader from '../../common/components/loader/Loader'
-import { ReactComponent as TrashIcon } from '../../assets/svgs/trash.svg'
 
 export type PollEditorProps = {
     pollId?: string | null
@@ -25,6 +24,10 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }: PollEditorProps) => {
     const presentationId = useSelector(
         (state: RootState) => state.editor.presentationId
     )
+
+    const params = new URLSearchParams(useLocation().search)
+    const presentationName = params.get('presentationName') ?? ''
+
     const initialValues = {
         title: '',
         options: [],
@@ -42,6 +45,7 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }: PollEditorProps) => {
                 //TODO: Move to common function
                 slideId: 'slidez_' + new Date().getTime(),
                 presentationId,
+                presentationName,
             })
         )
         if (pollsError !== null) {
