@@ -34,7 +34,7 @@ public class QASessionService {
 
 	@Transactional
 	public QASessionDto create(CreateQASessionDto dto, User owner) {
-		Presentation presentation = presentationService.assertPresentationExists(dto.getPresentationLink(), owner);
+		Presentation presentation = presentationService.assertPresentationExists(dto.getPresentationId(), owner);
 
 		QASession qaSession = new QASession();
 		InteractiveElement interactiveElement = new InteractiveElement();
