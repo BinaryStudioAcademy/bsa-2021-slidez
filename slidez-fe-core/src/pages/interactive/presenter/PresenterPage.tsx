@@ -74,8 +74,11 @@ const PresenterPage: React.FC = () => {
         if (connectionStatus !== WsConnectionStatus.CONNECTED) {
             return
         }
+        if (slideId && currentQASession?.slideId === slideId) {
+            return
+        }
         const params: StartPollRequest = createStartPollRequest(link, slideId)
-        setTimeout(() => dispatch(requestStartPoll(params)), 6000)
+        setTimeout(() => dispatch(requestStartPoll(params)), 300)
     }, [connectionStatus])
 
     if (!currentInteraction && !currentQASession) {
