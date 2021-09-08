@@ -68,9 +68,7 @@ const CreateQA: React.FC<QAEditorProps> = ({ qaId }: QAEditorProps) => {
                 NotificationTypes.ERROR
             )
         }
-        setIsLoading(false)
     }
-
     return (
         <div className='app'>
             {isLoading ? (
