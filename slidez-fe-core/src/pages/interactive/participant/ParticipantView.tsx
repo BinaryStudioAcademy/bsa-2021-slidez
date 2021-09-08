@@ -65,14 +65,14 @@ const ParticipantView = () => {
     const connectionStatus = useAppSelector(selectConnectionStatus)
     const currentInteraction = useAppSelector(selectCurrentInteractiveElement)
     const snapshot: SnapshotDto | undefined = useAppSelector(selectSnapshot)
-    if (snapshot?.presentationLink) {
-        saveParticipantEvent(link, snapshot.presentationLink)
+    if (snapshot?.presentationName) {
+        saveParticipantEvent(link, snapshot.presentationName)
     }
     if (!currentInteraction) {
         return noCurrentInteraction
     }
 
-    const presentationName = 'Animate'
+    const presentationName = snapshot?.presentationName ?? 'Unnamed'
     return (
         <div>
             {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}

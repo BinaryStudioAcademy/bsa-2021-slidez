@@ -41,6 +41,7 @@ const PresenterPoll = ({ poll, children }: PollProps) => {
     const winnerId: string = getItemWithBiggestCount(itemsToItemsCount)
 
     const totalVotes: number = poll.answers.length
+
     const mappedOptions = poll.options.map((option, index) => {
         const optionCount: number = itemsToItemsCount.get(option.id) || 0
         const percentage: number =
