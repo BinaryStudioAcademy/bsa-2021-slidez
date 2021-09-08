@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     FormControl,
     FormControlLabel,
@@ -33,6 +33,14 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
     const [isAnswerSent, setIsAnswerSent] = useState<boolean>(false)
     const [showLoader, setShowLoader] = useState<boolean>(true)
     const dispatch = useAppDispatch()
+    useEffect(() => {
+        if (participantData.id) {
+            const listOfAnsweredBy: string[] = poll.answers.map(
+                (a) => a.answeredBy
+            )
+            setIsAnswerSent(listOfAnsweredBy.includes(participantData.id))
+        }
+    }, [poll])
 
     const onSendClick = () => {
         if (!chosenOption || !participantData.id) {
