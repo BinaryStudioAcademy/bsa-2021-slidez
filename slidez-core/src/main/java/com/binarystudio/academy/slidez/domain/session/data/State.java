@@ -15,7 +15,6 @@ public class State {
 	private SessionInteractiveElement currentInteractiveElement;
 
 	@Getter
-	@Setter
 	private SessionQASession currentQASession;
 
 	private final List<SessionInteractiveElement> sessionInteractiveElements = new ArrayList<>();
@@ -33,6 +32,13 @@ public class State {
 			return element;
 		}
 		return (T) outHolder.get();
+	}
+
+	public SessionQASession assertQASessionSet(SessionQASession sessionQASession) {
+		if (this.currentInteractiveElement == null) {
+			this.currentQASession = sessionQASession;
+		}
+		return this.currentQASession;
 	}
 
 	public void addAnswerToThePoll(SessionPollAnswer pollAnswer) throws PollNotFoundException, BadOptionException {
