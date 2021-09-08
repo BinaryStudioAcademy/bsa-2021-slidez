@@ -17,6 +17,8 @@ import {
 } from '../../../../containers/session/event/FrontendEvent'
 import { answerPoll } from '../../../../containers/session/store/store'
 import Loader from '../../loader/Loader'
+import { ParticipantData } from '../../../../services/participant/dto/ParticipantData'
+import { getParticipantData } from '../../../../services/participant/participant-service'
 
 export type ParticipantPollProps = {
     poll: PollDto
@@ -27,17 +29,19 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
     const [chosenOption, setChosenOption] = useState<PollOptionDto | undefined>(
         undefined
     )
+    const participantData: ParticipantData = getParticipantData()
     const [isAnswerSent, setIsAnswerSent] = useState<boolean>(false)
     const [showLoader, setShowLoader] = useState<boolean>(true)
     const dispatch = useAppDispatch()
 
     const onSendClick = () => {
-        if (!chosenOption) {
+        if (!chosenOption || !participantData.id) {
             return
         }
         const pollAnswer: SessionPollAnswer = {
             pollId: poll.id,
             optionId: chosenOption.id,
+            answeredBy: participantData.id,
         }
         const answerPollRequest: AnswerPollRequest = createAnswerPollRequest(
             link,

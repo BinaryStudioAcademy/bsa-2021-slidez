@@ -15,4 +15,6 @@ public class SessionPollAnswer {
 
 	private UUID optionId;
 
+	private UUID answeredBy;
+
 }

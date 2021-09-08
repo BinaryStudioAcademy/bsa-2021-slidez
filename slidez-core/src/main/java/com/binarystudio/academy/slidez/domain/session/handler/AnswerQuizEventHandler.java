@@ -23,9 +23,12 @@ public class AnswerQuizEventHandler extends AbstractDomainEventHandler {
 		}
 		super.handle(domainEvent, presentationEventStore);
 		AnswerQuizEvent event = (AnswerQuizEvent) domainEvent;
-		SessionQuizAnswer quizAnswer = event.getQuizAnswer();
-		SessionResponse out = new SessionResponse(ResponseType.ANSWERED_QUIZ, quizAnswer);
-		return new GenericResponse<>(out);
+		if (event.isAddedSuccessfully()) {
+			SessionQuizAnswer quizAnswer = event.getQuizAnswer();
+			SessionResponse out = new SessionResponse(ResponseType.ANSWERED_QUIZ, quizAnswer);
+			return new GenericResponse<>(out);
+		}
+		return super.handle(domainEvent, presentationEventStore);
 	}
 
 }
