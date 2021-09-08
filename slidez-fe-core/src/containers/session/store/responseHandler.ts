@@ -25,14 +25,15 @@ function throwBadType(type: string): never {
 
 export const responseHandler =
     (dispatch: any) => (response: GenericResponse<SessionResponse, string>) => {
-        if (response.error || !response.data) {
-            handleNotification(
-                'Error',
-                'Link doesn`t exist',
-                NotificationTypes.ERROR
-            )
-            console.error(response.error)
-            window.location.assign(`/#${AppRoute.EVENTS}`)
+        if (response.error) {
+            return
+            // handleNotification(
+            //     'Error',
+            //     'Link doesn`t exist',
+            //     NotificationTypes.ERROR
+            // )
+            // console.error(response.error)
+            // window.location.assign(`/#${AppRoute.EVENTS}`)
         }
         if (!response.data) {
             return
