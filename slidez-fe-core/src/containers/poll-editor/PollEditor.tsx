@@ -1,5 +1,3 @@
-import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Field, FieldArray, Form, Formik, FormikErrors } from 'formik'
 import React, { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -145,8 +143,8 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }: PollEditorProps) => {
                     <Formik
                         initialValues={initialValues}
                         validationSchema={livePollFieldsValidation}
-                        onSubmit={({ title, options }, { setSubmitting }) => {
-                            handleSubmit({ title, options })
+                        onSubmit={(values, { setSubmitting }) => {
+                            handleSubmit(values)
                             setSubmitting(false)
                         }}
                     >
