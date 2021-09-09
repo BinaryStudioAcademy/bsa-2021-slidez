@@ -8,11 +8,9 @@ import com.binarystudio.academy.slidez.domain.session.event.DomainEvent;
 import com.binarystudio.academy.slidez.domain.session.event.SnapshotRequestedEvent;
 import com.binarystudio.academy.slidez.domain.session.handler.AbstractDomainEventHandler;
 import com.binarystudio.academy.slidez.domain.sessionEvent.SessionEventService;
-import com.binarystudio.academy.slidez.domain.sessionEvent.model.SessionEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Objects;
 
 @Component
