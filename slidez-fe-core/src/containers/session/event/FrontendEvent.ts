@@ -8,8 +8,9 @@ import {
     LikeQuestionEvent,
     SetQuestionVisibilityEvent,
     SnapshotEvent,
-    DisplayInteractionEvent,
+    SlideChangedEvent,
     StartPollEvent,
+    EndInteractionEvent,
 } from './DomainEvent'
 
 const defaultAuthorName = 'Anonymous'
@@ -49,18 +50,33 @@ export type AddReactionRequest = {
     event: AddReactionEvent
 }
 
-export type DisplayInteractionRequest = {
+export type SlideChangedRequest = {
     link: string
-    event: DisplayInteractionEvent
+    event: SlideChangedEvent
 }
 
-export const createDisplayInteractionRequest = (
+export type EndInteractionRequest = {
+    link: string
+    event: EndInteractionEvent
+}
+
+export const createSlideChangedRequest = (
     link: string,
     slideId: string
-): DisplayInteractionRequest => {
+): SlideChangedRequest => {
     return {
         link,
-        event: { type: DomainEventType.displayInteractionEvent, slideId },
+        event: { type: DomainEventType.slideChangedEvent, slideId },
+    }
+}
+
+export const createEndInteractionRequest = (
+    link: string,
+    slideId: string
+): EndInteractionRequest => {
+    return {
+        link,
+        event: { type: DomainEventType.endInteractionEvent, slideId },
     }
 }
 

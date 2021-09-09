@@ -3,7 +3,8 @@ import { useLocation, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
 import {
     initWebSocketSession,
-    requestDisplayInteraction,
+    requestEndCurrentInteraction,
+    requestSlideChanged,
 } from '../../../containers/session/store/store'
 import { WsConnectionStatus } from '../../../containers/session/enums/ws-connection-status'
 import Loader from '../../../common/components/loader/Loader'
@@ -13,8 +14,10 @@ import {
     selectQASession,
 } from '../../../containers/session/store/selectors'
 import {
-    createDisplayInteractionRequest,
-    DisplayInteractionRequest,
+    createEndInteractionRequest,
+    createSlideChangedRequest,
+    EndInteractionRequest,
+    SlideChangedRequest,
 } from '../../../containers/session/event/FrontendEvent'
 import {
     InteractiveElement,
@@ -74,10 +77,13 @@ const PresenterPage: React.FC = () => {
         if (connectionStatus !== WsConnectionStatus.CONNECTED) {
             return
         }
+        // console.log(currentInteraction?.slideId + ' ' + slideId)
         if (currentInteraction?.slideId != slideId) {
-            const params: DisplayInteractionRequest =
-                createDisplayInteractionRequest(link, slideId)
-            setTimeout(() => dispatch(requestDisplayInteraction(params)), 1000)
+            const params: SlideChangedRequest = createSlideChangedRequest(
+                link,
+                slideId
+            )
+            setTimeout(() => dispatch(requestSlideChanged(params)), 1000)
         }
     }, [connectionStatus])
 

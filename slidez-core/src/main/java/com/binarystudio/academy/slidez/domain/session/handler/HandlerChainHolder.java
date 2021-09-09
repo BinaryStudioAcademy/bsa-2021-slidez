@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.domain.session.handler;
 
+import com.binarystudio.academy.slidez.domain.session.event.SlideChangedEvent;
 import com.binarystudio.academy.slidez.domain.sessionEvent.handler.PersistDomainEventInDbHandler;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -21,10 +22,12 @@ public class HandlerChainHolder implements ApplicationContextAware {
 	public AbstractDomainEventHandler eventHandler() {
 		SnapshotRequestHandler snapshotRequestHandler = applicationContext.getBean("snapshotRequestHandler",
 				SnapshotRequestHandler.class);
-		PersistDomainEventInDbHandler persistDomainEventInDbHandler = applicationContext
-				.getBean("persistDomainEventInDbHandler", PersistDomainEventInDbHandler.class);
-		DisplayInteractionEventHandler displayInteractionEventHandler = applicationContext
-				.getBean("displayInteractionEventHandler", DisplayInteractionEventHandler.class);
+		SlideChangedEventHandler slideChangedEventHandler =
+            applicationContext.getBean("slideChangedEventHandler", SlideChangedEventHandler.class);
+		EndInteractionEventHandler endInteractionEventHandler =
+            applicationContext.getBean("endInteractionEventHandler", EndInteractionEventHandler.class);
+		//PersistDomainEventInDbHandler persistDomainEventInDbHandler = applicationContext
+		//		.getBean("persistDomainEventInDbHandler", PersistDomainEventInDbHandler.class);
 		StartPollHandler startPollHandler = applicationContext.getBean("startPollHandler", StartPollHandler.class);
 		AnswerPollHandler answerPollHandler = applicationContext.getBean("answerPollHandler", AnswerPollHandler.class);
 		StartQASessionHandler startQASessionHandler = applicationContext.getBean("startQASessionHandler",
@@ -45,7 +48,11 @@ public class HandlerChainHolder implements ApplicationContextAware {
 				.getBean("displayQASessionEventHandler", DisplayQASessionEventHandler.class);
 		DefaultEventHandler defaultEventHandler = applicationContext.getBean("defaultEventHandler",
 				DefaultEventHandler.class);
-		snapshotRequestHandler.setNext(persistDomainEventInDbHandler).setNext(displayInteractionEventHandler)
+
+		snapshotRequestHandler
+            //.setNext(persistDomainEventInDbHandler)
+                .setNext(slideChangedEventHandler)
+                .setNext(endInteractionEventHandler)
 				.setNext(startPollHandler).setNext(answerPollHandler).setNext(startQASessionHandler)
 				.setNext(askQuestionEventHandler).setNext(startQuizEventHandler).setNext(answerQuizEventHandler)
 				.setNext(addReactionEventHandler).setNext(likeQuestionEventHandler)
