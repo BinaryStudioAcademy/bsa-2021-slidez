@@ -36,7 +36,10 @@ export const connectToInteractiveEvents = (
         .then(() =>
             WsHelper.getInstance().subscribe(
                 `${WsEndpoint.TOPIC_EVENT}/${sessionLink}`,
-                (message: Message) => onResponse(JSON.parse(message.body))
+                (message: Message) => {
+                    console.log('get reaction')
+                    onResponse(JSON.parse(message.body))
+                }
             )
         )
         .then(() => onConnectionSuccess())

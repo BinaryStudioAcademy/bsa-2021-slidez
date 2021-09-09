@@ -38,7 +38,7 @@ export const ReactionOverlay = () => {
         setTimeout(() => {
             setLeft(Math.random() * 20 + 50)
             setCurrentReaction(null)
-        }, 1300)
+        }, 3000)
     }, [reactions, currentReaction])
 
     useEffect(() => {
@@ -56,8 +56,12 @@ export const ReactionOverlay = () => {
     switch (currentReaction) {
         case Reactions.LIKE:
             body = (
-                <div className={`${styles.reactionContainer}`}>
-                    <ThumbUp />
+                <div
+                    className={`${styles.reactionContainer}`}
+                    id='reaction'
+                    style={{ left: `${left}%` }}
+                >
+                    <ThumbUp left='-100%' />
                 </div>
             )
             break
@@ -67,7 +71,7 @@ export const ReactionOverlay = () => {
                     className={`${styles.reactionContainer}`}
                     style={{ left: `${left}%` }}
                 >
-                    <Like />
+                    <Like left='-100%' />
                 </div>
             )
             break

@@ -63,17 +63,32 @@ $likebtnwidth: 62px;
   width: $likebtnwidth;
   height: 35px;
   margin: 12px 11px 0 0;
-
-  .unliked-icon {
-    margin-right: 5px;
-    width: 15px;
-    height: 15px;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .liked-icon {
     margin-right: 5px;
     width: 15px;
     height: 15px;
+    margin-top: -2px;
+  }
+
+  .unliked-icon {
+    margin-right: 5px;
+    width: 15px;
+    height: 15px;
+    margin-top: -2px;
+  }
+
+
+  &:hover {
+    .unliked-icon {
+      background-image: url('../../../assets/svgs/thumbs-up-solid.svg');
+    }  
+  }
+  .unliked-icon:focus {
+    background-image: url('../../../assets/svgs/thumbs-up-solid.svg');
   }
 }
 #thumbs-up-solid {

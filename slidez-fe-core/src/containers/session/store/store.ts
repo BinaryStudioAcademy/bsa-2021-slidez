@@ -111,6 +111,7 @@ export const answerPoll = createAsyncThunk(
 export const addReaction = createAsyncThunk(
     'reactions/add',
     async (request: AddReactionRequest) => {
+        console.log('send', request)
         SessionService.sendRequest(request.link, request.event)
     }
 )
