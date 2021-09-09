@@ -10,6 +10,7 @@ import {
 } from '../../../../services/participant/participant-service'
 import { ParticipantData } from '../../../../services/participant/dto/ParticipantData'
 import styles from './styles.module.scss'
+import { getRandomFunnyName } from './funny-names-service'
 
 type ParticipantNameErorrsProps = {
     viewErrors: boolean
@@ -36,6 +37,8 @@ const ParticipantNameErrors = ({
 }
 
 const ParticipantNameDialog = (params: any) => {
+    const defaultFirstName: string = 'Anonymous'
+    const defaultLastName: string = getRandomFunnyName()
     const [viewErrors, setViewErrors] = useState(false)
     const [openModal, setOpenModal] = useState(true)
 
@@ -49,7 +52,9 @@ const ParticipantNameDialog = (params: any) => {
     })
 
     const handleUserData = (firstName: string, lastName: string) => {
-        saveParticipantData(firstName, lastName)
+        const firstNameToSave: string = firstName || defaultFirstName
+        const lastNameToSave: string = lastName || defaultLastName
+        saveParticipantData(firstNameToSave, lastNameToSave)
         setOpenModal(false)
     }
     return (
@@ -63,8 +68,11 @@ const ParticipantNameDialog = (params: any) => {
                 <Formik
                     initialValues={{
                         firstName:
-                            participantData.participantFirstName as string,
-                        lastName: participantData.participantLastName as string,
+                            (participantData.participantFirstName as string) ||
+                            defaultFirstName,
+                        lastName:
+                            (participantData.participantLastName as string) ||
+                            defaultLastName,
                     }}
                     validationSchema={particpantNameFieldsValidation}
                     onSubmit={({ firstName, lastName }, { setSubmitting }) => {
@@ -73,7 +81,7 @@ const ParticipantNameDialog = (params: any) => {
                         params.hideModal()
                     }}
                 >
-                    {({ errors }) => (
+                    {({ errors, setFieldValue, values }) => (
                         <Form>
                             <div className='form-row form-input-holder'>
                                 <label htmlFor='firstName' className='label'>
@@ -87,7 +95,16 @@ const ParticipantNameDialog = (params: any) => {
                                             ? ' error-input'
                                             : '')
                                     }
-                                    onClick={() => setViewErrors(false)}
+                                    onClick={() => {
+                                        setFieldValue('firstName', '')
+                                        setViewErrors(false)
+                                    }}
+                                    onBlur={() =>
+                                        setFieldValue(
+                                            'firstName',
+                                            values.firstName || defaultFirstName
+                                        )
+                                    }
                                     type='text'
                                 />
                             </div>
@@ -106,7 +123,15 @@ const ParticipantNameDialog = (params: any) => {
                                             ? ' error-input'
                                             : '')
                                     }
-                                    onClick={() => setViewErrors(false)}
+                                    onClick={() =>
+                                        setFieldValue('lastName', '')
+                                    }
+                                    onBlur={() =>
+                                        setFieldValue(
+                                            'lastName',
+                                            values.lastName || defaultLastName
+                                        )
+                                    }
                                     type='text'
                                 />
                             </div>
