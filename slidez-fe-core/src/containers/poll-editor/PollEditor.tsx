@@ -1,4 +1,4 @@
-import { Field, FieldArray, Form, Formik } from 'formik'
+import { Field, FieldArray, Form, Formik, FormikErrors } from 'formik'
 import React, { useState, useCallback, SyntheticEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
@@ -12,14 +12,51 @@ import { NotificationTypes } from '../../common/notification/notification-types'
 import { RootState } from '../../store'
 import './PollEditor.scss'
 import { createPoll, EditorTab, setActiveTab, updatePoll } from './store'
-import { PollInteractiveElement } from '../../types/editor'
+import * as Yup from 'yup'
+import { PollInteractiveElement, ReadPollDto } from '../../types/editor'
 
 export type PollEditorProps = {
     poll: PollInteractiveElement | null
 }
 
+type LivePollErrorsProps = {
+    viewErrors: boolean
+    formikErrors: FormikErrors<{
+        title: string
+        options: ReadPollDto[]
+    }>
+}
+
+const livePollFieldsValidation = Yup.object({
+    title: Yup.string()
+        .required('Required')
+        .min(2, 'Too short - 2 symbols minimum'),
+    options: Yup.array()
+        .min(1, 'Empty array - 1 option minimum')
+        .required('Required')
+        .of(
+            Yup.object({
+                title: Yup.string().required('Required'),
+            })
+        ),
+})
+
+const LivePollErrors = ({ viewErrors, formikErrors }: LivePollErrorsProps) => {
+    let errorMessage: string | null = null
+    if (!viewErrors) {
+        errorMessage = null
+    } else if (formikErrors.title) {
+        errorMessage = 'Poll name should be longer than 2 symbols'
+    } else if (formikErrors.options) {
+        errorMessage = 'Please add the option'
+    }
+
+    return <div className='error-text'>{errorMessage}</div>
+}
+
 const PollEditor: React.FC<PollEditorProps> = ({ poll }: PollEditorProps) => {
     const [isLoading, setIsLoading] = useState(false)
+    const [viewErrors, setViewErrors] = React.useState(false)
     const dispatch = useDispatch()
     const pollsError = useSelector((state: RootState) => state.editor.error)
     const presentationId = useSelector(
@@ -131,9 +168,13 @@ const PollEditor: React.FC<PollEditorProps> = ({ poll }: PollEditorProps) => {
                     </div>
                     <Formik
                         initialValues={initialValues}
-                        onSubmit={(values) => handleSubmit(values)}
+                        validationSchema={livePollFieldsValidation}
+                        onSubmit={(values, { setSubmitting }) => {
+                            handleSubmit(values)
+                            setSubmitting(false)
+                        }}
                     >
-                        {({ values, setFieldValue }) => {
+                        {({ values, errors, setFieldValue }) => {
                             return (
                                 <Form>
                                     <div className='field-wrapper mx-auto'>
@@ -148,8 +189,16 @@ const PollEditor: React.FC<PollEditorProps> = ({ poll }: PollEditorProps) => {
                                                 id='name'
                                                 type='text'
                                                 name='title'
-                                                className='input title-input'
+                                                className={
+                                                    'input title-input' +
+                                                    (viewErrors && errors.title
+                                                        ? ' error-input'
+                                                        : '')
+                                                }
                                                 placeholder='What would you like to ask?'
+                                                onClick={() =>
+                                                    setViewErrors(false)
+                                                }
                                             />
                                         </div>
                                     </div>
@@ -169,7 +218,18 @@ const PollEditor: React.FC<PollEditorProps> = ({ poll }: PollEditorProps) => {
                                                                     field='field'
                                                                     name={`options.${index}.title`}
                                                                     placeholder='Your option'
-                                                                    className='input'
+                                                                    className={
+                                                                        'input' +
+                                                                        (viewErrors &&
+                                                                        errors.options
+                                                                            ? ' error-input'
+                                                                            : '')
+                                                                    }
+                                                                    onClick={() =>
+                                                                        setViewErrors(
+                                                                            false
+                                                                        )
+                                                                    }
                                                                 />
                                                             </div>
                                                             <div>
@@ -213,9 +273,16 @@ const PollEditor: React.FC<PollEditorProps> = ({ poll }: PollEditorProps) => {
                                             </div>
                                         )}
                                     />
+
+                                    <LivePollErrors
+                                        viewErrors={viewErrors}
+                                        formikErrors={errors}
+                                    />
+
                                     <button
                                         type='submit'
                                         className='btn-submit form-button'
+                                        onClick={() => setViewErrors(true)}
                                     >
                                         Add to presentation
                                     </button>

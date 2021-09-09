@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.domain.session.handler;
 
+import com.binarystudio.academy.slidez.domain.sessionEvent.handler.PersistDomainEventInDbHandler;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -20,6 +21,8 @@ public class HandlerChainHolder implements ApplicationContextAware {
 	public AbstractDomainEventHandler eventHandler() {
 		SnapshotRequestHandler snapshotRequestHandler = applicationContext.getBean("snapshotRequestHandler",
 				SnapshotRequestHandler.class);
+		PersistDomainEventInDbHandler persistDomainEventInDbHandler = applicationContext
+				.getBean("persistDomainEventInDbHandler", PersistDomainEventInDbHandler.class);
 		DisplayInteractionEventHandler displayInteractionEventHandler = applicationContext
 				.getBean("displayInteractionEventHandler", DisplayInteractionEventHandler.class);
 		StartPollHandler startPollHandler = applicationContext.getBean("startPollHandler", StartPollHandler.class);
@@ -42,11 +45,12 @@ public class HandlerChainHolder implements ApplicationContextAware {
 				.getBean("displayQASessionEventHandler", DisplayQASessionEventHandler.class);
 		DefaultEventHandler defaultEventHandler = applicationContext.getBean("defaultEventHandler",
 				DefaultEventHandler.class);
-		snapshotRequestHandler.setNext(displayInteractionEventHandler).setNext(startPollHandler)
-				.setNext(answerPollHandler).setNext(startQASessionHandler).setNext(askQuestionEventHandler)
-				.setNext(startQuizEventHandler).setNext(answerQuizEventHandler).setNext(addReactionEventHandler)
-				.setNext(likeQuestionEventHandler).setNext(setQuestionVisibilityEventHandler)
-				.setNext(displayQASessionEventHandler).setNext(defaultEventHandler);
+		snapshotRequestHandler.setNext(persistDomainEventInDbHandler).setNext(displayInteractionEventHandler)
+				.setNext(startPollHandler).setNext(answerPollHandler).setNext(startQASessionHandler)
+				.setNext(askQuestionEventHandler).setNext(startQuizEventHandler).setNext(answerQuizEventHandler)
+				.setNext(addReactionEventHandler).setNext(likeQuestionEventHandler)
+				.setNext(setQuestionVisibilityEventHandler).setNext(displayQASessionEventHandler)
+				.setNext(defaultEventHandler);
 		return snapshotRequestHandler;
 	}
 

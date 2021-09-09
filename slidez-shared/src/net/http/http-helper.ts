@@ -3,12 +3,10 @@ import { createDefaultAxios } from './http-util'
 
 class HttpHelper {
     private inProcessOfRefreshingTokens = false
-    private retryAfterRefreshTokenCount = 0
 
     constructor(
         private readonly getAuthHeaderValue: () => string,
         private readonly performRefreshTokens: () => Promise<any>,
-        private readonly performLogout: () => void,
         private readonly baseUrl: string
     ) {}
 
@@ -26,26 +24,22 @@ class HttpHelper {
                 return response
             },
             async (error) => {
-                if (error.response) {
+                if (error.response && !this.inProcessOfRefreshingTokens) {
                     if (error.response.status === 403) {
-                        if (this.retryAfterRefreshTokenCount != 0) {
-                            this.performLogout()
-                            this.retryAfterRefreshTokenCount = 0
-                            return Promise.reject(error)
-                        }
                         const originalConfig = error.config
                         originalConfig._retry = true
-                        if (!this.inProcessOfRefreshingTokens) {
-                            this.inProcessOfRefreshingTokens = true
-                            await this.performRefreshTokens()
-                            this.retryAfterRefreshTokenCount++
-                            this.inProcessOfRefreshingTokens = false
+                        originalConfig.headers = {
+                            ...originalConfig.headers,
+                            authorization: this.getAuthHeaderValue(),
                         }
+                        this.inProcessOfRefreshingTokens = true
+                        await this.performRefreshTokens()
+                        this.inProcessOfRefreshingTokens = false
                         return axiosInstance(originalConfig)
                     }
-                    return Promise.reject(error)
+                    return error
                 }
-                return Promise.reject(error)
+                return error
             }
         )
 
