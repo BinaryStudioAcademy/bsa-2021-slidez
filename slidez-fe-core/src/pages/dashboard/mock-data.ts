@@ -36,13 +36,13 @@ export const MOCK_DATA = [
     },
     {
         id: 4,
-        name: 'Have fun and keep googling!.jpg',
+        name: 'Green Technologies that Save Commercial Laundry Operations Money',
         pictureUrl: Mock4,
         dateUpdated: '16.08.2021',
     },
     {
         id: 5,
-        name: 'Green Technologies that Save Commercial Laundry Operations Money',
+        name: 'Have fun and keep googling!.jpg',
         pictureUrl: Mock5,
         dateUpdated: '23.08.2021',
     },
