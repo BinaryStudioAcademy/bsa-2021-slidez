@@ -187,7 +187,7 @@ const Dashboard = () => {
                 <div className={styles.content}>
                     <div className={styles.presentationsSection}>
                         <div className={styles.presentationHeader}>
-                            <p>Your presentation</p>
+                            <p>Your presentations</p>
                             <div className={styles.tableGridToggler}>
                                 <div>
                                     <FontAwesomeIcon
