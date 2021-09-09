@@ -61,7 +61,7 @@ const Menu: React.FC = () => {
                         <div>
                             <img src={check} alt='check' />
                         </div>
-                        <div className='text pool-name'>Live poll</div>
+                        <div className='text poll-name'>Live poll</div>
                         <div className='arrow-icon' onClick={handleArrowClick}>
                             <DropDownIcon
                                 className={
