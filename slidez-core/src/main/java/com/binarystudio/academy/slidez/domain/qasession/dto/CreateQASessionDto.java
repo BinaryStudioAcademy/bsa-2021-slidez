@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CreateQASessionDto {
 
+	// THIS IS ACTUALLY A PRESENTATION LINK
 	private String presentationId;
 
     private String presentationName;

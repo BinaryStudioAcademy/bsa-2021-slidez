@@ -3,26 +3,29 @@ import { useLocation, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
 import {
     initWebSocketSession,
-    requestStartPoll,
+    requestDisplayInteraction,
 } from '../../../containers/session/store/store'
 import { WsConnectionStatus } from '../../../containers/session/enums/ws-connection-status'
 import Loader from '../../../common/components/loader/Loader'
 import {
     selectConnectionStatus,
     selectCurrentInteractiveElement,
+    selectQASession,
 } from '../../../containers/session/store/selectors'
 import {
-    createStartPollRequest,
-    StartPollRequest,
+    createDisplayInteractionRequest,
+    DisplayInteractionRequest,
 } from '../../../containers/session/event/FrontendEvent'
 import {
     InteractiveElement,
     PollDto,
+    QASessionDto,
 } from '../../../containers/session/dto/InteractiveElement'
 import { InteractiveElementType } from '../../../containers/session/enums/InteractiveElementType'
 import PresenterPoll from '../../../common/components/interactive-elements/poll/PresenterPoll'
 import './presenterPage.scss'
 import InteractiveWrapper from '../../../common/components/interactive-elements/interactive-wrapper/InteractiveWrapper'
+import { QandA } from '../../../common/components/interactive-elements/q-and-a/QandA'
 
 const useEditorParams = () => {
     const params = new URLSearchParams(useLocation().search)
@@ -46,7 +49,7 @@ const noCurrentInteraction = (link: string) => {
     )
 }
 
-const getBodyContent = (interactiveElement: InteractiveElement) => {
+const getInteractiveContent = (interactiveElement: InteractiveElement) => {
     if (interactiveElement.type === InteractiveElementType.poll) {
         return <PresenterPoll poll={interactiveElement as PollDto} />
     }
@@ -59,6 +62,8 @@ const PresenterPage: React.FC = () => {
     const { presentationLink, slideId } = useEditorParams()
     const connectionStatus = useAppSelector(selectConnectionStatus)
     const currentInteraction = useAppSelector(selectCurrentInteractiveElement)
+    const currentQASession: QASessionDto | undefined | null =
+        useAppSelector(selectQASession)
 
     useEffect(() => {
         dispatch(initWebSocketSession(link))
@@ -69,12 +74,25 @@ const PresenterPage: React.FC = () => {
         if (connectionStatus !== WsConnectionStatus.CONNECTED) {
             return
         }
-        const params: StartPollRequest = createStartPollRequest(link, slideId)
-        setTimeout(() => dispatch(requestStartPoll(params)), 6000)
+        if (currentInteraction?.slideId != slideId) {
+            const params: DisplayInteractionRequest =
+                createDisplayInteractionRequest(link, slideId)
+            setTimeout(() => dispatch(requestDisplayInteraction(params)), 1000)
+        }
     }, [connectionStatus])
 
-    if (!currentInteraction) {
+    if (!currentInteraction && !currentQASession) {
         return noCurrentInteraction(link)
+    }
+
+    const getBodyContent = () => {
+        if (slideId && currentQASession?.slideId === slideId) {
+            return <QandA />
+        }
+        if (currentInteraction) {
+            return getInteractiveContent(currentInteraction)
+        }
+        return null
     }
 
     return (
@@ -86,7 +104,7 @@ const PresenterPage: React.FC = () => {
                     </div>
                 )}
                 <InteractiveWrapper eventCode={link || ''}>
-                    {getBodyContent(currentInteraction)}
+                    {getBodyContent()}
                 </InteractiveWrapper>
             </div>
         </div>

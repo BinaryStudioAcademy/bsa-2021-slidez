@@ -78,18 +78,20 @@ const ParticipantView = () => {
             {connectionStatus !== WsConnectionStatus.CONNECTED && <Loader />}
             <div className='participant-view-content'>
                 <Header eventName={presentationName} />
-                {getBodyContent(currentInteraction, link || '')}
-                {Boolean(currentQASession) && (
-                    <button
-                        className='btn-open-qa'
-                        type='button'
-                        onClick={() => handleQAShow()}
-                    >
-                        Open Q&amp;A page
-                    </button>
-                )}
-                <Qa show={showQAModal} handleClose={handleQAClose} />
-                <ParticipantReactionBar link={link ?? ''} />
+                <div className='participant-page-content'>
+                    {getBodyContent(currentInteraction, link || '')}
+                    {Boolean(currentQASession) && (
+                        <button
+                            className='btn-open-qa'
+                            type='button'
+                            onClick={() => handleQAShow()}
+                        >
+                            Open Q&amp;A page
+                        </button>
+                    )}
+                    <Qa show={showQAModal} handleClose={handleQAClose} />
+                    <ParticipantReactionBar link={link ?? ''} />
+                </div>
             </div>
         </div>
     )

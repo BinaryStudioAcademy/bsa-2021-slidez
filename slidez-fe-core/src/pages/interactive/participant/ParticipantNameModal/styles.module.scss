@@ -1,15 +1,16 @@
 .dialog {
-    :global(.MuiPaper-root) {
-        border-radius: 15px;
-        min-width: 320px;
-        :global(.MuiTypography-h6) {
-            font-family: 'Rubik';
-        }
+  :global(.MuiPaper-root) {
+    border-radius: 15px;
+    min-width: 320px;
+    :global(.MuiTypography-h6) {
+      font-family: 'Rubik';
     }
-    :global(.MuiTypography-root) {
-        font-weight: 400;
-    }
-    button {
-        font-family: 'Rubik';
-    }
+  }
+  :global(.MuiTypography-root) {
+    font-weight: 400;
+  }
+  button,
+  button:focus-visible {
+    font-family: 'Rubik';
+  }
 }

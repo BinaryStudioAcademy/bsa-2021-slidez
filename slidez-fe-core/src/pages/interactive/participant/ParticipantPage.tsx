@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import './participantPage.scss'
 import Header from '../Header'
-import ParticipantNameDialog from './ParticipantNameModal/ParticipantNameModal'
-import { ParticipantData } from '../../../services/participant/dto/ParticipantData'
-import { getParticipantData } from '../../../services/participant/participant-service'
 import { EventItem } from './EventItem'
 import { getParticipantEvents } from '../../../services/participant-event/participant-event-service'
 import { AppRoute } from '../../../common/routes/app-route'
@@ -25,10 +22,6 @@ const EventLinkError = ({ hasError }: EventLinkError) => {
 
 const ParticipantPage = () => {
     const participantEvents = getParticipantEvents()
-    const participantData: ParticipantData = getParticipantData()
-    const areFirstAndLastNamePresent =
-        participantData.participantFirstName &&
-        participantData.participantLastName
     const [eventLink, setEventLink] = useState('')
     const [hasError, setHasError] = useState(false)
 
@@ -54,36 +47,39 @@ const ParticipantPage = () => {
     return (
         <div className='participant-page'>
             <Header eventName='' />
-            {!areFirstAndLastNamePresent ? <ParticipantNameDialog /> : ''}
-            <div className='input-block'>
-                <div>Enter code</div>
-                <input
-                    className='code-input'
-                    type='text'
-                    onChange={(event) => handleEventLink(event.target.value)}
-                    placeholder='#Code (6 characters)'
-                />
-                <EventLinkError hasError={hasError} />
-                <button
-                    className='btn btn-code'
-                    type='submit'
-                    onClick={onRedirectClick}
-                >
-                    Join
-                </button>
-            </div>
-            {participantEvents?.length > 0 ? (
-                <div className='visited-events'>
-                    <div className='title'>Select event</div>
-                    <div className='page-content'>
-                        {participantEvents.map((event) => (
-                            <EventItem event={event} key={event.code} />
-                        ))}
-                    </div>
+            <div className='participant-page-content'>
+                <div className='input-block'>
+                    <div>Enter code</div>
+                    <input
+                        className='code-input'
+                        type='text'
+                        onChange={(event) =>
+                            handleEventLink(event.target.value)
+                        }
+                        placeholder='#Code (6 characters)'
+                    />
+                    <EventLinkError hasError={hasError} />
+                    <button
+                        className='btn btn-code'
+                        type='submit'
+                        onClick={onRedirectClick}
+                    >
+                        Join
+                    </button>
                 </div>
-            ) : (
-                ''
-            )}
+                {participantEvents?.length > 0 ? (
+                    <div className='visited-events'>
+                        <div className='title'>Select event</div>
+                        <div className='page-content'>
+                            {participantEvents.map((event) => (
+                                <EventItem event={event} key={event.code} />
+                            ))}
+                        </div>
+                    </div>
+                ) : (
+                    ''
+                )}
+            </div>
         </div>
     )
 }

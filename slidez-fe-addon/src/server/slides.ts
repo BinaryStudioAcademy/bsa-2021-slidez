@@ -1,6 +1,10 @@
 import {
     InsertSlideRequest,
     InsertSlideRequestSuccess,
+    DeleteSlideRequest,
+    DeleteSlideRequestSuccess,
+    UpdateSlideRequest,
+    UpdateSlideRequestSuccess,
 } from '../../../slidez-shared/src/event-bus';
 import { sendCreateSlideRequest } from './slideCreateRequest';
 
@@ -40,3 +44,28 @@ export const insertSlide = (
 
     return { insertedId: data.id };
 };
+
+export const deleteSlide = (
+    data: DeleteSlideRequest
+): DeleteSlideRequestSuccess => {
+    var slide = getPresentation().getSlideById(data.id)
+    try {
+        slide.remove()
+        return { wasDeleted: true }
+    } catch (error) {
+        return { wasDeleted: false }
+    }
+}
+
+export const updateSlide = (
+    data: UpdateSlideRequest
+): UpdateSlideRequestSuccess => {
+    var slide = getPresentation().getSlideById(data.id)
+    try {
+        var titleShape = slide.getShapes().filter(shape => shape.getObjectId().startsWith('title_'))[0]
+        titleShape.getText().setText('Poll: ' + data.title)
+        return { wasUpdated: true }
+    } catch (error) {
+        return { wasUpdated: false }
+    }
+}

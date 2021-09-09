@@ -1,5 +1,5 @@
 import { Field, FieldArray, Form, Formik } from 'formik'
-import React, { useCallback, useState } from 'react'
+import React, { useState, useCallback, SyntheticEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import back_button_icon from '../../assets/svgs/back_button_icon.svg'
@@ -11,13 +11,14 @@ import { handleNotification } from '../../common/notification/Notification'
 import { NotificationTypes } from '../../common/notification/notification-types'
 import { RootState } from '../../store'
 import './PollEditor.scss'
-import { createPoll, EditorTab, setActiveTab } from './store'
+import { createPoll, EditorTab, setActiveTab, updatePoll } from './store'
+import { PollInteractiveElement } from '../../types/editor'
 
 export type PollEditorProps = {
-    pollId?: string | null
+    poll: PollInteractiveElement | null
 }
 
-const PollEditor: React.FC<PollEditorProps> = ({ pollId }: PollEditorProps) => {
+const PollEditor: React.FC<PollEditorProps> = ({ poll }: PollEditorProps) => {
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch()
     const pollsError = useSelector((state: RootState) => state.editor.error)
@@ -29,8 +30,8 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }: PollEditorProps) => {
     const presentationName = params.get('presentationName') ?? ''
 
     const initialValues = {
-        title: '',
-        options: [],
+        title: poll ? poll.title : '',
+        options: poll ? poll.pollOptions : [],
     }
 
     const handleBackClick = useCallback(() => {
@@ -39,24 +40,41 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }: PollEditorProps) => {
 
     const handleSubmit = async (values: typeof initialValues) => {
         setIsLoading(true)
-        dispatch(
-            createPoll({
-                ...values,
-                //TODO: Move to common function
-                slideId: 'slidez_' + new Date().getTime(),
-                presentationId,
-                presentationName,
-            })
-        )
-        if (pollsError !== null) {
-            handleNotification(
-                'Added Failed',
-                'The poll did not added',
-                NotificationTypes.ERROR
+        // create poll if it's new one
+        if (!poll) {
+            dispatch(
+                createPoll({
+                    ...values,
+                    //TODO: Move to common function
+                    slideId: 'slidez_' + new Date().getTime(),
+                    presentationId,
+                    presentationName,
+                })
             )
+            if (pollsError) {
+                handleNotification(
+                    'Poll creation Failed',
+                    'The poll was not added',
+                    NotificationTypes.ERROR
+                )
+            }
+        }
+        // update poll if it already exists
+        else {
+            dispatch(
+                updatePoll({ ...values, id: poll.id, slideId: poll.slideId })
+            )
+            if (pollsError) {
+                handleNotification(
+                    'Poll updating Failed',
+                    'The poll was not updated',
+                    NotificationTypes.ERROR
+                )
+            }
         }
         setIsLoading(false)
     }
+
     const toggleRemoveClick = (
         length: number,
         index: number,
@@ -69,6 +87,7 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }: PollEditorProps) => {
             setFieldValue(`options.${index}.title`, '')
         }
     }
+
     return (
         <div className='app'>
             {isLoading ? (
@@ -112,7 +131,7 @@ const PollEditor: React.FC<PollEditorProps> = ({ pollId }: PollEditorProps) => {
                     </div>
                     <Formik
                         initialValues={initialValues}
-                        onSubmit={handleSubmit}
+                        onSubmit={(values) => handleSubmit(values)}
                     >
                         {({ values, setFieldValue }) => {
                             return (

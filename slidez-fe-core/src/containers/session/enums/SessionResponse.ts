@@ -6,4 +6,5 @@ export enum SessionResponseType {
     likedQuestion = 'LIKED_QUESTION',
     reactionAdded = 'ADDED_REACTION',
     setQuestionVisibility = 'SET_QUESTION_VISIBILITY',
+    displayedQASession = 'DISPLAYED_QA_SESSION',
 }

@@ -24,6 +24,7 @@ a {
 button {
 	background: none;
 	cursor: pointer;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 input {
 	-webkit-appearance: none;

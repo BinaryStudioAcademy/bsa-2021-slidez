@@ -44,7 +44,6 @@ const CreateQA: React.FC<QAEditorProps> = ({ qaId }: QAEditorProps) => {
     const presentationId = useSelector(
         (state: RootState) => state.editor.presentationId
     )
-
     const handleBackClick = useCallback(() => {
         dispatch(setActiveTab(EditorTab.MENU))
     }, [dispatch])
@@ -68,9 +67,7 @@ const CreateQA: React.FC<QAEditorProps> = ({ qaId }: QAEditorProps) => {
                 NotificationTypes.ERROR
             )
         }
-        setIsLoading(false)
     }
-
     return (
         <div className='app'>
             {isLoading ? (

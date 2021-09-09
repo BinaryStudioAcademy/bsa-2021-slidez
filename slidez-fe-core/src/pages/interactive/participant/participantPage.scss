@@ -106,6 +106,7 @@
   }
 
   .event-item:hover {
+    cursor: pointer;
     background-color: $light-grey;
   }
 }
