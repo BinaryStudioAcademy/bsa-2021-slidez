@@ -4,6 +4,10 @@
   .input-block {
     margin: 65px 15px 30px 15px;
 
+    .error-text {
+      min-height: 14px;
+    }
+
     div {
       font-size: 12px;
       font-weight: 400;

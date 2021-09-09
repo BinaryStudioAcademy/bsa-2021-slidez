@@ -80,7 +80,7 @@ const Menu: React.FC = () => {
                     <div
                         className={
                             'list-elements' +
-                            (isViewMenu ? ' show-menu' : ' hide-menu')
+                            (isViewMenu && polls ? ' show-menu' : ' hide-menu')
                         }
                     >
                         {polls.map((item) => {
@@ -92,14 +92,17 @@ const Menu: React.FC = () => {
                                         handlePresentPollClick(event, item)
                                     }
                                 >
-                                    <img
-                                        className='check'
-                                        src={check}
-                                        alt='check'
-                                    />
-                                    <div className='text'>{item.title}</div>
-                                    &nbsp;
-                                    <span className='subtext'>{`[${item.pollOptions.length} options]`}</span>
+                                    <div className='firstBlock'>
+                                        <img
+                                            className='check'
+                                            src={check}
+                                            alt='check'
+                                            width={20}
+                                        />
+                                        <div className='text'>{item.title}</div>
+                                        &nbsp;
+                                        <span className='subtext'>{`[${item.pollOptions.length} options]`}</span>
+                                    </div>
                                     <div className='delete'>
                                         <TrashIcon
                                             className='delete-icon'

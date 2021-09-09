@@ -278,7 +278,9 @@ const PollEditor: React.FC<PollEditorProps> = ({ poll }: PollEditorProps) => {
                                         className='btn-submit form-button'
                                         onClick={() => setViewErrors(true)}
                                     >
-                                        Add to presentation
+                                        {!poll
+                                            ? 'Add to presentation'
+                                            : 'Update'}
                                     </button>
                                 </Form>
                             )
