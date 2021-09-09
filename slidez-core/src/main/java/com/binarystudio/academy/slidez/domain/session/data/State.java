@@ -24,8 +24,7 @@ public class State {
 	}
 
 	public boolean endInteraction(Class<?> expectedInteractionClass) {
-		if (currentInteractiveElement == null
-				|| !Objects.equals(expectedInteractionClass, currentInteractiveElement.getClass())) {
+		if (currentInteractiveElement == null) {
 			return false;
 		}
 		this.currentInteractiveElement = null;

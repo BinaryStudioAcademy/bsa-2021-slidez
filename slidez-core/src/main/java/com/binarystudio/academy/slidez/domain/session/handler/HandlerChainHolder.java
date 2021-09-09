@@ -50,7 +50,7 @@ public class HandlerChainHolder implements ApplicationContextAware {
 				DefaultEventHandler.class);
 
 		snapshotRequestHandler
-            //.setNext(persistDomainEventInDbHandler)
+        //.setNext(persistDomainEventInDbHandler)
                 .setNext(slideChangedEventHandler)
                 .setNext(endInteractionEventHandler)
 				.setNext(startPollHandler).setNext(answerPollHandler).setNext(startQASessionHandler)

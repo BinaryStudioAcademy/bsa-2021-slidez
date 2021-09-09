@@ -19,13 +19,6 @@ import java.util.Optional;
 @Component
 public class EndInteractionEventHandler extends AbstractDomainEventHandler {
 
-	private final InteractiveElementRepository interactiveElementRepository;
-
-	@Autowired
-	public EndInteractionEventHandler(InteractiveElementRepository interactiveElementRepository) {
-		this.interactiveElementRepository = interactiveElementRepository;
-	}
-
 	@Override
 	public GenericResponse<SessionResponse, SessionResponseCodes> handle(DomainEvent domainEvent,
 			PresentationEventStore presentationEventStore) {
@@ -33,27 +26,13 @@ public class EndInteractionEventHandler extends AbstractDomainEventHandler {
 			return super.handle(domainEvent, presentationEventStore);
 		}
 		EndInteractionEvent endInteractionEvent = (EndInteractionEvent) domainEvent;
-		Optional<InteractiveElement> interactiveElement = interactiveElementRepository
-				.findBySlideId(endInteractionEvent.getSlideId());
-		if (interactiveElement.isPresent()) {
-			setInteractionClass(endInteractionEvent, interactiveElement.get());
-			final GenericResponse<SessionResponse, SessionResponseCodes> defaultResult = super.handle(
-					endInteractionEvent, presentationEventStore);
-			if (endInteractionEvent.isEnded()) {
-				SessionResponse sessionResponse = new SessionResponse(ResponseType.END_CURRENT_INTERACTION,
-						endInteractionEvent);
-				return new GenericResponse<>(sessionResponse);
-			}
-			return defaultResult;
+		final GenericResponse<SessionResponse, SessionResponseCodes> defaultResult = super.handle(
+		    endInteractionEvent, presentationEventStore);
+		if (endInteractionEvent.isEnded()) {
+		    SessionResponse sessionResponse = new SessionResponse(ResponseType.END_CURRENT_INTERACTION,
+                endInteractionEvent);
+		    return new GenericResponse<>(sessionResponse);
 		}
-		return super.handle(endInteractionEvent, presentationEventStore);
+		return defaultResult;
 	}
-
-	private void setInteractionClass(EndInteractionEvent target, InteractiveElement element) {
-		switch (element.getType()) {
-		case POLL:
-			target.setInteractionClass(SessionPoll.class);
-		}
-	}
-
 }

@@ -23,7 +23,6 @@ export type SlideChangedEvent = {
 
 export type EndInteractionEvent = {
     type: DomainEventType.endInteractionEvent
-    slideId: string
 }
 
 export type StartPollEvent = {

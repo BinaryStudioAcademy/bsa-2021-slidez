@@ -71,12 +71,13 @@ export const createSlideChangedRequest = (
 }
 
 export const createEndInteractionRequest = (
-    link: string,
-    slideId: string
+    link: string
 ): EndInteractionRequest => {
     return {
         link,
-        event: { type: DomainEventType.endInteractionEvent, slideId },
+        event: {
+            type: DomainEventType.endInteractionEvent,
+        },
     }
 }
 

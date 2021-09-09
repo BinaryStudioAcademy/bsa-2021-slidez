@@ -10,8 +10,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class EndInteractionEvent extends DomainEvent {
 
-	private String slideId;
-
 	@JsonIgnore
 	private Class<?> interactionClass;
 
