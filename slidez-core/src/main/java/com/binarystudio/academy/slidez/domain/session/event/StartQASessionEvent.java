@@ -22,7 +22,7 @@ public class StartQASessionEvent extends DomainEvent {
 
 	@Override
 	public void applyEvent(State state) throws DomainException {
-		state.setCurrentQASession(sessionQASession);
+		this.sessionQASession = state.assertQASessionSet(sessionQASession);
 	}
 
 }

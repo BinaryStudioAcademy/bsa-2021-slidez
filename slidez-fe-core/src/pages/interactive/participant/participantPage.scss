@@ -1,7 +1,6 @@
 @import 'src/global/global';
 
 .participant-page {
-
   .input-block {
     margin: 65px 15px 30px 15px;
 
@@ -20,6 +19,10 @@
       border-radius: 25px;
     }
 
+    .code-input:focus {
+    border: 1px $mint solid;
+    }
+
     .code-input,
     .code-input:focus-visible {
       background-color: $light-color;
@@ -28,7 +31,11 @@
       margin-bottom: 15px;
       outline: none;
     }
-
+    .code-input:active,
+    .code-input:focus-visible {
+      outline: none;
+      border: 1px #59d0a5 solid;
+    }
     .btn-code {
       background-color: $main-color;
       color: $white;
@@ -68,7 +75,7 @@
           .event-info-name {
             margin-right: 5px;
             font-weight: 500;
-            max-width: 200px;
+            max-width: calc(100vw - 140px);
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
@@ -99,6 +106,7 @@
   }
 
   .event-item:hover {
+    cursor: pointer;
     background-color: $light-grey;
   }
 }

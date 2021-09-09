@@ -1,113 +1,120 @@
-@import "src/global/global";
+@import 'src/global/global';
 
 .hidden {
-    visibility: hidden;
+  visibility: hidden;
+}
+
+.participant-page-content {
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .participant-view-content {
-    .events-page {
-        margin: 25px 15px 0 15px;
+  .events-page {
+    margin: 25px 15px 0 15px;
 
-        .page-content {
-            .MuiFormControl-root {
-                width: 100%;
-            }
+    .page-content {
+      .MuiFormControl-root {
+        width: 100%;
+      }
 
-            .question {
-                font-weight: 500;
-                font-size: 16px;
-                font-family: "Rubik";
-                line-height: 18px;
-                color: $black;
-                margin-bottom: 20px;
-            }
+      .question {
+        font-weight: 500;
+        font-size: 16px;
+        font-family: 'Rubik';
+        line-height: 18px;
+        color: $black;
+        margin-bottom: 20px;
+      }
 
-            .radio-area {
-                display: flex;
-                flex-direction: column;
+      .radio-area {
+        display: flex;
+        flex-direction: column;
 
-                .radio-item {
-                    background-color: $light-color;
-                    display: flex;
-                    height: 45px;
-                    font-size: 14px;
-                    font-weight: 400;
-                    margin: 0 0 15px;
-                    border-radius: 5px;
+        .radio-item {
+          background-color: $light-color;
+          display: flex;
+          height: 45px;
+          font-size: 14px;
+          font-weight: 400;
+          margin: 0 0 15px;
+          border-radius: 5px;
 
-                    .MuiTypography-body1 {
-                        font-family: "Rubik";
-                        font-weight: 400;
-                        font-size: 14px;
-                    }
+          .MuiTypography-body1 {
+            font-family: 'Rubik';
+            font-weight: 400;
+            font-size: 14px;
+          }
 
-                    .MuiRadio-root {
-                        margin: 10px;
-                        width: 20px;
-                        height: 20px;
-                        color: $light-grey;
-                        background-color: $white;
-                    }
+          .MuiRadio-root {
+            margin: 10px;
+            width: 20px;
+            height: 20px;
+            color: $light-grey;
+            background-color: $white;
+          }
 
-                    .MuiRadio-colorSecondary.Mui-checked {
-                        color: $main-color;
-                    }
+          .MuiRadio-colorSecondary.Mui-checked {
+            color: $main-color;
+          }
 
-                    &:hover {
-                        background-color: $light-grey;
-                    }
+          &:hover {
+            background-color: $light-grey;
+          }
 
-                    &:checked {
-                        background-color: rgba(89, 208, 165, 0.4);
-                    }
-                    &.active {
-                        background-color: rgba(89, 208, 165, 0.4);;
-                    }
-                }
-
-                .PrivateSwitchBase-input-4 {
-                    color: white;
-                }
-            }
-
-            .btn-submit {
-                font-family: "Rubik";
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-                width: 100%;
-                height: 45px;
-                border: none;
-                border-radius: 25px;
-                color: $white;
-                font-weight: 500;
-                font-size: 16px;
-
-                &-icon {
-                    min-width: 20px;
-                    min-height: 1px;
-                    margin-left: 5px;
-
-                    .spinner {
-                        font-size: initial;
-                        width: initial;
-                        margin: initial;
-                    }
-                }
-            }
-            &:checked {
-                background-color: rgba(89, 208, 165, 0.4);
-            }
+          &:checked {
+            background-color: rgba(89, 208, 165, 0.4);
+          }
+          &.active {
+            background-color: rgba(89, 208, 165, 0.4);
+          }
         }
+
         .PrivateSwitchBase-input-4 {
-            color: white;
+          color: white;
         }
+      }
+
+      .btn-submit,
+      .btn-submit:focus-visible {
+        font-family: 'Rubik';
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 45px;
+        border: none;
+        border-radius: 25px;
+        outline: none;
+        color: $white;
+        font-weight: 500;
+        font-size: 16px;
+
+        &-icon {
+          min-width: 20px;
+          min-height: 1px;
+          margin-left: 5px;
+
+          .spinner {
+            font-size: initial;
+            width: initial;
+            margin: initial;
+          }
+        }
+      }
+      &:checked {
+        background-color: rgba(89, 208, 165, 0.4);
+      }
     }
+    .PrivateSwitchBase-input-4 {
+      color: white;
+    }
+  }
 }
 
 @media (max-width: 750px) {
-    .content {
-        margin: 15px;
-    }
+  .content {
+    margin: 15px;
+  }
 }

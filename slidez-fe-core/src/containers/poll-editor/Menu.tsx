@@ -3,7 +3,7 @@ import check from '../../assets/svgs/check.svg'
 import q_and_a from '../../assets/svgs/QandA.svg'
 import heart from '../../assets/svgs/reactions.svg'
 import chat from '../../assets/svgs/chat.svg'
-import { EditorTab, setActiveTab } from './store'
+import { deletePoll, EditorTab, setActiveTab, setPollToUpdate } from './store'
 import './Menu.scss'
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,10 +12,14 @@ import { useState } from 'react'
 import Session from '../session/Session'
 import { ReactComponent as DropDownIcon } from '../../assets/svgs/drop_down_icon.svg'
 import { ReactComponent as DropUpIcon } from '../../assets/svgs/arrow_back.svg'
+import { ReactComponent as TrashIcon } from '../../assets/svgs/trash.svg'
+import { PollInteractiveElement } from '../../types/editor'
 
 const Menu: React.FC = () => {
     const dispatch = useDispatch()
+
     const handlePollClick = useCallback(() => {
+        dispatch(setPollToUpdate(null))
         dispatch(setActiveTab(EditorTab.POLL))
     }, [dispatch])
     const [isViewMenu, setIsViewMenu] = useState(true)
@@ -25,6 +29,27 @@ const Menu: React.FC = () => {
         setIsViewMenu(!isViewMenu)
     }
 
+    const handleDeleteClick = (
+        event: SyntheticEvent,
+        poll: PollInteractiveElement
+    ) => {
+        event.preventDefault()
+        event.stopPropagation()
+        dispatch(deletePoll(poll))
+    }
+
+    const handlePresentPollClick = (
+        event: SyntheticEvent,
+        poll: PollInteractiveElement
+    ) => {
+        event.preventDefault()
+        dispatch(setPollToUpdate(poll))
+        dispatch(setActiveTab(EditorTab.POLL))
+    }
+    const handleQAndAClick = useCallback(() => {
+        dispatch(setActiveTab(EditorTab.QA))
+    }, [dispatch])
+
     const { polls } = useSelector((state: RootState) => state.editor)
     return (
         <div className='main-page-addon'>
@@ -33,8 +58,10 @@ const Menu: React.FC = () => {
                 <h2>Create new interaction</h2>
                 <div className='menu-list'>
                     <button className='list-items' onClick={handlePollClick}>
-                        <img src={check} alt='check' />
-                        <div className='text'>Live poll</div>
+                        <div>
+                            <img src={check} alt='check' />
+                        </div>
+                        <div className='text poll-name'>Live poll</div>
                         <div className='arrow-icon' onClick={handleArrowClick}>
                             <DropDownIcon
                                 className={
@@ -58,16 +85,34 @@ const Menu: React.FC = () => {
                     >
                         {polls.map((item) => {
                             return (
-                                <div className='list-items' key={item.id}>
-                                    <img src={check} alt='check' />
+                                <div
+                                    className='list-items'
+                                    key={item.id}
+                                    onClick={(event) =>
+                                        handlePresentPollClick(event, item)
+                                    }
+                                >
+                                    <img
+                                        className='check'
+                                        src={check}
+                                        alt='check'
+                                    />
                                     <div className='text'>{item.title}</div>
                                     &nbsp;
                                     <span className='subtext'>{`[${item.pollOptions.length} options]`}</span>
+                                    <div className='delete'>
+                                        <TrashIcon
+                                            className='delete-icon'
+                                            onClick={(event) =>
+                                                handleDeleteClick(event, item)
+                                            }
+                                        />
+                                    </div>
                                 </div>
                             )
                         })}
                     </div>
-                    <button className='list-items'>
+                    <button className='list-items' onClick={handleQAndAClick}>
                         <img src={q_and_a} alt='q_and_a' />
                         <div className='text'>Audience Q&#38;A</div>
                     </button>

@@ -18,7 +18,7 @@ public class AddReactionEvent extends DomainEvent {
 
 	@Override
 	public void applyEvent(State state) throws DomainException {
-		state.addInteractiveElement(reaction);
+		state.assertInteractiveElementAdded(reaction);
 	}
 
 }

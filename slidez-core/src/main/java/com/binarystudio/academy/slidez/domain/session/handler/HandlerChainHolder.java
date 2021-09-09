@@ -23,6 +23,8 @@ public class HandlerChainHolder implements ApplicationContextAware {
 				SnapshotRequestHandler.class);
 		PersistDomainEventInDbHandler persistDomainEventInDbHandler = applicationContext
 				.getBean("persistDomainEventInDbHandler", PersistDomainEventInDbHandler.class);
+		DisplayInteractionEventHandler displayInteractionEventHandler = applicationContext
+				.getBean("displayInteractionEventHandler", DisplayInteractionEventHandler.class);
 		StartPollHandler startPollHandler = applicationContext.getBean("startPollHandler", StartPollHandler.class);
 		AnswerPollHandler answerPollHandler = applicationContext.getBean("answerPollHandler", AnswerPollHandler.class);
 		StartQASessionHandler startQASessionHandler = applicationContext.getBean("startQASessionHandler",
@@ -39,13 +41,15 @@ public class HandlerChainHolder implements ApplicationContextAware {
 				LikeQuestionEventHandler.class);
 		SetQuestionVisibilityEventHandler setQuestionVisibilityEventHandler = applicationContext
 				.getBean("setQuestionVisibilityEventHandler", SetQuestionVisibilityEventHandler.class);
+		DisplayQASessionEventHandler displayQASessionEventHandler = applicationContext
+				.getBean("displayQASessionEventHandler", DisplayQASessionEventHandler.class);
 		DefaultEventHandler defaultEventHandler = applicationContext.getBean("defaultEventHandler",
 				DefaultEventHandler.class);
-		snapshotRequestHandler.setNext(persistDomainEventInDbHandler).setNext(startPollHandler)
+		snapshotRequestHandler.setNext(persistDomainEventInDbHandler).setNext(displayInteractionEventHandler).setNext(startPollHandler)
 				.setNext(answerPollHandler).setNext(startQASessionHandler).setNext(askQuestionEventHandler)
 				.setNext(startQuizEventHandler).setNext(answerQuizEventHandler).setNext(addReactionEventHandler)
 				.setNext(likeQuestionEventHandler).setNext(setQuestionVisibilityEventHandler)
-				.setNext(defaultEventHandler);
+				.setNext(displayQASessionEventHandler).setNext(defaultEventHandler);
 		return snapshotRequestHandler;
 	}
 

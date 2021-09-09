@@ -72,7 +72,8 @@ public class SessionService {
 			throws IncorrectLeaseDurationException {
 		Session session = createForPresentation(dto.getPresentationLink(), leaseDuration);
 		String shortcode = session.getLink().getCode();
-		PresentationEventStore presentationEventStore = new PresentationEventStore(dto.getPresentationLink());
+		String presentationName = session.getPresentation().getName();
+		PresentationEventStore presentationEventStore = new PresentationEventStore(presentationName);
 		if (inMemoryPresentationEventStoreRepository.add(shortcode, presentationEventStore)) {
 			handleEvent(shortcode, new StartQASessionEvent(shortcode));
 			return Optional.of(new CreateSessionResponseDto(shortcode));

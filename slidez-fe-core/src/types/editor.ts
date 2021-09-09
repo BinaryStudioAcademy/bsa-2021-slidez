@@ -34,6 +34,7 @@ export type ReadQaSessionDto = {
 export type PollInteractiveElement = {
     id: string
     type: 'POLL'
+    slideId: string
 } & ReadPollDto
 
 //TODO: check type enum values
@@ -45,9 +46,8 @@ export type QuizInteractiveElement = {
 
 export type QaInteractiveElement = {
     id: string
-    type: 'QA'
-    qaSession: ReadQaSessionDto
-}
+    type: 'QASession'
+} & ReadQaSessionDto
 
 export type InteractiveElement =
     | PollInteractiveElement
@@ -61,6 +61,12 @@ export type WritePollDto = {
     slideId: string
     title: string
     options: { title: string }[]
+}
+
+export type WriteQADto = {
+    presentationId: string
+    slideId: string
+    title: string
 }
 
 export const isPollInteractiveElement = (
@@ -78,5 +84,5 @@ export const isQuizInteractiveElement = (
 export const isQaSessionElement = (
     ie: InteractiveElement
 ): ie is QaInteractiveElement => {
-    return ie.type === 'QA'
+    return ie.type === 'QASession'
 }
