@@ -3,7 +3,7 @@ import check from '../../assets/svgs/check.svg'
 import q_and_a from '../../assets/svgs/QandA.svg'
 import heart from '../../assets/svgs/reactions.svg'
 import chat from '../../assets/svgs/chat.svg'
-import { EditorTab, setActiveTab } from './store'
+import { deletePoll, EditorTab, setActiveTab, setPollToUpdate } from './store'
 import './Menu.scss'
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,10 +12,14 @@ import { useState } from 'react'
 import Session from '../session/Session'
 import { ReactComponent as DropDownIcon } from '../../assets/svgs/drop_down_icon.svg'
 import { ReactComponent as DropUpIcon } from '../../assets/svgs/arrow_back.svg'
+import { ReactComponent as TrashIcon } from '../../assets/svgs/trash.svg'
+import { PollInteractiveElement } from '../../types/editor'
 
 const Menu: React.FC = () => {
     const dispatch = useDispatch()
+
     const handlePollClick = useCallback(() => {
+        dispatch(setPollToUpdate(null))
         dispatch(setActiveTab(EditorTab.POLL))
     }, [dispatch])
     const [isViewMenu, setIsViewMenu] = useState(true)
@@ -25,6 +29,23 @@ const Menu: React.FC = () => {
         setIsViewMenu(!isViewMenu)
     }
 
+    const handleDeleteClick = (
+        event: SyntheticEvent,
+        poll: PollInteractiveElement
+    ) => {
+        event.preventDefault()
+        event.stopPropagation()
+        dispatch(deletePoll(poll))
+    }
+
+    const handlePresentPollClick = (
+        event: SyntheticEvent,
+        poll: PollInteractiveElement
+    ) => {
+        event.preventDefault()
+        dispatch(setPollToUpdate(poll))
+        dispatch(setActiveTab(EditorTab.POLL))
+    }
     const handleQAndAClick = useCallback(() => {
         dispatch(setActiveTab(EditorTab.QA))
     }, [dispatch])
@@ -40,7 +61,7 @@ const Menu: React.FC = () => {
                         <div>
                             <img src={check} alt='check' />
                         </div>
-                        <div className='text pool-name'>Live poll</div>
+                        <div className='text poll-name'>Live poll</div>
                         <div className='arrow-icon' onClick={handleArrowClick}>
                             <DropDownIcon
                                 className={
@@ -64,11 +85,29 @@ const Menu: React.FC = () => {
                     >
                         {polls.map((item) => {
                             return (
-                                <div className='list-items' key={item.id}>
-                                    <img src={check} alt='check' />
+                                <div
+                                    className='list-items'
+                                    key={item.id}
+                                    onClick={(event) =>
+                                        handlePresentPollClick(event, item)
+                                    }
+                                >
+                                    <img
+                                        className='check'
+                                        src={check}
+                                        alt='check'
+                                    />
                                     <div className='text'>{item.title}</div>
                                     &nbsp;
                                     <span className='subtext'>{`[${item.pollOptions.length} options]`}</span>
+                                    <div className='delete'>
+                                        <TrashIcon
+                                            className='delete-icon'
+                                            onClick={(event) =>
+                                                handleDeleteClick(event, item)
+                                            }
+                                        />
+                                    </div>
                                 </div>
                             )
                         })}

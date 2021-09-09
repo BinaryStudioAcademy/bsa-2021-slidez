@@ -1,4 +1,4 @@
-@import 'src/global/global';
+@import "src/global/global";
 
 .addon-components {
   margin: 15px 1rem;
@@ -21,11 +21,10 @@
         background-color: $light-color;
         border-radius: 10px;
         cursor: pointer;
-
         img {
           margin-right: 10px;
         }
-        .pool-name {
+        .poll-name {
           width: 6rem;
         }
         .text {
@@ -40,6 +39,17 @@
           color: #a6a6a6;
           white-space: nowrap;
           line-height: 20px;
+        }
+        .delete {
+          margin-left: 5px;
+
+          &-icon {
+            &:hover {
+              path {
+                fill: $error;
+              }
+            }
+          }
         }
         &:last-child {
           margin-bottom: 0;
@@ -59,14 +69,14 @@
       img {
         margin-right: 10px;
       }
+      .poll-name {
+        width: 6rem;
+      }
       .text {
         font-weight: 500;
         font-size: 14px;
         max-width: max-content;
         line-height: 20px;
-      }
-      .pool-name {
-        width: 5rem;
       }
       .arrow-icon {
         cursor: pointer;
