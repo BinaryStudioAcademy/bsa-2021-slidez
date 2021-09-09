@@ -14,7 +14,7 @@ import SideBar from '../../containers/sideBar/SideBar'
 import UserProfile from '../../containers/user-menu/UserMenu'
 import { fetchUser } from '../../containers/user/store'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { PresentationDto } from './service'
+import { PresentationDto } from './dto/PresentationDto'
 import { fetchInfo, selectPresentations } from './store'
 import styles from './styles.module.scss'
 
@@ -26,9 +26,6 @@ const Dashboard = () => {
 
     useEffect(() => {
         dispatch(fetchUser())
-    }, [])
-
-    useEffect(() => {
         dispatch(fetchInfo())
     }, [])
 

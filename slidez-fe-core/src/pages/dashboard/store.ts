@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
-import { fetchPresentationInfo, PresentationDto } from './service'
+import { PresentationDto } from './dto/PresentationDto'
+import { fetchPresentationInfo } from './service'
 
 export let initialState: { presentations: PresentationDto[] } = {
     presentations: [],

@@ -1,12 +1,6 @@
 import { GenericResponse } from 'slidez-shared/src/net/dto/GenericResponse'
 import httpHelper from '../../services/http/http-helper'
-
-export interface PresentationDto {
-    id: string
-    presentationName: string
-    updatedAtDate: Date | null
-    updatedAt: string
-}
+import { PresentationDto } from './dto/PresentationDto'
 
 export interface ReceiveResult {
     error?: string

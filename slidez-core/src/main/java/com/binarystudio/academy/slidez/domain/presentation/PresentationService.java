@@ -46,8 +46,8 @@ public class PresentationService {
     }
 
     public List<PresentationDTO> getPresentationInfo() {
-        var presentations = this.presentationRepository.findAll();
-        ArrayList<PresentationDTO> presentationList = new ArrayList<>();
+        List<Presentation> presentations = this.presentationRepository.findAll();
+        List<PresentationDTO> presentationList = new ArrayList<>();
         for (Presentation p :
             presentations) {
             presentationList.add(new PresentationDTO(p.getId(), p.getName(), p.getUpdatedAt().toString()));
