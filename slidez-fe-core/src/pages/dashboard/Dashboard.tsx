@@ -76,8 +76,8 @@ const Dashboard = () => {
                 <tr key={presentation.id}>
                     <td>{presentation.name}</td>
                     <td>32343</td>
-                    <td>24.07.21</td>
-                    <td>02.08.21</td>
+                    <td>{presentation.dateUpdated}</td>
+                    <td>{presentation.dateUpdated}</td>
                     <td>
                         <FontAwesomeIcon
                             className={styles.iconOptions}
@@ -147,7 +147,7 @@ const Dashboard = () => {
                                     icon={faUsers}
                                 />
                                 <span className={styles.cardDate}>
-                                    12.07.21
+                                    {md.dateUpdated}
                                 </span>
                             </span>
                             <span className={styles.iconDetails}>
