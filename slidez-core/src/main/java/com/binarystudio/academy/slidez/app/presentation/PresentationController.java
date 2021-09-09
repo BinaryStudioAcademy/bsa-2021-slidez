@@ -3,6 +3,7 @@ package com.binarystudio.academy.slidez.app.presentation;
 import com.binarystudio.academy.slidez.domain.interactive_element.dto.InteractiveElementDto;
 import com.binarystudio.academy.slidez.domain.interactive_element.exception.IllegalElementTypeException;
 import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
+import com.binarystudio.academy.slidez.domain.presentation.dto.PresentationDTO;
 import com.binarystudio.academy.slidez.domain.presentation.dto.PresentationSessionDTO;
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,9 @@ public class PresentationController {
         this.presentationService = presentationService;
     }
 
-    @GetMapping("name")
-    public GenericResponse<List, String> getPresentationInfo() {
-        return new GenericResponse<>(this.presentationService.getInfo());
+    @GetMapping("info")
+    public GenericResponse<List<PresentationDTO>, String> getPresentationInfo() {
+        return new GenericResponse<>(this.presentationService.getPresentationInfo());
     }
 
     @GetMapping("{link}/interactions")

@@ -25,6 +25,4 @@ public interface PresentationRepository extends JpaRepository<Presentation, UUID
         + "INNER JOIN Link link ON s.link = link AND link.code = :shortCode")
     Optional<Presentation> findByShortCode(String shortCode);
 
-    @Query("SELECT p.id, p.name, p.updatedAt FROM Presentation p")
-    List getInfo();
 }

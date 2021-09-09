@@ -4,6 +4,7 @@ import com.binarystudio.academy.slidez.domain.interactive_element.dto.Interactiv
 import com.binarystudio.academy.slidez.domain.interactive_element.exception.IllegalElementTypeException;
 import com.binarystudio.academy.slidez.domain.interactive_element.mapper.InteractiveElementMapper;
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
+import com.binarystudio.academy.slidez.domain.presentation.dto.PresentationDTO;
 import com.binarystudio.academy.slidez.domain.presentation.dto.PresentationSessionDTO;
 import com.binarystudio.academy.slidez.domain.presentation.dto.PresentationUpdateDto;
 import com.binarystudio.academy.slidez.domain.presentation.exception.PresentationNotFoundException;
@@ -44,8 +45,14 @@ public class PresentationService {
         });
     }
 
-    public List getInfo() {
-        return this.presentationRepository.getInfo();
+    public List<PresentationDTO> getPresentationInfo() {
+        var presentations = this.presentationRepository.findAll();
+        ArrayList<PresentationDTO> presentationList = new ArrayList<>();
+        for (Presentation p :
+            presentations) {
+            presentationList.add(new PresentationDTO(p.getId(), p.getName(), p.getUpdatedAt().toString()));
+        }
+        return presentationList;
     }
 
     public Optional<Presentation> get(UUID id) {
