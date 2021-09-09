@@ -4,13 +4,14 @@ import thumb_up from '../../../../assets/svgs/reactions/thumbUp.svg'
 import 'animate.css'
 
 interface ReactionStyles {
-    left: string
+    styles: CSSProperties
 }
 
-const reaction = (src: string, left: string) => (
-    <img src={src} width={50} style={{ left: left }} />
+const reaction = (src: string, styles: CSSProperties) => (
+    <img src={src} width={50} style={styles} />
 )
 
-export const Like = ({ left }: ReactionStyles) => reaction(like, left)
+export const Like = ({ styles }: ReactionStyles) => reaction(like, styles)
 
-export const ThumbUp = ({ left }: ReactionStyles) => reaction(thumb_up, left)
+export const ThumbUp = ({ styles }: ReactionStyles) =>
+    reaction(thumb_up, styles)

@@ -11,35 +11,114 @@ import { pullReaction } from './store'
 import styles from './reactionOverlayPage.module.scss'
 import { useParams } from 'react-router-dom'
 
+const getLeftOffset = () => {
+    const sign = Math.floor(Math.random() * 3 - 1)
+    if (sign == -1) {
+        return Math.floor(Math.random() * 100) * -1
+    }
+    if (sign == 0) {
+        return 0
+    }
+
+    return Math.floor(Math.random() * 100)
+}
+
+const getLeftPosition = () => {
+    return Math.random() * 25 + 48
+}
+
+const getMargin = () => {
+    return Math.random() * 100 - 50
+}
+
 export const ReactionOverlay = () => {
     const { link } = useParams<{ link: string }>()
     const { connectionStatus, reactions } = useSelector(
         (state: RootState) => state.reactions
     )
-    const [left, setLeft] = useState(Math.random() * 17 + 51)
+    const [reactionElements, setReactionElements] = useState<JSX.Element[]>([])
+    const [counter, setCounter] = useState<number>(1)
 
     const dispatch = useDispatch()
-    const [currentReaction, setCurrentReaction] = useState<Reactions | null>(
-        null
-    )
+
+    const getJSXElementForReaction = (
+        reaction: Reactions,
+        key: number,
+        leftAnimation: string,
+        leftPosition: string,
+        topOffset: string
+    ): JSX.Element => {
+        switch (reaction) {
+            case Reactions.LIKE:
+                return (
+                    <div
+                        className={`${styles.reactionContainer}`}
+                        id='reaction'
+                        style={{ left: leftPosition }}
+                        key={key}
+                    >
+                        <ThumbUp
+                            styles={{
+                                left: leftAnimation,
+                                top: topOffset,
+                            }}
+                        />
+                    </div>
+                )
+            // case Reactions.LOVE: // Uncomment if there will be more reactions
+            default:
+                return (
+                    <div
+                        className={`${styles.reactionContainer}`}
+                        style={{ left: leftPosition }}
+                        key={key}
+                    >
+                        <Like
+                            styles={{
+                                left: leftAnimation,
+                                top: topOffset,
+                            }}
+                        />
+                    </div>
+                )
+        }
+    }
 
     useEffect(() => {
         dispatch(initReactionWebSocketSession(link))
     }, [])
 
+    const processReaction = () => {
+        const number = counter
+        setCounter(counter + 1)
+        const currentReaction = reactions[0]
+        dispatch(pullReaction())
+        const element = getJSXElementForReaction(
+            currentReaction,
+            counter,
+            `${getLeftOffset()}%`,
+            `${getLeftPosition()}%`,
+            `${getMargin()}px`
+        )
+        setReactionElements([...reactionElements, element])
+
+        setTimeout(() => {
+            const stayedReactions = reactionElements.filter(
+                (el) => el.key != number
+            )
+            console.log(number, reactionElements.length, stayedReactions.length)
+            // !!!! Here reactions should be deleted
+            // setReactionElements(stayedReactions)
+        }, 3000)
+    }
+
     useEffect(() => {
-        //if we have a reaction - don't poll
-        if (currentReaction || reactions.length === 0) {
+        if (reactions.length === 0) {
             return
         }
-        console.log('au', currentReaction)
-        setCurrentReaction(reactions[0])
-        dispatch(pullReaction())
-        setTimeout(() => {
-            setLeft(Math.random() * 20 + 50)
-            setCurrentReaction(null)
-        }, 3000)
-    }, [reactions, currentReaction])
+
+        processReaction()
+    }, [reactions])
 
     useEffect(() => {
         const bgColor = document.body.style.backgroundColor
@@ -52,30 +131,5 @@ export const ReactionOverlay = () => {
         }
     })
 
-    let body: JSX.Element | null = null
-    switch (currentReaction) {
-        case Reactions.LIKE:
-            body = (
-                <div
-                    className={`${styles.reactionContainer}`}
-                    id='reaction'
-                    style={{ left: `${left}%` }}
-                >
-                    <ThumbUp left='-100%' />
-                </div>
-            )
-            break
-        case Reactions.LOVE:
-            body = (
-                <div
-                    className={`${styles.reactionContainer}`}
-                    style={{ left: `${left}%` }}
-                >
-                    <Like left='-100%' />
-                </div>
-            )
-            break
-    }
-
-    return <div className={styles.reactionOverlay}>{body}</div>
+    return <div className={styles.reactionOverlay}>{reactionElements}</div>
 }
