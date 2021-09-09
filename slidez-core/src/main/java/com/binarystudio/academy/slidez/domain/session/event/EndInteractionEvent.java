@@ -12,10 +12,10 @@ public class EndInteractionEvent extends DomainEvent {
 
 	private String slideId;
 
-    @JsonIgnore
+	@JsonIgnore
 	private Class<?> interactionClass;
 
-    @JsonIgnore
+	@JsonIgnore
 	private boolean ended;
 
 	@Override
