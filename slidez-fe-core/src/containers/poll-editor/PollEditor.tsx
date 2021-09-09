@@ -12,7 +12,7 @@ import { handleNotification } from '../../common/notification/Notification'
 import Loader from '../../common/components/loader/Loader'
 import { ReactComponent as TrashIcon } from '../../assets/svgs/trash.svg'
 import * as Yup from 'yup'
-import { PollInteractiveElement } from '../../types/editor'
+import { PollInteractiveElement, ReadPollDto } from '../../types/editor'
 
 export type PollEditorProps = {
     poll: PollInteractiveElement | null
@@ -22,7 +22,7 @@ type LivePollErrorsProps = {
     viewErrors: boolean
     formikErrors: FormikErrors<{
         title: string
-        options: []
+        options: ReadPollDto[]
     }>
 }
 
