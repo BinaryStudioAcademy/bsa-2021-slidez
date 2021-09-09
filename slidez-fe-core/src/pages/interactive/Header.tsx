@@ -33,7 +33,6 @@ const Header: React.FC<IProps> = ({ eventName }: IProps) => {
     }
 
     const hideModal = () => {
-        console.log('hideModal')
         setIsUserModalShown(false)
     }
 
