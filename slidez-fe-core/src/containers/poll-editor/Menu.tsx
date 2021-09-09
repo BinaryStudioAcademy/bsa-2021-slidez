@@ -3,7 +3,13 @@ import check from '../../assets/svgs/check.svg'
 import q_and_a from '../../assets/svgs/QandA.svg'
 import heart from '../../assets/svgs/reactions.svg'
 import chat from '../../assets/svgs/chat.svg'
-import { deletePoll, EditorTab, setActiveTab, setPollToUpdate } from './store'
+import {
+    deletePoll,
+    deleteQA,
+    EditorTab,
+    setActiveTab,
+    setPollToUpdate,
+} from './store'
 import './Menu.scss'
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,7 +19,12 @@ import Session from '../session/Session'
 import { ReactComponent as DropDownIcon } from '../../assets/svgs/drop_down_icon.svg'
 import { ReactComponent as DropUpIcon } from '../../assets/svgs/arrow_back.svg'
 import { ReactComponent as TrashIcon } from '../../assets/svgs/trash.svg'
-import { PollInteractiveElement } from '../../types/editor'
+import {
+    isPollInteractiveElement,
+    isQaSessionElement,
+    PollInteractiveElement,
+    QaInteractiveElement,
+} from '../../types/editor'
 
 const Menu: React.FC = () => {
     const dispatch = useDispatch()
@@ -37,11 +48,17 @@ const Menu: React.FC = () => {
 
     const handleDeleteClick = (
         event: SyntheticEvent,
-        poll: PollInteractiveElement
+        element: PollInteractiveElement | QaInteractiveElement
     ) => {
         event.preventDefault()
         event.stopPropagation()
-        dispatch(deletePoll(poll))
+
+        if (isPollInteractiveElement(element)) {
+            dispatch(deletePoll(element))
+        }
+        if (isQaSessionElement(element)) {
+            dispatch(deleteQA(element))
+        }
     }
 
     const handlePresentPollClick = (
@@ -177,9 +194,9 @@ const Menu: React.FC = () => {
                                     <div className='delete'>
                                         <TrashIcon
                                             className='delete-icon'
-                                            // onClick={(event) =>
-                                            //     handleDeleteClick(event, item)
-                                            // }
+                                            onClick={(event) =>
+                                                handleDeleteClick(event, item)
+                                            }
                                         />
                                     </div>
                                 </div>

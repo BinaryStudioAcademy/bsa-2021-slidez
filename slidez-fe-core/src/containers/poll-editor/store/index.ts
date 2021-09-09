@@ -145,22 +145,38 @@ export const createPoll = createAsyncThunk(
     }
 )
 
-export const deletePoll = createAsyncThunk(
-    'delete-poll',
-    async (pollDto: PollInteractiveElement) => {
+export const deleteSlide = createAsyncThunk(
+    'delete-slide',
+    async (slideId: string) => {
         const data =
             await getMessageBusUnsafe()!.sendMessageAndListen<DeleteSlideSuccess>(
                 {
                     type: EventType.DELETE_SLIDE,
                     data: {
-                        id: pollDto.slideId,
+                        id: slideId,
                     },
                 },
                 EventType.DELETE_SLIDE_SUCCESS,
                 5000
             )
+    }
+)
+
+export const deletePoll = createAsyncThunk(
+    'delete-poll',
+    async (pollDto: PollInteractiveElement, { dispatch }) => {
+        dispatch(deleteSlide(pollDto.slideId))
         await httpHelper.doDelete(`/polls/${pollDto.id}`)
         return pollDto
+    }
+)
+
+export const deleteQA = createAsyncThunk(
+    'delete-qa',
+    async (QADto: QaInteractiveElement, { dispatch }) => {
+        dispatch(deleteSlide(QADto.slideId))
+        await httpHelper.doDelete(`/qa-sessions/${QADto.id}`)
+        return QADto
     }
 )
 
@@ -286,6 +302,18 @@ const editorSlice = createSlice({
                 )
             })
             .addCase(deletePoll.rejected, (state, errorResponse) => {
+                state.error = errorResponse.error.message ?? null
+            })
+            .addCase(deleteQA.pending, (state) => {
+                state.error = null
+            })
+            .addCase(deleteQA.fulfilled, (state, action) => {
+                state.error = null
+                state.qaSessions = state.qaSessions.filter(
+                    (qa) => qa.id != action.payload.id
+                )
+            })
+            .addCase(deleteQA.rejected, (state, errorResponse) => {
                 state.error = errorResponse.error.message ?? null
             })
             .addCase(updatePoll.pending, (state) => {
