@@ -16,8 +16,8 @@ interface IProps {
 const Header: React.FC<IProps> = ({ eventName }: IProps) => {
     const participantData: ParticipantData = getParticipantData()
     const areFirstAndLastNamePresent: boolean =
-        participantData.participantFirstName !== '' &&
-        participantData.participantLastName !== ''
+        Boolean(participantData.participantFirstName) &&
+        Boolean(participantData.participantLastName)
     const [isUserModalShown, setIsUserModalShown] = useState(false)
     const logoComponent = (
         <UserLogo
