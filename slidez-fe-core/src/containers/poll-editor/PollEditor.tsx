@@ -19,7 +19,7 @@ export type PollEditorProps = {
     pollId?: string | null
 }
 
-type LivePollErorrsProps = {
+type LivePollErrorsProps = {
     viewErrors: boolean
     formikErrors: FormikErrors<{
         title: string
@@ -41,7 +41,7 @@ const livePollFieldsValidation = Yup.object({
         ),
 })
 
-const LivePollErrors = ({ viewErrors, formikErrors }: LivePollErorrsProps) => {
+const LivePollErrors = ({ viewErrors, formikErrors }: LivePollErrorsProps) => {
     let errorMessage: string | null = null
     if (!viewErrors) {
         errorMessage = null
