@@ -22,6 +22,14 @@ const ParticipantReactionButton: React.FC<ParticipantReactionProps> = ({
     link,
 }: ParticipantReactionProps) => {
     const dispatch = useDispatch()
+    const [isButtonDisabled, setButtonDisabled] = useState(false)
+    const handleButton = () => {
+        setButtonDisabled(true)
+        console.log('1 ' + isButtonDisabled)
+        setTimeout(() => setButtonDisabled(false), 10000)
+        console.log('2 ' + isButtonDisabled)
+    }
+
     const handleLikeClick = React.useCallback(
         makeReactionHandler(dispatch, link, Reactions.LIKE, ''),
         [dispatch, link]
@@ -46,13 +54,20 @@ const ParticipantReactionButton: React.FC<ParticipantReactionProps> = ({
         <div className={styles.reactions}>
             {isOpened || isDesktop ? (
                 <div className={styles.openedBlock} ref={openedBlockRef}>
-                    <button onClick={handleLikeClick}>
+                    <button
+                        onClick={handleLikeClick}
+                        disabled={isButtonDisabled}
+                    >
                         <ThumbUpIcon
                             width={defaultIconSize}
                             height={defaultIconSize}
                         />
                     </button>
-                    <button onClick={handleLoveClick}>
+                    <button
+                        onClick={handleLoveClick}
+                        onChange={handleButton}
+                        disabled={isButtonDisabled}
+                    >
                         <HeartIcon
                             width={defaultIconSize}
                             height={defaultIconSize}
