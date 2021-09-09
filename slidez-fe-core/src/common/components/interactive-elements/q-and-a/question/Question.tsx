@@ -10,6 +10,9 @@ export type QuestionProps = {
 }
 
 export const Question = ({ questionDto }: QuestionProps) => {
+    if (questionDto.authorNickname.length == 0) {
+        questionDto.authorNickname = 'Anonymous'
+    }
     const nickParts: string[] = questionDto.authorNickname.split(' ')
     if (nickParts.length < 2) {
         nickParts[1] = ' '
@@ -18,11 +21,12 @@ export const Question = ({ questionDto }: QuestionProps) => {
         <div className='question-container'>
             <div className='avatar-and-nick-holder'>
                 <UserLogo
+                    width={28}
                     firstName={nickParts[0]}
                     lastName={nickParts[1]}
                     email={''}
                 />
-                {questionDto.authorNickname}
+                <div className='nickname'>{questionDto.authorNickname}</div>
             </div>
             <div className='row-content'>
                 <div className='question'>{questionDto.question}</div>

@@ -10,7 +10,6 @@ import {
     faEllipsisH,
 } from '@fortawesome/free-solid-svg-icons'
 import SideBar from '../../containers/sideBar/SideBar'
-// import './dashboard.scss'
 import styles from './styles.module.scss'
 import { MOCK_DATA } from './mock-data'
 import { useAppDispatch, useAppSelector } from '../../hooks'

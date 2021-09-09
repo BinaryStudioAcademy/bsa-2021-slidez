@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import SubmitButton from './SubmitButton'
 import './QAAdd.scss'
 
@@ -10,6 +10,7 @@ export default function QAAdd({ onSubmit }: QAAddProps) {
     const [charsCounterValue, setCharsCounterValue] = useState(0)
     const maxTextLength = 300
     const [text, setText] = useState('')
+    const textarea = useRef<HTMLInputElement | HTMLTextAreaElement>(null)
 
     const handleSettingText = (e: any) => {
         setCharsCounterValue(e.target.value.length)
@@ -21,6 +22,16 @@ export default function QAAdd({ onSubmit }: QAAddProps) {
             onSubmit(text)
             setText('')
             setCharsCounterValue(0)
+            textarea.current?.blur()
+        }
+    }
+
+    const onKeyDown = (event: any): void => {
+        if (event.key === 'Enter') {
+            event.preventDefault()
+            event.stopPropagation()
+            handleSubmit()
+            textarea.current?.blur()
         }
     }
 
@@ -36,7 +47,9 @@ export default function QAAdd({ onSubmit }: QAAddProps) {
                     name='question'
                     onChange={(e) => handleSettingText(e)}
                     value={text}
+                    ref={textarea as React.RefObject<HTMLTextAreaElement>}
                     maxLength={maxTextLength}
+                    onKeyDown={(e) => onKeyDown(e)}
                 />
             </div>
             <div className='chars-counter'>{charsCounterValue}</div>

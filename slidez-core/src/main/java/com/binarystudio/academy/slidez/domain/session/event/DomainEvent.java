@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -25,7 +26,7 @@ import java.util.UUID;
 		@JsonSubTypes.Type(value = SlideChangedEvent.class, name = "SlideChangedEvent"),
 		@JsonSubTypes.Type(value = EndInteractionEvent.class, name = "EndInteractionEvent"),
 		@JsonSubTypes.Type(value = DisplayQASessionEvent.class, name = "DisplayQASessionEvent") })
-public abstract class DomainEvent {
+public abstract class DomainEvent implements Serializable {
 
 	private final UUID id = UUID.randomUUID();
 

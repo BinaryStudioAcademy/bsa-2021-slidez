@@ -4,7 +4,11 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import * as Yup from 'yup'
 import { Field, Form, Formik, FormikErrors } from 'formik'
-import { saveParticipantData } from '../../../../services/participant/participant-service'
+import {
+    saveParticipantData,
+    getParticipantData,
+} from '../../../../services/participant/participant-service'
+import { ParticipantData } from '../../../../services/participant/dto/ParticipantData'
 import styles from './styles.module.scss'
 
 type ParticipantNameErorrsProps = {
@@ -31,14 +35,11 @@ const ParticipantNameErrors = ({
     return <div className='error-text'>{errorMessage}</div>
 }
 
-const ParticipantNameDialog = () => {
+const ParticipantNameDialog = (params: any) => {
     const [viewErrors, setViewErrors] = useState(false)
     const [openModal, setOpenModal] = useState(true)
 
-    const handleUserData = (firstName: string, lastName: string) => {
-        saveParticipantData(firstName, lastName)
-        setOpenModal(false)
-    }
+    const participantData: ParticipantData = getParticipantData()
 
     const particpantNameFieldsValidation = Yup.object({
         firstName: Yup.string()
@@ -46,6 +47,11 @@ const ParticipantNameDialog = () => {
             .min(2, '2 symbols minimum'),
         lastName: Yup.string().required('Required').min(2, '2 symbols minimum'),
     })
+
+    const handleUserData = (firstName: string, lastName: string) => {
+        saveParticipantData(firstName, lastName)
+        setOpenModal(false)
+    }
     return (
         <Dialog
             open={openModal}
@@ -55,11 +61,16 @@ const ParticipantNameDialog = () => {
             <DialogTitle id='form-dialog-title'>How to name you?</DialogTitle>
             <DialogContent>
                 <Formik
-                    initialValues={{ firstName: '', lastName: '' }}
+                    initialValues={{
+                        firstName:
+                            participantData.participantFirstName as string,
+                        lastName: participantData.participantLastName as string,
+                    }}
                     validationSchema={particpantNameFieldsValidation}
                     onSubmit={({ firstName, lastName }, { setSubmitting }) => {
                         handleUserData(firstName, lastName)
                         setSubmitting(false)
+                        params.hideModal()
                     }}
                 >
                     {({ errors }) => (
