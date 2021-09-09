@@ -103,6 +103,14 @@
           }
         }
       }
+      .btn-submit-empty {
+        
+        background-color: $white;
+        border-color: none;
+        .btn-submit-success-text {
+          color: $main-color;
+        }
+      }
       &:checked {
         background-color: rgba(89, 208, 165, 0.4);
       }

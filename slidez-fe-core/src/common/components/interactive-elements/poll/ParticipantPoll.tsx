@@ -66,10 +66,22 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
     }
 
     const loaderOrCheck = showLoader ? (
-        <Loader />
+        <Loader width='100%' height='12px' />
     ) : (
         <img src={check} alt='check' />
     )
+
+    const handleSubmitText = () => {
+        if (isAnswerSent && !showLoader) {
+            return (
+                <div className='btn-submit-success-text'>
+                    Thanks for your vote
+                </div>
+            )
+        } else {
+            return <div className='btn-submit-text'>Submit</div>
+        }
+    }
 
     return (
         <div className='events-page'>
@@ -101,11 +113,17 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
                         )}
                     </RadioGroup>
                 </FormControl>
-                <button className='btn-submit' onClick={onSendClick}>
-                    <div className='btn-submit-text'>Submit</div>
+                <button
+                    className={
+                        'btn-submit' +
+                        (isAnswerSent && !showLoader ? ' btn-submit-empty' : '')
+                    }
+                    onClick={onSendClick}
+                >
                     <div className='btn-submit-icon'>
                         {isAnswerSent && loaderOrCheck}
                     </div>
+                    {handleSubmitText()}
                 </button>
             </div>
         </div>
