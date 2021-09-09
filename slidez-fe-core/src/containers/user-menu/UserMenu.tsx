@@ -32,7 +32,6 @@ const UserMenu: React.FC = () => {
     }
 
     const handleDropDown = () => {
-        console.log(isActive, isEditModalOpened)
         setIsActive(!isActive)
     }
 

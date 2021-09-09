@@ -29,7 +29,7 @@ public class PersistDomainEventInDbHandler extends AbstractDomainEventHandler {
 	public GenericResponse<SessionResponse, SessionResponseCodes> handle(DomainEvent domainEvent,
 			PresentationEventStore presentationEventStore) {
 		if (!Objects.equals(domainEvent.getClass(), SnapshotRequestedEvent.class)) {
-			sessionEventService.create(presentationEventStore.getPresentationLink(), domainEvent);
+			sessionEventService.create(presentationEventStore.getPresentationName(), domainEvent);
 		}
 		return super.handle(domainEvent, presentationEventStore);
 	}

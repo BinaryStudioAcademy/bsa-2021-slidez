@@ -21,7 +21,9 @@ export const QandA = () => {
                     <Question questionDto={q} key={uuidv4()} />
                 ))
             ) : (
-                <div className='noQuestions'>No questions for now</div>
+                <div className='noQuestions'>
+                    Waiting for questions to display
+                </div>
             )}
         </div>
     )
