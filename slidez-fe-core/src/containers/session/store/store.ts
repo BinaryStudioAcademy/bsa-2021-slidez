@@ -14,11 +14,11 @@ import {
     AnswerPollRequest,
     AskQuestionRequest,
     createSnapshotRequest,
-    DisplayInteractionRequest,
+    SlideChangedRequest,
     LikeQuestionRequest,
     SetQuestionVisibilityRequest,
     SnapshotRequest,
-    StartPollRequest,
+    EndInteractionRequest,
 } from '../event/FrontendEvent'
 import { CreatePresentationSessionDto } from '../../../services/session/dto/CreatePresentationSessionDto'
 import { SessionPollAnswer } from '../model/SessionPollAnswer'
@@ -61,6 +61,18 @@ export const createSessionForPresentation = createAsyncThunk(
     }
 )
 
+export const requestEndCurrentInteraction = createAsyncThunk(
+    'request/interaction-end',
+    async (dto: EndInteractionRequest) => {
+        SessionService.sendRequest(dto.link, dto.event)
+    }
+)
+
+export const endCurrentInteraction = createAsyncThunk(
+    'interaction/end',
+    async () => {}
+)
+
 export const requestSnapshot = createAsyncThunk(
     'snapshot/get',
     async (params: SnapshotRequest) => {
@@ -75,9 +87,9 @@ export const receiveSnapshot = createAsyncThunk(
     }
 )
 
-export const requestDisplayInteraction = createAsyncThunk(
+export const requestSlideChanged = createAsyncThunk(
     'interaction/request',
-    async (params: DisplayInteractionRequest) => {
+    async (params: SlideChangedRequest) => {
         SessionService.sendRequest(params.link, params.event)
     }
 )
@@ -275,6 +287,9 @@ export const presentationSessionSlice = createSlice({
                 if (state.qAndASession) {
                     state.qAndASession.questions = action.payload
                 }
+            })
+            .addCase(endCurrentInteraction.fulfilled, (state, action) => {
+                state.currentInteractiveElement = undefined
             })
     },
 })

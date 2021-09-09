@@ -6,10 +6,7 @@ import com.binarystudio.academy.slidez.domain.interactive_element.model.Interact
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import com.binarystudio.academy.slidez.domain.session.PresentationEventStore;
 import com.binarystudio.academy.slidez.domain.session.dto.SessionResponse;
-import com.binarystudio.academy.slidez.domain.session.event.DisplayQASessionEvent;
-import com.binarystudio.academy.slidez.domain.session.event.DomainEvent;
-import com.binarystudio.academy.slidez.domain.session.event.DisplayInteractionEvent;
-import com.binarystudio.academy.slidez.domain.session.event.StartPollEvent;
+import com.binarystudio.academy.slidez.domain.session.event.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,34 +14,34 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Component
-public class DisplayInteractionEventHandler extends AbstractDomainEventHandler {
+public class SlideChangedEventHandler extends AbstractDomainEventHandler {
 
 	private final InteractiveElementRepository interactiveElementRepository;
 
 	@Autowired
-	public DisplayInteractionEventHandler(InteractiveElementRepository interactiveElementRepository) {
+	public SlideChangedEventHandler(InteractiveElementRepository interactiveElementRepository) {
 		this.interactiveElementRepository = interactiveElementRepository;
 	}
 
 	@Override
 	public GenericResponse<SessionResponse, SessionResponseCodes> handle(DomainEvent domainEvent,
 			PresentationEventStore presentationEventStore) {
-		if (!Objects.equals(domainEvent.getClass(), DisplayInteractionEvent.class)) {
+		if (!Objects.equals(domainEvent.getClass(), SlideChangedEvent.class)) {
 			return super.handle(domainEvent, presentationEventStore);
 		}
-		final DisplayInteractionEvent displayInteractionEvent = (DisplayInteractionEvent) domainEvent;
+		final SlideChangedEvent slideChangedEvent = (SlideChangedEvent) domainEvent;
 		Optional<InteractiveElement> interactiveElement = interactiveElementRepository
-				.findBySlideId(displayInteractionEvent.getSlideId());
+				.findBySlideId(slideChangedEvent.getSlideId());
 		if (interactiveElement.isPresent()) {
-			Optional<DomainEvent> eventToDispatch = getByType(interactiveElement.get());
-			if (eventToDispatch.isPresent()) {
-				return super.handle(eventToDispatch.get(), presentationEventStore);
+			Optional<DomainEvent> startEvent = getStartEventByType(interactiveElement.get());
+			if (startEvent.isPresent()) {
+				return super.handle(startEvent.get(), presentationEventStore);
 			}
 		}
 		return super.handle(domainEvent, presentationEventStore);
 	}
 
-	private Optional<DomainEvent> getByType(InteractiveElement element) {
+	private Optional<DomainEvent> getStartEventByType(InteractiveElement element) {
 		switch (element.getType()) {
 		case POLL:
 			StartPollEvent startPollEvent = new StartPollEvent();

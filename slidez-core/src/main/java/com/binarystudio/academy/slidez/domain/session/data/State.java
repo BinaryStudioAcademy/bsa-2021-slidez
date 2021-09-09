@@ -23,6 +23,15 @@ public class State {
 		return Collections.unmodifiableList(sessionInteractiveElements);
 	}
 
+	public boolean endInteraction(Class<?> expectedInteractionClass) {
+		if (currentInteractiveElement == null
+				|| !Objects.equals(expectedInteractionClass, currentInteractiveElement.getClass())) {
+			return false;
+		}
+		this.currentInteractiveElement = null;
+		return true;
+	}
+
 	@SuppressWarnings("unchecked")
 	public <T extends SessionInteractiveElement> T assertInteractiveElementAdded(final T element) {
 		Optional<? extends SessionInteractiveElement> outHolder = getInteractiveElement(element.getId(),

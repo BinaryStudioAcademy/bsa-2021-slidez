@@ -1,4 +1,5 @@
 import {
+    endCurrentInteraction,
     receiveAnswerPoll,
     receiveLikeQuestion,
     receiveQuestion,
@@ -74,6 +75,9 @@ export const responseHandler =
                 break
             case SessionResponseType.reactionAdded:
             case SessionResponseType.displayedQASession:
+                break
+            case SessionResponseType.endCurrentInteraction:
+                dispatch(endCurrentInteraction())
                 break
             default:
                 throwBadType(response.data.type)
