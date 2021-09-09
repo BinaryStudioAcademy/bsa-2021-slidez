@@ -18,7 +18,7 @@
       font-weight: 400;
       font-size: 26px;
       display: flex;
-      
+
       img {
         display: block;
         width: 24px;
@@ -26,9 +26,13 @@
       }
     }
   }
+
   .poll-options {
+    height: 90%;
     padding: 25px;
+    overflow: auto;
   }
+
   .poll-option {
     margin-bottom: 35px;
 
@@ -51,14 +55,14 @@
     .poll-option-percent {
       margin-left: 10px;
     }
-    
+
     &.poll-option-winner {
       .poll-option-bar {
         min-width: 40px;
         background: url('../../../../assets/images/PollMaxBack.png') repeat-x;
         border-radius: 20px;
       }
-  
+
       .poll-option-percent {
         color: $main-color;
       }
