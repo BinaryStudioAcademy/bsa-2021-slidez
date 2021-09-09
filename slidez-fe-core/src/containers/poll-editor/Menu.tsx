@@ -22,11 +22,17 @@ const Menu: React.FC = () => {
         dispatch(setPollToUpdate(null))
         dispatch(setActiveTab(EditorTab.POLL))
     }, [dispatch])
-    const [isViewMenu, setIsViewMenu] = useState(true)
+    const [showPollItems, setShowPollItems] = useState(true)
+    const [showQAItems, setShowQAItems] = useState(true)
 
-    const handleArrowClick = (event: SyntheticEvent) => {
+    const handlePollArrowClick = (event: SyntheticEvent) => {
         event.stopPropagation()
-        setIsViewMenu(!isViewMenu)
+        setShowPollItems(!showPollItems)
+    }
+
+    const handleQAArrowClick = (event: SyntheticEvent) => {
+        event.stopPropagation()
+        setShowQAItems(!showQAItems)
     }
 
     const handleDeleteClick = (
@@ -46,11 +52,14 @@ const Menu: React.FC = () => {
         dispatch(setPollToUpdate(poll))
         dispatch(setActiveTab(EditorTab.POLL))
     }
+
     const handleQAndAClick = useCallback(() => {
         dispatch(setActiveTab(EditorTab.QA))
     }, [dispatch])
 
     const { polls } = useSelector((state: RootState) => state.editor)
+    const { qaSessions } = useSelector((state: RootState) => state.editor)
+
     return (
         <div className='main-page-addon'>
             <Session />
@@ -58,21 +67,28 @@ const Menu: React.FC = () => {
                 <h2>Create new interaction</h2>
                 <div className='menu-list'>
                     <button className='list-items' onClick={handlePollClick}>
-                        <div>
+                        <div className='text-wrapper'>
                             <img src={check} alt='check' />
+                            <div className='text poll-name'>Live poll</div>
                         </div>
-                        <div className='text poll-name'>Live poll</div>
-                        <div className='arrow-icon' onClick={handleArrowClick}>
+                        <div
+                            className='arrow-icon'
+                            onClick={handlePollArrowClick}
+                        >
                             <DropDownIcon
                                 className={
                                     'arrow-up' +
-                                    (isViewMenu ? ' show-icon' : ' hide-icon')
+                                    (showPollItems
+                                        ? ' show-icon'
+                                        : ' hide-icon')
                                 }
                             />
                             <DropUpIcon
                                 className={
                                     'arrow-down' +
-                                    (isViewMenu ? ' hide-icon' : ' show-icon')
+                                    (showPollItems
+                                        ? ' hide-icon'
+                                        : ' show-icon')
                                 }
                             />
                         </div>
@@ -80,7 +96,7 @@ const Menu: React.FC = () => {
                     <div
                         className={
                             'list-elements' +
-                            (isViewMenu ? ' show-menu' : ' hide-menu')
+                            (showPollItems ? ' show-menu' : ' hide-menu')
                         }
                     >
                         {polls.map((item) => {
@@ -112,17 +128,76 @@ const Menu: React.FC = () => {
                             )
                         })}
                     </div>
+
                     <button className='list-items' onClick={handleQAndAClick}>
-                        <img src={q_and_a} alt='q_and_a' />
-                        <div className='text'>Audience Q&#38;A</div>
+                        <div className='text-wrapper'>
+                            <img src={q_and_a} alt='q_and_a' />
+                            <div className='text'>Audience Q&#38;A</div>
+                        </div>
+                        <div
+                            className='arrow-icon'
+                            onClick={handleQAArrowClick}
+                        >
+                            <DropDownIcon
+                                className={
+                                    'arrow-up' +
+                                    (showQAItems ? ' show-icon' : ' hide-icon')
+                                }
+                            />
+                            <DropUpIcon
+                                className={
+                                    'arrow-down' +
+                                    (showQAItems ? ' hide-icon' : ' show-icon')
+                                }
+                            />
+                        </div>
+                    </button>
+                    <div
+                        className={
+                            'list-elements' +
+                            (showQAItems ? ' show-menu' : ' hide-menu')
+                        }
+                    >
+                        {qaSessions.map((item) => {
+                            return (
+                                <div
+                                    className='list-items'
+                                    key={item.id}
+                                    // onClick={(event) =>
+                                    //     handlePresentQAClick(event, item)
+                                    // }
+                                >
+                                    <img
+                                        className='check'
+                                        src={q_and_a}
+                                        alt='q_and_a'
+                                    />
+                                    <div className='text'>{item.title}</div>
+                                    &nbsp;
+                                    <div className='delete'>
+                                        <TrashIcon
+                                            className='delete-icon'
+                                            // onClick={(event) =>
+                                            //     handleDeleteClick(event, item)
+                                            // }
+                                        />
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
+
+                    <button className='list-items'>
+                        <div className='text-wrapper'>
+                            <img src={heart} alt='heart' />
+                            <div className='text'>Reactions</div>
+                        </div>
                     </button>
                     <button className='list-items'>
-                        <img src={heart} alt='heart' />
-                        <div className='text'>Reactions</div>
-                    </button>
-                    <button className='list-items'>
-                        <img src={chat} alt='chat' />
-                        <div className='text'>Quiz</div>
+                        <div className='text-wrapper'>
+                            <img src={chat} alt='chat' />
+                            <div className='text'>Quiz</div>
+                        </div>
                     </button>
                 </div>
             </div>
