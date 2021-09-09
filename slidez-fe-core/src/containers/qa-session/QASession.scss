@@ -2,7 +2,7 @@
 
 .qa-loader {
     display: flex;
-    flex-direction: 'column';
+    flex-direction: column;
     flex-grow: 1;
     min-height: 600px;
     justify-content: center;
@@ -11,6 +11,10 @@
     height: 100%;
     overflow: hidden;
     padding: 3rem;
+    
+    .spinner-container {
+        margin-bottom: 10px;
+    }
 }
 .qanda-name-block {
     display: flex;

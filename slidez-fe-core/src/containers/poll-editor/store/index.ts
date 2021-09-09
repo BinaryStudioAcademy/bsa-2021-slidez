@@ -98,12 +98,12 @@ export const loadActiveSession = createAsyncThunk(
 
 export const createSessionForPresentation = createAsyncThunk(
     'create-session',
-    async (dto: CreatePresentationSessionDto) => {
+    async (dto: CreatePresentationSessionDto, { dispatch }) => {
         try {
             const res = await createPresentationSession(dto)
             const link = res.link
 
-            setActiveSession(link)
+            dispatch(setActiveSession(link))
 
             getMessageBusUnsafe()!.sendMessageNoCallback({
                 type: EventType.SET_ACTIVE_SESSION,

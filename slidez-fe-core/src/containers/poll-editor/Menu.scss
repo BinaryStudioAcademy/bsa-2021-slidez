@@ -3,6 +3,7 @@
 .addon-components {
   margin: 15px 1rem;
   display: block;
+
   h2 {
     font-weight: 700;
     font-size: 16px;
@@ -73,10 +74,11 @@
         width: 6rem;
       }
       .text {
-        font-weight: 500;
         font-size: 14px;
         max-width: max-content;
         line-height: 20px;
+        font-family: 'Rubik';
+        font-weight: 400;
       }
       .arrow-icon {
         cursor: pointer;
