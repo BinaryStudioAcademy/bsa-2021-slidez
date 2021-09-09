@@ -23,11 +23,10 @@ const ParticipantReactionButton: React.FC<ParticipantReactionProps> = ({
 }: ParticipantReactionProps) => {
     const dispatch = useDispatch()
     const [isButtonDisabled, setButtonDisabled] = useState(false)
+
     const handleButton = () => {
         setButtonDisabled(true)
-        console.log('1 ' + isButtonDisabled)
         setTimeout(() => setButtonDisabled(false), 10000)
-        console.log('2 ' + isButtonDisabled)
     }
 
     const handleLikeClick = React.useCallback(
@@ -38,6 +37,16 @@ const ParticipantReactionButton: React.FC<ParticipantReactionProps> = ({
         makeReactionHandler(dispatch, link, Reactions.LOVE, ''),
         [dispatch, link]
     )
+
+    const handleLikeButton = () => {
+        handleLikeClick()
+        handleButton()
+    }
+
+    const handleLoveButton = () => {
+        handleLoveClick()
+        handleButton()
+    }
 
     const openedBlockRef = useRef<HTMLInputElement>(null)
     const [isOpened, setIsOpened] = useDetectOutsideClick(openedBlockRef, false)
@@ -55,7 +64,7 @@ const ParticipantReactionButton: React.FC<ParticipantReactionProps> = ({
             {isOpened || isDesktop ? (
                 <div className={styles.openedBlock} ref={openedBlockRef}>
                     <button
-                        onClick={handleLikeClick}
+                        onClick={handleLikeButton}
                         disabled={isButtonDisabled}
                     >
                         <ThumbUpIcon
@@ -64,8 +73,7 @@ const ParticipantReactionButton: React.FC<ParticipantReactionProps> = ({
                         />
                     </button>
                     <button
-                        onClick={handleLoveClick}
-                        onChange={handleButton}
+                        onClick={handleLoveButton}
                         disabled={isButtonDisabled}
                     >
                         <HeartIcon
