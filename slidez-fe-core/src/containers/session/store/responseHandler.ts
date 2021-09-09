@@ -32,7 +32,7 @@ export const responseHandler =
                 NotificationTypes.ERROR
             )
             console.error(response.error)
-            window.location.assign(`/#${AppRoute.EVENTS}`)
+            //window.location.assign(`/#${AppRoute.EVENTS}`)
             return
         }
         if (!response.data) {
