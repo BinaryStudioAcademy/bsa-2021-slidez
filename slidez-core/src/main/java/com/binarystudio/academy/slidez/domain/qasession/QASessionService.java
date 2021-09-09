@@ -1,23 +1,23 @@
 package com.binarystudio.academy.slidez.domain.qasession;
 
-    import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
-    import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElementType;
-    import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
-    import com.binarystudio.academy.slidez.domain.presentation.exception.PresentationNotFoundException;
-    import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
-    import com.binarystudio.academy.slidez.domain.qasession.dto.CreateQASessionDto;
-    import com.binarystudio.academy.slidez.domain.qasession.dto.QASessionDto;
-    import com.binarystudio.academy.slidez.domain.qasession.exception.QASessionNotFoundException;
-    import com.binarystudio.academy.slidez.domain.qasession.mapper.QASessionMapper;
-    import com.binarystudio.academy.slidez.domain.qasession.model.QASession;
-    import com.binarystudio.academy.slidez.domain.user.model.User;
-    import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.stereotype.Service;
-    import org.springframework.transaction.annotation.Transactional;
+import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
+import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElementType;
+import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
+import com.binarystudio.academy.slidez.domain.presentation.exception.PresentationNotFoundException;
+import com.binarystudio.academy.slidez.domain.presentation.model.Presentation;
+import com.binarystudio.academy.slidez.domain.qasession.dto.CreateQASessionDto;
+import com.binarystudio.academy.slidez.domain.qasession.dto.QASessionDto;
+import com.binarystudio.academy.slidez.domain.qasession.exception.QASessionNotFoundException;
+import com.binarystudio.academy.slidez.domain.qasession.mapper.QASessionMapper;
+import com.binarystudio.academy.slidez.domain.qasession.model.QASession;
+import com.binarystudio.academy.slidez.domain.user.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-    import java.util.Objects;
-    import java.util.Optional;
-    import java.util.UUID;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class QASessionService {
@@ -34,7 +34,7 @@ public class QASessionService {
 
     @Transactional
     public QASessionDto create(CreateQASessionDto dto, User owner) {
-        Presentation presentation = presentationService.assertPresentationExists(dto.getPresentationId(),  dto.getPresentationName(), owner);
+        Presentation presentation = presentationService.assertPresentationExists(dto.getPresentationId(), dto.getPresentationName(), owner);
 
         QASession qaSession = new QASession();
         InteractiveElement interactiveElement = new InteractiveElement();
