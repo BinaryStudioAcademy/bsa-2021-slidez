@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.domain.poll;
 
+import com.binarystudio.academy.slidez.domain.interactive_element.InteractiveElementRepository;
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElementType;
 import com.binarystudio.academy.slidez.domain.poll.dto.CreatePollDto;
@@ -16,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,10 +28,14 @@ public class PollService {
 
 	private final PresentationService presentationService;
 
+	private final InteractiveElementRepository interactiveElementRepository;
+
 	@Autowired
-	public PollService(PollRepository pollRepository, PresentationService presentationService) {
+	public PollService(PollRepository pollRepository, PresentationService presentationService,
+			InteractiveElementRepository interactiveElementRepository) {
 		this.pollRepository = pollRepository;
 		this.presentationService = presentationService;
+		this.interactiveElementRepository = interactiveElementRepository;
 	}
 
 	@Transactional
@@ -73,8 +76,8 @@ public class PollService {
 	}
 
 	@Transactional
-	public void remove(UUID id) {
-		pollRepository.deleteById(id);
+	public void remove(String slideId) {
+		interactiveElementRepository.deleteBySlideId(slideId);
 	}
 
 	public Optional<Poll> getById(UUID id) {
