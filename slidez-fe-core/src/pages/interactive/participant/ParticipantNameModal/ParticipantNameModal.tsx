@@ -33,7 +33,7 @@ const ParticipantNameErrors = ({
         errorMessage = 'Last name should be 2 or more characters long'
     }
 
-    return <div className='error-text'>{errorMessage}</div>
+    return <div className={styles.nameErrorText}>{errorMessage}</div>
 }
 
 const ParticipantNameDialog = (params: any) => {
@@ -139,7 +139,7 @@ const ParticipantNameDialog = (params: any) => {
                                 viewErrors={viewErrors}
                                 formikErrors={errors}
                             />
-                            <div className='form-row buttons-row'>
+                            <div className='form-row'>
                                 <button
                                     className='form-button login-button'
                                     onClick={() => setViewErrors(true)}

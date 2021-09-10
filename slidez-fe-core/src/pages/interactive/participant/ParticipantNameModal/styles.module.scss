@@ -1,9 +1,20 @@
+@import "src/global/global";
+
 .dialog {
   :global(.MuiPaper-root) {
     border-radius: 15px;
     min-width: 320px;
+    min-height: 300px;
     :global(.MuiTypography-h6) {
       font-family: 'Rubik';
+    }
+    .nameErrorText{
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 5px;
+      color: $error;
+      font-size: 12px;
+      min-height: 10px;
     }
   }
   :global(.MuiTypography-root) {
@@ -13,4 +24,4 @@
   button:focus-visible {
     font-family: 'Rubik';
   }
-}
+} 
