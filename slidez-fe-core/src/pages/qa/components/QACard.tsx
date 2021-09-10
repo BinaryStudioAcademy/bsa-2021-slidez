@@ -31,7 +31,7 @@ export default function QACard({
             <div className='reaction'>
                 <button onClick={likeClick} className='like-btn'>
                     <img className={iconClasss} src={iconImage} />
-                    {likeCount}
+                    <span>{likeCount}</span>
                 </button>
             </div>
         </div>

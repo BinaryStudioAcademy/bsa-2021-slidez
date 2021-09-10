@@ -43,6 +43,7 @@ type EditorState = {
         presentationName: string
     } | null
     pollToUpdate: PollInteractiveElement | null
+    loading: boolean
 }
 
 const initialState: EditorState = {
@@ -55,6 +56,7 @@ const initialState: EditorState = {
     quizzes: [],
     polls: [],
     pollToUpdate: null,
+    loading: false,
 }
 
 export const preloadState = createAsyncThunk(
@@ -125,6 +127,7 @@ export const createSessionForPresentation = createAsyncThunk(
 export const createPoll = createAsyncThunk(
     'create-poll',
     async (pollWriteDto: WritePollDto, { dispatch }) => {
+        dispatch(setLoading(true))
         const data =
             await getMessageBusUnsafe()!.sendMessageAndListen<InsertSlideSuccess>(
                 {
@@ -141,6 +144,7 @@ export const createPoll = createAsyncThunk(
             await httpHelper.doPost('/polls', pollWriteDto)
         ).data.data
         dispatch(setActiveTab(null))
+        dispatch(setLoading(false))
         return presentationData
     }
 )
@@ -183,6 +187,7 @@ export const deleteQA = createAsyncThunk(
 export const updatePoll = createAsyncThunk(
     'update-poll',
     async (pollUpdateDto: UpdatePollDto, { dispatch }) => {
+        dispatch(setLoading(true))
         const data =
             await getMessageBusUnsafe()!.sendMessageAndListen<UpdateSlideSuccess>(
                 {
@@ -197,12 +202,14 @@ export const updatePoll = createAsyncThunk(
             )
         await httpHelper.doPatch(`/polls/${pollUpdateDto.id}`, pollUpdateDto)
         dispatch(setActiveTab(null))
+        dispatch(setLoading(false))
         return pollUpdateDto
     }
 )
 export const createQA = createAsyncThunk(
     'create-qa',
     async (qaWriteDto: WriteQADto, { dispatch }) => {
+        dispatch(setLoading(true))
         const data =
             await getMessageBusUnsafe()!.sendMessageAndListen<InsertSlideSuccess>(
                 {
@@ -219,6 +226,7 @@ export const createQA = createAsyncThunk(
             await httpHelper.doPost('/qa-sessions/new', qaWriteDto)
         ).data.data
         dispatch(setActiveTab(null))
+        dispatch(setLoading(false))
         return presentationData
     }
 )
@@ -256,6 +264,10 @@ const editorSlice = createSlice({
             payload: PayloadAction<PollInteractiveElement | null>
         ) => {
             state.pollToUpdate = payload.payload
+        },
+
+        setLoading: (state: EditorState, payload: PayloadAction<boolean>) => {
+            state.loading = payload.payload
         },
     },
     extraReducers: (builder) =>
@@ -355,6 +367,7 @@ export const {
     setActiveTab,
     setActiveSession,
     setPollToUpdate,
+    setLoading,
 } = editorSlice.actions
 
 export default editorSlice.reducer

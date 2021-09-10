@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { CSSProperties, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-    Like,
-    ThumbUp,
+    ThumbUpDom,
+    LikeDom,
 } from '../../../../common/components/interactive-elements/reactions/PresenterReaction'
 import { initReactionWebSocketSession } from './store'
 import { RootState } from '../../../../store'
@@ -11,35 +11,85 @@ import { pullReaction } from './store'
 import styles from './reactionOverlayPage.module.scss'
 import { useParams } from 'react-router-dom'
 
+const getLeftOffset = () => {
+    const sign = Math.floor(Math.random() * 3 - 1)
+    if (sign == -1) {
+        return Math.floor(Math.random() * 130) * -1
+    }
+    if (sign == 0) {
+        return 0
+    }
+
+    return Math.floor(Math.random() * 130)
+}
+
+const getLeftPosition = () => {
+    return Math.random() * 25 + 48
+}
+
+const getTopOffset = () => {
+    return Math.random() * 100 - 50
+}
+
 export const ReactionOverlay = () => {
     const { link } = useParams<{ link: string }>()
     const { connectionStatus, reactions } = useSelector(
         (state: RootState) => state.reactions
     )
-    const [left, setLeft] = useState(Math.random() * 17 + 51)
+    const overlayContainer = useRef<HTMLDivElement>(null)
 
     const dispatch = useDispatch()
-    const [currentReaction, setCurrentReaction] = useState<Reactions | null>(
-        null
-    )
+
+    const createReactionDomElement = (
+        reaction: Reactions,
+        leftPosition: string,
+        leftOffset: string,
+        topOffset: string
+    ) => {
+        const divElement = document.createElement('div')
+        divElement.className = styles.reactionContainer
+        divElement.style.left = leftPosition
+        console.log(leftOffset)
+        const style: CSSProperties = {
+            left: leftOffset,
+            marginTop: topOffset,
+        }
+
+        const reactionElement =
+            reaction !== Reactions.LIKE ? LikeDom(style) : ThumbUpDom(style)
+        divElement.appendChild(reactionElement)
+        return divElement
+    }
 
     useEffect(() => {
         dispatch(initReactionWebSocketSession(link))
     }, [])
 
+    const processReaction = () => {
+        const currentReaction = reactions[0]
+        dispatch(pullReaction())
+
+        const reactionElement = createReactionDomElement(
+            currentReaction,
+            `${getLeftPosition()}%`,
+            `${getLeftOffset()}%`,
+            `${getTopOffset()}px`
+        )
+
+        overlayContainer.current?.appendChild(reactionElement)
+
+        setTimeout(() => {
+            overlayContainer.current?.removeChild(reactionElement)
+        }, 3000)
+    }
+
     useEffect(() => {
-        //if we have a reaction - don't poll
-        if (currentReaction || reactions.length === 0) {
+        if (reactions.length === 0) {
             return
         }
-        console.log('au', currentReaction)
-        setCurrentReaction(reactions[0])
-        dispatch(pullReaction())
-        setTimeout(() => {
-            setLeft(Math.random() * 20 + 50)
-            setCurrentReaction(null)
-        }, 1300)
-    }, [reactions, currentReaction])
+
+        processReaction()
+    }, [reactions])
 
     useEffect(() => {
         const bgColor = document.body.style.backgroundColor
@@ -52,26 +102,5 @@ export const ReactionOverlay = () => {
         }
     })
 
-    let body: JSX.Element | null = null
-    switch (currentReaction) {
-        case Reactions.LIKE:
-            body = (
-                <div className={`${styles.reactionContainer}`}>
-                    <ThumbUp />
-                </div>
-            )
-            break
-        case Reactions.LOVE:
-            body = (
-                <div
-                    className={`${styles.reactionContainer}`}
-                    style={{ left: `${left}%` }}
-                >
-                    <Like />
-                </div>
-            )
-            break
-    }
-
-    return <div className={styles.reactionOverlay}>{body}</div>
+    return <div className={styles.reactionOverlay} ref={overlayContainer} />
 }

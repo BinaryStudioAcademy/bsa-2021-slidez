@@ -91,20 +91,34 @@
         font-weight: 500;
         font-size: 16px;
 
-        &-icon {
+
+        .spinner {
+          font-size: 24px;
+          width: initial;
+          margin: initial;
+        }
+        .btn-submit-icon {
           min-width: 20px;
           min-height: 1px;
           margin-left: 5px;
-
-          .spinner {
-            font-size: initial;
-            width: initial;
-            margin: initial;
-          }
         }
       }
       &:checked {
         background-color: rgba(89, 208, 165, 0.4);
+      }
+      
+      .answer-submitted {
+        height: 45px;
+        border: 2px solid transparent;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;  
+        font-size: 16px;
+        font-weight: 400; 
+        img {
+          margin-right: 10px;
+        }
       }
     }
     .PrivateSwitchBase-input-4 {
