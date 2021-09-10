@@ -19,7 +19,7 @@ public interface LinkRepository extends JpaRepository<Link, UUID> {
 	@Query("select count(l) from Link l where l.leasedUntil is null")
 	int getCountAvailableLinks();
 
-	@Query(value = "SELECT * FROM link ORDER BY code DESC LIMIT 1", nativeQuery = true)
+	@Query(value = "SELECT * FROM link ORDER BY created_at DESC LIMIT 1", nativeQuery = true)
 	Optional<Link> getLastLink();
 
 	@Transactional
