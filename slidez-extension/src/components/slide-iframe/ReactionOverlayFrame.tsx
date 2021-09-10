@@ -9,6 +9,7 @@ type ReactionOverlayFrameProps = {
 function SlideIframe({ sourceUrl }: ReactionOverlayFrameProps) {
     return (
         <iframe
+            id='reaction-frame'
             className={CLASS_NAME_INTERACTIVE_SLIDE_IFRAME}
             src={sourceUrl}
             title='Reaction overlay element'

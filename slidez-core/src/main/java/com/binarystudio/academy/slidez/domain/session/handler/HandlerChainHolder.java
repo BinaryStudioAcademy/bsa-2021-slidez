@@ -1,7 +1,5 @@
 package com.binarystudio.academy.slidez.domain.session.handler;
 
-import com.binarystudio.academy.slidez.domain.session.event.SlideChangedEvent;
-import com.binarystudio.academy.slidez.domain.sessionEvent.handler.PersistDomainEventInDbHandler;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

@@ -23,9 +23,8 @@ public class State {
 		return Collections.unmodifiableList(sessionInteractiveElements);
 	}
 
-	public boolean endInteraction(Class<?> expectedInteractionClass) {
-		if (currentInteractiveElement == null
-				|| !Objects.equals(expectedInteractionClass, currentInteractiveElement.getClass())) {
+	public boolean endInteraction() {
+		if (currentInteractiveElement == null) {
 			return false;
 		}
 		this.currentInteractiveElement = null;

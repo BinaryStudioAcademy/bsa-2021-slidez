@@ -10,6 +10,9 @@ import { Reactions } from '../../../../types/reactions'
 import { pullReaction } from './store'
 import styles from './reactionOverlayPage.module.scss'
 import { useParams } from 'react-router-dom'
+import { SLIDE_CHANGE_EVENT } from 'slidez-shared'
+import { requestEndCurrentInteraction } from '../../../../containers/session/store/store'
+import { createEndInteractionRequest } from '../../../../containers/session/event/FrontendEvent'
 
 const getLeftOffset = () => {
     const sign = Math.floor(Math.random() * 3 - 1)
@@ -65,6 +68,7 @@ export const ReactionOverlay = () => {
         dispatch(initReactionWebSocketSession(link))
     }, [])
 
+    //web socket effects
     const processReaction = () => {
         const currentReaction = reactions[0]
         dispatch(pullReaction())
@@ -91,16 +95,35 @@ export const ReactionOverlay = () => {
         processReaction()
     }, [reactions])
 
+    //DOM effects
     useEffect(() => {
         const bgColor = document.body.style.backgroundColor
         const overflow = document.body.style.overflow
         document.body.style.backgroundColor = 'transparent'
         document.body.style.overflow = 'hidden'
+
+        window.addEventListener('message', (event) => {
+            const slideId = event.data
+            console.log(event)
+            if (typeof slideId !== 'string') {
+                return
+            }
+
+            //don't emit end event if new slide is slidez to not end freshly started event
+            if (slideId.startsWith('slidez')) {
+                return
+            }
+
+            dispatch(
+                requestEndCurrentInteraction(createEndInteractionRequest(link))
+            )
+        })
+
         return () => {
             document.body.style.backgroundColor = bgColor
             document.body.style.overflow = overflow
         }
-    })
+    }, [])
 
     return <div className={styles.reactionOverlay} ref={overlayContainer} />
 }

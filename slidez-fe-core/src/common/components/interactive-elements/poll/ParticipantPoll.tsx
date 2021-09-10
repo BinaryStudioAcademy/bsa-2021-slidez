@@ -51,6 +51,7 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
     }, [poll])
 
     const onSendClick = () => {
+        console.log(chosenOption)
         if (!chosenOption || !participantData.id) {
             return
         }
@@ -59,6 +60,7 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
             optionId: chosenOption.id,
             answeredBy: participantData.id,
         }
+        console.log(pollAnswer)
         const answerPollRequest: AnswerPollRequest = createAnswerPollRequest(
             link,
             pollAnswer
