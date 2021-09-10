@@ -47,6 +47,7 @@ export type QuizInteractiveElement = {
 export type QaInteractiveElement = {
     id: string
     type: 'QASession'
+    slideId: string
 } & ReadQaSessionDto
 
 export type InteractiveElement =
