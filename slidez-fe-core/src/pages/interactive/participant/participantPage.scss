@@ -29,6 +29,14 @@
     }
 
     .code-input,
+    .code-input:focus {
+      background-color: $light-color;
+      font-size: 12px;
+      padding-left: 20px;
+      margin-bottom: 15px;
+      outline: none;
+    }
+    // Not working in Safari
     .code-input:focus-visible {
       background-color: $light-color;
       font-size: 12px;
@@ -37,6 +45,11 @@
       outline: none;
     }
     .code-input:active,
+    .code-input:focus {
+      outline: none;
+      border: 1px #59d0a5 solid;
+    }
+    // Not working in Safari
     .code-input:focus-visible {
       outline: none;
       border: 1px #59d0a5 solid;

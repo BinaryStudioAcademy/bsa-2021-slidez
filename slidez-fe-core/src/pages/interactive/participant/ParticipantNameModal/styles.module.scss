@@ -21,6 +21,10 @@
     font-weight: 400;
   }
   button,
+  button:focus {
+    font-family: 'Rubik';
+  }
+  // Not working in Safari
   button:focus-visible {
     font-family: 'Rubik';
   }
