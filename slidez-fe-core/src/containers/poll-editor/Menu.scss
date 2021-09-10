@@ -112,12 +112,12 @@
     max-height: 235px;
     overflow-y: auto;
     margin-bottom: 15px;
-    animation: 0.1s linear 0s alternate dropDown;
+    animation: 0.2s linear 0s alternate dropDown;
   }
   .hide-menu {
     height: 0;
     overflow: hidden;
-    animation: 0.1s linear 0s dropUp;
+    animation: 0.2s linear 0s dropUp;
   }
   .button-show-hide-elements {
     padding-left: 2rem;
@@ -125,18 +125,16 @@
 }
 
 @keyframes dropDown {
-  from {
-    height: 0;
-  }
-  to {
-    height: 235px;
+  0% {
+    max-height: 0;
+    overflow: hidden;
   }
 }
 @keyframes dropUp {
-  from {
-    height: 245px;
+  0% {
+    height: auto;
   }
-  to {
-    height: 0px;
+  100% {
+    max-height: 0;
   }
 }
