@@ -109,7 +109,7 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
                         )}
                     </RadioGroup>
                 </FormControl>
-                {!isAnswerSent || !showLoader ? (
+                {!isAnswerSent || showLoader ? (
                     <button className='btn-submit' onClick={onSendClick}>
                         <div className='btn-submit-text'>Submit</div>
                         <div className='btn-submit-icon'>
