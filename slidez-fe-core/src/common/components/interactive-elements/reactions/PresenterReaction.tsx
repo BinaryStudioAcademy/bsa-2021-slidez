@@ -15,3 +15,15 @@ export const Like = ({ styles }: ReactionStyles) => reaction(like, styles)
 
 export const ThumbUp = ({ styles }: ReactionStyles) =>
     reaction(thumb_up, styles)
+
+const createReactionDom = (imgSrc: string) => (styles: CSSProperties) => {
+    const element = document.createElement('img')
+    element.src = imgSrc
+    element.width = 50
+    element.style.left = String(styles.left)
+    element.style.top = String(styles.marginTop)
+    return element
+}
+
+export const ThumbUpDom = createReactionDom(thumb_up)
+export const LikeDom = createReactionDom(like)

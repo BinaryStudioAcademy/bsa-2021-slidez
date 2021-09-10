@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { CSSProperties, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-    Like,
-    ThumbUp,
+    ThumbUpDom,
+    LikeDom,
 } from '../../../../common/components/interactive-elements/reactions/PresenterReaction'
 import { initReactionWebSocketSession } from './store'
 import { RootState } from '../../../../store'
@@ -14,20 +14,20 @@ import { useParams } from 'react-router-dom'
 const getLeftOffset = () => {
     const sign = Math.floor(Math.random() * 3 - 1)
     if (sign == -1) {
-        return Math.floor(Math.random() * 100) * -1
+        return Math.floor(Math.random() * 130) * -1
     }
     if (sign == 0) {
         return 0
     }
 
-    return Math.floor(Math.random() * 100)
+    return Math.floor(Math.random() * 130)
 }
 
 const getLeftPosition = () => {
     return Math.random() * 25 + 48
 }
 
-const getMargin = () => {
+const getTopOffset = () => {
     return Math.random() * 100 - 50
 }
 
@@ -36,52 +36,29 @@ export const ReactionOverlay = () => {
     const { connectionStatus, reactions } = useSelector(
         (state: RootState) => state.reactions
     )
-    const [reactionElements, setReactionElements] = useState<JSX.Element[]>([])
-    const [counter, setCounter] = useState<number>(1)
+    const overlayContainer = useRef<HTMLDivElement>(null)
 
     const dispatch = useDispatch()
 
-    const getJSXElementForReaction = (
+    const createReactionDomElement = (
         reaction: Reactions,
-        key: number,
-        leftAnimation: string,
         leftPosition: string,
+        leftOffset: string,
         topOffset: string
-    ): JSX.Element => {
-        switch (reaction) {
-            case Reactions.LIKE:
-                return (
-                    <div
-                        className={`${styles.reactionContainer}`}
-                        id='reaction'
-                        style={{ left: leftPosition }}
-                        key={key}
-                    >
-                        <ThumbUp
-                            styles={{
-                                left: leftAnimation,
-                                top: topOffset,
-                            }}
-                        />
-                    </div>
-                )
-            // case Reactions.LOVE: // Uncomment if there will be more reactions
-            default:
-                return (
-                    <div
-                        className={`${styles.reactionContainer}`}
-                        style={{ left: leftPosition }}
-                        key={key}
-                    >
-                        <Like
-                            styles={{
-                                left: leftAnimation,
-                                top: topOffset,
-                            }}
-                        />
-                    </div>
-                )
+    ) => {
+        const divElement = document.createElement('div')
+        divElement.className = styles.reactionContainer
+        divElement.style.left = leftPosition
+        console.log(leftOffset)
+        const style: CSSProperties = {
+            left: leftOffset,
+            marginTop: topOffset,
         }
+
+        const reactionElement =
+            reaction !== Reactions.LIKE ? LikeDom(style) : ThumbUpDom(style)
+        divElement.appendChild(reactionElement)
+        return divElement
     }
 
     useEffect(() => {
@@ -89,26 +66,20 @@ export const ReactionOverlay = () => {
     }, [])
 
     const processReaction = () => {
-        const number = counter
-        setCounter(counter + 1)
         const currentReaction = reactions[0]
         dispatch(pullReaction())
-        const element = getJSXElementForReaction(
+
+        const reactionElement = createReactionDomElement(
             currentReaction,
-            counter,
-            `${getLeftOffset()}%`,
             `${getLeftPosition()}%`,
-            `${getMargin()}px`
+            `${getLeftOffset()}%`,
+            `${getTopOffset()}px`
         )
-        setReactionElements([...reactionElements, element])
+
+        overlayContainer.current?.appendChild(reactionElement)
 
         setTimeout(() => {
-            const stayedReactions = reactionElements.filter(
-                (el) => el.key != number
-            )
-            console.log(number, reactionElements.length, stayedReactions.length)
-            // !!!! Here reactions should be deleted
-            // setReactionElements(stayedReactions)
+            overlayContainer.current?.removeChild(reactionElement)
         }, 3000)
     }
 
@@ -131,5 +102,5 @@ export const ReactionOverlay = () => {
         }
     })
 
-    return <div className={styles.reactionOverlay}>{reactionElements}</div>
+    return <div className={styles.reactionOverlay} ref={overlayContainer} />
 }
