@@ -170,7 +170,7 @@ export const deletePoll = createAsyncThunk(
     'delete-poll',
     async (pollDto: PollInteractiveElement, { dispatch }) => {
         dispatch(deleteSlide(pollDto.slideId))
-        await httpHelper.doDelete(`/polls/${pollDto.id}`)
+        await httpHelper.doDelete(`/polls/${pollDto.slideId}`)
         return pollDto
     }
 )
@@ -179,7 +179,7 @@ export const deleteQA = createAsyncThunk(
     'delete-qa',
     async (QADto: QaInteractiveElement, { dispatch }) => {
         dispatch(deleteSlide(QADto.slideId))
-        await httpHelper.doDelete(`/qa-sessions/${QADto.id}`)
+        await httpHelper.doDelete(`/qa-sessions/${QADto.slideId}`)
         return QADto
     }
 )

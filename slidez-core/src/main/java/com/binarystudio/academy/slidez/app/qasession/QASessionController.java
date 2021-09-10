@@ -42,9 +42,9 @@ public class QASessionController {
 		return new GenericResponse<>(qaSessionDto);
 	}
 
-	@DeleteMapping("/{id}")
-	public void delete(@PathVariable("id") UUID id) {
-		qaSessionService.remove(id);
+	@DeleteMapping("/{slide-id}")
+	public void delete(@PathVariable("slide-id") String slideId) {
+		qaSessionService.remove(slideId);
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.domain.qasession;
 
+import com.binarystudio.academy.slidez.domain.interactive_element.InteractiveElementRepository;
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElementType;
 import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
@@ -24,11 +25,15 @@ public class QASessionService {
 
 	private final PresentationService presentationService;
 
+	private final InteractiveElementRepository interactiveElementRepository;
+
 	private final QASessionRepository qaSessionRepository;
 
 	@Autowired
-	public QASessionService(PresentationService presentationService, QASessionRepository qaSessionRepository) {
+	public QASessionService(PresentationService presentationService,
+			InteractiveElementRepository interactiveElementRepository, QASessionRepository qaSessionRepository) {
 		this.presentationService = presentationService;
+		this.interactiveElementRepository = interactiveElementRepository;
 		this.qaSessionRepository = qaSessionRepository;
 	}
 
@@ -51,8 +56,8 @@ public class QASessionService {
 	}
 
 	@Transactional
-	public void remove(UUID id) {
-		qaSessionRepository.deleteById(id);
+	public void remove(String slideId) {
+		interactiveElementRepository.deleteBySlideId(slideId);
 	}
 
 	public Optional<QASession> getBySlideId(String slideId) {

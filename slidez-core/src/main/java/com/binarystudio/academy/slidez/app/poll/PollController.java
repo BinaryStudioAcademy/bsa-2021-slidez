@@ -41,9 +41,9 @@ public class PollController {
 		return new GenericResponse<>(dto);
 	}
 
-	@DeleteMapping("/{id}")
-	public void delete(@PathVariable("id") UUID id) {
-		pollService.remove(id);
+	@DeleteMapping("/{slide-id}")
+	public void delete(@PathVariable("slide-id") String slideId) {
+		pollService.remove(slideId);
 	}
 
 	@PatchMapping("/{id}")
