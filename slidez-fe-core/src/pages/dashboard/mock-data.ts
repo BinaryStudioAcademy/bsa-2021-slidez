@@ -14,8 +14,15 @@ import Mock13 from '../../assets/mockedPresentations/Space Exploration Technolog
 import Mock14 from '../../assets/mockedPresentations/The Most Popular Cat Breeds in the World.jpg'
 import Mock15 from '../../assets/mockedPresentations/The Secrets of Digital Twins for the Cities of Tomorrow.jpg'
 import Mock16 from '../../assets/mockedPresentations/What is Bitcoin Cryptocurrency.jpg'
+import Slidez from '../../assets/mockedPresentations/Slidez.png'
 
 export const MOCK_DATA = [
+    {
+        id: 0,
+        name: 'Slidez Demo',
+        pictureUrl: Slidez,
+        dateUpdated: '10.09.2021',
+    },
     {
         id: 1,
         name: 'Binary Numbers for Beginners',
