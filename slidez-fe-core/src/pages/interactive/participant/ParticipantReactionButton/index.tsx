@@ -26,7 +26,7 @@ const ParticipantReactionButton: React.FC<ParticipantReactionProps> = ({
 
     const handleButton = () => {
         setButtonDisabled(true)
-        setTimeout(() => setButtonDisabled(false), 10000)
+        setTimeout(() => setButtonDisabled(false), 3000)
     }
 
     const handleLikeClick = React.useCallback(
