@@ -23,7 +23,7 @@ public class State {
 		return Collections.unmodifiableList(sessionInteractiveElements);
 	}
 
-	public boolean endInteraction(Class<?> expectedInteractionClass) {
+	public boolean endInteraction() {
 		if (currentInteractiveElement == null) {
 			return false;
 		}

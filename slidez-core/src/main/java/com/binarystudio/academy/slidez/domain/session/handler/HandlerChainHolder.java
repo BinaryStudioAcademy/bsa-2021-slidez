@@ -1,7 +1,5 @@
 package com.binarystudio.academy.slidez.domain.session.handler;
 
-import com.binarystudio.academy.slidez.domain.session.event.SlideChangedEvent;
-import com.binarystudio.academy.slidez.domain.sessionEvent.handler.PersistDomainEventInDbHandler;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -22,12 +20,13 @@ public class HandlerChainHolder implements ApplicationContextAware {
 	public AbstractDomainEventHandler eventHandler() {
 		SnapshotRequestHandler snapshotRequestHandler = applicationContext.getBean("snapshotRequestHandler",
 				SnapshotRequestHandler.class);
-		SlideChangedEventHandler slideChangedEventHandler =
-            applicationContext.getBean("slideChangedEventHandler", SlideChangedEventHandler.class);
-		EndInteractionEventHandler endInteractionEventHandler =
-            applicationContext.getBean("endInteractionEventHandler", EndInteractionEventHandler.class);
-		//PersistDomainEventInDbHandler persistDomainEventInDbHandler = applicationContext
-		//		.getBean("persistDomainEventInDbHandler", PersistDomainEventInDbHandler.class);
+		SlideChangedEventHandler slideChangedEventHandler = applicationContext.getBean("slideChangedEventHandler",
+				SlideChangedEventHandler.class);
+		EndInteractionEventHandler endInteractionEventHandler = applicationContext.getBean("endInteractionEventHandler",
+				EndInteractionEventHandler.class);
+		// PersistDomainEventInDbHandler persistDomainEventInDbHandler =
+		// applicationContext
+		// .getBean("persistDomainEventInDbHandler", PersistDomainEventInDbHandler.class);
 		StartPollHandler startPollHandler = applicationContext.getBean("startPollHandler", StartPollHandler.class);
 		AnswerPollHandler answerPollHandler = applicationContext.getBean("answerPollHandler", AnswerPollHandler.class);
 		StartQASessionHandler startQASessionHandler = applicationContext.getBean("startQASessionHandler",
@@ -50,14 +49,12 @@ public class HandlerChainHolder implements ApplicationContextAware {
 				DefaultEventHandler.class);
 
 		snapshotRequestHandler
-        //.setNext(persistDomainEventInDbHandler)
-                .setNext(slideChangedEventHandler)
-                .setNext(endInteractionEventHandler)
-				.setNext(startPollHandler).setNext(answerPollHandler).setNext(startQASessionHandler)
-				.setNext(askQuestionEventHandler).setNext(startQuizEventHandler).setNext(answerQuizEventHandler)
-				.setNext(addReactionEventHandler).setNext(likeQuestionEventHandler)
-				.setNext(setQuestionVisibilityEventHandler).setNext(displayQASessionEventHandler)
-				.setNext(defaultEventHandler);
+				// .setNext(persistDomainEventInDbHandler)
+				.setNext(slideChangedEventHandler).setNext(endInteractionEventHandler).setNext(startPollHandler)
+				.setNext(answerPollHandler).setNext(startQASessionHandler).setNext(askQuestionEventHandler)
+				.setNext(startQuizEventHandler).setNext(answerQuizEventHandler).setNext(addReactionEventHandler)
+				.setNext(likeQuestionEventHandler).setNext(setQuestionVisibilityEventHandler)
+				.setNext(displayQASessionEventHandler).setNext(defaultEventHandler);
 		return snapshotRequestHandler;
 	}
 

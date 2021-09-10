@@ -38,6 +38,14 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
             const listOfAnsweredBy: string[] = poll.answers.map(
                 (a) => a.answeredBy
             )
+            const answer = poll.answers.find(
+                (el) => el.answeredBy == participantData.id
+            )
+            if (answer) {
+                setChosenOption(
+                    poll.options.find((el) => el.id == answer?.optionId)
+                )
+            }
             setIsAnswerSent(listOfAnsweredBy.includes(participantData.id))
         }
     }, [poll])
@@ -65,12 +73,6 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
         }
     }
 
-    const loaderOrCheck = showLoader ? (
-        <Loader />
-    ) : (
-        <img src={check} alt='check' />
-    )
-
     return (
         <div className='events-page'>
             <div className='page-content'>
@@ -91,22 +93,35 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
                                     }`}
                                     key={index}
                                     label={option.title}
-                                    control={<Radio />}
+                                    control={
+                                        <Radio
+                                            checked={chosenOption == option}
+                                        />
+                                    }
                                     value={option.title}
                                     onChange={() => {
-                                        setChosenOption(option)
+                                        if (!isAnswerSent) {
+                                            setChosenOption(option)
+                                        }
                                     }}
                                 />
                             )
                         )}
                     </RadioGroup>
                 </FormControl>
-                <button className='btn-submit' onClick={onSendClick}>
-                    <div className='btn-submit-text'>Submit</div>
-                    <div className='btn-submit-icon'>
-                        {isAnswerSent && loaderOrCheck}
+                {!isAnswerSent || !showLoader ? (
+                    <button className='btn-submit' onClick={onSendClick}>
+                        <div className='btn-submit-text'>Submit</div>
+                        <div className='btn-submit-icon'>
+                            {isAnswerSent && <Loader width='20' />}
+                        </div>
+                    </button>
+                ) : (
+                    <div className='answer-submitted'>
+                        <img src={check} alt='check' />
+                        <p>Thanks for your vote</p>
                     </div>
-                </button>
+                )}
             </div>
         </div>
     )

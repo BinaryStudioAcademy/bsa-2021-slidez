@@ -25,8 +25,6 @@ import { SessionPollAnswer } from '../model/SessionPollAnswer'
 import { InteractiveElementType } from '../enums/InteractiveElementType'
 import { QASessionQuestionDto } from '../dto/QASessionQuestionDto'
 import { LikeQuestionDto } from '../dto/LikeQuestionDto'
-import { ParticipantData } from '../../../services/participant/dto/ParticipantData'
-import { getParticipantData } from '../../../services/participant/participant-service'
 import { QuestionVisibilityDto } from '../dto/QuestionVisibilityDto'
 
 export interface PresentationSessionState {
@@ -111,6 +109,7 @@ export const answerPoll = createAsyncThunk(
 export const addReaction = createAsyncThunk(
     'reactions/add',
     async (request: AddReactionRequest) => {
+        console.log('send', request)
         SessionService.sendRequest(request.link, request.event)
     }
 )
@@ -266,11 +265,10 @@ export const presentationSessionSlice = createSlice({
                 if (!state.qAndASession) {
                     return
                 }
-                const participantData: ParticipantData = getParticipantData()
                 transformQuestionsForLike(
                     state.qAndASession.questions,
                     action.payload.questionId,
-                    participantData.id
+                    action.payload.participantId
                 )
             })
             .addCase(receiveQuestionVisibility.fulfilled, (state, action) => {

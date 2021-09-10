@@ -11,14 +11,11 @@ import lombok.EqualsAndHashCode;
 public class EndInteractionEvent extends DomainEvent {
 
 	@JsonIgnore
-	private Class<?> interactionClass;
-
-	@JsonIgnore
 	private boolean ended;
 
 	@Override
 	public void applyEvent(State state) throws DomainException {
-		this.ended = state.endInteraction(interactionClass);
+		this.ended = state.endInteraction();
 	}
 
 }

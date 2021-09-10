@@ -1,92 +1,115 @@
+import Mock1 from '../../assets/mockedPresentations/Binary Numbers for Beginners.jpg'
+import Mock2 from '../../assets/mockedPresentations/Digital Transformation.png'
+import Mock3 from '../../assets/mockedPresentations/GitHub for Enterprises.jpg'
+import Mock4 from '../../assets/mockedPresentations/Green Technologies that Save Commercial Laundry Operations Money.png'
+import Mock5 from '../../assets/mockedPresentations/Have fun and keep googling.jpg'
+import Mock6 from '../../assets/mockedPresentations/How Artificial Intelligence Knew About COVID-19 Before We Did.jpeg'
+import Mock7 from '../../assets/mockedPresentations/Intelligent Transport Systems.jpg'
+import Mock8 from '../../assets/mockedPresentations/Java Trends Stable, Smart and Sophisticated.jpg'
+import Mock9 from '../../assets/mockedPresentations/Join the Republic of Gamers.jpg'
+import Mock10 from '../../assets/mockedPresentations/Rise of the ‘Digital Nomad’.jpg'
+import Mock11 from '../../assets/mockedPresentations/Smart Home Concept for Future Lifestyle.jpg'
+import Mock12 from '../../assets/mockedPresentations/Software Testing.jpg'
+import Mock13 from '../../assets/mockedPresentations/Space Exploration Technologies.jpg'
+import Mock14 from '../../assets/mockedPresentations/The Most Popular Cat Breeds in the World.jpg'
+import Mock15 from '../../assets/mockedPresentations/The Secrets of Digital Twins for the Cities of Tomorrow.jpg'
+import Mock16 from '../../assets/mockedPresentations/What is Bitcoin Cryptocurrency.jpg'
+
 export const MOCK_DATA = [
     {
-        id: 0,
-        name: 'Lorem ipsum dolor sit amet.',
-        pictureUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmp9DJTA9RB6rJe_gnRRPbg3MIMUBCibf0Mw&usqp=CAU',
+        id: 1,
+        name: 'Binary Numbers for Beginners',
+        pictureUrl: Mock1,
+        dateUpdated: '12.08.2021',
     },
     {
-        id: 1,
-        name: '2 presentation',
-        pictureUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKmR4Ip6u2BnVMsvFVnJicZEG45TN42WaX4w&usqp=CAU',
+        id: 2,
+        name: 'Digital Transformation',
+        pictureUrl: Mock2,
+        dateUpdated: '17.08.2021',
     },
     {
         id: 3,
-        name: '3 presentation',
-        pictureUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlZIczLEptbgaGhu2DiGfN075fQgHN2OmGpA&usqp=CAU',
+        name: 'GitHub for Enterprises',
+        pictureUrl: Mock3,
+        dateUpdated: '14.08.2021',
     },
     {
         id: 4,
-        name: '4 presentation',
-        pictureUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGxehIE_EGJDqoKhv4Ateud6lgapzf9MusxA&usqp=CAU',
+        name: 'Green Technologies that Save Commercial Laundry Operations Money',
+        pictureUrl: Mock4,
+        dateUpdated: '16.08.2021',
     },
     {
         id: 5,
-        name: '5 presentation',
-        pictureUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWqurYaR-r5ve0P1VnapqzE0fkyJPW-KaJgg&usqp=CAU',
+        name: 'Have fun and keep googling!.jpg',
+        pictureUrl: Mock5,
+        dateUpdated: '23.08.2021',
     },
     {
         id: 6,
-        name: '6 presentation',
-        pictureUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGxehIE_EGJDqoKhv4Ateud6lgapzf9MusxA&usqp=CAU',
+        name: 'How Artificial Intelligence Knew About COVID-19 Before We Did',
+        pictureUrl: Mock6,
+        dateUpdated: '31.08.2021',
     },
     {
         id: 7,
-        name: '7 presentation',
-        pictureUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmp9DJTA9RB6rJe_gnRRPbg3MIMUBCibf0Mw&usqp=CAU',
+        name: 'Intelligent Transport Systems',
+        pictureUrl: Mock7,
+        dateUpdated: '08.09.2021',
     },
     {
         id: 8,
-        name: '8 presentation',
-        pictureUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWPUX3tatB2QyWicV2ychgGh8SQY8aeSmApQ&usqp=CAU',
+        name: 'Java Trends Stable, Smart and Sophisticated',
+        pictureUrl: Mock8,
+        dateUpdated: '26.08.2021',
     },
     {
         id: 9,
-        name: '9 presentation',
-        pictureUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXcJoFi8_L8P24Co2l-6cCs41SjzCegE2usQ&usqp=CAU',
+        name: 'Join the Republic of Gamers',
+        pictureUrl: Mock9,
+        dateUpdated: '16.08.2021',
     },
     {
         id: 10,
-        name: '10 presentation',
-        pictureUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKmR4Ip6u2BnVMsvFVnJicZEG45TN42WaX4w&usqp=CAU',
+        name: 'Rise of the ‘Digital Nomad’',
+        pictureUrl: Mock10,
+        dateUpdated: '13.08.2021',
     },
     {
         id: 11,
-        name: '11 presentation',
-        pictureUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR75NqdmlBvK4vNzCXgiTR3j7_V2eLT2ZdFjw&usqp=CAU',
+        name: 'Smart Home Concept for Future Lifestyle',
+        pictureUrl: Mock11,
+        dateUpdated: '01.09.2021',
     },
     {
         id: 12,
-        name: '12 presentation',
-        pictureUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmp9DJTA9RB6rJe_gnRRPbg3MIMUBCibf0Mw&usqp=CAU',
+        name: 'Software Testing',
+        pictureUrl: Mock12,
+        dateUpdated: '25.08.2021',
     },
     {
         id: 13,
-        name: '13 presentation',
-        pictureUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKmR4Ip6u2BnVMsvFVnJicZEG45TN42WaX4w&usqp=CAU',
+        name: 'Space Exploration Technologies',
+        pictureUrl: Mock13,
+        dateUpdated: '19.08.2021',
     },
     {
         id: 14,
-        name: '14 presentation',
-        pictureUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmp9DJTA9RB6rJe_gnRRPbg3MIMUBCibf0Mw&usqp=CAU',
+        name: 'The Most Popular Cat Breeds in the World',
+        pictureUrl: Mock14,
+        dateUpdated: '03.09.2021',
     },
     {
         id: 15,
-        name: '15 presentation',
-        pictureUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGxehIE_EGJDqoKhv4Ateud6lgapzf9MusxA&usqp=CAU',
+        name: 'The Secrets of Digital Twins for the Cities of Tomorrow',
+        pictureUrl: Mock15,
+        dateUpdated: '17.08.2021',
+    },
+    {
+        id: 16,
+        name: 'What is Bitcoin Cryptocurrency',
+        pictureUrl: Mock16,
+        dateUpdated: '06.09.2021',
     },
 ]
