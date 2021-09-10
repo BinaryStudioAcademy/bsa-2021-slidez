@@ -31,7 +31,7 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
     )
     const participantData: ParticipantData = getParticipantData()
     const [isAnswerSent, setIsAnswerSent] = useState<boolean>(false)
-    const [showLoader, setShowLoader] = useState<boolean>(true)
+    const [showLoader, setShowLoader] = useState<boolean>(false)
     const dispatch = useAppDispatch()
     useEffect(() => {
         if (participantData.id) {
@@ -109,11 +109,11 @@ const ParticipantPoll = ({ poll, link }: ParticipantPollProps) => {
                         )}
                     </RadioGroup>
                 </FormControl>
-                {!isAnswerSent || !showLoader ? (
+                {!isAnswerSent ? (
                     <button className='btn-submit' onClick={onSendClick}>
                         <div className='btn-submit-text'>Submit</div>
                         <div className='btn-submit-icon'>
-                            {isAnswerSent && <Loader width='20' />}
+                            {showLoader && <Loader width='20' />}
                         </div>
                     </button>
                 ) : (
