@@ -3,6 +3,7 @@ package com.binarystudio.academy.slidez.app.presentation;
 import com.binarystudio.academy.slidez.domain.interactive_element.dto.InteractiveElementDto;
 import com.binarystudio.academy.slidez.domain.interactive_element.exception.IllegalElementTypeException;
 import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
+import com.binarystudio.academy.slidez.domain.presentation.dto.PresentationDTO;
 import com.binarystudio.academy.slidez.domain.presentation.dto.PresentationSessionDTO;
 import com.binarystudio.academy.slidez.domain.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,30 +14,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("${v1API}/presentation")
 public class PresentationController {
 
-	private final PresentationService presentationService;
+    private final PresentationService presentationService;
 
-	@Autowired
-	public PresentationController(PresentationService presentationService) {
-		this.presentationService = presentationService;
-	}
+    @Autowired
+    public PresentationController(PresentationService presentationService) {
+        this.presentationService = presentationService;
+    }
 
-	@GetMapping("{link}/interactions")
-	public GenericResponse<Collection<InteractiveElementDto>, String> getInteractiveElements(
-			@PathVariable("link") String link)
-			throws EntityNotFoundException, IllegalElementTypeException, IllegalStateException {
-		Collection<InteractiveElementDto> interactiveElements = presentationService.getInteractiveElementDtos(link);
-		return new GenericResponse<>(interactiveElements);
-	}
+    @GetMapping("info")
+    public GenericResponse<List<PresentationDTO>, String> getPresentationInfo() {
+        return new GenericResponse<>(this.presentationService.getPresentationInfo());
+    }
 
-	@GetMapping("{link}/active-session")
-	public GenericResponse<PresentationSessionDTO, String> getActiveSession(@PathVariable("link") String link) {
-		// Null is a part of contract on frontend
-		return new GenericResponse<>(this.presentationService.getActivePresentationSessionData(link));
-	}
+    @GetMapping("{link}/interactions")
+    public GenericResponse<Collection<InteractiveElementDto>, String> getInteractiveElements(
+        @PathVariable("link") String link)
+        throws EntityNotFoundException, IllegalElementTypeException, IllegalStateException {
+        Collection<InteractiveElementDto> interactiveElements = presentationService.getInteractiveElementDtos(link);
+        return new GenericResponse<>(interactiveElements);
+    }
+
+    @GetMapping("{link}/active-session")
+    public GenericResponse<PresentationSessionDTO, String> getActiveSession(@PathVariable("link") String link) {
+        // Null is a part of contract on frontend
+        return new GenericResponse<>(this.presentationService.getActivePresentationSessionData(link));
+    }
 
 }

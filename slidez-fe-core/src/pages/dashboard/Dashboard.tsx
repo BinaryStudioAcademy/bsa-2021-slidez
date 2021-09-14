@@ -1,31 +1,32 @@
-import React, { useState, useCallback, useEffect } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
+    faChalkboard,
+    faEllipsisH,
+    faEllipsisV,
     faList,
     faSearch,
     faThLarge,
     faUsers,
-    faChalkboard,
-    faEllipsisV,
-    faEllipsisH,
 } from '@fortawesome/free-solid-svg-icons'
-import SideBar from '../../containers/sideBar/SideBar'
-import styles from './styles.module.scss'
-import { MOCK_DATA } from './mock-data'
-import { useAppDispatch, useAppSelector } from '../../hooks'
-import UserProfile from '../../containers/user-menu/UserMenu'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { useEffect, useState } from 'react'
 import table_sort from '../../../src/assets/svgs/table-sort.svg'
+import SideBar from '../../containers/sideBar/SideBar'
+import UserProfile from '../../containers/user-menu/UserMenu'
 import { fetchUser } from '../../containers/user/store'
+import { useAppDispatch, useAppSelector } from '../../hooks'
+import { PresentationDto } from './dto/PresentationDto'
+import { fetchInfo, selectPresentations } from './store'
+import styles from './styles.module.scss'
 
 const Dashboard = () => {
     const [currentView, setCurrentView] = useState('table')
     const [searchField, setSearchField] = useState('')
-    const [filteredPresentations, setFilteredPresentations] =
-        useState(MOCK_DATA)
+    const filteredPresentations = useAppSelector(selectPresentations) || []
     const dispatch = useAppDispatch()
 
     useEffect(() => {
         dispatch(fetchUser())
+        dispatch(fetchInfo())
     }, [])
 
     const toggleGridView = () => {
@@ -71,35 +72,30 @@ const Dashboard = () => {
     }
 
     const renderTableData = () => {
-        return filteredPresentations.map((presentation) => {
-            return (
-                <tr key={presentation.id}>
-                    <td>{presentation.name}</td>
-                    <td>32343</td>
-                    <td>{presentation.dateUpdated}</td>
-                    <td>{presentation.dateUpdated}</td>
-                    <td>
-                        <FontAwesomeIcon
-                            className={styles.iconOptions}
-                            icon={faEllipsisH}
-                        />
-                    </td>
-                </tr>
-            )
-        })
+        return (filteredPresentations as PresentationDto[]).map(
+            (presentation) => {
+                return (
+                    <tr key={presentation.id}>
+                        <td>{presentation.presentationName}</td>
+                        <td>32343</td>
+                        <td>Mon Aug 26 2021</td>
+                        <td>
+                            {new Date(presentation.updatedAt).toDateString()}
+                        </td>
+                        <td>
+                            <FontAwesomeIcon
+                                className={styles.iconOptions}
+                                icon={faEllipsisH}
+                            />
+                        </td>
+                    </tr>
+                )
+            }
+        )
     }
 
-    useEffect(() => {
-        setFilteredPresentations(
-            MOCK_DATA.filter((presentation) =>
-                presentation.name
-                    .toLowerCase()
-                    .includes(searchField.toLowerCase())
-            )
-        )
-    }, [searchField])
-
-    const isEmptyPresentations = () => filteredPresentations.length === 0
+    const isEmptyPresentations = () =>
+        (filteredPresentations as PresentationDto[]).length === 0
 
     const handleChange = (e: {
         target: { value: React.SetStateAction<string> }
@@ -132,10 +128,15 @@ const Dashboard = () => {
     const getGridView = () =>
         !isEmptyPresentations() ? (
             <div className={styles.grid}>
-                {filteredPresentations.map((md) => (
+                {filteredPresentations.map((md: PresentationDto) => (
                     <div className={styles.card} key={md.id}>
-                        <img className={styles.cardImg} src={md.pictureUrl} />
-                        <div className={styles.cardName}> {md.name} </div>
+                        <img
+                            className={styles.cardImg}
+                            src='https://i.dlpng.com/static/png/1689944-filecute-catpng-cat-png-439_289_preview.png'
+                        />
+                        <div className={styles.cardName}>
+                            {md.presentationName}
+                        </div>
                         <div className={styles.cardInfo}>
                             <span className={styles.cardIcons}>
                                 <FontAwesomeIcon
@@ -147,7 +148,7 @@ const Dashboard = () => {
                                     icon={faUsers}
                                 />
                                 <span className={styles.cardDate}>
-                                    {md.dateUpdated}
+                                    {new Date(md.updatedAt).toDateString()}
                                 </span>
                             </span>
                             <span className={styles.iconDetails}>

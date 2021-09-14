@@ -35,6 +35,7 @@ type EditorState = {
     activeTab: EditorTab | null
     error: string | null
     presentationId: string
+    presentationName: string
     polls: PollInteractiveElement[]
     qaSessions: QaInteractiveElement[]
     quizzes: QuizInteractiveElement[]
@@ -52,6 +53,7 @@ const initialState: EditorState = {
     error: null,
     session: null,
     presentationId: '',
+    presentationName: '',
     qaSessions: [],
     quizzes: [],
     polls: [],
@@ -63,7 +65,6 @@ export const preloadState = createAsyncThunk(
     'init-load',
     async (presentationId: string, { dispatch }) => {
         dispatch(setPresentationId(presentationId))
-
         const presentationData: FetchInteractiveElementsResponse = (
             await httpHelper.doGet(
                 `/presentation/${presentationId}/interactions`

@@ -23,7 +23,7 @@ import java.util.UUID;
 @Service
 public class QASessionService {
 
-	private final PresentationService presentationService;
+    private final PresentationService presentationService;
 
 	private final InteractiveElementRepository interactiveElementRepository;
 
@@ -39,7 +39,7 @@ public class QASessionService {
 
 	@Transactional
 	public QASessionDto create(CreateQASessionDto dto, User owner) {
-		Presentation presentation = presentationService.assertPresentationExists(dto.getPresentationId(), owner);
+		Presentation presentation = presentationService.assertPresentationExists(dto.getPresentationId(), dto.getPresentationName(), owner);
 
 		QASession qaSession = new QASession();
 		InteractiveElement interactiveElement = new InteractiveElement();

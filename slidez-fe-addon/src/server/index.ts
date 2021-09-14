@@ -9,3 +9,4 @@ import * as publicSlidesFunctions from './slides';
 (global as any).deleteSlide = publicSlidesFunctions.deleteSlide;
 (global as any).updateSlide = publicSlidesFunctions.updateSlide;
 (global as any).getPresentationId = publicSlidesFunctions.getPresentationId;
+(global as any).getPresentationName = publicSlidesFunctions.getPresentationName;
