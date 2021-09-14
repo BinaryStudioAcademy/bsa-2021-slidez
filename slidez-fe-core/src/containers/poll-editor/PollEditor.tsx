@@ -59,6 +59,7 @@ const PollEditor: React.FC<PollEditorProps> = ({ poll }: PollEditorProps) => {
     const [viewErrors, setViewErrors] = React.useState(false)
     const dispatch = useDispatch()
     const pollsError = useSelector((state: RootState) => state.editor.error)
+    const loading = useSelector((state: RootState) => state.editor.loading)
     const presentationId = useSelector(
         (state: RootState) => state.editor.presentationId
     )
@@ -76,7 +77,6 @@ const PollEditor: React.FC<PollEditorProps> = ({ poll }: PollEditorProps) => {
     }, [dispatch])
 
     const handleSubmit = async (values: typeof initialValues) => {
-        setIsLoading(true)
         // create poll if it's new one
         if (!poll) {
             dispatch(
@@ -109,7 +109,6 @@ const PollEditor: React.FC<PollEditorProps> = ({ poll }: PollEditorProps) => {
                 )
             }
         }
-        setIsLoading(false)
     }
 
     const toggleRemoveClick = (
@@ -127,7 +126,7 @@ const PollEditor: React.FC<PollEditorProps> = ({ poll }: PollEditorProps) => {
 
     return (
         <div className='app'>
-            {isLoading ? (
+            {loading ? (
                 <div
                     style={{
                         display: 'flex',
@@ -284,7 +283,9 @@ const PollEditor: React.FC<PollEditorProps> = ({ poll }: PollEditorProps) => {
                                         className='btn-submit form-button'
                                         onClick={() => setViewErrors(true)}
                                     >
-                                        Add to presentation
+                                        {!poll
+                                            ? 'Add to presentation'
+                                            : 'Update'}
                                     </button>
                                 </Form>
                             )

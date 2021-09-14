@@ -10,6 +10,7 @@ import { queryElement } from '../../dom/dom-helpers'
 import SlideIframe from '../../components/slide-iframe/SlideIframe'
 import ReactionOverlayIframe from '../../components/slide-iframe/ReactionOverlayFrame'
 import { IFRAME_HOST_BASE } from '../../env'
+import { SLIDE_CHANGE_EVENT } from 'slidez-shared'
 
 class CurrentSlideWatcher {
     constructor(
@@ -48,6 +49,7 @@ class CurrentSlideWatcher {
         const gElem = this.getGElem(svgContainerElem)
         this.currentSlideId = gElem.id
         this.replaceContentIfNeeded(svgContainerElem)
+        this.tryNotifySlideChange()
         this.slideSwitchMutationObserver = new MutationObserver(
             async (mutations) => {
                 for (const mutation of mutations) {
@@ -60,6 +62,7 @@ class CurrentSlideWatcher {
                                 this.getSvgContainerElemWithParent(node)
                             const gElem = this.getGElem(svgContainerElem)
                             this.currentSlideId = gElem.id
+                            this.tryNotifySlideChange()
                             this.replaceContentIfNeeded(svgContainerElem)
                         }
                     }
@@ -128,6 +131,16 @@ class CurrentSlideWatcher {
         if (this.isInteractiveSlide()) {
             this.replaceIneractiveSlide(svgContainer)
         }
+    }
+
+    private tryNotifySlideChange() {
+        const iframe = this.document!.getElementById('reaction-frame')
+        const slideId = this.currentSlideId
+        if (!iframe || !slideId) {
+            return
+        }
+
+        ;(iframe as any).contentWindow.postMessage(slideId, '*')
     }
 }
 

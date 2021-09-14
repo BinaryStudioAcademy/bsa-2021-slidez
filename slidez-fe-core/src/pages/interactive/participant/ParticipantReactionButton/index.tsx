@@ -22,6 +22,13 @@ const ParticipantReactionButton: React.FC<ParticipantReactionProps> = ({
     link,
 }: ParticipantReactionProps) => {
     const dispatch = useDispatch()
+    const [isButtonDisabled, setButtonDisabled] = useState(false)
+
+    const handleButton = () => {
+        setButtonDisabled(true)
+        setTimeout(() => setButtonDisabled(false), 3000)
+    }
+
     const handleLikeClick = React.useCallback(
         makeReactionHandler(dispatch, link, Reactions.LIKE, ''),
         [dispatch, link]
@@ -30,6 +37,16 @@ const ParticipantReactionButton: React.FC<ParticipantReactionProps> = ({
         makeReactionHandler(dispatch, link, Reactions.LOVE, ''),
         [dispatch, link]
     )
+
+    const handleLikeButton = () => {
+        handleLikeClick()
+        handleButton()
+    }
+
+    const handleLoveButton = () => {
+        handleLoveClick()
+        handleButton()
+    }
 
     const openedBlockRef = useRef<HTMLInputElement>(null)
     const [isOpened, setIsOpened] = useDetectOutsideClick(openedBlockRef, false)
@@ -46,13 +63,19 @@ const ParticipantReactionButton: React.FC<ParticipantReactionProps> = ({
         <div className={styles.reactions}>
             {isOpened || isDesktop ? (
                 <div className={styles.openedBlock} ref={openedBlockRef}>
-                    <button onClick={handleLikeClick}>
+                    <button
+                        onClick={handleLikeButton}
+                        disabled={isButtonDisabled}
+                    >
                         <ThumbUpIcon
                             width={defaultIconSize}
                             height={defaultIconSize}
                         />
                     </button>
-                    <button onClick={handleLoveClick}>
+                    <button
+                        onClick={handleLoveButton}
+                        disabled={isButtonDisabled}
+                    >
                         <HeartIcon
                             width={defaultIconSize}
                             height={defaultIconSize}

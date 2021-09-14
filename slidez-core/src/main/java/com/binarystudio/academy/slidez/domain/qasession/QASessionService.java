@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.domain.qasession;
 
+import com.binarystudio.academy.slidez.domain.interactive_element.InteractiveElementRepository;
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElementType;
 import com.binarystudio.academy.slidez.domain.presentation.PresentationService;
@@ -24,56 +25,60 @@ public class QASessionService {
 
     private final PresentationService presentationService;
 
-    private final QASessionRepository qaSessionRepository;
+	private final InteractiveElementRepository interactiveElementRepository;
 
-    @Autowired
-    public QASessionService(PresentationService presentationService, QASessionRepository qaSessionRepository) {
-        this.presentationService = presentationService;
-        this.qaSessionRepository = qaSessionRepository;
-    }
+	private final QASessionRepository qaSessionRepository;
 
-    @Transactional
-    public QASessionDto create(CreateQASessionDto dto, User owner) {
-        Presentation presentation = presentationService.assertPresentationExists(dto.getPresentationId(), dto.getPresentationName(), owner);
+	@Autowired
+	public QASessionService(PresentationService presentationService,
+			InteractiveElementRepository interactiveElementRepository, QASessionRepository qaSessionRepository) {
+		this.presentationService = presentationService;
+		this.interactiveElementRepository = interactiveElementRepository;
+		this.qaSessionRepository = qaSessionRepository;
+	}
 
-        QASession qaSession = new QASession();
-        InteractiveElement interactiveElement = new InteractiveElement();
-        interactiveElement.setPresentation(presentation);
-        interactiveElement.setSlideId(dto.getSlideId());
-        interactiveElement.setType(InteractiveElementType.QASession);
+	@Transactional
+	public QASessionDto create(CreateQASessionDto dto, User owner) {
+		Presentation presentation = presentationService.assertPresentationExists(dto.getPresentationId(), dto.getPresentationName(), owner);
 
-        qaSession.setInteractiveElement(interactiveElement);
-        qaSession.setOwner(owner);
-        qaSession.setTitle(dto.getTitle());
+		QASession qaSession = new QASession();
+		InteractiveElement interactiveElement = new InteractiveElement();
+		interactiveElement.setPresentation(presentation);
+		interactiveElement.setSlideId(dto.getSlideId());
+		interactiveElement.setType(InteractiveElementType.QASession);
 
-        QASession out = qaSessionRepository.save(qaSession);
-        return QASessionMapper.INSTANCE.qaSessionToDto(out);
-    }
+		qaSession.setInteractiveElement(interactiveElement);
+		qaSession.setOwner(owner);
+		qaSession.setTitle(dto.getTitle());
 
-    @Transactional
-    public void remove(UUID id) {
-        qaSessionRepository.deleteById(id);
-    }
+		QASession out = qaSessionRepository.save(qaSession);
+		return QASessionMapper.INSTANCE.qaSessionToDto(out);
+	}
 
-    public Optional<QASession> getBySlideId(String slideId) {
-        return qaSessionRepository.getBySlideId(slideId);
-    }
+	@Transactional
+	public void remove(String slideId) {
+		interactiveElementRepository.deleteBySlideId(slideId);
+	}
 
-    public Optional<QASession> getBySessionShortLink(String shortCode)
-        throws PresentationNotFoundException, QASessionNotFoundException {
-        Presentation presentation = presentationService.getPresentationByShortCode(shortCode);
-        return presentation.getInteractiveElements().stream()
-            .filter(e -> Objects.equals(e.getType(), InteractiveElementType.QASession)).findAny()
-            .map(InteractiveElement::getQaSession);
-    }
+	public Optional<QASession> getBySlideId(String slideId) {
+		return qaSessionRepository.getBySlideId(slideId);
+	}
 
-    public Optional<QASessionDto> getQASessionDtoById(UUID id) {
-        Optional<QASession> qaSessionOptional = qaSessionRepository.findById(id);
-        if (qaSessionOptional.isEmpty()) {
-            return Optional.empty();
-        }
-        QASessionDto out = QASessionMapper.INSTANCE.qaSessionToDto(qaSessionOptional.get());
-        return Optional.of(out);
-    }
+	public Optional<QASession> getBySessionShortLink(String shortCode)
+			throws PresentationNotFoundException, QASessionNotFoundException {
+		Presentation presentation = presentationService.getPresentationByShortCode(shortCode);
+		return presentation.getInteractiveElements().stream()
+				.filter(e -> Objects.equals(e.getType(), InteractiveElementType.QASession)).findAny()
+				.map(InteractiveElement::getQaSession);
+	}
+
+	public Optional<QASessionDto> getQASessionDtoById(UUID id) {
+		Optional<QASession> qaSessionOptional = qaSessionRepository.findById(id);
+		if (qaSessionOptional.isEmpty()) {
+			return Optional.empty();
+		}
+		QASessionDto out = QASessionMapper.INSTANCE.qaSessionToDto(qaSessionOptional.get());
+		return Optional.of(out);
+	}
 
 }

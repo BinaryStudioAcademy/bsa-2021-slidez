@@ -12,12 +12,17 @@ export enum DomainEventType {
     askQuestionEvent = 'AskQuestionEvent',
     likeQuestionEvent = 'LikeQuestionEvent',
     setQuestionVisibilityEvent = 'SetQuestionVisibilityEvent',
-    displayInteractionEvent = 'DisplayInteractionEvent',
+    slideChangedEvent = 'SlideChangedEvent',
+    endInteractionEvent = 'EndInteractionEvent',
 }
 
-export type DisplayInteractionEvent = {
-    type: DomainEventType.displayInteractionEvent
+export type SlideChangedEvent = {
+    type: DomainEventType.slideChangedEvent
     slideId: string
+}
+
+export type EndInteractionEvent = {
+    type: DomainEventType.endInteractionEvent
 }
 
 export type StartPollEvent = {
@@ -56,7 +61,8 @@ export type AddReactionEvent = {
 
 export type DomainEvent =
     | StartPollEvent
-    | DisplayInteractionEvent
+    | SlideChangedEvent
+    | EndInteractionEvent
     | SnapshotEvent
     | AnswerPollEvent
     | AskQuestionEvent

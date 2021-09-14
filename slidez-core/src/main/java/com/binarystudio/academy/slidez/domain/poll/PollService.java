@@ -1,5 +1,6 @@
 package com.binarystudio.academy.slidez.domain.poll;
 
+import com.binarystudio.academy.slidez.domain.interactive_element.InteractiveElementRepository;
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElement;
 import com.binarystudio.academy.slidez.domain.interactive_element.model.InteractiveElementType;
 import com.binarystudio.academy.slidez.domain.poll.dto.CreatePollDto;
@@ -25,11 +26,15 @@ public class PollService {
     private final PollRepository pollRepository;
 
     private final PresentationService presentationService;
+    
+    private final InteractiveElementRepository interactiveElementRepository;
 
     @Autowired
-    public PollService(PollRepository pollRepository, PresentationService presentationService) {
+    public PollService(PollRepository pollRepository, PresentationService presentationService,
+    		InteractiveElementRepository interactiveElementRepository) {
         this.pollRepository = pollRepository;
         this.presentationService = presentationService;
+        this.interactiveElementRepository = interactiveElementRepository;
     }
 
     @Transactional

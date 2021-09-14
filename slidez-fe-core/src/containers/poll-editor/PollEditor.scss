@@ -9,6 +9,10 @@
     button {
         font-family: 'Rubik';
     }
+
+    .btn-submit {
+        margin-top: 10px;
+    }
 }
 
 .text-input {
@@ -84,7 +88,7 @@
     border: 2px $main-color solid;
     color: $white;
     background-color: $main-color;
-    font-weight: 500;
+    font-weight: 100;
 }
 
 .options button {

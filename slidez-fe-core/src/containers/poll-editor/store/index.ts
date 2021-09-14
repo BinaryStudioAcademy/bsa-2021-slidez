@@ -44,6 +44,7 @@ type EditorState = {
         presentationName: string
     } | null
     pollToUpdate: PollInteractiveElement | null
+    loading: boolean
 }
 
 const initialState: EditorState = {
@@ -57,6 +58,7 @@ const initialState: EditorState = {
     quizzes: [],
     polls: [],
     pollToUpdate: null,
+    loading: false,
 }
 
 export const preloadState = createAsyncThunk(
@@ -126,6 +128,7 @@ export const createSessionForPresentation = createAsyncThunk(
 export const createPoll = createAsyncThunk(
     'create-poll',
     async (pollWriteDto: WritePollDto, { dispatch }) => {
+        dispatch(setLoading(true))
         const data =
             await getMessageBusUnsafe()!.sendMessageAndListen<InsertSlideSuccess>(
                 {
@@ -142,32 +145,50 @@ export const createPoll = createAsyncThunk(
             await httpHelper.doPost('/polls', pollWriteDto)
         ).data.data
         dispatch(setActiveTab(null))
+        dispatch(setLoading(false))
         return presentationData
     }
 )
 
-export const deletePoll = createAsyncThunk(
-    'delete-poll',
-    async (pollDto: PollInteractiveElement) => {
+export const deleteSlide = createAsyncThunk(
+    'delete-slide',
+    async (slideId: string) => {
         const data =
             await getMessageBusUnsafe()!.sendMessageAndListen<DeleteSlideSuccess>(
                 {
                     type: EventType.DELETE_SLIDE,
                     data: {
-                        id: pollDto.slideId,
+                        id: slideId,
                     },
                 },
                 EventType.DELETE_SLIDE_SUCCESS,
                 5000
             )
-        await httpHelper.doDelete(`/polls/${pollDto.id}`)
+    }
+)
+
+export const deletePoll = createAsyncThunk(
+    'delete-poll',
+    async (pollDto: PollInteractiveElement, { dispatch }) => {
+        dispatch(deleteSlide(pollDto.slideId))
+        await httpHelper.doDelete(`/polls/${pollDto.slideId}`)
         return pollDto
+    }
+)
+
+export const deleteQA = createAsyncThunk(
+    'delete-qa',
+    async (QADto: QaInteractiveElement, { dispatch }) => {
+        dispatch(deleteSlide(QADto.slideId))
+        await httpHelper.doDelete(`/qa-sessions/${QADto.slideId}`)
+        return QADto
     }
 )
 
 export const updatePoll = createAsyncThunk(
     'update-poll',
     async (pollUpdateDto: UpdatePollDto, { dispatch }) => {
+        dispatch(setLoading(true))
         const data =
             await getMessageBusUnsafe()!.sendMessageAndListen<UpdateSlideSuccess>(
                 {
@@ -182,12 +203,14 @@ export const updatePoll = createAsyncThunk(
             )
         await httpHelper.doPatch(`/polls/${pollUpdateDto.id}`, pollUpdateDto)
         dispatch(setActiveTab(null))
+        dispatch(setLoading(false))
         return pollUpdateDto
     }
 )
 export const createQA = createAsyncThunk(
     'create-qa',
     async (qaWriteDto: WriteQADto, { dispatch }) => {
+        dispatch(setLoading(true))
         const data =
             await getMessageBusUnsafe()!.sendMessageAndListen<InsertSlideSuccess>(
                 {
@@ -204,6 +227,7 @@ export const createQA = createAsyncThunk(
             await httpHelper.doPost('/qa-sessions/new', qaWriteDto)
         ).data.data
         dispatch(setActiveTab(null))
+        dispatch(setLoading(false))
         return presentationData
     }
 )
@@ -241,6 +265,10 @@ const editorSlice = createSlice({
             payload: PayloadAction<PollInteractiveElement | null>
         ) => {
             state.pollToUpdate = payload.payload
+        },
+
+        setLoading: (state: EditorState, payload: PayloadAction<boolean>) => {
+            state.loading = payload.payload
         },
     },
     extraReducers: (builder) =>
@@ -289,6 +317,18 @@ const editorSlice = createSlice({
             .addCase(deletePoll.rejected, (state, errorResponse) => {
                 state.error = errorResponse.error.message ?? null
             })
+            .addCase(deleteQA.pending, (state) => {
+                state.error = null
+            })
+            .addCase(deleteQA.fulfilled, (state, action) => {
+                state.error = null
+                state.qaSessions = state.qaSessions.filter(
+                    (qa) => qa.id != action.payload.id
+                )
+            })
+            .addCase(deleteQA.rejected, (state, errorResponse) => {
+                state.error = errorResponse.error.message ?? null
+            })
             .addCase(updatePoll.pending, (state) => {
                 state.error = null
             })
@@ -328,6 +368,7 @@ export const {
     setActiveTab,
     setActiveSession,
     setPollToUpdate,
+    setLoading,
 } = editorSlice.actions
 
 export default editorSlice.reducer

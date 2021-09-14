@@ -76,6 +76,37 @@
       }
 
       .btn-submit,
+      .btn-submit:focus {
+        font-family: 'Rubik';
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 45px;
+        border: none;
+        border-radius: 25px;
+        outline: none;
+        color: $white;
+        font-weight: 500;
+        font-size: 16px;
+        margin-bottom: 10px;
+
+        .spinner {
+          font-size: 24px;
+          width: initial;
+          margin: initial;
+        }
+        .btn-submit-icon {
+          min-width: 20px;
+          min-height: 1px;
+          margin-left: 5px;
+        }
+      }
+      &:checked {
+        background-color: rgba(89, 208, 165, 0.4);
+      }
+      // Not working in Safari
       .btn-submit:focus-visible {
         font-family: 'Rubik';
         display: flex;
@@ -90,21 +121,32 @@
         color: $white;
         font-weight: 500;
         font-size: 16px;
+        margin-bottom: 10px;
 
-        &-icon {
+        .spinner {
+          font-size: 24px;
+          width: initial;
+          margin: initial;
+        }
+        .btn-submit-icon {
           min-width: 20px;
           min-height: 1px;
           margin-left: 5px;
-
-          .spinner {
-            font-size: initial;
-            width: initial;
-            margin: initial;
-          }
         }
       }
-      &:checked {
-        background-color: rgba(89, 208, 165, 0.4);
+      
+      .answer-submitted {
+        height: 45px;
+        border: 2px solid transparent;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;  
+        font-size: 16px;
+        font-weight: 400; 
+        img {
+          margin-right: 10px;
+        }
       }
     }
     .PrivateSwitchBase-input-4 {

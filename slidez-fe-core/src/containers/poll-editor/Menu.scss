@@ -14,14 +14,19 @@
       padding-left: 2rem;
       .list-items {
         display: flex;
+        justify-content: space-between;
         border: none;
         background: none;
         width: 100%;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         padding: 15px;
         background-color: $light-color;
         border-radius: 10px;
         cursor: pointer;
+        .firstBlock {
+          display: flex;
+          width: calc(100% - 30px);
+        }
         img {
           margin-right: 10px;
         }
@@ -59,6 +64,7 @@
     }
     .list-items {
       display: flex;
+      justify-content: space-between;
       border: none;
       background: none;
       width: 100%;
@@ -67,6 +73,9 @@
       background-color: $light-color;
       border-radius: 5px;
       cursor: pointer;
+      .text-wrapper {
+        display: flex;
+      }
       img {
         margin-right: 10px;
       }
@@ -75,15 +84,15 @@
       }
       .text {
         font-size: 14px;
+        white-space: nowrap;
         max-width: max-content;
         line-height: 20px;
-        font-family: 'Rubik';
+        font-family: "Rubik";
         font-weight: 400;
       }
       .arrow-icon {
         cursor: pointer;
         color: #59d0a5;
-        margin-left: 135px;
         width: 20px;
         height: 20px;
         display: flex;
@@ -106,13 +115,13 @@
   .show-menu {
     max-height: 235px;
     overflow-y: auto;
-    margin-bottom: 10px;
-    animation: 0.1s linear 0s alternate dropDown;
+    margin-bottom: 15px;
+    animation: 0.2s linear 0s alternate dropDown;
   }
   .hide-menu {
     height: 0;
     overflow: hidden;
-    animation: 0.1s linear 0s dropUp;
+    animation: 0.2s linear 0s dropUp;
   }
   .button-show-hide-elements {
     padding-left: 2rem;
@@ -120,18 +129,16 @@
 }
 
 @keyframes dropDown {
-  from {
-    height: 0;
-  }
-  to {
-    height: 235px;
+  0% {
+    max-height: 0;
+    overflow: hidden;
   }
 }
 @keyframes dropUp {
-  from {
-    height: 245px;
+  0% {
+    height: auto;
   }
-  to {
-    height: 0px;
+  100% {
+    max-height: 0;
   }
 }

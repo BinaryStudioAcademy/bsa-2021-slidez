@@ -27,6 +27,12 @@
 }
 
 .qaadd-text:focus,
+.qaadd-text:focus {
+  border: none;
+  outline: none;
+  height: 60px;
+}
+// Not working in Safari
 .qaadd-text:focus-visible {
   border: none;
   outline: none;

@@ -23,7 +23,8 @@ import java.util.UUID;
 		@JsonSubTypes.Type(value = StartQuizEvent.class, name = "StartQuizEvent"),
 		@JsonSubTypes.Type(value = LikeQuestionEvent.class, name = "LikeQuestionEvent"),
 		@JsonSubTypes.Type(value = SetQuestionVisibilityEvent.class, name = "SetQuestionVisibilityEvent"),
-		@JsonSubTypes.Type(value = DisplayInteractionEvent.class, name = "DisplayInteractionEvent"),
+		@JsonSubTypes.Type(value = SlideChangedEvent.class, name = "SlideChangedEvent"),
+		@JsonSubTypes.Type(value = EndInteractionEvent.class, name = "EndInteractionEvent"),
 		@JsonSubTypes.Type(value = DisplayQASessionEvent.class, name = "DisplayQASessionEvent") })
 public abstract class DomainEvent implements Serializable {
 
